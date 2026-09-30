@@ -45,7 +45,8 @@ internal class ProGuardCompatibilityTest {
 
     @Test
     fun clientResolvesEveryService() {
-        val client = ScalarOkHttpClient.builder().bearerAuth("My Bearer Auth").build()
+        val client =
+            ScalarOkHttpClient.builder().bearerAuth("My Bearer Auth").oAuth2("My O Auth2").build()
 
         assertNotNull(client.registry())
         assertNotNull(client.schemas())

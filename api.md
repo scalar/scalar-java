@@ -358,7 +358,7 @@ RegistryCreateApiDocumentAccessGroupParams params =
     RegistryCreateApiDocumentAccessGroupParams.builder()
         .namespace("namespace")
         .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
         .build();
 var registry = client.registry().createApiDocumentAccessGroup(params);
 
@@ -386,7 +386,7 @@ RegistryDeleteApiDocumentAccessGroupParams params =
     RegistryDeleteApiDocumentAccessGroupParams.builder()
         .namespace("namespace")
         .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
         .build();
 var registry = client.registry().deleteApiDocumentAccessGroup(params);
 
@@ -557,7 +557,7 @@ Create a schema version.
 | Direction | Type |
 | --- | --- |
 | Request | [`VersionCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/version/VersionCreateParams.kt) |
-| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/models/Uid.kt) |
+| Response | [`VersionCreateResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/version/VersionCreateResponse.kt) |
 
 ```java
 import com.scalar.client.ScalarClient;
@@ -604,7 +604,7 @@ AccessGroupCreateParams params =
     AccessGroupCreateParams.builder()
         .namespace("namespace")
         .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
         .build();
 var accessGroup = client.schemas().accessGroup().create(params);
 
@@ -632,7 +632,7 @@ AccessGroupDeleteParams params =
     AccessGroupDeleteParams.builder()
         .namespace("namespace")
         .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
         .build();
 var accessGroup = client.schemas().accessGroup().delete(params);
 
@@ -742,7 +742,7 @@ LoginPortalCreateParams params =
                 .title("Private Docs")
                 .mainColor("#2a2f45")
                 .mainBackground("#f6f6f6")
-                .cardColor("2a2f45")
+                .cardColor("#2a2f45")
                 .cardBackground("#fff")
                 .buttonColor("#fff")
                 .buttonBackground("#0f0f0f")
@@ -940,7 +940,7 @@ RuleCreateRulesetAccessGroupParams params =
     RuleCreateRulesetAccessGroupParams.builder()
         .namespace("namespace")
         .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
         .build();
 var rule = client.rules().createRulesetAccessGroup(params);
 
@@ -968,7 +968,7 @@ RuleDeleteRulesetAccessGroupParams params =
     RuleDeleteRulesetAccessGroupParams.builder()
         .namespace("namespace")
         .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
         .build();
 var rule = client.rules().deleteRulesetAccessGroup(params);
 

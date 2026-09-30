@@ -56,7 +56,7 @@ import org.junit.jupiter.api.Test;
 
 final class SmokeTest {
   private static final ScalarClient client =
-      ScalarOkHttpClient.builder().fromEnv().maxRetries(0).timeout(Duration.ofSeconds(30)).build();
+      ScalarOkHttpClient.builder().fromEnv().maxRetries(2).timeout(Duration.ofSeconds(10)).build();
 
   private record SmokeResult(
       String operation,
@@ -161,18 +161,6 @@ final class SmokeTest {
   }
 
   private static void _smokeCase9() throws Exception {
-    RegistryUpdateApiDocumentVersionParams params =
-        RegistryUpdateApiDocumentVersionParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .semver("semver")
-            .document("")
-            .lastKnownVersionSha("")
-            .build();
-    var registry = client.registry().updateApiDocumentVersion(params);
-  }
-
-  private static void _smokeCase10() throws Exception {
     RegistryDeleteApiDocumentVersionParams params =
         RegistryDeleteApiDocumentVersionParams.builder()
             .namespace("namespace")
@@ -182,7 +170,7 @@ final class SmokeTest {
     var registry = client.registry().deleteApiDocumentVersion(params);
   }
 
-  private static void _smokeCase11() throws Exception {
+  private static void _smokeCase10() throws Exception {
     RegistryListApiDocumentVersionMetadataParams params =
         RegistryListApiDocumentVersionMetadataParams.builder()
             .namespace("namespace")
@@ -192,6 +180,17 @@ final class SmokeTest {
     var registry = client.registry().listApiDocumentVersionMetadata(params);
   }
 
+  private static void _smokeCase11() throws Exception {
+    RegistryCreateApiDocumentVersionParams params =
+        RegistryCreateApiDocumentVersionParams.builder()
+            .namespace("namespace")
+            .slug("slug")
+            .version("x")
+            .document("")
+            .build();
+    var registry = client.registry().createApiDocumentVersion(params);
+  }
+
   private static void _smokeCase12() throws Exception {
     RegistryCreateApiDocumentVersionParams params =
         RegistryCreateApiDocumentVersionParams.builder()
@@ -199,49 +198,37 @@ final class SmokeTest {
             .slug("slug")
             .version("x")
             .document("")
+            .force(false)
             .build();
     var registry = client.registry().createApiDocumentVersion(params);
   }
 
   private static void _smokeCase13() throws Exception {
-    RegistryCreateApiDocumentVersionParams params =
-        RegistryCreateApiDocumentVersionParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .version("x")
-            .document("")
-            .force(false)
-            .lastKnownVersionSha("")
-            .build();
-    var registry = client.registry().createApiDocumentVersion(params);
-  }
-
-  private static void _smokeCase14() throws Exception {
     RegistryCreateApiDocumentAccessGroupParams params =
         RegistryCreateApiDocumentAccessGroupParams.builder()
             .namespace("namespace")
             .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
             .build();
     var registry = client.registry().createApiDocumentAccessGroup(params);
   }
 
-  private static void _smokeCase15() throws Exception {
+  private static void _smokeCase14() throws Exception {
     RegistryDeleteApiDocumentAccessGroupParams params =
         RegistryDeleteApiDocumentAccessGroupParams.builder()
             .namespace("namespace")
             .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
             .build();
     var registry = client.registry().deleteApiDocumentAccessGroup(params);
   }
 
-  private static void _smokeCase16() throws Exception {
+  private static void _smokeCase15() throws Exception {
     SchemaListParams params = SchemaListParams.builder().namespace("namespace").build();
     var schema = client.schemas().list(params);
   }
 
-  private static void _smokeCase17() throws Exception {
+  private static void _smokeCase16() throws Exception {
     SchemaCreateParams params =
         SchemaCreateParams.builder()
             .namespace("namespace")
@@ -253,7 +240,7 @@ final class SmokeTest {
     var schema = client.schemas().create(params);
   }
 
-  private static void _smokeCase18() throws Exception {
+  private static void _smokeCase17() throws Exception {
     SchemaCreateParams params =
         SchemaCreateParams.builder()
             .namespace("namespace")
@@ -267,13 +254,13 @@ final class SmokeTest {
     var schema = client.schemas().create(params);
   }
 
-  private static void _smokeCase19() throws Exception {
+  private static void _smokeCase18() throws Exception {
     SchemaUpdateParams params =
         SchemaUpdateParams.builder().namespace("namespace").slug("slug").build();
     var schema = client.schemas().update(params);
   }
 
-  private static void _smokeCase20() throws Exception {
+  private static void _smokeCase19() throws Exception {
     SchemaUpdateParams params =
         SchemaUpdateParams.builder()
             .namespace("namespace")
@@ -285,13 +272,13 @@ final class SmokeTest {
     var schema = client.schemas().update(params);
   }
 
-  private static void _smokeCase21() throws Exception {
+  private static void _smokeCase20() throws Exception {
     SchemaDeleteParams params =
         SchemaDeleteParams.builder().namespace("namespace").slug("slug").build();
     var schema = client.schemas().delete(params);
   }
 
-  private static void _smokeCase22() throws Exception {
+  private static void _smokeCase21() throws Exception {
     VersionRetrieveParams params =
         VersionRetrieveParams.builder()
             .namespace("namespace")
@@ -301,13 +288,13 @@ final class SmokeTest {
     var version = client.schemas().version().retrieve(params);
   }
 
-  private static void _smokeCase23() throws Exception {
+  private static void _smokeCase22() throws Exception {
     VersionDeleteParams params =
         VersionDeleteParams.builder().namespace("namespace").slug("slug").semver("semver").build();
     var version = client.schemas().version().delete(params);
   }
 
-  private static void _smokeCase24() throws Exception {
+  private static void _smokeCase23() throws Exception {
     VersionCreateParams params =
         VersionCreateParams.builder()
             .namespace("namespace")
@@ -318,12 +305,24 @@ final class SmokeTest {
     var version = client.schemas().version().create(params);
   }
 
+  private static void _smokeCase24() throws Exception {
+    VersionCreateParams params =
+        VersionCreateParams.builder()
+            .namespace("namespace")
+            .slug("slug")
+            .version("x")
+            .document("")
+            .force(false)
+            .build();
+    var version = client.schemas().version().create(params);
+  }
+
   private static void _smokeCase25() throws Exception {
     AccessGroupCreateParams params =
         AccessGroupCreateParams.builder()
             .namespace("namespace")
             .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
             .build();
     var accessGroup = client.schemas().accessGroup().create(params);
   }
@@ -333,7 +332,7 @@ final class SmokeTest {
         AccessGroupDeleteParams.builder()
             .namespace("namespace")
             .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
             .build();
     var accessGroup = client.schemas().accessGroup().delete(params);
   }
@@ -373,7 +372,7 @@ final class SmokeTest {
                     .title("Private Docs")
                     .mainColor("#2a2f45")
                     .mainBackground("#f6f6f6")
-                    .cardColor("2a2f45")
+                    .cardColor("#2a2f45")
                     .cardBackground("#fff")
                     .buttonColor("#fff")
                     .buttonBackground("#0f0f0f")
@@ -472,7 +471,7 @@ final class SmokeTest {
         RuleCreateRulesetAccessGroupParams.builder()
             .namespace("namespace")
             .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
             .build();
     var rule = client.rules().createRulesetAccessGroup(params);
   }
@@ -482,7 +481,7 @@ final class SmokeTest {
         RuleDeleteRulesetAccessGroupParams.builder()
             .namespace("namespace")
             .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("xxx").build())
+            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
             .build();
     var rule = client.rules().deleteRulesetAccessGroup(params);
   }
@@ -552,7 +551,7 @@ final class SmokeTest {
     ScalarDocCreateGuideParams params =
         ScalarDocCreateGuideParams.builder()
             .name("")
-            .slug("xxx")
+            .slug("x")
             .isPrivate(false)
             .allowedUsers(java.util.List.of())
             .allowedDomains(java.util.List.of())
@@ -624,90 +623,90 @@ final class SmokeTest {
               "updateApiDocumentVersion",
               "PATCH",
               "/v1/apis/{namespace}/{slug}/version/{semver}",
-              "required params",
+              "",
               SmokeTest::_smokeCase8),
-          new SmokeCase(
-              "updateApiDocumentVersion",
-              "PATCH",
-              "/v1/apis/{namespace}/{slug}/version/{semver}",
-              "all params",
-              SmokeTest::_smokeCase9),
           new SmokeCase(
               "deleteApiDocumentVersion",
               "DELETE",
               "/v1/apis/{namespace}/{slug}/version/{semver}",
               "",
-              SmokeTest::_smokeCase10),
+              SmokeTest::_smokeCase9),
           new SmokeCase(
               "listApiDocumentVersionMetadata",
               "GET",
               "/v1/apis/{namespace}/{slug}/version/{semver}/metadata",
               "",
+              SmokeTest::_smokeCase10),
+          new SmokeCase(
+              "createApiDocumentVersion",
+              "POST",
+              "/v1/apis/{namespace}/{slug}/version",
+              "required params",
               SmokeTest::_smokeCase11),
           new SmokeCase(
               "createApiDocumentVersion",
               "POST",
               "/v1/apis/{namespace}/{slug}/version",
-              "required params",
-              SmokeTest::_smokeCase12),
-          new SmokeCase(
-              "createApiDocumentVersion",
-              "POST",
-              "/v1/apis/{namespace}/{slug}/version",
               "all params",
-              SmokeTest::_smokeCase13),
+              SmokeTest::_smokeCase12),
           new SmokeCase(
               "createApiDocumentAccessGroup",
               "POST",
               "/v1/apis/{namespace}/{slug}/access-group",
               "",
-              SmokeTest::_smokeCase14),
+              SmokeTest::_smokeCase13),
           new SmokeCase(
               "deleteApiDocumentAccessGroup",
               "DELETE",
               "/v1/apis/{namespace}/{slug}/access-group",
               "",
-              SmokeTest::_smokeCase15),
-          new SmokeCase("list", "GET", "/v1/schemas/{namespace}", "", SmokeTest::_smokeCase16),
+              SmokeTest::_smokeCase14),
+          new SmokeCase("list", "GET", "/v1/schemas/{namespace}", "", SmokeTest::_smokeCase15),
           new SmokeCase(
               "create",
               "POST",
               "/v1/schemas/{namespace}",
               "required params",
-              SmokeTest::_smokeCase17),
+              SmokeTest::_smokeCase16),
           new SmokeCase(
-              "create", "POST", "/v1/schemas/{namespace}", "all params", SmokeTest::_smokeCase18),
+              "create", "POST", "/v1/schemas/{namespace}", "all params", SmokeTest::_smokeCase17),
           new SmokeCase(
               "update",
               "PATCH",
               "/v1/schemas/{namespace}/{slug}",
               "required params",
-              SmokeTest::_smokeCase19),
+              SmokeTest::_smokeCase18),
           new SmokeCase(
               "update",
               "PATCH",
               "/v1/schemas/{namespace}/{slug}",
               "all params",
-              SmokeTest::_smokeCase20),
+              SmokeTest::_smokeCase19),
           new SmokeCase(
-              "delete", "DELETE", "/v1/schemas/{namespace}/{slug}", "", SmokeTest::_smokeCase21),
+              "delete", "DELETE", "/v1/schemas/{namespace}/{slug}", "", SmokeTest::_smokeCase20),
           new SmokeCase(
               "retrieve",
               "GET",
               "/v1/schemas/{namespace}/{slug}/version/{semver}",
               "",
-              SmokeTest::_smokeCase22),
+              SmokeTest::_smokeCase21),
           new SmokeCase(
               "delete",
               "DELETE",
               "/v1/schemas/{namespace}/{slug}/version/{semver}",
               "",
+              SmokeTest::_smokeCase22),
+          new SmokeCase(
+              "create",
+              "POST",
+              "/v1/schemas/{namespace}/{slug}/version",
+              "required params",
               SmokeTest::_smokeCase23),
           new SmokeCase(
               "create",
               "POST",
               "/v1/schemas/{namespace}/{slug}/version",
-              "",
+              "all params",
               SmokeTest::_smokeCase24),
           new SmokeCase(
               "create",

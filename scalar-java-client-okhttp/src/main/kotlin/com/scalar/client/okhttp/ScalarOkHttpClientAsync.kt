@@ -294,7 +294,19 @@ class ScalarOkHttpClientAsync private constructor() {
          */
         fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
-        fun bearerAuth(bearerAuth: String) = apply { clientOptions.bearerAuth(bearerAuth) }
+        fun bearerAuth(bearerAuth: String?) = apply { clientOptions.bearerAuth(bearerAuth) }
+
+        /** Alias for calling [Builder.bearerAuth] with `bearerAuth.orElse(null)`. */
+        fun bearerAuth(bearerAuth: Optional<String>) = bearerAuth(bearerAuth.getOrNull())
+
+        /**
+         * Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each
+         * scope implies the weaker ones.
+         */
+        fun oAuth2(oAuth2: String?) = apply { clientOptions.oAuth2(oAuth2) }
+
+        /** Alias for calling [Builder.oAuth2] with `oAuth2.orElse(null)`. */
+        fun oAuth2(oAuth2: Optional<String>) = oAuth2(oAuth2.getOrNull())
 
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 

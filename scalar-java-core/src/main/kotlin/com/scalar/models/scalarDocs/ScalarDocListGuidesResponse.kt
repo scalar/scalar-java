@@ -28,10 +28,12 @@ private constructor(
     private val lastPublished: JsonField<Long>,
     private val lastPublishedUid: JsonField<String>,
     private val loginPortalUid: JsonField<String>,
+    private val userInfoHookUrl: JsonField<String>,
     private val activeThemeId: JsonField<String>,
     private val typesenseId: JsonField<Double>,
     private val isPrivate: JsonField<Boolean>,
     private val agentEnabled: JsonField<Boolean>,
+    private val analyticsEnabled: JsonField<Boolean>,
     private val accessGroups: JsonField<Any>,
     private val slug: JsonField<String>,
     private val publishStatus: JsonField<String>,
@@ -58,6 +60,9 @@ private constructor(
         @JsonProperty("loginPortalUid")
         @ExcludeMissing
         loginPortalUid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("userInfoHookUrl")
+        @ExcludeMissing
+        userInfoHookUrl: JsonField<String> = JsonMissing.of(),
         @JsonProperty("activeThemeId")
         @ExcludeMissing
         activeThemeId: JsonField<String> = JsonMissing.of(),
@@ -68,6 +73,9 @@ private constructor(
         @JsonProperty("agentEnabled")
         @ExcludeMissing
         agentEnabled: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("analyticsEnabled")
+        @ExcludeMissing
+        analyticsEnabled: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("accessGroups")
         @ExcludeMissing
         accessGroups: JsonField<Any> = JsonMissing.of(),
@@ -90,10 +98,12 @@ private constructor(
         lastPublished,
         lastPublishedUid,
         loginPortalUid,
+        userInfoHookUrl,
         activeThemeId,
         typesenseId,
         isPrivate,
         agentEnabled,
+        analyticsEnabled,
         accessGroups,
         slug,
         publishStatus,
@@ -155,6 +165,12 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    fun userInfoHookUrl(): String = userInfoHookUrl.getRequired("userInfoHookUrl")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun activeThemeId(): String = activeThemeId.getRequired("activeThemeId")
 
     /**
@@ -174,6 +190,12 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun agentEnabled(): Boolean = agentEnabled.getRequired("agentEnabled")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun analyticsEnabled(): Boolean = analyticsEnabled.getRequired("analyticsEnabled")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -272,6 +294,15 @@ private constructor(
     fun _loginPortalUid(): JsonField<String> = loginPortalUid
 
     /**
+     * Returns the raw JSON value of [userInfoHookUrl].
+     *
+     * Unlike [userInfoHookUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("userInfoHookUrl")
+    @ExcludeMissing
+    fun _userInfoHookUrl(): JsonField<String> = userInfoHookUrl
+
+    /**
      * Returns the raw JSON value of [activeThemeId].
      *
      * Unlike [activeThemeId], this method doesn't throw if the JSON field has an unexpected type.
@@ -302,6 +333,16 @@ private constructor(
     @JsonProperty("agentEnabled")
     @ExcludeMissing
     fun _agentEnabled(): JsonField<Boolean> = agentEnabled
+
+    /**
+     * Returns the raw JSON value of [analyticsEnabled].
+     *
+     * Unlike [analyticsEnabled], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("analyticsEnabled")
+    @ExcludeMissing
+    fun _analyticsEnabled(): JsonField<Boolean> = analyticsEnabled
 
     /**
      * Returns the raw JSON value of [accessGroups].
@@ -371,9 +412,11 @@ private constructor(
          * .lastPublished()
          * .lastPublishedUid()
          * .loginPortalUid()
+         * .userInfoHookUrl()
          * .activeThemeId()
          * .isPrivate()
          * .agentEnabled()
+         * .analyticsEnabled()
          * .accessGroups()
          * .slug()
          * .publishStatus()
@@ -394,10 +437,12 @@ private constructor(
         private var lastPublished: JsonField<Long>? = null
         private var lastPublishedUid: JsonField<String>? = null
         private var loginPortalUid: JsonField<String>? = null
+        private var userInfoHookUrl: JsonField<String>? = null
         private var activeThemeId: JsonField<String>? = null
         private var typesenseId: JsonField<Double> = JsonMissing.of()
         private var isPrivate: JsonField<Boolean>? = null
         private var agentEnabled: JsonField<Boolean>? = null
+        private var analyticsEnabled: JsonField<Boolean>? = null
         private var accessGroups: JsonField<Any>? = null
         private var slug: JsonField<String>? = null
         private var publishStatus: JsonField<String>? = null
@@ -415,10 +460,12 @@ private constructor(
             lastPublished = scalarDocListGuidesResponse.lastPublished
             lastPublishedUid = scalarDocListGuidesResponse.lastPublishedUid
             loginPortalUid = scalarDocListGuidesResponse.loginPortalUid
+            userInfoHookUrl = scalarDocListGuidesResponse.userInfoHookUrl
             activeThemeId = scalarDocListGuidesResponse.activeThemeId
             typesenseId = scalarDocListGuidesResponse.typesenseId
             isPrivate = scalarDocListGuidesResponse.isPrivate
             agentEnabled = scalarDocListGuidesResponse.agentEnabled
+            analyticsEnabled = scalarDocListGuidesResponse.analyticsEnabled
             accessGroups = scalarDocListGuidesResponse.accessGroups
             slug = scalarDocListGuidesResponse.slug
             publishStatus = scalarDocListGuidesResponse.publishStatus
@@ -539,6 +586,20 @@ private constructor(
             this.loginPortalUid = loginPortalUid
         }
 
+        fun userInfoHookUrl(userInfoHookUrl: String) =
+            userInfoHookUrl(JsonField.of(userInfoHookUrl))
+
+        /**
+         * Sets [Builder.userInfoHookUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.userInfoHookUrl] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun userInfoHookUrl(userInfoHookUrl: JsonField<String>) = apply {
+            this.userInfoHookUrl = userInfoHookUrl
+        }
+
         fun activeThemeId(activeThemeId: String) = activeThemeId(JsonField.of(activeThemeId))
 
         /**
@@ -585,6 +646,20 @@ private constructor(
          */
         fun agentEnabled(agentEnabled: JsonField<Boolean>) = apply {
             this.agentEnabled = agentEnabled
+        }
+
+        fun analyticsEnabled(analyticsEnabled: Boolean) =
+            analyticsEnabled(JsonField.of(analyticsEnabled))
+
+        /**
+         * Sets [Builder.analyticsEnabled] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.analyticsEnabled] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun analyticsEnabled(analyticsEnabled: JsonField<Boolean>) = apply {
+            this.analyticsEnabled = analyticsEnabled
         }
 
         fun accessGroups(accessGroups: Any?) = accessGroups(JsonField.ofNullable(accessGroups))
@@ -685,9 +760,11 @@ private constructor(
          * .lastPublished()
          * .lastPublishedUid()
          * .loginPortalUid()
+         * .userInfoHookUrl()
          * .activeThemeId()
          * .isPrivate()
          * .agentEnabled()
+         * .analyticsEnabled()
          * .accessGroups()
          * .slug()
          * .publishStatus()
@@ -706,10 +783,12 @@ private constructor(
                 checkRequired("lastPublished", lastPublished),
                 checkRequired("lastPublishedUid", lastPublishedUid),
                 checkRequired("loginPortalUid", loginPortalUid),
+                checkRequired("userInfoHookUrl", userInfoHookUrl),
                 checkRequired("activeThemeId", activeThemeId),
                 typesenseId,
                 checkRequired("isPrivate", isPrivate),
                 checkRequired("agentEnabled", agentEnabled),
+                checkRequired("analyticsEnabled", analyticsEnabled),
                 checkRequired("accessGroups", accessGroups),
                 checkRequired("slug", slug),
                 checkRequired("publishStatus", publishStatus),
@@ -742,10 +821,12 @@ private constructor(
         lastPublished()
         lastPublishedUid()
         loginPortalUid()
+        userInfoHookUrl()
         activeThemeId()
         typesenseId()
         isPrivate()
         agentEnabled()
+        analyticsEnabled()
         accessGroups()
         slug()
         publishStatus()
@@ -777,10 +858,12 @@ private constructor(
             (if (lastPublished.asKnown().isPresent) 1 else 0) +
             (if (lastPublishedUid.asKnown().isPresent) 1 else 0) +
             (if (loginPortalUid.asKnown().isPresent) 1 else 0) +
+            (if (userInfoHookUrl.asKnown().isPresent) 1 else 0) +
             (if (activeThemeId.asKnown().isPresent) 1 else 0) +
             (if (typesenseId.asKnown().isPresent) 1 else 0) +
             (if (isPrivate.asKnown().isPresent) 1 else 0) +
             (if (agentEnabled.asKnown().isPresent) 1 else 0) +
+            (if (analyticsEnabled.asKnown().isPresent) 1 else 0) +
             (if (accessGroups.asKnown().isPresent) 1 else 0) +
             (if (slug.asKnown().isPresent) 1 else 0) +
             (if (publishStatus.asKnown().isPresent) 1 else 0) +
@@ -1531,10 +1614,12 @@ private constructor(
             lastPublished == other.lastPublished &&
             lastPublishedUid == other.lastPublishedUid &&
             loginPortalUid == other.loginPortalUid &&
+            userInfoHookUrl == other.userInfoHookUrl &&
             activeThemeId == other.activeThemeId &&
             typesenseId == other.typesenseId &&
             isPrivate == other.isPrivate &&
             agentEnabled == other.agentEnabled &&
+            analyticsEnabled == other.analyticsEnabled &&
             accessGroups == other.accessGroups &&
             slug == other.slug &&
             publishStatus == other.publishStatus &&
@@ -1553,10 +1638,12 @@ private constructor(
             lastPublished,
             lastPublishedUid,
             loginPortalUid,
+            userInfoHookUrl,
             activeThemeId,
             typesenseId,
             isPrivate,
             agentEnabled,
+            analyticsEnabled,
             accessGroups,
             slug,
             publishStatus,
@@ -1569,5 +1656,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ScalarDocListGuidesResponse{uid=$uid, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, activeDeployment=$activeDeployment, lastPublished=$lastPublished, lastPublishedUid=$lastPublishedUid, loginPortalUid=$loginPortalUid, activeThemeId=$activeThemeId, typesenseId=$typesenseId, isPrivate=$isPrivate, agentEnabled=$agentEnabled, accessGroups=$accessGroups, slug=$slug, publishStatus=$publishStatus, publishMessage=$publishMessage, repository=$repository, additionalProperties=$additionalProperties}"
+        "ScalarDocListGuidesResponse{uid=$uid, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, activeDeployment=$activeDeployment, lastPublished=$lastPublished, lastPublishedUid=$lastPublishedUid, loginPortalUid=$loginPortalUid, userInfoHookUrl=$userInfoHookUrl, activeThemeId=$activeThemeId, typesenseId=$typesenseId, isPrivate=$isPrivate, agentEnabled=$agentEnabled, analyticsEnabled=$analyticsEnabled, accessGroups=$accessGroups, slug=$slug, publishStatus=$publishStatus, publishMessage=$publishMessage, repository=$repository, additionalProperties=$additionalProperties}"
 }

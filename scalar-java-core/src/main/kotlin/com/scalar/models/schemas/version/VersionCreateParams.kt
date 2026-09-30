@@ -42,6 +42,12 @@ private constructor(
      */
     fun document(): String = body.document()
 
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun force(): Optional<Boolean> = body.force()
+
     fun namespace(): String = namespace
 
     fun slug(): Optional<String> = Optional.ofNullable(slug)
@@ -59,6 +65,13 @@ private constructor(
      * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _document(): JsonField<String> = body._document()
+
+    /**
+     * Returns the raw JSON value of [force].
+     *
+     * Unlike [force], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _force(): JsonField<Boolean> = body._force()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -117,6 +130,7 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [version]
          * - [document]
+         * - [force]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -139,6 +153,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun document(document: JsonField<String>) = apply { body.document(document) }
+
+        fun force(force: Boolean) = apply { body.force(force) }
+
+        /**
+         * Sets [Builder.force] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.force] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun force(force: JsonField<Boolean>) = apply { body.force(force) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -299,6 +323,7 @@ private constructor(
     private constructor(
         private val version: JsonField<String>,
         private val document: JsonField<String>,
+        private val force: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -308,7 +333,8 @@ private constructor(
             @JsonProperty("document")
             @ExcludeMissing
             document: JsonField<String> = JsonMissing.of(),
-        ) : this(version, document, mutableMapOf())
+            @JsonProperty("force") @ExcludeMissing force: JsonField<Boolean> = JsonMissing.of(),
+        ) : this(version, document, force, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -323,6 +349,12 @@ private constructor(
         fun document(): String = document.getRequired("document")
 
         /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun force(): Optional<Boolean> = force.getOptional("force")
+
+        /**
          * Returns the raw JSON value of [version].
          *
          * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
@@ -335,6 +367,13 @@ private constructor(
          * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("document") @ExcludeMissing fun _document(): JsonField<String> = document
+
+        /**
+         * Returns the raw JSON value of [force].
+         *
+         * Unlike [force], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("force") @ExcludeMissing fun _force(): JsonField<Boolean> = force
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -367,12 +406,14 @@ private constructor(
 
             private var version: JsonField<String>? = null
             private var document: JsonField<String>? = null
+            private var force: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 version = body.version
                 document = body.document
+                force = body.force
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -397,6 +438,17 @@ private constructor(
              * supported value.
              */
             fun document(document: JsonField<String>) = apply { this.document = document }
+
+            fun force(force: Boolean) = force(JsonField.of(force))
+
+            /**
+             * Sets [Builder.force] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.force] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun force(force: JsonField<Boolean>) = apply { this.force = force }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -434,6 +486,7 @@ private constructor(
                 Body(
                     checkRequired("version", version),
                     checkRequired("document", document),
+                    force,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -456,6 +509,7 @@ private constructor(
 
             version()
             document()
+            force()
             validated = true
         }
 
@@ -476,7 +530,8 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (version.asKnown().isPresent) 1 else 0) +
-                (if (document.asKnown().isPresent) 1 else 0)
+                (if (document.asKnown().isPresent) 1 else 0) +
+                (if (force.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -486,15 +541,18 @@ private constructor(
             return other is Body &&
                 version == other.version &&
                 document == other.document &&
+                force == other.force &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(version, document, additionalProperties) }
+        private val hashCode: Int by lazy {
+            Objects.hash(version, document, force, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{version=$version, document=$document, additionalProperties=$additionalProperties}"
+            "Body{version=$version, document=$document, force=$force, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

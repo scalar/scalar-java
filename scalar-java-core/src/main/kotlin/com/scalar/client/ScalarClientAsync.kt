@@ -8,7 +8,6 @@ import com.scalar.services.async.AuthenticationServiceAsync
 import com.scalar.services.async.LoginPortalServiceAsync
 import com.scalar.services.async.McpServiceAsync
 import com.scalar.services.async.NamespaceServiceAsync
-import com.scalar.services.async.OAuthServiceAsync
 import com.scalar.services.async.RegistryServiceAsync
 import com.scalar.services.async.RuleServiceAsync
 import com.scalar.services.async.ScalarDocServiceAsync
@@ -89,9 +88,6 @@ interface ScalarClientAsync {
 
     fun mcp(): McpServiceAsync
 
-    /** OAuth */
-    fun oAuth(): OAuthServiceAsync
-
     /**
      * Closes this client, relinquishing any underlying resources.
      *
@@ -151,8 +147,5 @@ interface ScalarClientAsync {
         fun sdks(): SdkServiceAsync.WithRawResponse
 
         fun mcp(): McpServiceAsync.WithRawResponse
-
-        /** OAuth */
-        fun oAuth(): OAuthServiceAsync.WithRawResponse
     }
 }

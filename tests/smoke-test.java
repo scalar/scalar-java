@@ -28,8 +28,6 @@ import com.scalar.models.mcp.servers.installations.InstallationDeleteParams;
 import com.scalar.models.mcp.servers.installations.InstallationListParams;
 import com.scalar.models.mcp.servers.installations.InstallationRetrieveParams;
 import com.scalar.models.mcp.servers.installations.InstallationUpdateParams;
-import com.scalar.models.oAuth.OAuthOauthRevokeParams;
-import com.scalar.models.oAuth.OAuthOauthTokenParams;
 import com.scalar.models.registry.AccessGroup;
 import com.scalar.models.registry.RegistryCreateApiDocumentAccessGroupParams;
 import com.scalar.models.registry.RegistryCreateApiDocumentParams;
@@ -1161,50 +1159,6 @@ final class SmokeTest {
     var installation = client.mcp().servers().installations().deleteAccessGroup(params);
   }
 
-  private static void _smokeCase121() throws Exception {
-    var oAuth = client.oAuth().oauthAuthorize();
-  }
-
-  private static void _smokeCase122() throws Exception {
-    OAuthOauthTokenParams params = OAuthOauthTokenParams.builder().grantType("").build();
-    var oAuth = client.oAuth().oauthToken(params);
-  }
-
-  private static void _smokeCase123() throws Exception {
-    OAuthOauthTokenParams params =
-        OAuthOauthTokenParams.builder()
-            .grantType("")
-            .clientId("")
-            .clientSecret("")
-            .code("")
-            .redirectUri("")
-            .codeVerifier("")
-            .refreshToken("")
-            .scope("")
-            .build();
-    var oAuth = client.oAuth().oauthToken(params);
-  }
-
-  private static void _smokeCase124() throws Exception {
-    OAuthOauthRevokeParams params = OAuthOauthRevokeParams.builder().token("").build();
-    var oAuth = client.oAuth().oauthRevoke(params);
-  }
-
-  private static void _smokeCase125() throws Exception {
-    OAuthOauthRevokeParams params =
-        OAuthOauthRevokeParams.builder()
-            .token("")
-            .tokenTypeHint("")
-            .clientId("")
-            .clientSecret("")
-            .build();
-    var oAuth = client.oAuth().oauthRevoke(params);
-  }
-
-  private static void _smokeCase126() throws Exception {
-    var oAuth = client.oAuth().oauthAuthorizationServerMetadata();
-  }
-
   private static final List<SmokeCase> cases =
       List.of(
           new SmokeCase("listAllApiDocuments", "GET", "/v1/apis", "", SmokeTest::_smokeCase0),
@@ -1626,27 +1580,7 @@ final class SmokeTest {
               "DELETE",
               "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
               "",
-              SmokeTest::_smokeCase120),
-          new SmokeCase(
-              "oauthAuthorize", "GET", "/v1/oauth/authorize", "", SmokeTest::_smokeCase121),
-          new SmokeCase(
-              "oauthToken", "POST", "/v1/oauth/token", "required params", SmokeTest::_smokeCase122),
-          new SmokeCase(
-              "oauthToken", "POST", "/v1/oauth/token", "all params", SmokeTest::_smokeCase123),
-          new SmokeCase(
-              "oauthRevoke",
-              "POST",
-              "/v1/oauth/revoke",
-              "required params",
-              SmokeTest::_smokeCase124),
-          new SmokeCase(
-              "oauthRevoke", "POST", "/v1/oauth/revoke", "all params", SmokeTest::_smokeCase125),
-          new SmokeCase(
-              "oauthAuthorizationServerMetadata",
-              "GET",
-              "/.well-known/oauth-authorization-server",
-              "",
-              SmokeTest::_smokeCase126));
+              SmokeTest::_smokeCase120));
 
   private static List<SmokeCase> selectedCases() {
     String filter = System.getenv("SCALAR_SMOKE_FILTER");

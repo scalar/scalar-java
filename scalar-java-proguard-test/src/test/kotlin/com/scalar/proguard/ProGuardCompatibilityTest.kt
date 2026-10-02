@@ -62,7 +62,6 @@ internal class ProGuardCompatibilityTest {
         assertNotNull(client.authentication())
         assertNotNull(client.sdks())
         assertNotNull(client.mcp())
-        assertNotNull(client.oAuth())
     }
 
     @Test

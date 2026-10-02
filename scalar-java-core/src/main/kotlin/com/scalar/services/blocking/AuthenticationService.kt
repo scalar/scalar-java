@@ -9,7 +9,7 @@ import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenResponse
 import com.scalar.models.authentication.AuthenticationListCurrentUserParams
-import com.scalar.models.authentication.AuthenticationListCurrentUserResponse
+import com.scalar.models.authentication.User
 import java.util.function.Consumer
 
 /** Authentication */
@@ -40,22 +40,20 @@ interface AuthenticationService {
     ): AuthenticationExchangePersonalTokenResponse
 
     /** Get the authenticated user, including their available teams and theme. */
-    fun listCurrentUser(): AuthenticationListCurrentUserResponse =
-        listCurrentUser(AuthenticationListCurrentUserParams.none())
+    fun listCurrentUser(): User = listCurrentUser(AuthenticationListCurrentUserParams.none())
 
     /** @see listCurrentUser */
     fun listCurrentUser(
         params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AuthenticationListCurrentUserResponse
+    ): User
 
     /** @see listCurrentUser */
-    fun listCurrentUser(
-        params: AuthenticationListCurrentUserParams
-    ): AuthenticationListCurrentUserResponse = listCurrentUser(params, RequestOptions.none())
+    fun listCurrentUser(params: AuthenticationListCurrentUserParams): User =
+        listCurrentUser(params, RequestOptions.none())
 
     /** @see listCurrentUser */
-    fun listCurrentUser(requestOptions: RequestOptions): AuthenticationListCurrentUserResponse =
+    fun listCurrentUser(requestOptions: RequestOptions): User =
         listCurrentUser(AuthenticationListCurrentUserParams.none(), requestOptions)
 
     /**
@@ -94,7 +92,7 @@ interface AuthenticationService {
          * [AuthenticationService.listCurrentUser].
          */
         @MustBeClosed
-        fun listCurrentUser(): HttpResponseFor<AuthenticationListCurrentUserResponse> =
+        fun listCurrentUser(): HttpResponseFor<User> =
             listCurrentUser(AuthenticationListCurrentUserParams.none())
 
         /** @see listCurrentUser */
@@ -103,20 +101,16 @@ interface AuthenticationService {
             params: AuthenticationListCurrentUserParams =
                 AuthenticationListCurrentUserParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AuthenticationListCurrentUserResponse>
+        ): HttpResponseFor<User>
 
         /** @see listCurrentUser */
         @MustBeClosed
-        fun listCurrentUser(
-            params: AuthenticationListCurrentUserParams
-        ): HttpResponseFor<AuthenticationListCurrentUserResponse> =
+        fun listCurrentUser(params: AuthenticationListCurrentUserParams): HttpResponseFor<User> =
             listCurrentUser(params, RequestOptions.none())
 
         /** @see listCurrentUser */
         @MustBeClosed
-        fun listCurrentUser(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<AuthenticationListCurrentUserResponse> =
+        fun listCurrentUser(requestOptions: RequestOptions): HttpResponseFor<User> =
             listCurrentUser(AuthenticationListCurrentUserParams.none(), requestOptions)
     }
 }

@@ -6,8 +6,10 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
+import com.scalar.models.teams.Team
 import com.scalar.models.teams.TeamListParams
-import com.scalar.models.teams.TeamListResponse
+import com.scalar.services.blocking.teams.InviteService
+import com.scalar.services.blocking.teams.MemberService
 import java.util.function.Consumer
 
 /** Teams */
@@ -25,20 +27,26 @@ interface TeamService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): TeamService
 
+    /** Teams */
+    fun members(): MemberService
+
+    /** Teams */
+    fun invites(): InviteService
+
     /** List all available teams */
-    fun list(): List<TeamListResponse> = list(TeamListParams.none())
+    fun list(): List<Team> = list(TeamListParams.none())
 
     /** @see list */
     fun list(
         params: TeamListParams = TeamListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<TeamListResponse>
+    ): List<Team>
 
     /** @see list */
-    fun list(params: TeamListParams): List<TeamListResponse> = list(params, RequestOptions.none())
+    fun list(params: TeamListParams): List<Team> = list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): List<TeamListResponse> =
+    fun list(requestOptions: RequestOptions): List<Team> =
         list(TeamListParams.none(), requestOptions)
 
     /** A view of [TeamService] that provides access to raw HTTP responses for each method. */
@@ -51,28 +59,33 @@ interface TeamService {
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): TeamService.WithRawResponse
 
+        /** Teams */
+        fun members(): MemberService.WithRawResponse
+
+        /** Teams */
+        fun invites(): InviteService.WithRawResponse
+
         /**
          * Returns a raw HTTP response for `get /v1/teams`, but is otherwise the same as
          * [TeamService.list].
          */
-        @MustBeClosed
-        fun list(): HttpResponseFor<List<TeamListResponse>> = list(TeamListParams.none())
+        @MustBeClosed fun list(): HttpResponseFor<List<Team>> = list(TeamListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: TeamListParams = TeamListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<TeamListResponse>>
+        ): HttpResponseFor<List<Team>>
 
         /** @see list */
         @MustBeClosed
-        fun list(params: TeamListParams): HttpResponseFor<List<TeamListResponse>> =
+        fun list(params: TeamListParams): HttpResponseFor<List<Team>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<List<TeamListResponse>> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<List<Team>> =
             list(TeamListParams.none(), requestOptions)
     }
 }

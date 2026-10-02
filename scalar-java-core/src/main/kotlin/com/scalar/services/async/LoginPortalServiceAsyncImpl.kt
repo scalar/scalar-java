@@ -17,10 +17,10 @@ import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepareAsync
 import com.scalar.models.Uid
+import com.scalar.models.loginPortals.LoginPortal
 import com.scalar.models.loginPortals.LoginPortalCreateParams
 import com.scalar.models.loginPortals.LoginPortalDeleteParams
 import com.scalar.models.loginPortals.LoginPortalListParams
-import com.scalar.models.loginPortals.LoginPortalListResponse
 import com.scalar.models.loginPortals.LoginPortalRetrieveParams
 import com.scalar.models.loginPortals.LoginPortalRetrieveResponse
 import com.scalar.models.loginPortals.LoginPortalUpdateParams
@@ -65,7 +65,7 @@ class LoginPortalServiceAsyncImpl internal constructor(private val clientOptions
     override fun list(
         params: LoginPortalListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<LoginPortalListResponse>> =
+    ): CompletableFuture<List<LoginPortal>> =
         // get /v1/login-portals
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -179,13 +179,13 @@ class LoginPortalServiceAsyncImpl internal constructor(private val clientOptions
                 }
         }
 
-        private val listHandler: Handler<List<LoginPortalListResponse>> =
-            jsonHandler<List<LoginPortalListResponse>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<LoginPortal>> =
+            jsonHandler<List<LoginPortal>>(clientOptions.jsonMapper)
 
         override fun list(
             params: LoginPortalListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<LoginPortalListResponse>>> {
+        ): CompletableFuture<HttpResponseFor<List<LoginPortal>>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

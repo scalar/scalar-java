@@ -48,12 +48,6 @@ private constructor(
      */
     fun force(): Optional<Boolean> = body.force()
 
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun lastKnownVersionSha(): Optional<String> = body.lastKnownVersionSha()
-
     fun namespace(): String = namespace
 
     fun slug(): Optional<String> = Optional.ofNullable(slug)
@@ -78,14 +72,6 @@ private constructor(
      * Unlike [force], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _force(): JsonField<Boolean> = body._force()
-
-    /**
-     * Returns the raw JSON value of [lastKnownVersionSha].
-     *
-     * Unlike [lastKnownVersionSha], this method doesn't throw if the JSON field has an unexpected
-     * type.
-     */
-    fun _lastKnownVersionSha(): JsonField<String> = body._lastKnownVersionSha()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -149,7 +135,6 @@ private constructor(
          * - [version]
          * - [document]
          * - [force]
-         * - [lastKnownVersionSha]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -182,21 +167,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun force(force: JsonField<Boolean>) = apply { body.force(force) }
-
-        fun lastKnownVersionSha(lastKnownVersionSha: String) = apply {
-            body.lastKnownVersionSha(lastKnownVersionSha)
-        }
-
-        /**
-         * Sets [Builder.lastKnownVersionSha] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.lastKnownVersionSha] with a well-typed [String] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun lastKnownVersionSha(lastKnownVersionSha: JsonField<String>) = apply {
-            body.lastKnownVersionSha(lastKnownVersionSha)
-        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -358,7 +328,6 @@ private constructor(
         private val version: JsonField<String>,
         private val document: JsonField<String>,
         private val force: JsonField<Boolean>,
-        private val lastKnownVersionSha: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -369,10 +338,7 @@ private constructor(
             @ExcludeMissing
             document: JsonField<String> = JsonMissing.of(),
             @JsonProperty("force") @ExcludeMissing force: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("lastKnownVersionSha")
-            @ExcludeMissing
-            lastKnownVersionSha: JsonField<String> = JsonMissing.of(),
-        ) : this(version, document, force, lastKnownVersionSha, mutableMapOf())
+        ) : this(version, document, force, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -391,13 +357,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun force(): Optional<Boolean> = force.getOptional("force")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun lastKnownVersionSha(): Optional<String> =
-            lastKnownVersionSha.getOptional("lastKnownVersionSha")
 
         /**
          * Returns the raw JSON value of [version].
@@ -419,16 +378,6 @@ private constructor(
          * Unlike [force], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("force") @ExcludeMissing fun _force(): JsonField<Boolean> = force
-
-        /**
-         * Returns the raw JSON value of [lastKnownVersionSha].
-         *
-         * Unlike [lastKnownVersionSha], this method doesn't throw if the JSON field has an
-         * unexpected type.
-         */
-        @JsonProperty("lastKnownVersionSha")
-        @ExcludeMissing
-        fun _lastKnownVersionSha(): JsonField<String> = lastKnownVersionSha
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -462,7 +411,6 @@ private constructor(
             private var version: JsonField<String>? = null
             private var document: JsonField<String>? = null
             private var force: JsonField<Boolean> = JsonMissing.of()
-            private var lastKnownVersionSha: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -470,7 +418,6 @@ private constructor(
                 version = body.version
                 document = body.document
                 force = body.force
-                lastKnownVersionSha = body.lastKnownVersionSha
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -506,20 +453,6 @@ private constructor(
              * supported value.
              */
             fun force(force: JsonField<Boolean>) = apply { this.force = force }
-
-            fun lastKnownVersionSha(lastKnownVersionSha: String) =
-                lastKnownVersionSha(JsonField.of(lastKnownVersionSha))
-
-            /**
-             * Sets [Builder.lastKnownVersionSha] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.lastKnownVersionSha] with a well-typed [String]
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun lastKnownVersionSha(lastKnownVersionSha: JsonField<String>) = apply {
-                this.lastKnownVersionSha = lastKnownVersionSha
-            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -558,7 +491,6 @@ private constructor(
                     checkRequired("version", version),
                     checkRequired("document", document),
                     force,
-                    lastKnownVersionSha,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -582,7 +514,6 @@ private constructor(
             version()
             document()
             force()
-            lastKnownVersionSha()
             validated = true
         }
 
@@ -604,8 +535,7 @@ private constructor(
         internal fun validity(): Int =
             (if (version.asKnown().isPresent) 1 else 0) +
                 (if (document.asKnown().isPresent) 1 else 0) +
-                (if (force.asKnown().isPresent) 1 else 0) +
-                (if (lastKnownVersionSha.asKnown().isPresent) 1 else 0)
+                (if (force.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -616,18 +546,17 @@ private constructor(
                 version == other.version &&
                 document == other.document &&
                 force == other.force &&
-                lastKnownVersionSha == other.lastKnownVersionSha &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(version, document, force, lastKnownVersionSha, additionalProperties)
+            Objects.hash(version, document, force, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{version=$version, document=$document, force=$force, lastKnownVersionSha=$lastKnownVersionSha, additionalProperties=$additionalProperties}"
+            "Body{version=$version, document=$document, force=$force, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

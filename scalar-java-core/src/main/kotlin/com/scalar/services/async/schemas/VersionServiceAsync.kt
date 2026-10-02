@@ -5,8 +5,8 @@ package com.scalar.services.async.schemas
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.Uid
 import com.scalar.models.schemas.version.VersionCreateParams
+import com.scalar.models.schemas.version.VersionCreateResponse
 import com.scalar.models.schemas.version.VersionDeleteParams
 import com.scalar.models.schemas.version.VersionRetrieveParams
 import java.util.concurrent.CompletableFuture
@@ -28,24 +28,27 @@ interface VersionServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VersionServiceAsync
 
     /** Create a schema version. */
-    fun create(slug: String, params: VersionCreateParams): CompletableFuture<Uid> =
-        create(slug, params, RequestOptions.none())
+    fun create(
+        slug: String,
+        params: VersionCreateParams,
+    ): CompletableFuture<VersionCreateResponse> = create(slug, params, RequestOptions.none())
 
     /** @see create */
     fun create(
         slug: String,
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Uid> = create(params.toBuilder().slug(slug).build(), requestOptions)
+    ): CompletableFuture<VersionCreateResponse> =
+        create(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see create */
     fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Uid>
+    ): CompletableFuture<VersionCreateResponse>
 
     /** @see create */
-    fun create(params: VersionCreateParams): CompletableFuture<Uid> =
+    fun create(params: VersionCreateParams): CompletableFuture<VersionCreateResponse> =
         create(params, RequestOptions.none())
 
     /** Get a specific schema version document. */
@@ -112,24 +115,27 @@ interface VersionServiceAsync {
         fun create(
             slug: String,
             params: VersionCreateParams,
-        ): CompletableFuture<HttpResponseFor<Uid>> = create(slug, params, RequestOptions.none())
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
+            create(slug, params, RequestOptions.none())
 
         /** @see create */
         fun create(
             slug: String,
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Uid>> =
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
             create(params.toBuilder().slug(slug).build(), requestOptions)
 
         /** @see create */
         fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Uid>>
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>>
 
         /** @see create */
-        fun create(params: VersionCreateParams): CompletableFuture<HttpResponseFor<Uid>> =
+        fun create(
+            params: VersionCreateParams
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
             create(params, RequestOptions.none())
 
         /**

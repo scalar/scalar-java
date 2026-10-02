@@ -23,7 +23,6 @@ private constructor(
     private val title: JsonField<String>,
     private val jsonSha: JsonField<String>,
     private val yamlSha: JsonField<String>,
-    private val versionSha: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -36,10 +35,7 @@ private constructor(
         @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
         @JsonProperty("jsonSha") @ExcludeMissing jsonSha: JsonField<String> = JsonMissing.of(),
         @JsonProperty("yamlSha") @ExcludeMissing yamlSha: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("versionSha")
-        @ExcludeMissing
-        versionSha: JsonField<String> = JsonMissing.of(),
-    ) : this(uid, versionUid, title, jsonSha, yamlSha, versionSha, mutableMapOf())
+    ) : this(uid, versionUid, title, jsonSha, yamlSha, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -70,12 +66,6 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun yamlSha(): String = yamlSha.getRequired("yamlSha")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun versionSha(): String = versionSha.getRequired("versionSha")
 
     /**
      * Returns the raw JSON value of [uid].
@@ -112,13 +102,6 @@ private constructor(
      */
     @JsonProperty("yamlSha") @ExcludeMissing fun _yamlSha(): JsonField<String> = yamlSha
 
-    /**
-     * Returns the raw JSON value of [versionSha].
-     *
-     * Unlike [versionSha], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("versionSha") @ExcludeMissing fun _versionSha(): JsonField<String> = versionSha
-
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -144,7 +127,6 @@ private constructor(
          * .title()
          * .jsonSha()
          * .yamlSha()
-         * .versionSha()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -158,7 +140,6 @@ private constructor(
         private var title: JsonField<String>? = null
         private var jsonSha: JsonField<String>? = null
         private var yamlSha: JsonField<String>? = null
-        private var versionSha: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -169,7 +150,6 @@ private constructor(
                 title = registryCreateApiDocumentResponse.title
                 jsonSha = registryCreateApiDocumentResponse.jsonSha
                 yamlSha = registryCreateApiDocumentResponse.yamlSha
-                versionSha = registryCreateApiDocumentResponse.versionSha
                 additionalProperties =
                     registryCreateApiDocumentResponse.additionalProperties.toMutableMap()
             }
@@ -225,17 +205,6 @@ private constructor(
          */
         fun yamlSha(yamlSha: JsonField<String>) = apply { this.yamlSha = yamlSha }
 
-        fun versionSha(versionSha: String) = versionSha(JsonField.of(versionSha))
-
-        /**
-         * Sets [Builder.versionSha] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.versionSha] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun versionSha(versionSha: JsonField<String>) = apply { this.versionSha = versionSha }
-
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -267,7 +236,6 @@ private constructor(
          * .title()
          * .jsonSha()
          * .yamlSha()
-         * .versionSha()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -279,7 +247,6 @@ private constructor(
                 checkRequired("title", title),
                 checkRequired("jsonSha", jsonSha),
                 checkRequired("yamlSha", yamlSha),
-                checkRequired("versionSha", versionSha),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -304,7 +271,6 @@ private constructor(
         title()
         jsonSha()
         yamlSha()
-        versionSha()
         validated = true
     }
 
@@ -327,8 +293,7 @@ private constructor(
             (if (versionUid.asKnown().isPresent) 1 else 0) +
             (if (title.asKnown().isPresent) 1 else 0) +
             (if (jsonSha.asKnown().isPresent) 1 else 0) +
-            (if (yamlSha.asKnown().isPresent) 1 else 0) +
-            (if (versionSha.asKnown().isPresent) 1 else 0)
+            (if (yamlSha.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -341,16 +306,15 @@ private constructor(
             title == other.title &&
             jsonSha == other.jsonSha &&
             yamlSha == other.yamlSha &&
-            versionSha == other.versionSha &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(uid, versionUid, title, jsonSha, yamlSha, versionSha, additionalProperties)
+        Objects.hash(uid, versionUid, title, jsonSha, yamlSha, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RegistryCreateApiDocumentResponse{uid=$uid, versionUid=$versionUid, title=$title, jsonSha=$jsonSha, yamlSha=$yamlSha, versionSha=$versionSha, additionalProperties=$additionalProperties}"
+        "RegistryCreateApiDocumentResponse{uid=$uid, versionUid=$versionUid, title=$title, jsonSha=$jsonSha, yamlSha=$yamlSha, additionalProperties=$additionalProperties}"
 }

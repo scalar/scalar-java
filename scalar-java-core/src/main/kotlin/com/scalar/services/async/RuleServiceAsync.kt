@@ -6,12 +6,12 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.rules.Rule
 import com.scalar.models.rules.RuleCreateRulesetAccessGroupParams
 import com.scalar.models.rules.RuleCreateRulesetParams
 import com.scalar.models.rules.RuleDeleteRulesetAccessGroupParams
 import com.scalar.models.rules.RuleDeleteRulesetParams
 import com.scalar.models.rules.RuleListRulesetsParams
-import com.scalar.models.rules.RuleListRulesetsResponse
 import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams
 import com.scalar.models.rules.RuleUpdateRulesetParams
 import java.util.concurrent.CompletableFuture
@@ -127,7 +127,7 @@ interface RuleServiceAsync {
     ): CompletableFuture<Any?> = deleteRulesetAccessGroup(params, RequestOptions.none())
 
     /** List all rulesets in a namespace. */
-    fun listRulesets(namespace: String): CompletableFuture<List<RuleListRulesetsResponse>> =
+    fun listRulesets(namespace: String): CompletableFuture<List<Rule>> =
         listRulesets(namespace, RuleListRulesetsParams.none())
 
     /** @see listRulesets */
@@ -135,33 +135,30 @@ interface RuleServiceAsync {
         namespace: String,
         params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<RuleListRulesetsResponse>> =
+    ): CompletableFuture<List<Rule>> =
         listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see listRulesets */
     fun listRulesets(
         namespace: String,
         params: RuleListRulesetsParams,
-    ): CompletableFuture<List<RuleListRulesetsResponse>> =
-        listRulesets(namespace, params, RequestOptions.none())
+    ): CompletableFuture<List<Rule>> = listRulesets(namespace, params, RequestOptions.none())
 
     /** @see listRulesets */
     fun listRulesets(
         params: RuleListRulesetsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<RuleListRulesetsResponse>>
+    ): CompletableFuture<List<Rule>>
 
     /** @see listRulesets */
-    fun listRulesets(
-        params: RuleListRulesetsParams
-    ): CompletableFuture<List<RuleListRulesetsResponse>> =
+    fun listRulesets(params: RuleListRulesetsParams): CompletableFuture<List<Rule>> =
         listRulesets(params, RequestOptions.none())
 
     /** @see listRulesets */
     fun listRulesets(
         namespace: String,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<RuleListRulesetsResponse>> =
+    ): CompletableFuture<List<Rule>> =
         listRulesets(namespace, RuleListRulesetsParams.none(), requestOptions)
 
     /** Get a rule document by slug. */
@@ -343,9 +340,7 @@ interface RuleServiceAsync {
          * Returns a raw HTTP response for `get /v1/rulesets/{namespace}`, but is otherwise the same
          * as [RuleServiceAsync.listRulesets].
          */
-        fun listRulesets(
-            namespace: String
-        ): CompletableFuture<HttpResponseFor<List<RuleListRulesetsResponse>>> =
+        fun listRulesets(namespace: String): CompletableFuture<HttpResponseFor<List<Rule>>> =
             listRulesets(namespace, RuleListRulesetsParams.none())
 
         /** @see listRulesets */
@@ -353,33 +348,33 @@ interface RuleServiceAsync {
             namespace: String,
             params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<RuleListRulesetsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<Rule>>> =
             listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see listRulesets */
         fun listRulesets(
             namespace: String,
             params: RuleListRulesetsParams,
-        ): CompletableFuture<HttpResponseFor<List<RuleListRulesetsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<Rule>>> =
             listRulesets(namespace, params, RequestOptions.none())
 
         /** @see listRulesets */
         fun listRulesets(
             params: RuleListRulesetsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<RuleListRulesetsResponse>>>
+        ): CompletableFuture<HttpResponseFor<List<Rule>>>
 
         /** @see listRulesets */
         fun listRulesets(
             params: RuleListRulesetsParams
-        ): CompletableFuture<HttpResponseFor<List<RuleListRulesetsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<Rule>>> =
             listRulesets(params, RequestOptions.none())
 
         /** @see listRulesets */
         fun listRulesets(
             namespace: String,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<RuleListRulesetsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<Rule>>> =
             listRulesets(namespace, RuleListRulesetsParams.none(), requestOptions)
 
         /**

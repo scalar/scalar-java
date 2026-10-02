@@ -18,10 +18,10 @@ import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepare
 import com.scalar.models.Uid
+import com.scalar.models.themes.Theme
 import com.scalar.models.themes.ThemeCreateParams
 import com.scalar.models.themes.ThemeDeleteParams
 import com.scalar.models.themes.ThemeListParams
-import com.scalar.models.themes.ThemeListResponse
 import com.scalar.models.themes.ThemeReplaceDocumentParams
 import com.scalar.models.themes.ThemeRetrieveParams
 import com.scalar.models.themes.ThemeUpdateParams
@@ -53,10 +53,7 @@ class ThemeServiceImpl internal constructor(private val clientOptions: ClientOpt
         // patch /v1/themes/{slug}
         withRawResponse().update(params, requestOptions).parse()
 
-    override fun list(
-        params: ThemeListParams,
-        requestOptions: RequestOptions,
-    ): List<ThemeListResponse> =
+    override fun list(params: ThemeListParams, requestOptions: RequestOptions): List<Theme> =
         // get /v1/themes
         withRawResponse().list(params, requestOptions).parse()
 
@@ -159,13 +156,13 @@ class ThemeServiceImpl internal constructor(private val clientOptions: ClientOpt
             }
         }
 
-        private val listHandler: Handler<List<ThemeListResponse>> =
-            jsonHandler<List<ThemeListResponse>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<Theme>> =
+            jsonHandler<List<Theme>>(clientOptions.jsonMapper)
 
         override fun list(
             params: ThemeListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<ThemeListResponse>> {
+        ): HttpResponseFor<List<Theme>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

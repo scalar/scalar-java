@@ -6,6 +6,7 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.ManagedDocVersion
+import com.scalar.models.registry.ApiDocument
 import com.scalar.models.registry.RegistryCreateApiDocumentAccessGroupParams
 import com.scalar.models.registry.RegistryCreateApiDocumentParams
 import com.scalar.models.registry.RegistryCreateApiDocumentResponse
@@ -14,10 +15,8 @@ import com.scalar.models.registry.RegistryDeleteApiDocumentAccessGroupParams
 import com.scalar.models.registry.RegistryDeleteApiDocumentParams
 import com.scalar.models.registry.RegistryDeleteApiDocumentVersionParams
 import com.scalar.models.registry.RegistryListAllApiDocumentsParams
-import com.scalar.models.registry.RegistryListAllApiDocumentsResponse
 import com.scalar.models.registry.RegistryListApiDocumentVersionMetadataParams
 import com.scalar.models.registry.RegistryListApiDocumentsParams
-import com.scalar.models.registry.RegistryListApiDocumentsResponse
 import com.scalar.models.registry.RegistryRetrieveApiDocumentVersionParams
 import com.scalar.models.registry.RegistryUpdateApiDocumentParams
 import com.scalar.models.registry.RegistryUpdateApiDocumentVersionParams
@@ -194,25 +193,22 @@ interface RegistryServiceAsync {
     ): CompletableFuture<Any?> = deleteApiDocumentVersion(params, RequestOptions.none())
 
     /** List all API documents across every namespace the caller can access. */
-    fun listAllApiDocuments(): CompletableFuture<List<RegistryListAllApiDocumentsResponse>> =
+    fun listAllApiDocuments(): CompletableFuture<List<ApiDocument>> =
         listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
 
     /** @see listAllApiDocuments */
     fun listAllApiDocuments(
         params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<RegistryListAllApiDocumentsResponse>>
+    ): CompletableFuture<List<ApiDocument>>
 
     /** @see listAllApiDocuments */
     fun listAllApiDocuments(
         params: RegistryListAllApiDocumentsParams
-    ): CompletableFuture<List<RegistryListAllApiDocumentsResponse>> =
-        listAllApiDocuments(params, RequestOptions.none())
+    ): CompletableFuture<List<ApiDocument>> = listAllApiDocuments(params, RequestOptions.none())
 
     /** @see listAllApiDocuments */
-    fun listAllApiDocuments(
-        requestOptions: RequestOptions
-    ): CompletableFuture<List<RegistryListAllApiDocumentsResponse>> =
+    fun listAllApiDocuments(requestOptions: RequestOptions): CompletableFuture<List<ApiDocument>> =
         listAllApiDocuments(RegistryListAllApiDocumentsParams.none(), requestOptions)
 
     /** Get metadata (uid, content shas, version sha, tags) for a specific API document version. */
@@ -243,9 +239,7 @@ interface RegistryServiceAsync {
         listApiDocumentVersionMetadata(params, RequestOptions.none())
 
     /** List API documents in a namespace. */
-    fun listApiDocuments(
-        namespace: String
-    ): CompletableFuture<List<RegistryListApiDocumentsResponse>> =
+    fun listApiDocuments(namespace: String): CompletableFuture<List<ApiDocument>> =
         listApiDocuments(namespace, RegistryListApiDocumentsParams.none())
 
     /** @see listApiDocuments */
@@ -253,33 +247,32 @@ interface RegistryServiceAsync {
         namespace: String,
         params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<RegistryListApiDocumentsResponse>> =
+    ): CompletableFuture<List<ApiDocument>> =
         listApiDocuments(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see listApiDocuments */
     fun listApiDocuments(
         namespace: String,
         params: RegistryListApiDocumentsParams,
-    ): CompletableFuture<List<RegistryListApiDocumentsResponse>> =
+    ): CompletableFuture<List<ApiDocument>> =
         listApiDocuments(namespace, params, RequestOptions.none())
 
     /** @see listApiDocuments */
     fun listApiDocuments(
         params: RegistryListApiDocumentsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<RegistryListApiDocumentsResponse>>
+    ): CompletableFuture<List<ApiDocument>>
 
     /** @see listApiDocuments */
     fun listApiDocuments(
         params: RegistryListApiDocumentsParams
-    ): CompletableFuture<List<RegistryListApiDocumentsResponse>> =
-        listApiDocuments(params, RequestOptions.none())
+    ): CompletableFuture<List<ApiDocument>> = listApiDocuments(params, RequestOptions.none())
 
     /** @see listApiDocuments */
     fun listApiDocuments(
         namespace: String,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<RegistryListApiDocumentsResponse>> =
+    ): CompletableFuture<List<ApiDocument>> =
         listApiDocuments(namespace, RegistryListApiDocumentsParams.none(), requestOptions)
 
     /** Get a specific API document version. */
@@ -556,26 +549,25 @@ interface RegistryServiceAsync {
          * Returns a raw HTTP response for `get /v1/apis`, but is otherwise the same as
          * [RegistryServiceAsync.listAllApiDocuments].
          */
-        fun listAllApiDocuments():
-            CompletableFuture<HttpResponseFor<List<RegistryListAllApiDocumentsResponse>>> =
+        fun listAllApiDocuments(): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
 
         /** @see listAllApiDocuments */
         fun listAllApiDocuments(
             params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<RegistryListAllApiDocumentsResponse>>>
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>>
 
         /** @see listAllApiDocuments */
         fun listAllApiDocuments(
             params: RegistryListAllApiDocumentsParams
-        ): CompletableFuture<HttpResponseFor<List<RegistryListAllApiDocumentsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listAllApiDocuments(params, RequestOptions.none())
 
         /** @see listAllApiDocuments */
         fun listAllApiDocuments(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<RegistryListAllApiDocumentsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listAllApiDocuments(RegistryListAllApiDocumentsParams.none(), requestOptions)
 
         /**
@@ -618,7 +610,7 @@ interface RegistryServiceAsync {
          */
         fun listApiDocuments(
             namespace: String
-        ): CompletableFuture<HttpResponseFor<List<RegistryListApiDocumentsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listApiDocuments(namespace, RegistryListApiDocumentsParams.none())
 
         /** @see listApiDocuments */
@@ -626,33 +618,33 @@ interface RegistryServiceAsync {
             namespace: String,
             params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<RegistryListApiDocumentsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listApiDocuments(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see listApiDocuments */
         fun listApiDocuments(
             namespace: String,
             params: RegistryListApiDocumentsParams,
-        ): CompletableFuture<HttpResponseFor<List<RegistryListApiDocumentsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listApiDocuments(namespace, params, RequestOptions.none())
 
         /** @see listApiDocuments */
         fun listApiDocuments(
             params: RegistryListApiDocumentsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<RegistryListApiDocumentsResponse>>>
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>>
 
         /** @see listApiDocuments */
         fun listApiDocuments(
             params: RegistryListApiDocumentsParams
-        ): CompletableFuture<HttpResponseFor<List<RegistryListApiDocumentsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listApiDocuments(params, RequestOptions.none())
 
         /** @see listApiDocuments */
         fun listApiDocuments(
             namespace: String,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<RegistryListApiDocumentsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listApiDocuments(namespace, RegistryListApiDocumentsParams.none(), requestOptions)
 
         /**

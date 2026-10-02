@@ -5,8 +5,10 @@ package com.scalar.services.async
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
+import com.scalar.models.teams.Team
 import com.scalar.models.teams.TeamListParams
-import com.scalar.models.teams.TeamListResponse
+import com.scalar.services.async.teams.InviteServiceAsync
+import com.scalar.services.async.teams.MemberServiceAsync
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -25,21 +27,27 @@ interface TeamServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): TeamServiceAsync
 
+    /** Teams */
+    fun members(): MemberServiceAsync
+
+    /** Teams */
+    fun invites(): InviteServiceAsync
+
     /** List all available teams */
-    fun list(): CompletableFuture<List<TeamListResponse>> = list(TeamListParams.none())
+    fun list(): CompletableFuture<List<Team>> = list(TeamListParams.none())
 
     /** @see list */
     fun list(
         params: TeamListParams = TeamListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<TeamListResponse>>
+    ): CompletableFuture<List<Team>>
 
     /** @see list */
-    fun list(params: TeamListParams): CompletableFuture<List<TeamListResponse>> =
+    fun list(params: TeamListParams): CompletableFuture<List<Team>> =
         list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): CompletableFuture<List<TeamListResponse>> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<List<Team>> =
         list(TeamListParams.none(), requestOptions)
 
     /** A view of [TeamServiceAsync] that provides access to raw HTTP responses for each method. */
@@ -52,29 +60,30 @@ interface TeamServiceAsync {
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): TeamServiceAsync.WithRawResponse
 
+        /** Teams */
+        fun members(): MemberServiceAsync.WithRawResponse
+
+        /** Teams */
+        fun invites(): InviteServiceAsync.WithRawResponse
+
         /**
          * Returns a raw HTTP response for `get /v1/teams`, but is otherwise the same as
          * [TeamServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<List<TeamListResponse>>> =
-            list(TeamListParams.none())
+        fun list(): CompletableFuture<HttpResponseFor<List<Team>>> = list(TeamListParams.none())
 
         /** @see list */
         fun list(
             params: TeamListParams = TeamListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<TeamListResponse>>>
+        ): CompletableFuture<HttpResponseFor<List<Team>>>
 
         /** @see list */
-        fun list(
-            params: TeamListParams
-        ): CompletableFuture<HttpResponseFor<List<TeamListResponse>>> =
+        fun list(params: TeamListParams): CompletableFuture<HttpResponseFor<List<Team>>> =
             list(params, RequestOptions.none())
 
         /** @see list */
-        fun list(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<TeamListResponse>>> =
+        fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<Team>>> =
             list(TeamListParams.none(), requestOptions)
     }
 }

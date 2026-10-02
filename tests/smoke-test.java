@@ -6,6 +6,10 @@
 // against a mock server and reads the JSON report produced via SCALAR_SMOKE_REPORT.
 import com.scalar.client.ScalarClient;
 import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.models.accessGroups.AccessGroupRetrieveParams;
+import com.scalar.models.accessGroups.AccessGroupUpdateParams;
+import com.scalar.models.accessGroups.domains.DomainCreateParams;
+import com.scalar.models.accessGroups.domains.DomainDeleteParams;
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams;
 import com.scalar.models.loginPortals.LoginPortalCreateParams;
 import com.scalar.models.loginPortals.LoginPortalDeleteParams;
@@ -13,6 +17,19 @@ import com.scalar.models.loginPortals.LoginPortalEmail;
 import com.scalar.models.loginPortals.LoginPortalPage;
 import com.scalar.models.loginPortals.LoginPortalRetrieveParams;
 import com.scalar.models.loginPortals.LoginPortalUpdateParams;
+import com.scalar.models.mcp.servers.ServerCreateParams;
+import com.scalar.models.mcp.servers.ServerDeleteParams;
+import com.scalar.models.mcp.servers.ServerRetrieveParams;
+import com.scalar.models.mcp.servers.ServerUpdateParams;
+import com.scalar.models.mcp.servers.installations.InstallationCreateAccessGroupParams;
+import com.scalar.models.mcp.servers.installations.InstallationCreateParams;
+import com.scalar.models.mcp.servers.installations.InstallationDeleteAccessGroupParams;
+import com.scalar.models.mcp.servers.installations.InstallationDeleteParams;
+import com.scalar.models.mcp.servers.installations.InstallationListParams;
+import com.scalar.models.mcp.servers.installations.InstallationRetrieveParams;
+import com.scalar.models.mcp.servers.installations.InstallationUpdateParams;
+import com.scalar.models.oAuth.OAuthOauthRevokeParams;
+import com.scalar.models.oAuth.OAuthOauthTokenParams;
 import com.scalar.models.registry.AccessGroup;
 import com.scalar.models.registry.RegistryCreateApiDocumentAccessGroupParams;
 import com.scalar.models.registry.RegistryCreateApiDocumentParams;
@@ -33,16 +50,37 @@ import com.scalar.models.rules.RuleListRulesetsParams;
 import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams;
 import com.scalar.models.rules.RuleUpdateRulesetParams;
 import com.scalar.models.scalarDocs.ScalarDocCreateGuideParams;
+import com.scalar.models.scalarDocs.ScalarDocCreateProjectParams;
+import com.scalar.models.scalarDocs.ScalarDocDeleteProjectParams;
+import com.scalar.models.scalarDocs.ScalarDocListProjectConfigParams;
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainParams;
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusParams;
+import com.scalar.models.scalarDocs.ScalarDocListProjectsParams;
 import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams;
+import com.scalar.models.scalarDocs.ScalarDocPublishProjectParams;
+import com.scalar.models.scalarDocs.ScalarDocRetrieveProjectParams;
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigParams;
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectParams;
 import com.scalar.models.schemas.SchemaCreateParams;
 import com.scalar.models.schemas.SchemaDeleteParams;
 import com.scalar.models.schemas.SchemaListParams;
 import com.scalar.models.schemas.SchemaUpdateParams;
-import com.scalar.models.schemas.accessGroup.AccessGroupCreateParams;
-import com.scalar.models.schemas.accessGroup.AccessGroupDeleteParams;
-import com.scalar.models.schemas.version.VersionCreateParams;
-import com.scalar.models.schemas.version.VersionDeleteParams;
 import com.scalar.models.schemas.version.VersionRetrieveParams;
+import com.scalar.models.sdks.SdkBuildParams;
+import com.scalar.models.sdks.SdkCreateParams;
+import com.scalar.models.sdks.SdkDeleteParams;
+import com.scalar.models.sdks.SdkListParams;
+import com.scalar.models.sdks.SdkRetrieveParams;
+import com.scalar.models.sdks.SdkUpdateParams;
+import com.scalar.models.sdks.repositories.RepositoryLinkParams;
+import com.scalar.models.sdks.repositories.RepositoryUnlinkParams;
+import com.scalar.models.sdks.repositories.RepositoryUpdatePublishingParams;
+import com.scalar.models.teams.invites.InviteCancelParams;
+import com.scalar.models.teams.invites.InviteMemberParams;
+import com.scalar.models.teams.invites.InviteResendParams;
+import com.scalar.models.teams.invites.Role;
+import com.scalar.models.teams.members.MemberDeleteParams;
+import com.scalar.models.teams.members.MemberUpdateParams;
 import com.scalar.models.themes.ThemeCreateParams;
 import com.scalar.models.themes.ThemeDeleteParams;
 import com.scalar.models.themes.ThemeReplaceDocumentParams;
@@ -289,14 +327,18 @@ final class SmokeTest {
   }
 
   private static void _smokeCase22() throws Exception {
-    VersionDeleteParams params =
-        VersionDeleteParams.builder().namespace("namespace").slug("slug").semver("semver").build();
+    com.scalar.models.schemas.version.VersionDeleteParams params =
+        com.scalar.models.schemas.version.VersionDeleteParams.builder()
+            .namespace("namespace")
+            .slug("slug")
+            .semver("semver")
+            .build();
     var version = client.schemas().version().delete(params);
   }
 
   private static void _smokeCase23() throws Exception {
-    VersionCreateParams params =
-        VersionCreateParams.builder()
+    com.scalar.models.schemas.version.VersionCreateParams params =
+        com.scalar.models.schemas.version.VersionCreateParams.builder()
             .namespace("namespace")
             .slug("slug")
             .version("x")
@@ -306,8 +348,8 @@ final class SmokeTest {
   }
 
   private static void _smokeCase24() throws Exception {
-    VersionCreateParams params =
-        VersionCreateParams.builder()
+    com.scalar.models.schemas.version.VersionCreateParams params =
+        com.scalar.models.schemas.version.VersionCreateParams.builder()
             .namespace("namespace")
             .slug("slug")
             .version("x")
@@ -318,8 +360,13 @@ final class SmokeTest {
   }
 
   private static void _smokeCase25() throws Exception {
-    AccessGroupCreateParams params =
-        AccessGroupCreateParams.builder()
+    com.scalar.models.schemas.accessGroup.AccessGroupCreateParams params =
+        com.scalar
+            .models
+            .schemas
+            .accessGroup
+            .AccessGroupCreateParams
+            .builder()
             .namespace("namespace")
             .slug("slug")
             .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
@@ -328,8 +375,13 @@ final class SmokeTest {
   }
 
   private static void _smokeCase26() throws Exception {
-    AccessGroupDeleteParams params =
-        AccessGroupDeleteParams.builder()
+    com.scalar.models.schemas.accessGroup.AccessGroupDeleteParams params =
+        com.scalar
+            .models
+            .schemas
+            .accessGroup
+            .AccessGroupDeleteParams
+            .builder()
             .namespace("namespace")
             .slug("slug")
             .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
@@ -403,11 +455,61 @@ final class SmokeTest {
   }
 
   private static void _smokeCase33() throws Exception {
+    var accessGroup = client.accessGroups().create();
+  }
+
+  private static void _smokeCase34() throws Exception {
+    com.scalar.models.accessGroups.AccessGroupCreateParams params =
+        com.scalar
+            .models
+            .accessGroups
+            .AccessGroupCreateParams
+            .builder()
+            .name("")
+            .slug("x")
+            .allowedDomains("value")
+            .build();
+    var accessGroup = client.accessGroups().create(params);
+  }
+
+  private static void _smokeCase35() throws Exception {
+    AccessGroupRetrieveParams params = AccessGroupRetrieveParams.builder().slug("slug").build();
+    var accessGroup = client.accessGroups().retrieve(params);
+  }
+
+  private static void _smokeCase36() throws Exception {
+    AccessGroupUpdateParams params = AccessGroupUpdateParams.builder().pathSlug("pathSlug").build();
+    var accessGroup = client.accessGroups().update(params);
+  }
+
+  private static void _smokeCase37() throws Exception {
+    AccessGroupUpdateParams params =
+        AccessGroupUpdateParams.builder().pathSlug("pathSlug").name("").bodySlug("x").build();
+    var accessGroup = client.accessGroups().update(params);
+  }
+
+  private static void _smokeCase38() throws Exception {
+    com.scalar.models.accessGroups.AccessGroupDeleteParams params =
+        com.scalar.models.accessGroups.AccessGroupDeleteParams.builder().slug("slug").build();
+    var accessGroup = client.accessGroups().delete(params);
+  }
+
+  private static void _smokeCase39() throws Exception {
+    DomainCreateParams params = DomainCreateParams.builder().slug("slug").domain("").build();
+    var domain = client.accessGroups().domains().create(params);
+  }
+
+  private static void _smokeCase40() throws Exception {
+    DomainDeleteParams params = DomainDeleteParams.builder().slug("slug").domain("").build();
+    var domain = client.accessGroups().domains().delete(params);
+  }
+
+  private static void _smokeCase41() throws Exception {
     RuleListRulesetsParams params = RuleListRulesetsParams.builder().namespace("namespace").build();
     var rule = client.rules().listRulesets(params);
   }
 
-  private static void _smokeCase34() throws Exception {
+  private static void _smokeCase42() throws Exception {
     RuleCreateRulesetParams params =
         RuleCreateRulesetParams.builder()
             .namespace("namespace")
@@ -418,7 +520,7 @@ final class SmokeTest {
     var rule = client.rules().createRuleset(params);
   }
 
-  private static void _smokeCase35() throws Exception {
+  private static void _smokeCase43() throws Exception {
     RuleCreateRulesetParams params =
         RuleCreateRulesetParams.builder()
             .namespace("namespace")
@@ -431,7 +533,7 @@ final class SmokeTest {
     var rule = client.rules().createRuleset(params);
   }
 
-  private static void _smokeCase36() throws Exception {
+  private static void _smokeCase44() throws Exception {
     RuleUpdateRulesetParams params =
         RuleUpdateRulesetParams.builder()
             .pathNamespace("pathNamespace")
@@ -440,7 +542,7 @@ final class SmokeTest {
     var rule = client.rules().updateRuleset(params);
   }
 
-  private static void _smokeCase37() throws Exception {
+  private static void _smokeCase45() throws Exception {
     RuleUpdateRulesetParams params =
         RuleUpdateRulesetParams.builder()
             .pathNamespace("pathNamespace")
@@ -454,19 +556,19 @@ final class SmokeTest {
     var rule = client.rules().updateRuleset(params);
   }
 
-  private static void _smokeCase38() throws Exception {
+  private static void _smokeCase46() throws Exception {
     RuleDeleteRulesetParams params =
         RuleDeleteRulesetParams.builder().namespace("namespace").slug("slug").build();
     var rule = client.rules().deleteRuleset(params);
   }
 
-  private static void _smokeCase39() throws Exception {
+  private static void _smokeCase47() throws Exception {
     RuleRetrieveRulesetDocumentParams params =
         RuleRetrieveRulesetDocumentParams.builder().namespace("namespace").slug("slug").build();
     var rule = client.rules().retrieveRulesetDocument(params);
   }
 
-  private static void _smokeCase40() throws Exception {
+  private static void _smokeCase48() throws Exception {
     RuleCreateRulesetAccessGroupParams params =
         RuleCreateRulesetAccessGroupParams.builder()
             .namespace("namespace")
@@ -476,7 +578,7 @@ final class SmokeTest {
     var rule = client.rules().createRulesetAccessGroup(params);
   }
 
-  private static void _smokeCase41() throws Exception {
+  private static void _smokeCase49() throws Exception {
     RuleDeleteRulesetAccessGroupParams params =
         RuleDeleteRulesetAccessGroupParams.builder()
             .namespace("namespace")
@@ -486,57 +588,87 @@ final class SmokeTest {
     var rule = client.rules().deleteRulesetAccessGroup(params);
   }
 
-  private static void _smokeCase42() throws Exception {
+  private static void _smokeCase50() throws Exception {
     var theme = client.themes().list();
   }
 
-  private static void _smokeCase43() throws Exception {
+  private static void _smokeCase51() throws Exception {
     ThemeCreateParams params = ThemeCreateParams.builder().name("").slug("").document("").build();
     var theme = client.themes().create(params);
   }
 
-  private static void _smokeCase44() throws Exception {
+  private static void _smokeCase52() throws Exception {
     ThemeCreateParams params =
         ThemeCreateParams.builder().name("").description("").slug("").document("").build();
     var theme = client.themes().create(params);
   }
 
-  private static void _smokeCase45() throws Exception {
+  private static void _smokeCase53() throws Exception {
     ThemeUpdateParams params = ThemeUpdateParams.builder().slug("slug").build();
     var theme = client.themes().update(params);
   }
 
-  private static void _smokeCase46() throws Exception {
+  private static void _smokeCase54() throws Exception {
     ThemeUpdateParams params =
         ThemeUpdateParams.builder().slug("slug").name("").description("").build();
     var theme = client.themes().update(params);
   }
 
-  private static void _smokeCase47() throws Exception {
+  private static void _smokeCase55() throws Exception {
     ThemeReplaceDocumentParams params =
         ThemeReplaceDocumentParams.builder().slug("slug").document("").build();
     var theme = client.themes().replaceDocument(params);
   }
 
-  private static void _smokeCase48() throws Exception {
+  private static void _smokeCase56() throws Exception {
     ThemeDeleteParams params = ThemeDeleteParams.builder().slug("slug").build();
     var theme = client.themes().delete(params);
   }
 
-  private static void _smokeCase49() throws Exception {
+  private static void _smokeCase57() throws Exception {
     ThemeRetrieveParams params = ThemeRetrieveParams.builder().slug("slug").build();
     var theme = client.themes().retrieve(params);
   }
 
-  private static void _smokeCase50() throws Exception {
+  private static void _smokeCase58() throws Exception {
     var team = client.teams().list();
   }
 
-  private static void _smokeCase51() throws Exception {
+  private static void _smokeCase59() throws Exception {
+    var member = client.teams().members().list();
+  }
+
+  private static void _smokeCase60() throws Exception {
+    MemberUpdateParams params = MemberUpdateParams.builder().uid("uidxx").role(Role.OWNER).build();
+    var member = client.teams().members().update(params);
+  }
+
+  private static void _smokeCase61() throws Exception {
+    MemberDeleteParams params = MemberDeleteParams.builder().uid("uidxx").build();
+    var member = client.teams().members().delete(params);
+  }
+
+  private static void _smokeCase62() throws Exception {
+    InviteMemberParams params =
+        InviteMemberParams.builder().email("user@example.com").role(Role.OWNER).build();
+    var invite = client.teams().invites().member(params);
+  }
+
+  private static void _smokeCase63() throws Exception {
+    InviteResendParams params = InviteResendParams.builder().uid("uidxx").build();
+    var invite = client.teams().invites().resend(params);
+  }
+
+  private static void _smokeCase64() throws Exception {
+    InviteCancelParams params = InviteCancelParams.builder().uid("uidxx").build();
+    var invite = client.teams().invites().cancel(params);
+  }
+
+  private static void _smokeCase65() throws Exception {
     var scalarDoc = client.scalarDocs().listGuides();
   }
 
-  private static void _smokeCase52() throws Exception {
+  private static void _smokeCase66() throws Exception {
     ScalarDocCreateGuideParams params =
         ScalarDocCreateGuideParams.builder()
             .name("")
@@ -547,7 +679,7 @@ final class SmokeTest {
     var scalarDoc = client.scalarDocs().createGuide(params);
   }
 
-  private static void _smokeCase53() throws Exception {
+  private static void _smokeCase67() throws Exception {
     ScalarDocCreateGuideParams params =
         ScalarDocCreateGuideParams.builder()
             .name("")
@@ -559,23 +691,476 @@ final class SmokeTest {
     var scalarDoc = client.scalarDocs().createGuide(params);
   }
 
-  private static void _smokeCase54() throws Exception {
+  private static void _smokeCase68() throws Exception {
     ScalarDocPublishGuideParams params = ScalarDocPublishGuideParams.builder().slug("slug").build();
     var scalarDoc = client.scalarDocs().publishGuide(params);
   }
 
-  private static void _smokeCase55() throws Exception {
+  private static void _smokeCase69() throws Exception {
+    var scalarDoc = client.scalarDocs().listProjects();
+  }
+
+  private static void _smokeCase70() throws Exception {
+    ScalarDocListProjectsParams params = ScalarDocListProjectsParams.builder().limit(1L).build();
+    var scalarDoc = client.scalarDocs().listProjects(params);
+  }
+
+  private static void _smokeCase71() throws Exception {
+    ScalarDocCreateProjectParams params =
+        ScalarDocCreateProjectParams.builder()
+            .name("")
+            .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
+            .build();
+    var scalarDoc = client.scalarDocs().createProject(params);
+  }
+
+  private static void _smokeCase72() throws Exception {
+    ScalarDocCreateProjectParams params =
+        ScalarDocCreateProjectParams.builder()
+            .name("")
+            .slug("x")
+            .isPrivate(false)
+            .blank(false)
+            .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
+            .githubRepository(
+                ScalarDocCreateProjectParams.GithubRepository.builder()
+                    .installationId(0L)
+                    .repoId(0L)
+                    .build())
+            .bitbucketRepository(
+                ScalarDocCreateProjectParams.BitbucketRepository.builder()
+                    .workspaceUuid("")
+                    .repoUuid("")
+                    .build())
+            .build();
+    var scalarDoc = client.scalarDocs().createProject(params);
+  }
+
+  private static void _smokeCase73() throws Exception {
+    ScalarDocRetrieveProjectParams params =
+        ScalarDocRetrieveProjectParams.builder().slug("slug").build();
+    var scalarDoc = client.scalarDocs().retrieveProject(params);
+  }
+
+  private static void _smokeCase74() throws Exception {
+    ScalarDocUpdateProjectParams params =
+        ScalarDocUpdateProjectParams.builder().slug("slug").build();
+    var scalarDoc = client.scalarDocs().updateProject(params);
+  }
+
+  private static void _smokeCase75() throws Exception {
+    ScalarDocUpdateProjectParams params =
+        ScalarDocUpdateProjectParams.builder()
+            .slug("slug")
+            .name("")
+            .isPrivate(false)
+            .accessGroups(java.util.List.of("xxxxx"))
+            .loginPortalUid(ScalarDocUpdateProjectParams.LoginPortalUid.ofNanoid("xxxxx"))
+            .activeThemeId("xxxxx")
+            .agentEnabled(false)
+            .analyticsEnabled(false)
+            .build();
+    var scalarDoc = client.scalarDocs().updateProject(params);
+  }
+
+  private static void _smokeCase76() throws Exception {
+    ScalarDocDeleteProjectParams params =
+        ScalarDocDeleteProjectParams.builder().slug("slug").build();
+    var scalarDoc = client.scalarDocs().deleteProject(params);
+  }
+
+  private static void _smokeCase77() throws Exception {
+    ScalarDocPublishProjectParams params =
+        ScalarDocPublishProjectParams.builder().slug("slug").build();
+    var scalarDoc = client.scalarDocs().publishProject(params);
+  }
+
+  private static void _smokeCase78() throws Exception {
+    ScalarDocPublishProjectParams params =
+        ScalarDocPublishProjectParams.builder()
+            .slug("slug")
+            .commitSha("")
+            .preview(false)
+            .configPath("")
+            .build();
+    var scalarDoc = client.scalarDocs().publishProject(params);
+  }
+
+  private static void _smokeCase79() throws Exception {
+    ScalarDocListProjectConfigParams params =
+        ScalarDocListProjectConfigParams.builder().slug("slug").build();
+    var scalarDoc = client.scalarDocs().listProjectConfig(params);
+  }
+
+  private static void _smokeCase80() throws Exception {
+    ScalarDocListProjectConfigParams params =
+        ScalarDocListProjectConfigParams.builder().slug("slug").ref("ref").build();
+    var scalarDoc = client.scalarDocs().listProjectConfig(params);
+  }
+
+  private static void _smokeCase81() throws Exception {
+    ScalarDocUpdateProjectConfigParams params =
+        ScalarDocUpdateProjectConfigParams.builder().slug("slug").content("").build();
+    var scalarDoc = client.scalarDocs().updateProjectConfig(params);
+  }
+
+  private static void _smokeCase82() throws Exception {
+    ScalarDocUpdateProjectConfigParams params =
+        ScalarDocUpdateProjectConfigParams.builder()
+            .slug("slug")
+            .content("")
+            .ref("")
+            .baseToken("")
+            .message("")
+            .path("")
+            .build();
+    var scalarDoc = client.scalarDocs().updateProjectConfig(params);
+  }
+
+  private static void _smokeCase83() throws Exception {
+    ScalarDocListProjectDomainParams params =
+        ScalarDocListProjectDomainParams.builder().slug("slug").build();
+    var scalarDoc = client.scalarDocs().listProjectDomain(params);
+  }
+
+  private static void _smokeCase84() throws Exception {
+    ScalarDocListProjectDomainStatusParams params =
+        ScalarDocListProjectDomainStatusParams.builder().slug("slug").build();
+    var scalarDoc = client.scalarDocs().listProjectDomainStatus(params);
+  }
+
+  private static void _smokeCase85() throws Exception {
     var namespace = client.namespaces().list();
   }
 
-  private static void _smokeCase56() throws Exception {
+  private static void _smokeCase86() throws Exception {
     AuthenticationExchangePersonalTokenParams params =
         AuthenticationExchangePersonalTokenParams.builder().personalToken("").build();
     var authentication = client.authentication().exchangePersonalToken(params);
   }
 
-  private static void _smokeCase57() throws Exception {
+  private static void _smokeCase87() throws Exception {
     var authentication = client.authentication().listCurrentUser();
+  }
+
+  private static void _smokeCase88() throws Exception {
+    var sdk = client.sdks().list();
+  }
+
+  private static void _smokeCase89() throws Exception {
+    SdkListParams params = SdkListParams.builder().limit(1L).build();
+    var sdk = client.sdks().list(params);
+  }
+
+  private static void _smokeCase90() throws Exception {
+    SdkCreateParams params =
+        SdkCreateParams.builder()
+            .apiUid("xxxxx")
+            .languages(java.util.List.of(SdkCreateParams.Language.of("typescript")))
+            .build();
+    var sdk = client.sdks().create(params);
+  }
+
+  private static void _smokeCase91() throws Exception {
+    SdkCreateParams params =
+        SdkCreateParams.builder()
+            .apiUid("xxxxx")
+            .languages(java.util.List.of(SdkCreateParams.Language.of("typescript")))
+            .title("")
+            .slug("x")
+            .className("")
+            .config("")
+            .build();
+    var sdk = client.sdks().create(params);
+  }
+
+  private static void _smokeCase92() throws Exception {
+    SdkRetrieveParams params = SdkRetrieveParams.builder().uid("uidxx").build();
+    var sdk = client.sdks().retrieve(params);
+  }
+
+  private static void _smokeCase93() throws Exception {
+    SdkUpdateParams params = SdkUpdateParams.builder().uid("uidxx").build();
+    var sdk = client.sdks().update(params);
+  }
+
+  private static void _smokeCase94() throws Exception {
+    SdkUpdateParams params =
+        SdkUpdateParams.builder()
+            .uid("uidxx")
+            .title("")
+            .slug("x")
+            .isPrivate(false)
+            .config("")
+            .apiUid("")
+            .apiVersion("")
+            .build();
+    var sdk = client.sdks().update(params);
+  }
+
+  private static void _smokeCase95() throws Exception {
+    SdkDeleteParams params = SdkDeleteParams.builder().uid("uidxx").build();
+    var sdk = client.sdks().delete(params);
+  }
+
+  private static void _smokeCase96() throws Exception {
+    SdkBuildParams params = SdkBuildParams.builder().uid("uidxx").build();
+    var sdk = client.sdks().build(params);
+  }
+
+  private static void _smokeCase97() throws Exception {
+    SdkBuildParams params =
+        SdkBuildParams.builder()
+            .uid("uidxx")
+            .version("")
+            .languages(java.util.List.of(SdkBuildParams.Language.of("typescript")))
+            .build();
+    var sdk = client.sdks().build(params);
+  }
+
+  private static void _smokeCase98() throws Exception {
+    com.scalar.models.sdks.versions.VersionCreateParams params =
+        com.scalar.models.sdks.versions.VersionCreateParams.builder()
+            .uid("uidxx")
+            .version("")
+            .apiVersion("")
+            .build();
+    var version = client.sdks().versions().create(params);
+  }
+
+  private static void _smokeCase99() throws Exception {
+    com.scalar.models.sdks.versions.VersionDeleteParams params =
+        com.scalar.models.sdks.versions.VersionDeleteParams.builder()
+            .uid("uidxx")
+            .version("version")
+            .build();
+    var version = client.sdks().versions().delete(params);
+  }
+
+  private static void _smokeCase100() throws Exception {
+    RepositoryLinkParams params =
+        RepositoryLinkParams.builder()
+            .uid("uidxx")
+            .language(RepositoryLinkParams.Language.of("typescript"))
+            .repositoryId(0L)
+            .baseBranch("")
+            .build();
+    var repository = client.sdks().repositories().link(params);
+  }
+
+  private static void _smokeCase101() throws Exception {
+    RepositoryLinkParams params =
+        RepositoryLinkParams.builder()
+            .uid("uidxx")
+            .language(RepositoryLinkParams.Language.of("typescript"))
+            .repositoryId(0L)
+            .baseBranch("")
+            .prereleaseType("")
+            .build();
+    var repository = client.sdks().repositories().link(params);
+  }
+
+  private static void _smokeCase102() throws Exception {
+    RepositoryUnlinkParams params =
+        RepositoryUnlinkParams.builder()
+            .uid("uidxx")
+            .language(RepositoryUnlinkParams.Language.of("typescript"))
+            .build();
+    var repository = client.sdks().repositories().unlink(params);
+  }
+
+  private static void _smokeCase103() throws Exception {
+    RepositoryUpdatePublishingParams params =
+        RepositoryUpdatePublishingParams.builder()
+            .uid("uidxx")
+            .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
+            .publishOnMerge(false)
+            .build();
+    var repository = client.sdks().repositories().updatePublishing(params);
+  }
+
+  private static void _smokeCase104() throws Exception {
+    RepositoryUpdatePublishingParams params =
+        RepositoryUpdatePublishingParams.builder()
+            .uid("uidxx")
+            .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
+            .publishOnMerge(false)
+            .authMethod(RepositoryUpdatePublishingParams.AuthMethod.of("oidc"))
+            .access(RepositoryUpdatePublishingParams.Access.of("public"))
+            .tag("")
+            .build();
+    var repository = client.sdks().repositories().updatePublishing(params);
+  }
+
+  private static void _smokeCase105() throws Exception {
+    var server = client.mcp().servers().list();
+  }
+
+  private static void _smokeCase106() throws Exception {
+    ServerCreateParams params = ServerCreateParams.builder().name("x").build();
+    var server = client.mcp().servers().create(params);
+  }
+
+  private static void _smokeCase107() throws Exception {
+    ServerCreateParams params =
+        ServerCreateParams.builder()
+            .name("x")
+            .slug("x")
+            .versionUids(java.util.List.of(""))
+            .projectUids(java.util.List.of(""))
+            .build();
+    var server = client.mcp().servers().create(params);
+  }
+
+  private static void _smokeCase108() throws Exception {
+    ServerRetrieveParams params = ServerRetrieveParams.builder().id("id").build();
+    var server = client.mcp().servers().retrieve(params);
+  }
+
+  private static void _smokeCase109() throws Exception {
+    ServerUpdateParams params = ServerUpdateParams.builder().id("id").build();
+    var server = client.mcp().servers().update(params);
+  }
+
+  private static void _smokeCase110() throws Exception {
+    ServerUpdateParams params =
+        ServerUpdateParams.builder()
+            .id("id")
+            .name("x")
+            .slug("x")
+            .autoAddOperations(false)
+            .operations(java.util.List.of(""))
+            .docsPages(java.util.List.of(""))
+            .build();
+    var server = client.mcp().servers().update(params);
+  }
+
+  private static void _smokeCase111() throws Exception {
+    ServerDeleteParams params = ServerDeleteParams.builder().id("id").build();
+    var server = client.mcp().servers().delete(params);
+  }
+
+  private static void _smokeCase112() throws Exception {
+    InstallationListParams params = InstallationListParams.builder().id("id").build();
+    var installation = client.mcp().servers().installations().list(params);
+  }
+
+  private static void _smokeCase113() throws Exception {
+    InstallationCreateParams params =
+        InstallationCreateParams.builder()
+            .id("id")
+            .name("x")
+            .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
+            .build();
+    var installation = client.mcp().servers().installations().create(params);
+  }
+
+  private static void _smokeCase114() throws Exception {
+    InstallationCreateParams params =
+        InstallationCreateParams.builder()
+            .id("id")
+            .name("x")
+            .slug("x")
+            .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
+            .build();
+    var installation = client.mcp().servers().installations().create(params);
+  }
+
+  private static void _smokeCase115() throws Exception {
+    InstallationRetrieveParams params =
+        InstallationRetrieveParams.builder().id("id").installationId("installationId").build();
+    var installation = client.mcp().servers().installations().retrieve(params);
+  }
+
+  private static void _smokeCase116() throws Exception {
+    InstallationUpdateParams params =
+        InstallationUpdateParams.builder().id("id").installationId("installationId").build();
+    var installation = client.mcp().servers().installations().update(params);
+  }
+
+  private static void _smokeCase117() throws Exception {
+    InstallationUpdateParams params =
+        InstallationUpdateParams.builder()
+            .id("id")
+            .installationId("installationId")
+            .name("x")
+            .slug("x")
+            .isPrivate(false)
+            .loginPortalUid("")
+            .documentAuth(InstallationUpdateParams.DocumentAuth.builder().build())
+            .mcpVersion("")
+            .build();
+    var installation = client.mcp().servers().installations().update(params);
+  }
+
+  private static void _smokeCase118() throws Exception {
+    InstallationDeleteParams params =
+        InstallationDeleteParams.builder().id("id").installationId("installationId").build();
+    var installation = client.mcp().servers().installations().delete(params);
+  }
+
+  private static void _smokeCase119() throws Exception {
+    InstallationCreateAccessGroupParams params =
+        InstallationCreateAccessGroupParams.builder()
+            .id("id")
+            .installationId("installationId")
+            .accessGroupUid("xxxxx")
+            .build();
+    var installation = client.mcp().servers().installations().createAccessGroup(params);
+  }
+
+  private static void _smokeCase120() throws Exception {
+    InstallationDeleteAccessGroupParams params =
+        InstallationDeleteAccessGroupParams.builder()
+            .id("id")
+            .installationId("installationId")
+            .accessGroupUid("xxxxx")
+            .build();
+    var installation = client.mcp().servers().installations().deleteAccessGroup(params);
+  }
+
+  private static void _smokeCase121() throws Exception {
+    var oAuth = client.oAuth().oauthAuthorize();
+  }
+
+  private static void _smokeCase122() throws Exception {
+    OAuthOauthTokenParams params = OAuthOauthTokenParams.builder().grantType("").build();
+    var oAuth = client.oAuth().oauthToken(params);
+  }
+
+  private static void _smokeCase123() throws Exception {
+    OAuthOauthTokenParams params =
+        OAuthOauthTokenParams.builder()
+            .grantType("")
+            .clientId("")
+            .clientSecret("")
+            .code("")
+            .redirectUri("")
+            .codeVerifier("")
+            .refreshToken("")
+            .scope("")
+            .build();
+    var oAuth = client.oAuth().oauthToken(params);
+  }
+
+  private static void _smokeCase124() throws Exception {
+    OAuthOauthRevokeParams params = OAuthOauthRevokeParams.builder().token("").build();
+    var oAuth = client.oAuth().oauthRevoke(params);
+  }
+
+  private static void _smokeCase125() throws Exception {
+    OAuthOauthRevokeParams params =
+        OAuthOauthRevokeParams.builder()
+            .token("")
+            .tokenTypeHint("")
+            .clientId("")
+            .clientSecret("")
+            .build();
+    var oAuth = client.oAuth().oauthRevoke(params);
+  }
+
+  private static void _smokeCase126() throws Exception {
+    var oAuth = client.oAuth().oauthAuthorizationServerMetadata();
   }
 
   private static final List<SmokeCase> cases =
@@ -734,76 +1319,292 @@ final class SmokeTest {
           new SmokeCase("create", "POST", "/v1/login-portals", "", SmokeTest::_smokeCase31),
           new SmokeCase("list", "GET", "/v1/login-portals", "", SmokeTest::_smokeCase32),
           new SmokeCase(
-              "listRulesets", "GET", "/v1/rulesets/{namespace}", "", SmokeTest::_smokeCase33),
+              "create", "POST", "/v1/access-groups", "required params", SmokeTest::_smokeCase33),
           new SmokeCase(
-              "createRuleset",
-              "POST",
-              "/v1/rulesets/{namespace}",
-              "required params",
-              SmokeTest::_smokeCase34),
+              "create", "POST", "/v1/access-groups", "all params", SmokeTest::_smokeCase34),
+          new SmokeCase("retrieve", "GET", "/v1/access-groups/{slug}", "", SmokeTest::_smokeCase35),
           new SmokeCase(
-              "createRuleset",
-              "POST",
-              "/v1/rulesets/{namespace}",
-              "all params",
-              SmokeTest::_smokeCase35),
-          new SmokeCase(
-              "updateRuleset",
+              "update",
               "PATCH",
-              "/v1/rulesets/{namespace}/{slug}",
+              "/v1/access-groups/{slug}",
               "required params",
               SmokeTest::_smokeCase36),
           new SmokeCase(
+              "update", "PATCH", "/v1/access-groups/{slug}", "all params", SmokeTest::_smokeCase37),
+          new SmokeCase(
+              "delete", "DELETE", "/v1/access-groups/{slug}", "", SmokeTest::_smokeCase38),
+          new SmokeCase(
+              "create", "POST", "/v1/access-groups/{slug}/domains", "", SmokeTest::_smokeCase39),
+          new SmokeCase(
+              "delete", "DELETE", "/v1/access-groups/{slug}/domains", "", SmokeTest::_smokeCase40),
+          new SmokeCase(
+              "listRulesets", "GET", "/v1/rulesets/{namespace}", "", SmokeTest::_smokeCase41),
+          new SmokeCase(
+              "createRuleset",
+              "POST",
+              "/v1/rulesets/{namespace}",
+              "required params",
+              SmokeTest::_smokeCase42),
+          new SmokeCase(
+              "createRuleset",
+              "POST",
+              "/v1/rulesets/{namespace}",
+              "all params",
+              SmokeTest::_smokeCase43),
+          new SmokeCase(
+              "updateRuleset",
+              "PATCH",
+              "/v1/rulesets/{namespace}/{slug}",
+              "required params",
+              SmokeTest::_smokeCase44),
+          new SmokeCase(
               "updateRuleset",
               "PATCH",
               "/v1/rulesets/{namespace}/{slug}",
               "all params",
-              SmokeTest::_smokeCase37),
+              SmokeTest::_smokeCase45),
           new SmokeCase(
               "deleteRuleset",
               "DELETE",
               "/v1/rulesets/{namespace}/{slug}",
               "",
-              SmokeTest::_smokeCase38),
+              SmokeTest::_smokeCase46),
           new SmokeCase(
               "retrieveRulesetDocument",
               "GET",
               "/v1/rulesets/{namespace}/{slug}",
               "",
-              SmokeTest::_smokeCase39),
+              SmokeTest::_smokeCase47),
           new SmokeCase(
               "createRulesetAccessGroup",
               "POST",
               "/v1/rulesets/{namespace}/{slug}/access-group",
               "",
-              SmokeTest::_smokeCase40),
+              SmokeTest::_smokeCase48),
           new SmokeCase(
               "deleteRulesetAccessGroup",
               "DELETE",
               "/v1/rulesets/{namespace}/{slug}/access-group",
               "",
-              SmokeTest::_smokeCase41),
-          new SmokeCase("list", "GET", "/v1/themes", "", SmokeTest::_smokeCase42),
-          new SmokeCase("create", "POST", "/v1/themes", "required params", SmokeTest::_smokeCase43),
-          new SmokeCase("create", "POST", "/v1/themes", "all params", SmokeTest::_smokeCase44),
+              SmokeTest::_smokeCase49),
+          new SmokeCase("list", "GET", "/v1/themes", "", SmokeTest::_smokeCase50),
+          new SmokeCase("create", "POST", "/v1/themes", "required params", SmokeTest::_smokeCase51),
+          new SmokeCase("create", "POST", "/v1/themes", "all params", SmokeTest::_smokeCase52),
           new SmokeCase(
-              "update", "PATCH", "/v1/themes/{slug}", "required params", SmokeTest::_smokeCase45),
+              "update", "PATCH", "/v1/themes/{slug}", "required params", SmokeTest::_smokeCase53),
           new SmokeCase(
-              "update", "PATCH", "/v1/themes/{slug}", "all params", SmokeTest::_smokeCase46),
-          new SmokeCase("replaceDocument", "PUT", "/v1/themes/{slug}", "", SmokeTest::_smokeCase47),
-          new SmokeCase("delete", "DELETE", "/v1/themes/{slug}", "", SmokeTest::_smokeCase48),
-          new SmokeCase("retrieve", "GET", "/v1/themes/{slug}", "", SmokeTest::_smokeCase49),
-          new SmokeCase("list", "GET", "/v1/teams", "", SmokeTest::_smokeCase50),
-          new SmokeCase("listGuides", "GET", "/v1/guides", "", SmokeTest::_smokeCase51),
+              "update", "PATCH", "/v1/themes/{slug}", "all params", SmokeTest::_smokeCase54),
+          new SmokeCase("replaceDocument", "PUT", "/v1/themes/{slug}", "", SmokeTest::_smokeCase55),
+          new SmokeCase("delete", "DELETE", "/v1/themes/{slug}", "", SmokeTest::_smokeCase56),
+          new SmokeCase("retrieve", "GET", "/v1/themes/{slug}", "", SmokeTest::_smokeCase57),
+          new SmokeCase("list", "GET", "/v1/teams", "", SmokeTest::_smokeCase58),
+          new SmokeCase("list", "GET", "/v1/teams/members", "", SmokeTest::_smokeCase59),
+          new SmokeCase("update", "PATCH", "/v1/teams/members/{uid}", "", SmokeTest::_smokeCase60),
+          new SmokeCase("delete", "DELETE", "/v1/teams/members/{uid}", "", SmokeTest::_smokeCase61),
+          new SmokeCase("member", "POST", "/v1/teams/invites", "", SmokeTest::_smokeCase62),
+          new SmokeCase("resend", "PATCH", "/v1/teams/invites/{uid}", "", SmokeTest::_smokeCase63),
+          new SmokeCase("cancel", "DELETE", "/v1/teams/invites/{uid}", "", SmokeTest::_smokeCase64),
+          new SmokeCase("listGuides", "GET", "/v1/guides", "", SmokeTest::_smokeCase65),
           new SmokeCase(
-              "createGuide", "POST", "/v1/guides", "required params", SmokeTest::_smokeCase52),
-          new SmokeCase("createGuide", "POST", "/v1/guides", "all params", SmokeTest::_smokeCase53),
+              "createGuide", "POST", "/v1/guides", "required params", SmokeTest::_smokeCase66),
+          new SmokeCase("createGuide", "POST", "/v1/guides", "all params", SmokeTest::_smokeCase67),
           new SmokeCase(
-              "publishGuide", "POST", "/v1/guides/{slug}/publish", "", SmokeTest::_smokeCase54),
-          new SmokeCase("list", "GET", "/v1/namespaces", "", SmokeTest::_smokeCase55),
+              "publishGuide", "POST", "/v1/guides/{slug}/publish", "", SmokeTest::_smokeCase68),
           new SmokeCase(
-              "exchangePersonalToken", "POST", "/v1/auth/exchange", "", SmokeTest::_smokeCase56),
-          new SmokeCase("listCurrentUser", "GET", "/v1/auth/me", "", SmokeTest::_smokeCase57));
+              "listProjects", "GET", "/v1/docs", "required params", SmokeTest::_smokeCase69),
+          new SmokeCase("listProjects", "GET", "/v1/docs", "all params", SmokeTest::_smokeCase70),
+          new SmokeCase(
+              "createProject", "POST", "/v1/docs", "required params", SmokeTest::_smokeCase71),
+          new SmokeCase("createProject", "POST", "/v1/docs", "all params", SmokeTest::_smokeCase72),
+          new SmokeCase("retrieveProject", "GET", "/v1/docs/{slug}", "", SmokeTest::_smokeCase73),
+          new SmokeCase(
+              "updateProject",
+              "PATCH",
+              "/v1/docs/{slug}",
+              "required params",
+              SmokeTest::_smokeCase74),
+          new SmokeCase(
+              "updateProject", "PATCH", "/v1/docs/{slug}", "all params", SmokeTest::_smokeCase75),
+          new SmokeCase("deleteProject", "DELETE", "/v1/docs/{slug}", "", SmokeTest::_smokeCase76),
+          new SmokeCase(
+              "publishProject",
+              "POST",
+              "/v1/docs/{slug}/publish",
+              "required params",
+              SmokeTest::_smokeCase77),
+          new SmokeCase(
+              "publishProject",
+              "POST",
+              "/v1/docs/{slug}/publish",
+              "all params",
+              SmokeTest::_smokeCase78),
+          new SmokeCase(
+              "listProjectConfig",
+              "GET",
+              "/v1/docs/{slug}/config",
+              "required params",
+              SmokeTest::_smokeCase79),
+          new SmokeCase(
+              "listProjectConfig",
+              "GET",
+              "/v1/docs/{slug}/config",
+              "all params",
+              SmokeTest::_smokeCase80),
+          new SmokeCase(
+              "updateProjectConfig",
+              "PUT",
+              "/v1/docs/{slug}/config",
+              "required params",
+              SmokeTest::_smokeCase81),
+          new SmokeCase(
+              "updateProjectConfig",
+              "PUT",
+              "/v1/docs/{slug}/config",
+              "all params",
+              SmokeTest::_smokeCase82),
+          new SmokeCase(
+              "listProjectDomain", "GET", "/v1/docs/{slug}/domain", "", SmokeTest::_smokeCase83),
+          new SmokeCase(
+              "listProjectDomainStatus",
+              "GET",
+              "/v1/docs/{slug}/domain/status",
+              "",
+              SmokeTest::_smokeCase84),
+          new SmokeCase("list", "GET", "/v1/namespaces", "", SmokeTest::_smokeCase85),
+          new SmokeCase(
+              "exchangePersonalToken", "POST", "/v1/auth/exchange", "", SmokeTest::_smokeCase86),
+          new SmokeCase("listCurrentUser", "GET", "/v1/auth/me", "", SmokeTest::_smokeCase87),
+          new SmokeCase("list", "GET", "/v1/sdks", "required params", SmokeTest::_smokeCase88),
+          new SmokeCase("list", "GET", "/v1/sdks", "all params", SmokeTest::_smokeCase89),
+          new SmokeCase("create", "POST", "/v1/sdks", "required params", SmokeTest::_smokeCase90),
+          new SmokeCase("create", "POST", "/v1/sdks", "all params", SmokeTest::_smokeCase91),
+          new SmokeCase("retrieve", "GET", "/v1/sdks/{uid}", "", SmokeTest::_smokeCase92),
+          new SmokeCase(
+              "update", "PATCH", "/v1/sdks/{uid}", "required params", SmokeTest::_smokeCase93),
+          new SmokeCase("update", "PATCH", "/v1/sdks/{uid}", "all params", SmokeTest::_smokeCase94),
+          new SmokeCase("delete", "DELETE", "/v1/sdks/{uid}", "", SmokeTest::_smokeCase95),
+          new SmokeCase(
+              "build", "POST", "/v1/sdks/{uid}/build", "required params", SmokeTest::_smokeCase96),
+          new SmokeCase(
+              "build", "POST", "/v1/sdks/{uid}/build", "all params", SmokeTest::_smokeCase97),
+          new SmokeCase("create", "POST", "/v1/sdks/{uid}/versions", "", SmokeTest::_smokeCase98),
+          new SmokeCase(
+              "delete", "DELETE", "/v1/sdks/{uid}/versions/{version}", "", SmokeTest::_smokeCase99),
+          new SmokeCase(
+              "link",
+              "POST",
+              "/v1/sdks/{uid}/repositories",
+              "required params",
+              SmokeTest::_smokeCase100),
+          new SmokeCase(
+              "link",
+              "POST",
+              "/v1/sdks/{uid}/repositories",
+              "all params",
+              SmokeTest::_smokeCase101),
+          new SmokeCase(
+              "unlink",
+              "DELETE",
+              "/v1/sdks/{uid}/repositories/{language}",
+              "",
+              SmokeTest::_smokeCase102),
+          new SmokeCase(
+              "updatePublishing",
+              "POST",
+              "/v1/sdks/{uid}/repositories/{language}/publishing",
+              "required params",
+              SmokeTest::_smokeCase103),
+          new SmokeCase(
+              "updatePublishing",
+              "POST",
+              "/v1/sdks/{uid}/repositories/{language}/publishing",
+              "all params",
+              SmokeTest::_smokeCase104),
+          new SmokeCase("list", "GET", "/v1/mcp/servers", "", SmokeTest::_smokeCase105),
+          new SmokeCase(
+              "create", "POST", "/v1/mcp/servers", "required params", SmokeTest::_smokeCase106),
+          new SmokeCase(
+              "create", "POST", "/v1/mcp/servers", "all params", SmokeTest::_smokeCase107),
+          new SmokeCase("retrieve", "GET", "/v1/mcp/servers/{id}", "", SmokeTest::_smokeCase108),
+          new SmokeCase(
+              "update",
+              "PATCH",
+              "/v1/mcp/servers/{id}",
+              "required params",
+              SmokeTest::_smokeCase109),
+          new SmokeCase(
+              "update", "PATCH", "/v1/mcp/servers/{id}", "all params", SmokeTest::_smokeCase110),
+          new SmokeCase("delete", "DELETE", "/v1/mcp/servers/{id}", "", SmokeTest::_smokeCase111),
+          new SmokeCase(
+              "list", "GET", "/v1/mcp/servers/{id}/installations", "", SmokeTest::_smokeCase112),
+          new SmokeCase(
+              "create",
+              "POST",
+              "/v1/mcp/servers/{id}/installations",
+              "required params",
+              SmokeTest::_smokeCase113),
+          new SmokeCase(
+              "create",
+              "POST",
+              "/v1/mcp/servers/{id}/installations",
+              "all params",
+              SmokeTest::_smokeCase114),
+          new SmokeCase(
+              "retrieve",
+              "GET",
+              "/v1/mcp/servers/{id}/installations/{installationId}",
+              "",
+              SmokeTest::_smokeCase115),
+          new SmokeCase(
+              "update",
+              "PATCH",
+              "/v1/mcp/servers/{id}/installations/{installationId}",
+              "required params",
+              SmokeTest::_smokeCase116),
+          new SmokeCase(
+              "update",
+              "PATCH",
+              "/v1/mcp/servers/{id}/installations/{installationId}",
+              "all params",
+              SmokeTest::_smokeCase117),
+          new SmokeCase(
+              "delete",
+              "DELETE",
+              "/v1/mcp/servers/{id}/installations/{installationId}",
+              "",
+              SmokeTest::_smokeCase118),
+          new SmokeCase(
+              "createAccessGroup",
+              "POST",
+              "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
+              "",
+              SmokeTest::_smokeCase119),
+          new SmokeCase(
+              "deleteAccessGroup",
+              "DELETE",
+              "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
+              "",
+              SmokeTest::_smokeCase120),
+          new SmokeCase(
+              "oauthAuthorize", "GET", "/v1/oauth/authorize", "", SmokeTest::_smokeCase121),
+          new SmokeCase(
+              "oauthToken", "POST", "/v1/oauth/token", "required params", SmokeTest::_smokeCase122),
+          new SmokeCase(
+              "oauthToken", "POST", "/v1/oauth/token", "all params", SmokeTest::_smokeCase123),
+          new SmokeCase(
+              "oauthRevoke",
+              "POST",
+              "/v1/oauth/revoke",
+              "required params",
+              SmokeTest::_smokeCase124),
+          new SmokeCase(
+              "oauthRevoke", "POST", "/v1/oauth/revoke", "all params", SmokeTest::_smokeCase125),
+          new SmokeCase(
+              "oauthAuthorizationServerMetadata",
+              "GET",
+              "/.well-known/oauth-authorization-server",
+              "",
+              SmokeTest::_smokeCase126));
 
   private static List<SmokeCase> selectedCases() {
     String filter = System.getenv("SCALAR_SMOKE_FILTER");

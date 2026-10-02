@@ -18,12 +18,12 @@ import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepareAsync
 import com.scalar.models.Uid
+import com.scalar.models.rules.Rule
 import com.scalar.models.rules.RuleCreateRulesetAccessGroupParams
 import com.scalar.models.rules.RuleCreateRulesetParams
 import com.scalar.models.rules.RuleDeleteRulesetAccessGroupParams
 import com.scalar.models.rules.RuleDeleteRulesetParams
 import com.scalar.models.rules.RuleListRulesetsParams
-import com.scalar.models.rules.RuleListRulesetsResponse
 import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams
 import com.scalar.models.rules.RuleUpdateRulesetParams
 import java.util.concurrent.CompletableFuture
@@ -74,7 +74,7 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
     override fun listRulesets(
         params: RuleListRulesetsParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<RuleListRulesetsResponse>> =
+    ): CompletableFuture<List<Rule>> =
         // get /v1/rulesets/{namespace}
         withRawResponse().listRulesets(params, requestOptions).thenApply { it.parse() }
 
@@ -234,13 +234,13 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 }
         }
 
-        private val listRulesetsHandler: Handler<List<RuleListRulesetsResponse>> =
-            jsonHandler<List<RuleListRulesetsResponse>>(clientOptions.jsonMapper)
+        private val listRulesetsHandler: Handler<List<Rule>> =
+            jsonHandler<List<Rule>>(clientOptions.jsonMapper)
 
         override fun listRulesets(
             params: RuleListRulesetsParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<RuleListRulesetsResponse>>> {
+        ): CompletableFuture<HttpResponseFor<List<Rule>>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("namespace", params.namespace().getOrNull())

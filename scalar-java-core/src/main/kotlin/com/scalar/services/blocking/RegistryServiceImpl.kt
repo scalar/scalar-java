@@ -18,6 +18,7 @@ import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepare
 import com.scalar.models.ManagedDocVersion
+import com.scalar.models.registry.ApiDocument
 import com.scalar.models.registry.RegistryCreateApiDocumentAccessGroupParams
 import com.scalar.models.registry.RegistryCreateApiDocumentParams
 import com.scalar.models.registry.RegistryCreateApiDocumentResponse
@@ -26,10 +27,8 @@ import com.scalar.models.registry.RegistryDeleteApiDocumentAccessGroupParams
 import com.scalar.models.registry.RegistryDeleteApiDocumentParams
 import com.scalar.models.registry.RegistryDeleteApiDocumentVersionParams
 import com.scalar.models.registry.RegistryListAllApiDocumentsParams
-import com.scalar.models.registry.RegistryListAllApiDocumentsResponse
 import com.scalar.models.registry.RegistryListApiDocumentVersionMetadataParams
 import com.scalar.models.registry.RegistryListApiDocumentsParams
-import com.scalar.models.registry.RegistryListApiDocumentsResponse
 import com.scalar.models.registry.RegistryRetrieveApiDocumentVersionParams
 import com.scalar.models.registry.RegistryUpdateApiDocumentParams
 import com.scalar.models.registry.RegistryUpdateApiDocumentVersionParams
@@ -95,7 +94,7 @@ class RegistryServiceImpl internal constructor(private val clientOptions: Client
     override fun listAllApiDocuments(
         params: RegistryListAllApiDocumentsParams,
         requestOptions: RequestOptions,
-    ): List<RegistryListAllApiDocumentsResponse> =
+    ): List<ApiDocument> =
         // get /v1/apis
         withRawResponse().listAllApiDocuments(params, requestOptions).parse()
 
@@ -109,7 +108,7 @@ class RegistryServiceImpl internal constructor(private val clientOptions: Client
     override fun listApiDocuments(
         params: RegistryListApiDocumentsParams,
         requestOptions: RequestOptions,
-    ): List<RegistryListApiDocumentsResponse> =
+    ): List<ApiDocument> =
         // get /v1/apis/{namespace}
         withRawResponse().listApiDocuments(params, requestOptions).parse()
 
@@ -334,13 +333,13 @@ class RegistryServiceImpl internal constructor(private val clientOptions: Client
             }
         }
 
-        private val listAllApiDocumentsHandler: Handler<List<RegistryListAllApiDocumentsResponse>> =
-            jsonHandler<List<RegistryListAllApiDocumentsResponse>>(clientOptions.jsonMapper)
+        private val listAllApiDocumentsHandler: Handler<List<ApiDocument>> =
+            jsonHandler<List<ApiDocument>>(clientOptions.jsonMapper)
 
         override fun listAllApiDocuments(
             params: RegistryListAllApiDocumentsParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<RegistryListAllApiDocumentsResponse>> {
+        ): HttpResponseFor<List<ApiDocument>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -399,13 +398,13 @@ class RegistryServiceImpl internal constructor(private val clientOptions: Client
             }
         }
 
-        private val listApiDocumentsHandler: Handler<List<RegistryListApiDocumentsResponse>> =
-            jsonHandler<List<RegistryListApiDocumentsResponse>>(clientOptions.jsonMapper)
+        private val listApiDocumentsHandler: Handler<List<ApiDocument>> =
+            jsonHandler<List<ApiDocument>>(clientOptions.jsonMapper)
 
         override fun listApiDocuments(
             params: RegistryListApiDocumentsParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<RegistryListApiDocumentsResponse>> {
+        ): HttpResponseFor<List<ApiDocument>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("namespace", params.namespace().getOrNull())

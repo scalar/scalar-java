@@ -6,10 +6,10 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.themes.Theme
 import com.scalar.models.themes.ThemeCreateParams
 import com.scalar.models.themes.ThemeDeleteParams
 import com.scalar.models.themes.ThemeListParams
-import com.scalar.models.themes.ThemeListResponse
 import com.scalar.models.themes.ThemeReplaceDocumentParams
 import com.scalar.models.themes.ThemeRetrieveParams
 import com.scalar.models.themes.ThemeUpdateParams
@@ -99,20 +99,20 @@ interface ThemeServiceAsync {
         update(slug, ThemeUpdateParams.none(), requestOptions)
 
     /** List all team themes. */
-    fun list(): CompletableFuture<List<ThemeListResponse>> = list(ThemeListParams.none())
+    fun list(): CompletableFuture<List<Theme>> = list(ThemeListParams.none())
 
     /** @see list */
     fun list(
         params: ThemeListParams = ThemeListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<ThemeListResponse>>
+    ): CompletableFuture<List<Theme>>
 
     /** @see list */
-    fun list(params: ThemeListParams): CompletableFuture<List<ThemeListResponse>> =
+    fun list(params: ThemeListParams): CompletableFuture<List<Theme>> =
         list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): CompletableFuture<List<ThemeListResponse>> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<List<Theme>> =
         list(ThemeListParams.none(), requestOptions)
 
     /** Delete a theme by slug. */
@@ -271,25 +271,20 @@ interface ThemeServiceAsync {
          * Returns a raw HTTP response for `get /v1/themes`, but is otherwise the same as
          * [ThemeServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<List<ThemeListResponse>>> =
-            list(ThemeListParams.none())
+        fun list(): CompletableFuture<HttpResponseFor<List<Theme>>> = list(ThemeListParams.none())
 
         /** @see list */
         fun list(
             params: ThemeListParams = ThemeListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<ThemeListResponse>>>
+        ): CompletableFuture<HttpResponseFor<List<Theme>>>
 
         /** @see list */
-        fun list(
-            params: ThemeListParams
-        ): CompletableFuture<HttpResponseFor<List<ThemeListResponse>>> =
+        fun list(params: ThemeListParams): CompletableFuture<HttpResponseFor<List<Theme>>> =
             list(params, RequestOptions.none())
 
         /** @see list */
-        fun list(
-            requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<ThemeListResponse>>> =
+        fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<Theme>>> =
             list(ThemeListParams.none(), requestOptions)
 
         /**

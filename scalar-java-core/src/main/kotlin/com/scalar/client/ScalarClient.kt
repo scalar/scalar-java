@@ -3,13 +3,17 @@
 package com.scalar.client
 
 import com.scalar.core.ClientOptions
+import com.scalar.services.blocking.AccessGroupService
 import com.scalar.services.blocking.AuthenticationService
 import com.scalar.services.blocking.LoginPortalService
+import com.scalar.services.blocking.McpService
 import com.scalar.services.blocking.NamespaceService
+import com.scalar.services.blocking.OAuthService
 import com.scalar.services.blocking.RegistryService
 import com.scalar.services.blocking.RuleService
 import com.scalar.services.blocking.ScalarDocService
 import com.scalar.services.blocking.SchemaService
+import com.scalar.services.blocking.SdkService
 import com.scalar.services.blocking.TeamService
 import com.scalar.services.blocking.ThemeService
 import java.util.function.Consumer
@@ -59,6 +63,9 @@ interface ScalarClient {
     /** Login Portals */
     fun loginPortals(): LoginPortalService
 
+    /** Access Groups */
+    fun accessGroups(): AccessGroupService
+
     /** Rules */
     fun rules(): RuleService
 
@@ -76,6 +83,14 @@ interface ScalarClient {
 
     /** Authentication */
     fun authentication(): AuthenticationService
+
+    /** SDKs */
+    fun sdks(): SdkService
+
+    fun mcp(): McpService
+
+    /** OAuth */
+    fun oAuth(): OAuthService
 
     /**
      * Closes this client, relinquishing any underlying resources.
@@ -109,6 +124,9 @@ interface ScalarClient {
         /** Login Portals */
         fun loginPortals(): LoginPortalService.WithRawResponse
 
+        /** Access Groups */
+        fun accessGroups(): AccessGroupService.WithRawResponse
+
         /** Rules */
         fun rules(): RuleService.WithRawResponse
 
@@ -126,5 +144,13 @@ interface ScalarClient {
 
         /** Authentication */
         fun authentication(): AuthenticationService.WithRawResponse
+
+        /** SDKs */
+        fun sdks(): SdkService.WithRawResponse
+
+        fun mcp(): McpService.WithRawResponse
+
+        /** OAuth */
+        fun oAuth(): OAuthService.WithRawResponse
     }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.scalar.client.okhttp.ScalarOkHttpClient
 import com.scalar.core.jsonMapper
 import com.scalar.models.Value400
+import com.scalar.models.registry.Method
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -33,6 +34,7 @@ internal class ProGuardCompatibilityTest {
             test.keepRulesAreOnTheClasspath()
             test.clientResolvesEveryService()
             test.value400Roundtrips()
+            test.methodRoundtrips()
         }
     }
 
@@ -51,12 +53,16 @@ internal class ProGuardCompatibilityTest {
         assertNotNull(client.registry())
         assertNotNull(client.schemas())
         assertNotNull(client.loginPortals())
+        assertNotNull(client.accessGroups())
         assertNotNull(client.rules())
         assertNotNull(client.themes())
         assertNotNull(client.teams())
         assertNotNull(client.scalarDocs())
         assertNotNull(client.namespaces())
         assertNotNull(client.authentication())
+        assertNotNull(client.sdks())
+        assertNotNull(client.mcp())
+        assertNotNull(client.oAuth())
     }
 
     @Test
@@ -69,6 +75,20 @@ internal class ProGuardCompatibilityTest {
             jsonMapper()
                 .writeValueAsString(
                     jsonMapper().readValue(value400Json, object : TypeReference<Value400>() {})
+                ),
+        )
+    }
+
+    @Test
+    fun methodRoundtrips() {
+        val method = Method.DELETE
+        val methodJson = jsonMapper().writeValueAsString(method)
+
+        assertEquals(
+            methodJson,
+            jsonMapper()
+                .writeValueAsString(
+                    jsonMapper().readValue(methodJson, object : TypeReference<Method>() {})
                 ),
         )
     }

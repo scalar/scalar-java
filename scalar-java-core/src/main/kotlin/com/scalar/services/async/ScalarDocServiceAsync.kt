@@ -5,12 +5,29 @@ package com.scalar.services.async
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
+import com.scalar.models.scalarDocs.DocsProject
+import com.scalar.models.scalarDocs.GithubProject
 import com.scalar.models.scalarDocs.ScalarDocCreateGuideParams
 import com.scalar.models.scalarDocs.ScalarDocCreateGuideResponse
+import com.scalar.models.scalarDocs.ScalarDocCreateProjectParams
+import com.scalar.models.scalarDocs.ScalarDocDeleteProjectParams
 import com.scalar.models.scalarDocs.ScalarDocListGuidesParams
-import com.scalar.models.scalarDocs.ScalarDocListGuidesResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectConfigParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectConfigResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectsParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectsResponse
 import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams
 import com.scalar.models.scalarDocs.ScalarDocPublishGuideResponse
+import com.scalar.models.scalarDocs.ScalarDocPublishProjectParams
+import com.scalar.models.scalarDocs.ScalarDocPublishProjectResponse
+import com.scalar.models.scalarDocs.ScalarDocRetrieveProjectParams
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigParams
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigResponse
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -40,27 +57,209 @@ interface ScalarDocServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ScalarDocCreateGuideResponse>
 
+    /** Create a docs project. Omit `provider` to have Scalar host the repository. */
+    fun createProject(params: ScalarDocCreateProjectParams): CompletableFuture<DocsProject> =
+        createProject(params, RequestOptions.none())
+
+    /** @see createProject */
+    fun createProject(
+        params: ScalarDocCreateProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<DocsProject>
+
+    /** Delete a docs project, its deploys, its publish records and its cached builds. */
+    fun deleteProject(slug: String): CompletableFuture<Any?> =
+        deleteProject(slug, ScalarDocDeleteProjectParams.none())
+
+    /** @see deleteProject */
+    fun deleteProject(
+        slug: String,
+        params: ScalarDocDeleteProjectParams = ScalarDocDeleteProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Any?> =
+        deleteProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see deleteProject */
+    fun deleteProject(slug: String, params: ScalarDocDeleteProjectParams): CompletableFuture<Any?> =
+        deleteProject(slug, params, RequestOptions.none())
+
+    /** @see deleteProject */
+    fun deleteProject(
+        params: ScalarDocDeleteProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Any?>
+
+    /** @see deleteProject */
+    fun deleteProject(params: ScalarDocDeleteProjectParams): CompletableFuture<Any?> =
+        deleteProject(params, RequestOptions.none())
+
+    /** @see deleteProject */
+    fun deleteProject(slug: String, requestOptions: RequestOptions): CompletableFuture<Any?> =
+        deleteProject(slug, ScalarDocDeleteProjectParams.none(), requestOptions)
+
     /** List all guide projects. */
-    fun listGuides(): CompletableFuture<List<ScalarDocListGuidesResponse>> =
+    fun listGuides(): CompletableFuture<List<GithubProject>> =
         listGuides(ScalarDocListGuidesParams.none())
 
     /** @see listGuides */
     fun listGuides(
         params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<ScalarDocListGuidesResponse>>
+    ): CompletableFuture<List<GithubProject>>
 
     /** @see listGuides */
-    fun listGuides(
-        params: ScalarDocListGuidesParams
-    ): CompletableFuture<List<ScalarDocListGuidesResponse>> =
+    fun listGuides(params: ScalarDocListGuidesParams): CompletableFuture<List<GithubProject>> =
         listGuides(params, RequestOptions.none())
 
     /** @see listGuides */
-    fun listGuides(
-        requestOptions: RequestOptions
-    ): CompletableFuture<List<ScalarDocListGuidesResponse>> =
+    fun listGuides(requestOptions: RequestOptions): CompletableFuture<List<GithubProject>> =
         listGuides(ScalarDocListGuidesParams.none(), requestOptions)
+
+    /**
+     * Read `scalar.config.json` straight from the project repository, without cloning it.
+     * `baseToken` is the compare-and-swap handle for a later write.
+     */
+    fun listProjectConfig(slug: String): CompletableFuture<ScalarDocListProjectConfigResponse> =
+        listProjectConfig(slug, ScalarDocListProjectConfigParams.none())
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        slug: String,
+        params: ScalarDocListProjectConfigParams = ScalarDocListProjectConfigParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocListProjectConfigResponse> =
+        listProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        slug: String,
+        params: ScalarDocListProjectConfigParams,
+    ): CompletableFuture<ScalarDocListProjectConfigResponse> =
+        listProjectConfig(slug, params, RequestOptions.none())
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        params: ScalarDocListProjectConfigParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocListProjectConfigResponse>
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        params: ScalarDocListProjectConfigParams
+    ): CompletableFuture<ScalarDocListProjectConfigResponse> =
+        listProjectConfig(params, RequestOptions.none())
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocListProjectConfigResponse> =
+        listProjectConfig(slug, ScalarDocListProjectConfigParams.none(), requestOptions)
+
+    /** The domains the project serves on — the Scalar-hosted one and the custom one, when set. */
+    fun listProjectDomain(slug: String): CompletableFuture<ScalarDocListProjectDomainResponse> =
+        listProjectDomain(slug, ScalarDocListProjectDomainParams.none())
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        slug: String,
+        params: ScalarDocListProjectDomainParams = ScalarDocListProjectDomainParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocListProjectDomainResponse> =
+        listProjectDomain(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        slug: String,
+        params: ScalarDocListProjectDomainParams,
+    ): CompletableFuture<ScalarDocListProjectDomainResponse> =
+        listProjectDomain(slug, params, RequestOptions.none())
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        params: ScalarDocListProjectDomainParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocListProjectDomainResponse>
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        params: ScalarDocListProjectDomainParams
+    ): CompletableFuture<ScalarDocListProjectDomainResponse> =
+        listProjectDomain(params, RequestOptions.none())
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocListProjectDomainResponse> =
+        listProjectDomain(slug, ScalarDocListProjectDomainParams.none(), requestOptions)
+
+    /**
+     * Whether the project custom domain points at Scalar yet. `expected` is the CNAME record to
+     * create; `found` is what resolves today. A project with no custom domain reports `verified`
+     * with no expected record, because Scalar serves its own subdomain directly.
+     */
+    fun listProjectDomainStatus(
+        slug: String
+    ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
+        listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none())
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        slug: String,
+        params: ScalarDocListProjectDomainStatusParams =
+            ScalarDocListProjectDomainStatusParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
+        listProjectDomainStatus(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        slug: String,
+        params: ScalarDocListProjectDomainStatusParams,
+    ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
+        listProjectDomainStatus(slug, params, RequestOptions.none())
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        params: ScalarDocListProjectDomainStatusParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocListProjectDomainStatusResponse>
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        params: ScalarDocListProjectDomainStatusParams
+    ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
+        listProjectDomainStatus(params, RequestOptions.none())
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
+        listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none(), requestOptions)
+
+    /** List every docs project on the team. */
+    fun listProjects(): CompletableFuture<ScalarDocListProjectsResponse> =
+        listProjects(ScalarDocListProjectsParams.none())
+
+    /** @see listProjects */
+    fun listProjects(
+        params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocListProjectsResponse>
+
+    /** @see listProjects */
+    fun listProjects(
+        params: ScalarDocListProjectsParams
+    ): CompletableFuture<ScalarDocListProjectsResponse> =
+        listProjects(params, RequestOptions.none())
+
+    /** @see listProjects */
+    fun listProjects(
+        requestOptions: RequestOptions
+    ): CompletableFuture<ScalarDocListProjectsResponse> =
+        listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 
     /** Start a new publish process. */
     fun publishGuide(slug: String): CompletableFuture<ScalarDocPublishGuideResponse> =
@@ -100,6 +299,141 @@ interface ScalarDocServiceAsync {
     ): CompletableFuture<ScalarDocPublishGuideResponse> =
         publishGuide(slug, ScalarDocPublishGuideParams.none(), requestOptions)
 
+    /** Start a build and deploy. The returned `publishUid` identifies the publish record. */
+    fun publishProject(slug: String): CompletableFuture<ScalarDocPublishProjectResponse> =
+        publishProject(slug, ScalarDocPublishProjectParams.none())
+
+    /** @see publishProject */
+    fun publishProject(
+        slug: String,
+        params: ScalarDocPublishProjectParams = ScalarDocPublishProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocPublishProjectResponse> =
+        publishProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see publishProject */
+    fun publishProject(
+        slug: String,
+        params: ScalarDocPublishProjectParams,
+    ): CompletableFuture<ScalarDocPublishProjectResponse> =
+        publishProject(slug, params, RequestOptions.none())
+
+    /** @see publishProject */
+    fun publishProject(
+        params: ScalarDocPublishProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocPublishProjectResponse>
+
+    /** @see publishProject */
+    fun publishProject(
+        params: ScalarDocPublishProjectParams
+    ): CompletableFuture<ScalarDocPublishProjectResponse> =
+        publishProject(params, RequestOptions.none())
+
+    /** @see publishProject */
+    fun publishProject(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocPublishProjectResponse> =
+        publishProject(slug, ScalarDocPublishProjectParams.none(), requestOptions)
+
+    /** Get a single docs project by its slug. */
+    fun retrieveProject(slug: String): CompletableFuture<DocsProject> =
+        retrieveProject(slug, ScalarDocRetrieveProjectParams.none())
+
+    /** @see retrieveProject */
+    fun retrieveProject(
+        slug: String,
+        params: ScalarDocRetrieveProjectParams = ScalarDocRetrieveProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<DocsProject> =
+        retrieveProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see retrieveProject */
+    fun retrieveProject(
+        slug: String,
+        params: ScalarDocRetrieveProjectParams,
+    ): CompletableFuture<DocsProject> = retrieveProject(slug, params, RequestOptions.none())
+
+    /** @see retrieveProject */
+    fun retrieveProject(
+        params: ScalarDocRetrieveProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<DocsProject>
+
+    /** @see retrieveProject */
+    fun retrieveProject(params: ScalarDocRetrieveProjectParams): CompletableFuture<DocsProject> =
+        retrieveProject(params, RequestOptions.none())
+
+    /** @see retrieveProject */
+    fun retrieveProject(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<DocsProject> =
+        retrieveProject(slug, ScalarDocRetrieveProjectParams.none(), requestOptions)
+
+    /**
+     * Update project settings. Set `isPrivate` with `accessGroups` to put the site behind a login.
+     */
+    fun updateProject(slug: String): CompletableFuture<Any?> =
+        updateProject(slug, ScalarDocUpdateProjectParams.none())
+
+    /** @see updateProject */
+    fun updateProject(
+        slug: String,
+        params: ScalarDocUpdateProjectParams = ScalarDocUpdateProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Any?> =
+        updateProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see updateProject */
+    fun updateProject(slug: String, params: ScalarDocUpdateProjectParams): CompletableFuture<Any?> =
+        updateProject(slug, params, RequestOptions.none())
+
+    /** @see updateProject */
+    fun updateProject(
+        params: ScalarDocUpdateProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Any?>
+
+    /** @see updateProject */
+    fun updateProject(params: ScalarDocUpdateProjectParams): CompletableFuture<Any?> =
+        updateProject(params, RequestOptions.none())
+
+    /** @see updateProject */
+    fun updateProject(slug: String, requestOptions: RequestOptions): CompletableFuture<Any?> =
+        updateProject(slug, ScalarDocUpdateProjectParams.none(), requestOptions)
+
+    /**
+     * Commit `scalar.config.json` straight to the project repository. Pass the `baseToken` from the
+     * read this edit was based on; a conflict means the file moved underneath it.
+     */
+    fun updateProjectConfig(
+        slug: String,
+        params: ScalarDocUpdateProjectConfigParams,
+    ): CompletableFuture<ScalarDocUpdateProjectConfigResponse> =
+        updateProjectConfig(slug, params, RequestOptions.none())
+
+    /** @see updateProjectConfig */
+    fun updateProjectConfig(
+        slug: String,
+        params: ScalarDocUpdateProjectConfigParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocUpdateProjectConfigResponse> =
+        updateProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see updateProjectConfig */
+    fun updateProjectConfig(
+        params: ScalarDocUpdateProjectConfigParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ScalarDocUpdateProjectConfigResponse>
+
+    /** @see updateProjectConfig */
+    fun updateProjectConfig(
+        params: ScalarDocUpdateProjectConfigParams
+    ): CompletableFuture<ScalarDocUpdateProjectConfigResponse> =
+        updateProjectConfig(params, RequestOptions.none())
+
     /**
      * A view of [ScalarDocServiceAsync] that provides access to raw HTTP responses for each method.
      */
@@ -130,29 +464,243 @@ interface ScalarDocServiceAsync {
         ): CompletableFuture<HttpResponseFor<ScalarDocCreateGuideResponse>>
 
         /**
+         * Returns a raw HTTP response for `post /v1/docs`, but is otherwise the same as
+         * [ScalarDocServiceAsync.createProject].
+         */
+        fun createProject(
+            params: ScalarDocCreateProjectParams
+        ): CompletableFuture<HttpResponseFor<DocsProject>> =
+            createProject(params, RequestOptions.none())
+
+        /** @see createProject */
+        fun createProject(
+            params: ScalarDocCreateProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<DocsProject>>
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/docs/{slug}`, but is otherwise the same as
+         * [ScalarDocServiceAsync.deleteProject].
+         */
+        fun deleteProject(slug: String): CompletableFuture<HttpResponseFor<Any?>> =
+            deleteProject(slug, ScalarDocDeleteProjectParams.none())
+
+        /** @see deleteProject */
+        fun deleteProject(
+            slug: String,
+            params: ScalarDocDeleteProjectParams = ScalarDocDeleteProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>> =
+            deleteProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see deleteProject */
+        fun deleteProject(
+            slug: String,
+            params: ScalarDocDeleteProjectParams,
+        ): CompletableFuture<HttpResponseFor<Any?>> =
+            deleteProject(slug, params, RequestOptions.none())
+
+        /** @see deleteProject */
+        fun deleteProject(
+            params: ScalarDocDeleteProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
+
+        /** @see deleteProject */
+        fun deleteProject(
+            params: ScalarDocDeleteProjectParams
+        ): CompletableFuture<HttpResponseFor<Any?>> = deleteProject(params, RequestOptions.none())
+
+        /** @see deleteProject */
+        fun deleteProject(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Any?>> =
+            deleteProject(slug, ScalarDocDeleteProjectParams.none(), requestOptions)
+
+        /**
          * Returns a raw HTTP response for `get /v1/guides`, but is otherwise the same as
          * [ScalarDocServiceAsync.listGuides].
          */
-        fun listGuides(): CompletableFuture<HttpResponseFor<List<ScalarDocListGuidesResponse>>> =
+        fun listGuides(): CompletableFuture<HttpResponseFor<List<GithubProject>>> =
             listGuides(ScalarDocListGuidesParams.none())
 
         /** @see listGuides */
         fun listGuides(
             params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<ScalarDocListGuidesResponse>>>
+        ): CompletableFuture<HttpResponseFor<List<GithubProject>>>
 
         /** @see listGuides */
         fun listGuides(
             params: ScalarDocListGuidesParams
-        ): CompletableFuture<HttpResponseFor<List<ScalarDocListGuidesResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<GithubProject>>> =
             listGuides(params, RequestOptions.none())
 
         /** @see listGuides */
         fun listGuides(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<ScalarDocListGuidesResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<GithubProject>>> =
             listGuides(ScalarDocListGuidesParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}/config`, but is otherwise the same
+         * as [ScalarDocServiceAsync.listProjectConfig].
+         */
+        fun listProjectConfig(
+            slug: String
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> =
+            listProjectConfig(slug, ScalarDocListProjectConfigParams.none())
+
+        /** @see listProjectConfig */
+        fun listProjectConfig(
+            slug: String,
+            params: ScalarDocListProjectConfigParams = ScalarDocListProjectConfigParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> =
+            listProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see listProjectConfig */
+        fun listProjectConfig(
+            slug: String,
+            params: ScalarDocListProjectConfigParams,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> =
+            listProjectConfig(slug, params, RequestOptions.none())
+
+        /** @see listProjectConfig */
+        fun listProjectConfig(
+            params: ScalarDocListProjectConfigParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>>
+
+        /** @see listProjectConfig */
+        fun listProjectConfig(
+            params: ScalarDocListProjectConfigParams
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> =
+            listProjectConfig(params, RequestOptions.none())
+
+        /** @see listProjectConfig */
+        fun listProjectConfig(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> =
+            listProjectConfig(slug, ScalarDocListProjectConfigParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}/domain`, but is otherwise the same
+         * as [ScalarDocServiceAsync.listProjectDomain].
+         */
+        fun listProjectDomain(
+            slug: String
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> =
+            listProjectDomain(slug, ScalarDocListProjectDomainParams.none())
+
+        /** @see listProjectDomain */
+        fun listProjectDomain(
+            slug: String,
+            params: ScalarDocListProjectDomainParams = ScalarDocListProjectDomainParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> =
+            listProjectDomain(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see listProjectDomain */
+        fun listProjectDomain(
+            slug: String,
+            params: ScalarDocListProjectDomainParams,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> =
+            listProjectDomain(slug, params, RequestOptions.none())
+
+        /** @see listProjectDomain */
+        fun listProjectDomain(
+            params: ScalarDocListProjectDomainParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>>
+
+        /** @see listProjectDomain */
+        fun listProjectDomain(
+            params: ScalarDocListProjectDomainParams
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> =
+            listProjectDomain(params, RequestOptions.none())
+
+        /** @see listProjectDomain */
+        fun listProjectDomain(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> =
+            listProjectDomain(slug, ScalarDocListProjectDomainParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}/domain/status`, but is otherwise the
+         * same as [ScalarDocServiceAsync.listProjectDomainStatus].
+         */
+        fun listProjectDomainStatus(
+            slug: String
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> =
+            listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none())
+
+        /** @see listProjectDomainStatus */
+        fun listProjectDomainStatus(
+            slug: String,
+            params: ScalarDocListProjectDomainStatusParams =
+                ScalarDocListProjectDomainStatusParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> =
+            listProjectDomainStatus(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see listProjectDomainStatus */
+        fun listProjectDomainStatus(
+            slug: String,
+            params: ScalarDocListProjectDomainStatusParams,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> =
+            listProjectDomainStatus(slug, params, RequestOptions.none())
+
+        /** @see listProjectDomainStatus */
+        fun listProjectDomainStatus(
+            params: ScalarDocListProjectDomainStatusParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>>
+
+        /** @see listProjectDomainStatus */
+        fun listProjectDomainStatus(
+            params: ScalarDocListProjectDomainStatusParams
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> =
+            listProjectDomainStatus(params, RequestOptions.none())
+
+        /** @see listProjectDomainStatus */
+        fun listProjectDomainStatus(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> =
+            listProjectDomainStatus(
+                slug,
+                ScalarDocListProjectDomainStatusParams.none(),
+                requestOptions,
+            )
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs`, but is otherwise the same as
+         * [ScalarDocServiceAsync.listProjects].
+         */
+        fun listProjects(): CompletableFuture<HttpResponseFor<ScalarDocListProjectsResponse>> =
+            listProjects(ScalarDocListProjectsParams.none())
+
+        /** @see listProjects */
+        fun listProjects(
+            params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectsResponse>>
+
+        /** @see listProjects */
+        fun listProjects(
+            params: ScalarDocListProjectsParams
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectsResponse>> =
+            listProjects(params, RequestOptions.none())
+
+        /** @see listProjects */
+        fun listProjects(
+            requestOptions: RequestOptions
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectsResponse>> =
+            listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /v1/guides/{slug}/publish`, but is otherwise the
@@ -196,5 +744,159 @@ interface ScalarDocServiceAsync {
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ScalarDocPublishGuideResponse>> =
             publishGuide(slug, ScalarDocPublishGuideParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `post /v1/docs/{slug}/publish`, but is otherwise the same
+         * as [ScalarDocServiceAsync.publishProject].
+         */
+        fun publishProject(
+            slug: String
+        ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> =
+            publishProject(slug, ScalarDocPublishProjectParams.none())
+
+        /** @see publishProject */
+        fun publishProject(
+            slug: String,
+            params: ScalarDocPublishProjectParams = ScalarDocPublishProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> =
+            publishProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see publishProject */
+        fun publishProject(
+            slug: String,
+            params: ScalarDocPublishProjectParams,
+        ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> =
+            publishProject(slug, params, RequestOptions.none())
+
+        /** @see publishProject */
+        fun publishProject(
+            params: ScalarDocPublishProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>>
+
+        /** @see publishProject */
+        fun publishProject(
+            params: ScalarDocPublishProjectParams
+        ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> =
+            publishProject(params, RequestOptions.none())
+
+        /** @see publishProject */
+        fun publishProject(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> =
+            publishProject(slug, ScalarDocPublishProjectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}`, but is otherwise the same as
+         * [ScalarDocServiceAsync.retrieveProject].
+         */
+        fun retrieveProject(slug: String): CompletableFuture<HttpResponseFor<DocsProject>> =
+            retrieveProject(slug, ScalarDocRetrieveProjectParams.none())
+
+        /** @see retrieveProject */
+        fun retrieveProject(
+            slug: String,
+            params: ScalarDocRetrieveProjectParams = ScalarDocRetrieveProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<DocsProject>> =
+            retrieveProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see retrieveProject */
+        fun retrieveProject(
+            slug: String,
+            params: ScalarDocRetrieveProjectParams,
+        ): CompletableFuture<HttpResponseFor<DocsProject>> =
+            retrieveProject(slug, params, RequestOptions.none())
+
+        /** @see retrieveProject */
+        fun retrieveProject(
+            params: ScalarDocRetrieveProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<DocsProject>>
+
+        /** @see retrieveProject */
+        fun retrieveProject(
+            params: ScalarDocRetrieveProjectParams
+        ): CompletableFuture<HttpResponseFor<DocsProject>> =
+            retrieveProject(params, RequestOptions.none())
+
+        /** @see retrieveProject */
+        fun retrieveProject(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<DocsProject>> =
+            retrieveProject(slug, ScalarDocRetrieveProjectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/docs/{slug}`, but is otherwise the same as
+         * [ScalarDocServiceAsync.updateProject].
+         */
+        fun updateProject(slug: String): CompletableFuture<HttpResponseFor<Any?>> =
+            updateProject(slug, ScalarDocUpdateProjectParams.none())
+
+        /** @see updateProject */
+        fun updateProject(
+            slug: String,
+            params: ScalarDocUpdateProjectParams = ScalarDocUpdateProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>> =
+            updateProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see updateProject */
+        fun updateProject(
+            slug: String,
+            params: ScalarDocUpdateProjectParams,
+        ): CompletableFuture<HttpResponseFor<Any?>> =
+            updateProject(slug, params, RequestOptions.none())
+
+        /** @see updateProject */
+        fun updateProject(
+            params: ScalarDocUpdateProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
+
+        /** @see updateProject */
+        fun updateProject(
+            params: ScalarDocUpdateProjectParams
+        ): CompletableFuture<HttpResponseFor<Any?>> = updateProject(params, RequestOptions.none())
+
+        /** @see updateProject */
+        fun updateProject(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Any?>> =
+            updateProject(slug, ScalarDocUpdateProjectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `put /v1/docs/{slug}/config`, but is otherwise the same
+         * as [ScalarDocServiceAsync.updateProjectConfig].
+         */
+        fun updateProjectConfig(
+            slug: String,
+            params: ScalarDocUpdateProjectConfigParams,
+        ): CompletableFuture<HttpResponseFor<ScalarDocUpdateProjectConfigResponse>> =
+            updateProjectConfig(slug, params, RequestOptions.none())
+
+        /** @see updateProjectConfig */
+        fun updateProjectConfig(
+            slug: String,
+            params: ScalarDocUpdateProjectConfigParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocUpdateProjectConfigResponse>> =
+            updateProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see updateProjectConfig */
+        fun updateProjectConfig(
+            params: ScalarDocUpdateProjectConfigParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ScalarDocUpdateProjectConfigResponse>>
+
+        /** @see updateProjectConfig */
+        fun updateProjectConfig(
+            params: ScalarDocUpdateProjectConfigParams
+        ): CompletableFuture<HttpResponseFor<ScalarDocUpdateProjectConfigResponse>> =
+            updateProjectConfig(params, RequestOptions.none())
     }
 }

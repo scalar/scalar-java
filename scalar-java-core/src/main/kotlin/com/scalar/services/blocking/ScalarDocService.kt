@@ -6,12 +6,29 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
+import com.scalar.models.scalarDocs.DocsProject
+import com.scalar.models.scalarDocs.GithubProject
 import com.scalar.models.scalarDocs.ScalarDocCreateGuideParams
 import com.scalar.models.scalarDocs.ScalarDocCreateGuideResponse
+import com.scalar.models.scalarDocs.ScalarDocCreateProjectParams
+import com.scalar.models.scalarDocs.ScalarDocDeleteProjectParams
 import com.scalar.models.scalarDocs.ScalarDocListGuidesParams
-import com.scalar.models.scalarDocs.ScalarDocListGuidesResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectConfigParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectConfigResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectsParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectsResponse
 import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams
 import com.scalar.models.scalarDocs.ScalarDocPublishGuideResponse
+import com.scalar.models.scalarDocs.ScalarDocPublishProjectParams
+import com.scalar.models.scalarDocs.ScalarDocPublishProjectResponse
+import com.scalar.models.scalarDocs.ScalarDocRetrieveProjectParams
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigParams
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigResponse
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectParams
 import java.util.function.Consumer
 
 /** Scalar Docs */
@@ -39,23 +56,196 @@ interface ScalarDocService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ScalarDocCreateGuideResponse
 
+    /** Create a docs project. Omit `provider` to have Scalar host the repository. */
+    fun createProject(params: ScalarDocCreateProjectParams): DocsProject =
+        createProject(params, RequestOptions.none())
+
+    /** @see createProject */
+    fun createProject(
+        params: ScalarDocCreateProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): DocsProject
+
+    /** Delete a docs project, its deploys, its publish records and its cached builds. */
+    fun deleteProject(slug: String): Any? = deleteProject(slug, ScalarDocDeleteProjectParams.none())
+
+    /** @see deleteProject */
+    fun deleteProject(
+        slug: String,
+        params: ScalarDocDeleteProjectParams = ScalarDocDeleteProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Any? = deleteProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see deleteProject */
+    fun deleteProject(slug: String, params: ScalarDocDeleteProjectParams): Any? =
+        deleteProject(slug, params, RequestOptions.none())
+
+    /** @see deleteProject */
+    fun deleteProject(
+        params: ScalarDocDeleteProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Any?
+
+    /** @see deleteProject */
+    fun deleteProject(params: ScalarDocDeleteProjectParams): Any? =
+        deleteProject(params, RequestOptions.none())
+
+    /** @see deleteProject */
+    fun deleteProject(slug: String, requestOptions: RequestOptions): Any? =
+        deleteProject(slug, ScalarDocDeleteProjectParams.none(), requestOptions)
+
     /** List all guide projects. */
-    fun listGuides(): List<ScalarDocListGuidesResponse> =
-        listGuides(ScalarDocListGuidesParams.none())
+    fun listGuides(): List<GithubProject> = listGuides(ScalarDocListGuidesParams.none())
 
     /** @see listGuides */
     fun listGuides(
         params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<ScalarDocListGuidesResponse>
+    ): List<GithubProject>
 
     /** @see listGuides */
-    fun listGuides(params: ScalarDocListGuidesParams): List<ScalarDocListGuidesResponse> =
+    fun listGuides(params: ScalarDocListGuidesParams): List<GithubProject> =
         listGuides(params, RequestOptions.none())
 
     /** @see listGuides */
-    fun listGuides(requestOptions: RequestOptions): List<ScalarDocListGuidesResponse> =
+    fun listGuides(requestOptions: RequestOptions): List<GithubProject> =
         listGuides(ScalarDocListGuidesParams.none(), requestOptions)
+
+    /**
+     * Read `scalar.config.json` straight from the project repository, without cloning it.
+     * `baseToken` is the compare-and-swap handle for a later write.
+     */
+    fun listProjectConfig(slug: String): ScalarDocListProjectConfigResponse =
+        listProjectConfig(slug, ScalarDocListProjectConfigParams.none())
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        slug: String,
+        params: ScalarDocListProjectConfigParams = ScalarDocListProjectConfigParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocListProjectConfigResponse =
+        listProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        slug: String,
+        params: ScalarDocListProjectConfigParams,
+    ): ScalarDocListProjectConfigResponse = listProjectConfig(slug, params, RequestOptions.none())
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        params: ScalarDocListProjectConfigParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocListProjectConfigResponse
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        params: ScalarDocListProjectConfigParams
+    ): ScalarDocListProjectConfigResponse = listProjectConfig(params, RequestOptions.none())
+
+    /** @see listProjectConfig */
+    fun listProjectConfig(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): ScalarDocListProjectConfigResponse =
+        listProjectConfig(slug, ScalarDocListProjectConfigParams.none(), requestOptions)
+
+    /** The domains the project serves on — the Scalar-hosted one and the custom one, when set. */
+    fun listProjectDomain(slug: String): ScalarDocListProjectDomainResponse =
+        listProjectDomain(slug, ScalarDocListProjectDomainParams.none())
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        slug: String,
+        params: ScalarDocListProjectDomainParams = ScalarDocListProjectDomainParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocListProjectDomainResponse =
+        listProjectDomain(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        slug: String,
+        params: ScalarDocListProjectDomainParams,
+    ): ScalarDocListProjectDomainResponse = listProjectDomain(slug, params, RequestOptions.none())
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        params: ScalarDocListProjectDomainParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocListProjectDomainResponse
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        params: ScalarDocListProjectDomainParams
+    ): ScalarDocListProjectDomainResponse = listProjectDomain(params, RequestOptions.none())
+
+    /** @see listProjectDomain */
+    fun listProjectDomain(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): ScalarDocListProjectDomainResponse =
+        listProjectDomain(slug, ScalarDocListProjectDomainParams.none(), requestOptions)
+
+    /**
+     * Whether the project custom domain points at Scalar yet. `expected` is the CNAME record to
+     * create; `found` is what resolves today. A project with no custom domain reports `verified`
+     * with no expected record, because Scalar serves its own subdomain directly.
+     */
+    fun listProjectDomainStatus(slug: String): ScalarDocListProjectDomainStatusResponse =
+        listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none())
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        slug: String,
+        params: ScalarDocListProjectDomainStatusParams =
+            ScalarDocListProjectDomainStatusParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocListProjectDomainStatusResponse =
+        listProjectDomainStatus(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        slug: String,
+        params: ScalarDocListProjectDomainStatusParams,
+    ): ScalarDocListProjectDomainStatusResponse =
+        listProjectDomainStatus(slug, params, RequestOptions.none())
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        params: ScalarDocListProjectDomainStatusParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocListProjectDomainStatusResponse
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        params: ScalarDocListProjectDomainStatusParams
+    ): ScalarDocListProjectDomainStatusResponse =
+        listProjectDomainStatus(params, RequestOptions.none())
+
+    /** @see listProjectDomainStatus */
+    fun listProjectDomainStatus(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): ScalarDocListProjectDomainStatusResponse =
+        listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none(), requestOptions)
+
+    /** List every docs project on the team. */
+    fun listProjects(): ScalarDocListProjectsResponse =
+        listProjects(ScalarDocListProjectsParams.none())
+
+    /** @see listProjects */
+    fun listProjects(
+        params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocListProjectsResponse
+
+    /** @see listProjects */
+    fun listProjects(params: ScalarDocListProjectsParams): ScalarDocListProjectsResponse =
+        listProjects(params, RequestOptions.none())
+
+    /** @see listProjects */
+    fun listProjects(requestOptions: RequestOptions): ScalarDocListProjectsResponse =
+        listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 
     /** Start a new publish process. */
     fun publishGuide(slug: String): ScalarDocPublishGuideResponse =
@@ -89,6 +279,129 @@ interface ScalarDocService {
     fun publishGuide(slug: String, requestOptions: RequestOptions): ScalarDocPublishGuideResponse =
         publishGuide(slug, ScalarDocPublishGuideParams.none(), requestOptions)
 
+    /** Start a build and deploy. The returned `publishUid` identifies the publish record. */
+    fun publishProject(slug: String): ScalarDocPublishProjectResponse =
+        publishProject(slug, ScalarDocPublishProjectParams.none())
+
+    /** @see publishProject */
+    fun publishProject(
+        slug: String,
+        params: ScalarDocPublishProjectParams = ScalarDocPublishProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocPublishProjectResponse =
+        publishProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see publishProject */
+    fun publishProject(
+        slug: String,
+        params: ScalarDocPublishProjectParams,
+    ): ScalarDocPublishProjectResponse = publishProject(slug, params, RequestOptions.none())
+
+    /** @see publishProject */
+    fun publishProject(
+        params: ScalarDocPublishProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocPublishProjectResponse
+
+    /** @see publishProject */
+    fun publishProject(params: ScalarDocPublishProjectParams): ScalarDocPublishProjectResponse =
+        publishProject(params, RequestOptions.none())
+
+    /** @see publishProject */
+    fun publishProject(
+        slug: String,
+        requestOptions: RequestOptions,
+    ): ScalarDocPublishProjectResponse =
+        publishProject(slug, ScalarDocPublishProjectParams.none(), requestOptions)
+
+    /** Get a single docs project by its slug. */
+    fun retrieveProject(slug: String): DocsProject =
+        retrieveProject(slug, ScalarDocRetrieveProjectParams.none())
+
+    /** @see retrieveProject */
+    fun retrieveProject(
+        slug: String,
+        params: ScalarDocRetrieveProjectParams = ScalarDocRetrieveProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): DocsProject = retrieveProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see retrieveProject */
+    fun retrieveProject(slug: String, params: ScalarDocRetrieveProjectParams): DocsProject =
+        retrieveProject(slug, params, RequestOptions.none())
+
+    /** @see retrieveProject */
+    fun retrieveProject(
+        params: ScalarDocRetrieveProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): DocsProject
+
+    /** @see retrieveProject */
+    fun retrieveProject(params: ScalarDocRetrieveProjectParams): DocsProject =
+        retrieveProject(params, RequestOptions.none())
+
+    /** @see retrieveProject */
+    fun retrieveProject(slug: String, requestOptions: RequestOptions): DocsProject =
+        retrieveProject(slug, ScalarDocRetrieveProjectParams.none(), requestOptions)
+
+    /**
+     * Update project settings. Set `isPrivate` with `accessGroups` to put the site behind a login.
+     */
+    fun updateProject(slug: String): Any? = updateProject(slug, ScalarDocUpdateProjectParams.none())
+
+    /** @see updateProject */
+    fun updateProject(
+        slug: String,
+        params: ScalarDocUpdateProjectParams = ScalarDocUpdateProjectParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Any? = updateProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see updateProject */
+    fun updateProject(slug: String, params: ScalarDocUpdateProjectParams): Any? =
+        updateProject(slug, params, RequestOptions.none())
+
+    /** @see updateProject */
+    fun updateProject(
+        params: ScalarDocUpdateProjectParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): Any?
+
+    /** @see updateProject */
+    fun updateProject(params: ScalarDocUpdateProjectParams): Any? =
+        updateProject(params, RequestOptions.none())
+
+    /** @see updateProject */
+    fun updateProject(slug: String, requestOptions: RequestOptions): Any? =
+        updateProject(slug, ScalarDocUpdateProjectParams.none(), requestOptions)
+
+    /**
+     * Commit `scalar.config.json` straight to the project repository. Pass the `baseToken` from the
+     * read this edit was based on; a conflict means the file moved underneath it.
+     */
+    fun updateProjectConfig(
+        slug: String,
+        params: ScalarDocUpdateProjectConfigParams,
+    ): ScalarDocUpdateProjectConfigResponse =
+        updateProjectConfig(slug, params, RequestOptions.none())
+
+    /** @see updateProjectConfig */
+    fun updateProjectConfig(
+        slug: String,
+        params: ScalarDocUpdateProjectConfigParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocUpdateProjectConfigResponse =
+        updateProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see updateProjectConfig */
+    fun updateProjectConfig(
+        params: ScalarDocUpdateProjectConfigParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocUpdateProjectConfigResponse
+
+    /** @see updateProjectConfig */
+    fun updateProjectConfig(
+        params: ScalarDocUpdateProjectConfigParams
+    ): ScalarDocUpdateProjectConfigResponse = updateProjectConfig(params, RequestOptions.none())
+
     /** A view of [ScalarDocService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
@@ -117,11 +430,67 @@ interface ScalarDocService {
         ): HttpResponseFor<ScalarDocCreateGuideResponse>
 
         /**
+         * Returns a raw HTTP response for `post /v1/docs`, but is otherwise the same as
+         * [ScalarDocService.createProject].
+         */
+        @MustBeClosed
+        fun createProject(params: ScalarDocCreateProjectParams): HttpResponseFor<DocsProject> =
+            createProject(params, RequestOptions.none())
+
+        /** @see createProject */
+        @MustBeClosed
+        fun createProject(
+            params: ScalarDocCreateProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DocsProject>
+
+        /**
+         * Returns a raw HTTP response for `delete /v1/docs/{slug}`, but is otherwise the same as
+         * [ScalarDocService.deleteProject].
+         */
+        @MustBeClosed
+        fun deleteProject(slug: String): HttpResponseFor<Any?> =
+            deleteProject(slug, ScalarDocDeleteProjectParams.none())
+
+        /** @see deleteProject */
+        @MustBeClosed
+        fun deleteProject(
+            slug: String,
+            params: ScalarDocDeleteProjectParams = ScalarDocDeleteProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?> =
+            deleteProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see deleteProject */
+        @MustBeClosed
+        fun deleteProject(
+            slug: String,
+            params: ScalarDocDeleteProjectParams,
+        ): HttpResponseFor<Any?> = deleteProject(slug, params, RequestOptions.none())
+
+        /** @see deleteProject */
+        @MustBeClosed
+        fun deleteProject(
+            params: ScalarDocDeleteProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
+
+        /** @see deleteProject */
+        @MustBeClosed
+        fun deleteProject(params: ScalarDocDeleteProjectParams): HttpResponseFor<Any?> =
+            deleteProject(params, RequestOptions.none())
+
+        /** @see deleteProject */
+        @MustBeClosed
+        fun deleteProject(slug: String, requestOptions: RequestOptions): HttpResponseFor<Any?> =
+            deleteProject(slug, ScalarDocDeleteProjectParams.none(), requestOptions)
+
+        /**
          * Returns a raw HTTP response for `get /v1/guides`, but is otherwise the same as
          * [ScalarDocService.listGuides].
          */
         @MustBeClosed
-        fun listGuides(): HttpResponseFor<List<ScalarDocListGuidesResponse>> =
+        fun listGuides(): HttpResponseFor<List<GithubProject>> =
             listGuides(ScalarDocListGuidesParams.none())
 
         /** @see listGuides */
@@ -129,21 +498,194 @@ interface ScalarDocService {
         fun listGuides(
             params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<ScalarDocListGuidesResponse>>
+        ): HttpResponseFor<List<GithubProject>>
 
         /** @see listGuides */
         @MustBeClosed
-        fun listGuides(
-            params: ScalarDocListGuidesParams
-        ): HttpResponseFor<List<ScalarDocListGuidesResponse>> =
+        fun listGuides(params: ScalarDocListGuidesParams): HttpResponseFor<List<GithubProject>> =
             listGuides(params, RequestOptions.none())
 
         /** @see listGuides */
         @MustBeClosed
-        fun listGuides(
-            requestOptions: RequestOptions
-        ): HttpResponseFor<List<ScalarDocListGuidesResponse>> =
+        fun listGuides(requestOptions: RequestOptions): HttpResponseFor<List<GithubProject>> =
             listGuides(ScalarDocListGuidesParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}/config`, but is otherwise the same
+         * as [ScalarDocService.listProjectConfig].
+         */
+        @MustBeClosed
+        fun listProjectConfig(slug: String): HttpResponseFor<ScalarDocListProjectConfigResponse> =
+            listProjectConfig(slug, ScalarDocListProjectConfigParams.none())
+
+        /** @see listProjectConfig */
+        @MustBeClosed
+        fun listProjectConfig(
+            slug: String,
+            params: ScalarDocListProjectConfigParams = ScalarDocListProjectConfigParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocListProjectConfigResponse> =
+            listProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see listProjectConfig */
+        @MustBeClosed
+        fun listProjectConfig(
+            slug: String,
+            params: ScalarDocListProjectConfigParams,
+        ): HttpResponseFor<ScalarDocListProjectConfigResponse> =
+            listProjectConfig(slug, params, RequestOptions.none())
+
+        /** @see listProjectConfig */
+        @MustBeClosed
+        fun listProjectConfig(
+            params: ScalarDocListProjectConfigParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocListProjectConfigResponse>
+
+        /** @see listProjectConfig */
+        @MustBeClosed
+        fun listProjectConfig(
+            params: ScalarDocListProjectConfigParams
+        ): HttpResponseFor<ScalarDocListProjectConfigResponse> =
+            listProjectConfig(params, RequestOptions.none())
+
+        /** @see listProjectConfig */
+        @MustBeClosed
+        fun listProjectConfig(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ScalarDocListProjectConfigResponse> =
+            listProjectConfig(slug, ScalarDocListProjectConfigParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}/domain`, but is otherwise the same
+         * as [ScalarDocService.listProjectDomain].
+         */
+        @MustBeClosed
+        fun listProjectDomain(slug: String): HttpResponseFor<ScalarDocListProjectDomainResponse> =
+            listProjectDomain(slug, ScalarDocListProjectDomainParams.none())
+
+        /** @see listProjectDomain */
+        @MustBeClosed
+        fun listProjectDomain(
+            slug: String,
+            params: ScalarDocListProjectDomainParams = ScalarDocListProjectDomainParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocListProjectDomainResponse> =
+            listProjectDomain(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see listProjectDomain */
+        @MustBeClosed
+        fun listProjectDomain(
+            slug: String,
+            params: ScalarDocListProjectDomainParams,
+        ): HttpResponseFor<ScalarDocListProjectDomainResponse> =
+            listProjectDomain(slug, params, RequestOptions.none())
+
+        /** @see listProjectDomain */
+        @MustBeClosed
+        fun listProjectDomain(
+            params: ScalarDocListProjectDomainParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocListProjectDomainResponse>
+
+        /** @see listProjectDomain */
+        @MustBeClosed
+        fun listProjectDomain(
+            params: ScalarDocListProjectDomainParams
+        ): HttpResponseFor<ScalarDocListProjectDomainResponse> =
+            listProjectDomain(params, RequestOptions.none())
+
+        /** @see listProjectDomain */
+        @MustBeClosed
+        fun listProjectDomain(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ScalarDocListProjectDomainResponse> =
+            listProjectDomain(slug, ScalarDocListProjectDomainParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}/domain/status`, but is otherwise the
+         * same as [ScalarDocService.listProjectDomainStatus].
+         */
+        @MustBeClosed
+        fun listProjectDomainStatus(
+            slug: String
+        ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
+            listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none())
+
+        /** @see listProjectDomainStatus */
+        @MustBeClosed
+        fun listProjectDomainStatus(
+            slug: String,
+            params: ScalarDocListProjectDomainStatusParams =
+                ScalarDocListProjectDomainStatusParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
+            listProjectDomainStatus(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see listProjectDomainStatus */
+        @MustBeClosed
+        fun listProjectDomainStatus(
+            slug: String,
+            params: ScalarDocListProjectDomainStatusParams,
+        ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
+            listProjectDomainStatus(slug, params, RequestOptions.none())
+
+        /** @see listProjectDomainStatus */
+        @MustBeClosed
+        fun listProjectDomainStatus(
+            params: ScalarDocListProjectDomainStatusParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse>
+
+        /** @see listProjectDomainStatus */
+        @MustBeClosed
+        fun listProjectDomainStatus(
+            params: ScalarDocListProjectDomainStatusParams
+        ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
+            listProjectDomainStatus(params, RequestOptions.none())
+
+        /** @see listProjectDomainStatus */
+        @MustBeClosed
+        fun listProjectDomainStatus(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
+            listProjectDomainStatus(
+                slug,
+                ScalarDocListProjectDomainStatusParams.none(),
+                requestOptions,
+            )
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs`, but is otherwise the same as
+         * [ScalarDocService.listProjects].
+         */
+        @MustBeClosed
+        fun listProjects(): HttpResponseFor<ScalarDocListProjectsResponse> =
+            listProjects(ScalarDocListProjectsParams.none())
+
+        /** @see listProjects */
+        @MustBeClosed
+        fun listProjects(
+            params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocListProjectsResponse>
+
+        /** @see listProjects */
+        @MustBeClosed
+        fun listProjects(
+            params: ScalarDocListProjectsParams
+        ): HttpResponseFor<ScalarDocListProjectsResponse> =
+            listProjects(params, RequestOptions.none())
+
+        /** @see listProjects */
+        @MustBeClosed
+        fun listProjects(
+            requestOptions: RequestOptions
+        ): HttpResponseFor<ScalarDocListProjectsResponse> =
+            listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `post /v1/guides/{slug}/publish`, but is otherwise the
@@ -191,5 +733,171 @@ interface ScalarDocService {
             requestOptions: RequestOptions,
         ): HttpResponseFor<ScalarDocPublishGuideResponse> =
             publishGuide(slug, ScalarDocPublishGuideParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `post /v1/docs/{slug}/publish`, but is otherwise the same
+         * as [ScalarDocService.publishProject].
+         */
+        @MustBeClosed
+        fun publishProject(slug: String): HttpResponseFor<ScalarDocPublishProjectResponse> =
+            publishProject(slug, ScalarDocPublishProjectParams.none())
+
+        /** @see publishProject */
+        @MustBeClosed
+        fun publishProject(
+            slug: String,
+            params: ScalarDocPublishProjectParams = ScalarDocPublishProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocPublishProjectResponse> =
+            publishProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see publishProject */
+        @MustBeClosed
+        fun publishProject(
+            slug: String,
+            params: ScalarDocPublishProjectParams,
+        ): HttpResponseFor<ScalarDocPublishProjectResponse> =
+            publishProject(slug, params, RequestOptions.none())
+
+        /** @see publishProject */
+        @MustBeClosed
+        fun publishProject(
+            params: ScalarDocPublishProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocPublishProjectResponse>
+
+        /** @see publishProject */
+        @MustBeClosed
+        fun publishProject(
+            params: ScalarDocPublishProjectParams
+        ): HttpResponseFor<ScalarDocPublishProjectResponse> =
+            publishProject(params, RequestOptions.none())
+
+        /** @see publishProject */
+        @MustBeClosed
+        fun publishProject(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ScalarDocPublishProjectResponse> =
+            publishProject(slug, ScalarDocPublishProjectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /v1/docs/{slug}`, but is otherwise the same as
+         * [ScalarDocService.retrieveProject].
+         */
+        @MustBeClosed
+        fun retrieveProject(slug: String): HttpResponseFor<DocsProject> =
+            retrieveProject(slug, ScalarDocRetrieveProjectParams.none())
+
+        /** @see retrieveProject */
+        @MustBeClosed
+        fun retrieveProject(
+            slug: String,
+            params: ScalarDocRetrieveProjectParams = ScalarDocRetrieveProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DocsProject> =
+            retrieveProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see retrieveProject */
+        @MustBeClosed
+        fun retrieveProject(
+            slug: String,
+            params: ScalarDocRetrieveProjectParams,
+        ): HttpResponseFor<DocsProject> = retrieveProject(slug, params, RequestOptions.none())
+
+        /** @see retrieveProject */
+        @MustBeClosed
+        fun retrieveProject(
+            params: ScalarDocRetrieveProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DocsProject>
+
+        /** @see retrieveProject */
+        @MustBeClosed
+        fun retrieveProject(params: ScalarDocRetrieveProjectParams): HttpResponseFor<DocsProject> =
+            retrieveProject(params, RequestOptions.none())
+
+        /** @see retrieveProject */
+        @MustBeClosed
+        fun retrieveProject(
+            slug: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<DocsProject> =
+            retrieveProject(slug, ScalarDocRetrieveProjectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `patch /v1/docs/{slug}`, but is otherwise the same as
+         * [ScalarDocService.updateProject].
+         */
+        @MustBeClosed
+        fun updateProject(slug: String): HttpResponseFor<Any?> =
+            updateProject(slug, ScalarDocUpdateProjectParams.none())
+
+        /** @see updateProject */
+        @MustBeClosed
+        fun updateProject(
+            slug: String,
+            params: ScalarDocUpdateProjectParams = ScalarDocUpdateProjectParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?> =
+            updateProject(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see updateProject */
+        @MustBeClosed
+        fun updateProject(
+            slug: String,
+            params: ScalarDocUpdateProjectParams,
+        ): HttpResponseFor<Any?> = updateProject(slug, params, RequestOptions.none())
+
+        /** @see updateProject */
+        @MustBeClosed
+        fun updateProject(
+            params: ScalarDocUpdateProjectParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
+
+        /** @see updateProject */
+        @MustBeClosed
+        fun updateProject(params: ScalarDocUpdateProjectParams): HttpResponseFor<Any?> =
+            updateProject(params, RequestOptions.none())
+
+        /** @see updateProject */
+        @MustBeClosed
+        fun updateProject(slug: String, requestOptions: RequestOptions): HttpResponseFor<Any?> =
+            updateProject(slug, ScalarDocUpdateProjectParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `put /v1/docs/{slug}/config`, but is otherwise the same
+         * as [ScalarDocService.updateProjectConfig].
+         */
+        @MustBeClosed
+        fun updateProjectConfig(
+            slug: String,
+            params: ScalarDocUpdateProjectConfigParams,
+        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse> =
+            updateProjectConfig(slug, params, RequestOptions.none())
+
+        /** @see updateProjectConfig */
+        @MustBeClosed
+        fun updateProjectConfig(
+            slug: String,
+            params: ScalarDocUpdateProjectConfigParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse> =
+            updateProjectConfig(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see updateProjectConfig */
+        @MustBeClosed
+        fun updateProjectConfig(
+            params: ScalarDocUpdateProjectConfigParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse>
+
+        /** @see updateProjectConfig */
+        @MustBeClosed
+        fun updateProjectConfig(
+            params: ScalarDocUpdateProjectConfigParams
+        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse> =
+            updateProjectConfig(params, RequestOptions.none())
     }
 }

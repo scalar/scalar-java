@@ -16,12 +16,29 @@ import com.scalar.core.http.HttpResponseFor
 import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepareAsync
+import com.scalar.models.scalarDocs.DocsProject
+import com.scalar.models.scalarDocs.GithubProject
 import com.scalar.models.scalarDocs.ScalarDocCreateGuideParams
 import com.scalar.models.scalarDocs.ScalarDocCreateGuideResponse
+import com.scalar.models.scalarDocs.ScalarDocCreateProjectParams
+import com.scalar.models.scalarDocs.ScalarDocDeleteProjectParams
 import com.scalar.models.scalarDocs.ScalarDocListGuidesParams
-import com.scalar.models.scalarDocs.ScalarDocListGuidesResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectConfigParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectConfigResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusResponse
+import com.scalar.models.scalarDocs.ScalarDocListProjectsParams
+import com.scalar.models.scalarDocs.ScalarDocListProjectsResponse
 import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams
 import com.scalar.models.scalarDocs.ScalarDocPublishGuideResponse
+import com.scalar.models.scalarDocs.ScalarDocPublishProjectParams
+import com.scalar.models.scalarDocs.ScalarDocPublishProjectResponse
+import com.scalar.models.scalarDocs.ScalarDocRetrieveProjectParams
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigParams
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigResponse
+import com.scalar.models.scalarDocs.ScalarDocUpdateProjectParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -46,12 +63,54 @@ class ScalarDocServiceAsyncImpl internal constructor(private val clientOptions: 
         // post /v1/guides
         withRawResponse().createGuide(params, requestOptions).thenApply { it.parse() }
 
+    override fun createProject(
+        params: ScalarDocCreateProjectParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<DocsProject> =
+        // post /v1/docs
+        withRawResponse().createProject(params, requestOptions).thenApply { it.parse() }
+
+    override fun deleteProject(
+        params: ScalarDocDeleteProjectParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<Any?> =
+        // delete /v1/docs/{slug}
+        withRawResponse().deleteProject(params, requestOptions).thenApply { it.parse() }
+
     override fun listGuides(
         params: ScalarDocListGuidesParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<ScalarDocListGuidesResponse>> =
+    ): CompletableFuture<List<GithubProject>> =
         // get /v1/guides
         withRawResponse().listGuides(params, requestOptions).thenApply { it.parse() }
+
+    override fun listProjectConfig(
+        params: ScalarDocListProjectConfigParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocListProjectConfigResponse> =
+        // get /v1/docs/{slug}/config
+        withRawResponse().listProjectConfig(params, requestOptions).thenApply { it.parse() }
+
+    override fun listProjectDomain(
+        params: ScalarDocListProjectDomainParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocListProjectDomainResponse> =
+        // get /v1/docs/{slug}/domain
+        withRawResponse().listProjectDomain(params, requestOptions).thenApply { it.parse() }
+
+    override fun listProjectDomainStatus(
+        params: ScalarDocListProjectDomainStatusParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
+        // get /v1/docs/{slug}/domain/status
+        withRawResponse().listProjectDomainStatus(params, requestOptions).thenApply { it.parse() }
+
+    override fun listProjects(
+        params: ScalarDocListProjectsParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocListProjectsResponse> =
+        // get /v1/docs
+        withRawResponse().listProjects(params, requestOptions).thenApply { it.parse() }
 
     override fun publishGuide(
         params: ScalarDocPublishGuideParams,
@@ -59,6 +118,34 @@ class ScalarDocServiceAsyncImpl internal constructor(private val clientOptions: 
     ): CompletableFuture<ScalarDocPublishGuideResponse> =
         // post /v1/guides/{slug}/publish
         withRawResponse().publishGuide(params, requestOptions).thenApply { it.parse() }
+
+    override fun publishProject(
+        params: ScalarDocPublishProjectParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocPublishProjectResponse> =
+        // post /v1/docs/{slug}/publish
+        withRawResponse().publishProject(params, requestOptions).thenApply { it.parse() }
+
+    override fun retrieveProject(
+        params: ScalarDocRetrieveProjectParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<DocsProject> =
+        // get /v1/docs/{slug}
+        withRawResponse().retrieveProject(params, requestOptions).thenApply { it.parse() }
+
+    override fun updateProject(
+        params: ScalarDocUpdateProjectParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<Any?> =
+        // patch /v1/docs/{slug}
+        withRawResponse().updateProject(params, requestOptions).thenApply { it.parse() }
+
+    override fun updateProjectConfig(
+        params: ScalarDocUpdateProjectConfigParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ScalarDocUpdateProjectConfigResponse> =
+        // put /v1/docs/{slug}/config
+        withRawResponse().updateProjectConfig(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ScalarDocServiceAsync.WithRawResponse {
@@ -104,13 +191,72 @@ class ScalarDocServiceAsyncImpl internal constructor(private val clientOptions: 
                 }
         }
 
-        private val listGuidesHandler: Handler<List<ScalarDocListGuidesResponse>> =
-            jsonHandler<List<ScalarDocListGuidesResponse>>(clientOptions.jsonMapper)
+        private val createProjectHandler: Handler<DocsProject> =
+            jsonHandler<DocsProject>(clientOptions.jsonMapper)
+
+        override fun createProject(
+            params: ScalarDocCreateProjectParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<DocsProject>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { createProjectHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val deleteProjectHandler: Handler<Any?> =
+            jsonHandler<Any?>(clientOptions.jsonMapper)
+
+        override fun deleteProject(
+            params: ScalarDocDeleteProjectParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Any?>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0))
+                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response.use { deleteProjectHandler.handle(it) }
+                    }
+                }
+        }
+
+        private val listGuidesHandler: Handler<List<GithubProject>> =
+            jsonHandler<List<GithubProject>>(clientOptions.jsonMapper)
 
         override fun listGuides(
             params: ScalarDocListGuidesParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<ScalarDocListGuidesResponse>>> {
+        ): CompletableFuture<HttpResponseFor<List<GithubProject>>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -128,6 +274,136 @@ class ScalarDocServiceAsyncImpl internal constructor(private val clientOptions: 
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.forEach { it.validate() }
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val listProjectConfigHandler: Handler<ScalarDocListProjectConfigResponse> =
+            jsonHandler<ScalarDocListProjectConfigResponse>(clientOptions.jsonMapper)
+
+        override fun listProjectConfig(
+            params: ScalarDocListProjectConfigParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0), "config")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { listProjectConfigHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val listProjectDomainHandler: Handler<ScalarDocListProjectDomainResponse> =
+            jsonHandler<ScalarDocListProjectDomainResponse>(clientOptions.jsonMapper)
+
+        override fun listProjectDomain(
+            params: ScalarDocListProjectDomainParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0), "domain")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { listProjectDomainHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val listProjectDomainStatusHandler:
+            Handler<ScalarDocListProjectDomainStatusResponse> =
+            jsonHandler<ScalarDocListProjectDomainStatusResponse>(clientOptions.jsonMapper)
+
+        override fun listProjectDomainStatus(
+            params: ScalarDocListProjectDomainStatusParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0), "domain", "status")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { listProjectDomainStatusHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val listProjectsHandler: Handler<ScalarDocListProjectsResponse> =
+            jsonHandler<ScalarDocListProjectsResponse>(clientOptions.jsonMapper)
+
+        override fun listProjects(
+            params: ScalarDocListProjectsParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocListProjectsResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { listProjectsHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
                                 }
                             }
                     }
@@ -159,6 +435,135 @@ class ScalarDocServiceAsyncImpl internal constructor(private val clientOptions: 
                     errorHandler.handle(response).parseable {
                         response
                             .use { publishGuideHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val publishProjectHandler: Handler<ScalarDocPublishProjectResponse> =
+            jsonHandler<ScalarDocPublishProjectResponse>(clientOptions.jsonMapper)
+
+        override fun publishProject(
+            params: ScalarDocPublishProjectParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0), "publish")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { publishProjectHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val retrieveProjectHandler: Handler<DocsProject> =
+            jsonHandler<DocsProject>(clientOptions.jsonMapper)
+
+        override fun retrieveProject(
+            params: ScalarDocRetrieveProjectParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<DocsProject>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { retrieveProjectHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val updateProjectHandler: Handler<Any?> =
+            jsonHandler<Any?>(clientOptions.jsonMapper)
+
+        override fun updateProject(
+            params: ScalarDocUpdateProjectParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<Any?>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response.use { updateProjectHandler.handle(it) }
+                    }
+                }
+        }
+
+        private val updateProjectConfigHandler: Handler<ScalarDocUpdateProjectConfigResponse> =
+            jsonHandler<ScalarDocUpdateProjectConfigResponse>(clientOptions.jsonMapper)
+
+        override fun updateProjectConfig(
+            params: ScalarDocUpdateProjectConfigParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ScalarDocUpdateProjectConfigResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("slug", params.slug().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v1", "docs", params._pathParam(0), "config")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { updateProjectConfigHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

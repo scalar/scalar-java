@@ -7,10 +7,10 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.schemas.Schema
 import com.scalar.models.schemas.SchemaCreateParams
 import com.scalar.models.schemas.SchemaDeleteParams
 import com.scalar.models.schemas.SchemaListParams
-import com.scalar.models.schemas.SchemaListResponse
 import com.scalar.models.schemas.SchemaUpdateParams
 import com.scalar.services.blocking.schemas.AccessGroupService
 import com.scalar.services.blocking.schemas.VersionService
@@ -78,32 +78,30 @@ interface SchemaService {
     fun update(params: SchemaUpdateParams): Any? = update(params, RequestOptions.none())
 
     /** List schemas in a namespace. */
-    fun list(namespace: String): List<SchemaListResponse> = list(namespace, SchemaListParams.none())
+    fun list(namespace: String): List<Schema> = list(namespace, SchemaListParams.none())
 
     /** @see list */
     fun list(
         namespace: String,
         params: SchemaListParams = SchemaListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<SchemaListResponse> =
-        list(params.toBuilder().namespace(namespace).build(), requestOptions)
+    ): List<Schema> = list(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see list */
-    fun list(namespace: String, params: SchemaListParams): List<SchemaListResponse> =
+    fun list(namespace: String, params: SchemaListParams): List<Schema> =
         list(namespace, params, RequestOptions.none())
 
     /** @see list */
     fun list(
         params: SchemaListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<SchemaListResponse>
+    ): List<Schema>
 
     /** @see list */
-    fun list(params: SchemaListParams): List<SchemaListResponse> =
-        list(params, RequestOptions.none())
+    fun list(params: SchemaListParams): List<Schema> = list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(namespace: String, requestOptions: RequestOptions): List<SchemaListResponse> =
+    fun list(namespace: String, requestOptions: RequestOptions): List<Schema> =
         list(namespace, SchemaListParams.none(), requestOptions)
 
     /** Delete a schema and all related versions. */
@@ -204,7 +202,7 @@ interface SchemaService {
          * as [SchemaService.list].
          */
         @MustBeClosed
-        fun list(namespace: String): HttpResponseFor<List<SchemaListResponse>> =
+        fun list(namespace: String): HttpResponseFor<List<Schema>> =
             list(namespace, SchemaListParams.none())
 
         /** @see list */
@@ -213,15 +211,12 @@ interface SchemaService {
             namespace: String,
             params: SchemaListParams = SchemaListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<SchemaListResponse>> =
+        ): HttpResponseFor<List<Schema>> =
             list(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see list */
         @MustBeClosed
-        fun list(
-            namespace: String,
-            params: SchemaListParams,
-        ): HttpResponseFor<List<SchemaListResponse>> =
+        fun list(namespace: String, params: SchemaListParams): HttpResponseFor<List<Schema>> =
             list(namespace, params, RequestOptions.none())
 
         /** @see list */
@@ -229,19 +224,16 @@ interface SchemaService {
         fun list(
             params: SchemaListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<SchemaListResponse>>
+        ): HttpResponseFor<List<Schema>>
 
         /** @see list */
         @MustBeClosed
-        fun list(params: SchemaListParams): HttpResponseFor<List<SchemaListResponse>> =
+        fun list(params: SchemaListParams): HttpResponseFor<List<Schema>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(
-            namespace: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<List<SchemaListResponse>> =
+        fun list(namespace: String, requestOptions: RequestOptions): HttpResponseFor<List<Schema>> =
             list(namespace, SchemaListParams.none(), requestOptions)
 
         /**

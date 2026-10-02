@@ -17,10 +17,10 @@ import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepare
 import com.scalar.models.Uid
+import com.scalar.models.loginPortals.LoginPortal
 import com.scalar.models.loginPortals.LoginPortalCreateParams
 import com.scalar.models.loginPortals.LoginPortalDeleteParams
 import com.scalar.models.loginPortals.LoginPortalListParams
-import com.scalar.models.loginPortals.LoginPortalListResponse
 import com.scalar.models.loginPortals.LoginPortalRetrieveParams
 import com.scalar.models.loginPortals.LoginPortalRetrieveResponse
 import com.scalar.models.loginPortals.LoginPortalUpdateParams
@@ -58,7 +58,7 @@ class LoginPortalServiceImpl internal constructor(private val clientOptions: Cli
     override fun list(
         params: LoginPortalListParams,
         requestOptions: RequestOptions,
-    ): List<LoginPortalListResponse> =
+    ): List<LoginPortal> =
         // get /v1/login-portals
         withRawResponse().list(params, requestOptions).parse()
 
@@ -160,13 +160,13 @@ class LoginPortalServiceImpl internal constructor(private val clientOptions: Cli
             }
         }
 
-        private val listHandler: Handler<List<LoginPortalListResponse>> =
-            jsonHandler<List<LoginPortalListResponse>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<LoginPortal>> =
+            jsonHandler<List<LoginPortal>>(clientOptions.jsonMapper)
 
         override fun list(
             params: LoginPortalListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<LoginPortalListResponse>> {
+        ): HttpResponseFor<List<LoginPortal>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

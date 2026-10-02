@@ -14,8 +14,12 @@ import com.scalar.core.http.HttpResponse.Handler
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.core.http.parseable
 import com.scalar.core.prepare
+import com.scalar.models.teams.Team
 import com.scalar.models.teams.TeamListParams
-import com.scalar.models.teams.TeamListResponse
+import com.scalar.services.blocking.teams.InviteService
+import com.scalar.services.blocking.teams.InviteServiceImpl
+import com.scalar.services.blocking.teams.MemberService
+import com.scalar.services.blocking.teams.MemberServiceImpl
 import java.util.function.Consumer
 
 /** Teams */
@@ -25,15 +29,22 @@ class TeamServiceImpl internal constructor(private val clientOptions: ClientOpti
         WithRawResponseImpl(clientOptions)
     }
 
+    private val members: MemberService by lazy { MemberServiceImpl(clientOptions) }
+
+    private val invites: InviteService by lazy { InviteServiceImpl(clientOptions) }
+
     override fun withRawResponse(): TeamService.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TeamService =
         TeamServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun list(
-        params: TeamListParams,
-        requestOptions: RequestOptions,
-    ): List<TeamListResponse> =
+    /** Teams */
+    override fun members(): MemberService = members
+
+    /** Teams */
+    override fun invites(): InviteService = invites
+
+    override fun list(params: TeamListParams, requestOptions: RequestOptions): List<Team> =
         // get /v1/teams
         withRawResponse().list(params, requestOptions).parse()
 
@@ -43,6 +54,14 @@ class TeamServiceImpl internal constructor(private val clientOptions: ClientOpti
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val members: MemberService.WithRawResponse by lazy {
+            MemberServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val invites: InviteService.WithRawResponse by lazy {
+            InviteServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): TeamService.WithRawResponse =
@@ -50,13 +69,19 @@ class TeamServiceImpl internal constructor(private val clientOptions: ClientOpti
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listHandler: Handler<List<TeamListResponse>> =
-            jsonHandler<List<TeamListResponse>>(clientOptions.jsonMapper)
+        /** Teams */
+        override fun members(): MemberService.WithRawResponse = members
+
+        /** Teams */
+        override fun invites(): InviteService.WithRawResponse = invites
+
+        private val listHandler: Handler<List<Team>> =
+            jsonHandler<List<Team>>(clientOptions.jsonMapper)
 
         override fun list(
             params: TeamListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<TeamListResponse>> {
+        ): HttpResponseFor<List<Team>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

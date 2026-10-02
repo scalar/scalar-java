@@ -18,7 +18,7 @@ import com.scalar.core.prepareAsync
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenResponse
 import com.scalar.models.authentication.AuthenticationListCurrentUserParams
-import com.scalar.models.authentication.AuthenticationListCurrentUserResponse
+import com.scalar.models.authentication.User
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -47,7 +47,7 @@ internal constructor(private val clientOptions: ClientOptions) : AuthenticationS
     override fun listCurrentUser(
         params: AuthenticationListCurrentUserParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<AuthenticationListCurrentUserResponse> =
+    ): CompletableFuture<User> =
         // get /v1/auth/me
         withRawResponse().listCurrentUser(params, requestOptions).thenApply { it.parse() }
 
@@ -96,13 +96,13 @@ internal constructor(private val clientOptions: ClientOptions) : AuthenticationS
                 }
         }
 
-        private val listCurrentUserHandler: Handler<AuthenticationListCurrentUserResponse> =
-            jsonHandler<AuthenticationListCurrentUserResponse>(clientOptions.jsonMapper)
+        private val listCurrentUserHandler: Handler<User> =
+            jsonHandler<User>(clientOptions.jsonMapper)
 
         override fun listCurrentUser(
             params: AuthenticationListCurrentUserParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<AuthenticationListCurrentUserResponse>> {
+        ): CompletableFuture<HttpResponseFor<User>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

@@ -7,12 +7,12 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.rules.Rule
 import com.scalar.models.rules.RuleCreateRulesetAccessGroupParams
 import com.scalar.models.rules.RuleCreateRulesetParams
 import com.scalar.models.rules.RuleDeleteRulesetAccessGroupParams
 import com.scalar.models.rules.RuleDeleteRulesetParams
 import com.scalar.models.rules.RuleListRulesetsParams
-import com.scalar.models.rules.RuleListRulesetsResponse
 import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams
 import com.scalar.models.rules.RuleUpdateRulesetParams
 import java.util.function.Consumer
@@ -117,7 +117,7 @@ interface RuleService {
         deleteRulesetAccessGroup(params, RequestOptions.none())
 
     /** List all rulesets in a namespace. */
-    fun listRulesets(namespace: String): List<RuleListRulesetsResponse> =
+    fun listRulesets(namespace: String): List<Rule> =
         listRulesets(namespace, RuleListRulesetsParams.none())
 
     /** @see listRulesets */
@@ -125,30 +125,24 @@ interface RuleService {
         namespace: String,
         params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<RuleListRulesetsResponse> =
-        listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
+    ): List<Rule> = listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see listRulesets */
-    fun listRulesets(
-        namespace: String,
-        params: RuleListRulesetsParams,
-    ): List<RuleListRulesetsResponse> = listRulesets(namespace, params, RequestOptions.none())
+    fun listRulesets(namespace: String, params: RuleListRulesetsParams): List<Rule> =
+        listRulesets(namespace, params, RequestOptions.none())
 
     /** @see listRulesets */
     fun listRulesets(
         params: RuleListRulesetsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<RuleListRulesetsResponse>
+    ): List<Rule>
 
     /** @see listRulesets */
-    fun listRulesets(params: RuleListRulesetsParams): List<RuleListRulesetsResponse> =
+    fun listRulesets(params: RuleListRulesetsParams): List<Rule> =
         listRulesets(params, RequestOptions.none())
 
     /** @see listRulesets */
-    fun listRulesets(
-        namespace: String,
-        requestOptions: RequestOptions,
-    ): List<RuleListRulesetsResponse> =
+    fun listRulesets(namespace: String, requestOptions: RequestOptions): List<Rule> =
         listRulesets(namespace, RuleListRulesetsParams.none(), requestOptions)
 
     /** Get a rule document by slug. */
@@ -332,7 +326,7 @@ interface RuleService {
          * as [RuleService.listRulesets].
          */
         @MustBeClosed
-        fun listRulesets(namespace: String): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        fun listRulesets(namespace: String): HttpResponseFor<List<Rule>> =
             listRulesets(namespace, RuleListRulesetsParams.none())
 
         /** @see listRulesets */
@@ -341,7 +335,7 @@ interface RuleService {
             namespace: String,
             params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        ): HttpResponseFor<List<Rule>> =
             listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see listRulesets */
@@ -349,21 +343,18 @@ interface RuleService {
         fun listRulesets(
             namespace: String,
             params: RuleListRulesetsParams,
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
-            listRulesets(namespace, params, RequestOptions.none())
+        ): HttpResponseFor<List<Rule>> = listRulesets(namespace, params, RequestOptions.none())
 
         /** @see listRulesets */
         @MustBeClosed
         fun listRulesets(
             params: RuleListRulesetsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<RuleListRulesetsResponse>>
+        ): HttpResponseFor<List<Rule>>
 
         /** @see listRulesets */
         @MustBeClosed
-        fun listRulesets(
-            params: RuleListRulesetsParams
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        fun listRulesets(params: RuleListRulesetsParams): HttpResponseFor<List<Rule>> =
             listRulesets(params, RequestOptions.none())
 
         /** @see listRulesets */
@@ -371,7 +362,7 @@ interface RuleService {
         fun listRulesets(
             namespace: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        ): HttpResponseFor<List<Rule>> =
             listRulesets(namespace, RuleListRulesetsParams.none(), requestOptions)
 
         /**

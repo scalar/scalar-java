@@ -7,10 +7,10 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.loginPortals.LoginPortal
 import com.scalar.models.loginPortals.LoginPortalCreateParams
 import com.scalar.models.loginPortals.LoginPortalDeleteParams
 import com.scalar.models.loginPortals.LoginPortalListParams
-import com.scalar.models.loginPortals.LoginPortalListResponse
 import com.scalar.models.loginPortals.LoginPortalRetrieveParams
 import com.scalar.models.loginPortals.LoginPortalRetrieveResponse
 import com.scalar.models.loginPortals.LoginPortalUpdateParams
@@ -97,20 +97,19 @@ interface LoginPortalService {
         update(slug, LoginPortalUpdateParams.none(), requestOptions)
 
     /** List all login portals for the current team. */
-    fun list(): List<LoginPortalListResponse> = list(LoginPortalListParams.none())
+    fun list(): List<LoginPortal> = list(LoginPortalListParams.none())
 
     /** @see list */
     fun list(
         params: LoginPortalListParams = LoginPortalListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<LoginPortalListResponse>
+    ): List<LoginPortal>
 
     /** @see list */
-    fun list(params: LoginPortalListParams): List<LoginPortalListResponse> =
-        list(params, RequestOptions.none())
+    fun list(params: LoginPortalListParams): List<LoginPortal> = list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): List<LoginPortalListResponse> =
+    fun list(requestOptions: RequestOptions): List<LoginPortal> =
         list(LoginPortalListParams.none(), requestOptions)
 
     /** Delete a login portal. */
@@ -258,24 +257,23 @@ interface LoginPortalService {
          * [LoginPortalService.list].
          */
         @MustBeClosed
-        fun list(): HttpResponseFor<List<LoginPortalListResponse>> =
-            list(LoginPortalListParams.none())
+        fun list(): HttpResponseFor<List<LoginPortal>> = list(LoginPortalListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: LoginPortalListParams = LoginPortalListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<LoginPortalListResponse>>
+        ): HttpResponseFor<List<LoginPortal>>
 
         /** @see list */
         @MustBeClosed
-        fun list(params: LoginPortalListParams): HttpResponseFor<List<LoginPortalListResponse>> =
+        fun list(params: LoginPortalListParams): HttpResponseFor<List<LoginPortal>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<List<LoginPortalListResponse>> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<List<LoginPortal>> =
             list(LoginPortalListParams.none(), requestOptions)
 
         /**

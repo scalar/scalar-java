@@ -8,7 +8,7 @@ import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenResponse
 import com.scalar.models.authentication.AuthenticationListCurrentUserParams
-import com.scalar.models.authentication.AuthenticationListCurrentUserResponse
+import com.scalar.models.authentication.User
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -40,25 +40,21 @@ interface AuthenticationServiceAsync {
     ): CompletableFuture<AuthenticationExchangePersonalTokenResponse>
 
     /** Get the authenticated user, including their available teams and theme. */
-    fun listCurrentUser(): CompletableFuture<AuthenticationListCurrentUserResponse> =
+    fun listCurrentUser(): CompletableFuture<User> =
         listCurrentUser(AuthenticationListCurrentUserParams.none())
 
     /** @see listCurrentUser */
     fun listCurrentUser(
         params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<AuthenticationListCurrentUserResponse>
+    ): CompletableFuture<User>
 
     /** @see listCurrentUser */
-    fun listCurrentUser(
-        params: AuthenticationListCurrentUserParams
-    ): CompletableFuture<AuthenticationListCurrentUserResponse> =
+    fun listCurrentUser(params: AuthenticationListCurrentUserParams): CompletableFuture<User> =
         listCurrentUser(params, RequestOptions.none())
 
     /** @see listCurrentUser */
-    fun listCurrentUser(
-        requestOptions: RequestOptions
-    ): CompletableFuture<AuthenticationListCurrentUserResponse> =
+    fun listCurrentUser(requestOptions: RequestOptions): CompletableFuture<User> =
         listCurrentUser(AuthenticationListCurrentUserParams.none(), requestOptions)
 
     /**
@@ -95,8 +91,7 @@ interface AuthenticationServiceAsync {
          * Returns a raw HTTP response for `get /v1/auth/me`, but is otherwise the same as
          * [AuthenticationServiceAsync.listCurrentUser].
          */
-        fun listCurrentUser():
-            CompletableFuture<HttpResponseFor<AuthenticationListCurrentUserResponse>> =
+        fun listCurrentUser(): CompletableFuture<HttpResponseFor<User>> =
             listCurrentUser(AuthenticationListCurrentUserParams.none())
 
         /** @see listCurrentUser */
@@ -104,18 +99,17 @@ interface AuthenticationServiceAsync {
             params: AuthenticationListCurrentUserParams =
                 AuthenticationListCurrentUserParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AuthenticationListCurrentUserResponse>>
+        ): CompletableFuture<HttpResponseFor<User>>
 
         /** @see listCurrentUser */
         fun listCurrentUser(
             params: AuthenticationListCurrentUserParams
-        ): CompletableFuture<HttpResponseFor<AuthenticationListCurrentUserResponse>> =
-            listCurrentUser(params, RequestOptions.none())
+        ): CompletableFuture<HttpResponseFor<User>> = listCurrentUser(params, RequestOptions.none())
 
         /** @see listCurrentUser */
         fun listCurrentUser(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<AuthenticationListCurrentUserResponse>> =
+        ): CompletableFuture<HttpResponseFor<User>> =
             listCurrentUser(AuthenticationListCurrentUserParams.none(), requestOptions)
     }
 }

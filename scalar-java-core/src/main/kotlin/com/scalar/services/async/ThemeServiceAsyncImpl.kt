@@ -18,10 +18,10 @@ import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepareAsync
 import com.scalar.models.Uid
+import com.scalar.models.themes.Theme
 import com.scalar.models.themes.ThemeCreateParams
 import com.scalar.models.themes.ThemeDeleteParams
 import com.scalar.models.themes.ThemeListParams
-import com.scalar.models.themes.ThemeListResponse
 import com.scalar.models.themes.ThemeReplaceDocumentParams
 import com.scalar.models.themes.ThemeRetrieveParams
 import com.scalar.models.themes.ThemeUpdateParams
@@ -66,7 +66,7 @@ class ThemeServiceAsyncImpl internal constructor(private val clientOptions: Clie
     override fun list(
         params: ThemeListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<ThemeListResponse>> =
+    ): CompletableFuture<List<Theme>> =
         // get /v1/themes
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -181,13 +181,13 @@ class ThemeServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val listHandler: Handler<List<ThemeListResponse>> =
-            jsonHandler<List<ThemeListResponse>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<Theme>> =
+            jsonHandler<List<Theme>>(clientOptions.jsonMapper)
 
         override fun list(
             params: ThemeListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<ThemeListResponse>>> {
+        ): CompletableFuture<HttpResponseFor<List<Theme>>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

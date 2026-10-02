@@ -14,8 +14,6 @@ import com.scalar.services.blocking.McpService
 import com.scalar.services.blocking.McpServiceImpl
 import com.scalar.services.blocking.NamespaceService
 import com.scalar.services.blocking.NamespaceServiceImpl
-import com.scalar.services.blocking.OAuthService
-import com.scalar.services.blocking.OAuthServiceImpl
 import com.scalar.services.blocking.RegistryService
 import com.scalar.services.blocking.RegistryServiceImpl
 import com.scalar.services.blocking.RuleService
@@ -85,8 +83,6 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
 
     private val mcp: McpService by lazy { McpServiceImpl(clientOptionsWithUserAgent) }
 
-    private val oAuth: OAuthService by lazy { OAuthServiceImpl(clientOptionsWithUserAgent) }
-
     override fun async(): ScalarClientAsync = async
 
     override fun withRawResponse(): ScalarClient.WithRawResponse = withRawResponse
@@ -128,9 +124,6 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
     override fun sdks(): SdkService = sdks
 
     override fun mcp(): McpService = mcp
-
-    /** OAuth */
-    override fun oAuth(): OAuthService = oAuth
 
     override fun close() = clientOptions.close()
 
@@ -185,10 +178,6 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
             McpServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
-        private val oAuth: OAuthService.WithRawResponse by lazy {
-            OAuthServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): ScalarClient.WithRawResponse =
@@ -230,8 +219,5 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
         override fun sdks(): SdkService.WithRawResponse = sdks
 
         override fun mcp(): McpService.WithRawResponse = mcp
-
-        /** OAuth */
-        override fun oAuth(): OAuthService.WithRawResponse = oAuth
     }
 }

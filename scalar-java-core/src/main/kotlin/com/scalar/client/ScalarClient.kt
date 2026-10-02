@@ -8,7 +8,6 @@ import com.scalar.services.blocking.AuthenticationService
 import com.scalar.services.blocking.LoginPortalService
 import com.scalar.services.blocking.McpService
 import com.scalar.services.blocking.NamespaceService
-import com.scalar.services.blocking.OAuthService
 import com.scalar.services.blocking.RegistryService
 import com.scalar.services.blocking.RuleService
 import com.scalar.services.blocking.ScalarDocService
@@ -89,9 +88,6 @@ interface ScalarClient {
 
     fun mcp(): McpService
 
-    /** OAuth */
-    fun oAuth(): OAuthService
-
     /**
      * Closes this client, relinquishing any underlying resources.
      *
@@ -149,8 +145,5 @@ interface ScalarClient {
         fun sdks(): SdkService.WithRawResponse
 
         fun mcp(): McpService.WithRawResponse
-
-        /** OAuth */
-        fun oAuth(): OAuthService.WithRawResponse
     }
 }

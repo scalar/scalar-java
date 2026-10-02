@@ -299,10 +299,6 @@ class ScalarOkHttpClient private constructor() {
         /** Alias for calling [Builder.bearerAuth] with `bearerAuth.orElse(null)`. */
         fun bearerAuth(bearerAuth: Optional<String>) = bearerAuth(bearerAuth.getOrNull())
 
-        /**
-         * Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each
-         * scope implies the weaker ones.
-         */
         fun oAuth2(oAuth2: String?) = apply { clientOptions.oAuth2(oAuth2) }
 
         /** Alias for calling [Builder.oAuth2] with `oAuth2.orElse(null)`. */

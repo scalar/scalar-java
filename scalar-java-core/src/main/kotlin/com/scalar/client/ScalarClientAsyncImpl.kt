@@ -14,8 +14,6 @@ import com.scalar.services.async.McpServiceAsync
 import com.scalar.services.async.McpServiceAsyncImpl
 import com.scalar.services.async.NamespaceServiceAsync
 import com.scalar.services.async.NamespaceServiceAsyncImpl
-import com.scalar.services.async.OAuthServiceAsync
-import com.scalar.services.async.OAuthServiceAsyncImpl
 import com.scalar.services.async.RegistryServiceAsync
 import com.scalar.services.async.RegistryServiceAsyncImpl
 import com.scalar.services.async.RuleServiceAsync
@@ -89,10 +87,6 @@ class ScalarClientAsyncImpl(private val clientOptions: ClientOptions) : ScalarCl
 
     private val mcp: McpServiceAsync by lazy { McpServiceAsyncImpl(clientOptionsWithUserAgent) }
 
-    private val oAuth: OAuthServiceAsync by lazy {
-        OAuthServiceAsyncImpl(clientOptionsWithUserAgent)
-    }
-
     override fun sync(): ScalarClient = sync
 
     override fun withRawResponse(): ScalarClientAsync.WithRawResponse = withRawResponse
@@ -134,9 +128,6 @@ class ScalarClientAsyncImpl(private val clientOptions: ClientOptions) : ScalarCl
     override fun sdks(): SdkServiceAsync = sdks
 
     override fun mcp(): McpServiceAsync = mcp
-
-    /** OAuth */
-    override fun oAuth(): OAuthServiceAsync = oAuth
 
     override fun close() = clientOptions.close()
 
@@ -191,10 +182,6 @@ class ScalarClientAsyncImpl(private val clientOptions: ClientOptions) : ScalarCl
             McpServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
-        private val oAuth: OAuthServiceAsync.WithRawResponse by lazy {
-            OAuthServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
-
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): ScalarClientAsync.WithRawResponse =
@@ -236,8 +223,5 @@ class ScalarClientAsyncImpl(private val clientOptions: ClientOptions) : ScalarCl
         override fun sdks(): SdkServiceAsync.WithRawResponse = sdks
 
         override fun mcp(): McpServiceAsync.WithRawResponse = mcp
-
-        /** OAuth */
-        override fun oAuth(): OAuthServiceAsync.WithRawResponse = oAuth
     }
 }

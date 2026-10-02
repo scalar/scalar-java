@@ -138,10 +138,6 @@ private constructor(
 
     fun bearerAuth(): Optional<String> = Optional.ofNullable(bearerAuth)
 
-    /**
-     * Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each scope
-     * implies the weaker ones.
-     */
     fun oAuth2(): Optional<String> = Optional.ofNullable(oAuth2)
 
     fun toBuilder() = Builder().from(this)
@@ -341,10 +337,6 @@ private constructor(
         /** Alias for calling [Builder.bearerAuth] with `bearerAuth.orElse(null)`. */
         fun bearerAuth(bearerAuth: Optional<String>) = bearerAuth(bearerAuth.getOrNull())
 
-        /**
-         * Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each
-         * scope implies the weaker ones.
-         */
         fun oAuth2(oAuth2: String?) = apply { this.oAuth2 = oAuth2 }
 
         /** Alias for calling [Builder.oAuth2] with `oAuth2.orElse(null)`. */
@@ -440,7 +432,7 @@ private constructor(
          * |Setter      |System property    |Environment variable|Required|Default value                |
          * |------------|-------------------|--------------------|--------|-----------------------------|
          * |`bearerAuth`|`scalar.bearerAuth`|`BEARER_AUTH`       |false   |-                            |
-         * |`oAuth2`    |`scalar.oAuth2`    |`SCALAR_O_AUTH2`    |false   |-                            |
+         * |`oAuth2`    |`scalar.oauthToken`|`SCALAR_OAUTH_TOKEN`|false   |-                            |
          * |`baseUrl`   |`scalar.baseUrl`   |`SCALAR_BASE_URL`   |true    |`"https://access.scalar.com"`|
          *
          * System properties take precedence over environment variables.
@@ -453,7 +445,7 @@ private constructor(
             (System.getProperty("scalar.bearerAuth") ?: System.getenv("BEARER_AUTH"))?.let {
                 bearerAuth(it)
             }
-            (System.getProperty("scalar.oAuth2") ?: System.getenv("SCALAR_O_AUTH2"))?.let {
+            (System.getProperty("scalar.oauthToken") ?: System.getenv("SCALAR_OAUTH_TOKEN"))?.let {
                 oAuth2(it)
             }
             System.getenv("SCALAR_CUSTOM_HEADERS")?.let { customHeadersEnv ->

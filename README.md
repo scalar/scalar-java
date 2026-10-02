@@ -202,7 +202,7 @@ Pass credentials to the generated client constructor. Environment variables are 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `bearerAuth` | `string \| provider` | - | Credential for the BearerAuth client option. Defaults to BEARER_AUTH. |
-| `oAuth2` | `string \| provider` | - | Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each scope implies the weaker ones. Defaults to SCALAR_O_AUTH2. |
+| `oAuth2` | `string \| provider` | - | Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each scope implies the weaker ones. Defaults to SCALAR_OAUTH_TOKEN. |
 
 Declared schemes:
 
@@ -250,7 +250,7 @@ ScalarClient client =
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `bearerAuth` | `String` | `System.getenv("BEARER_AUTH")` | Credential for the BearerAuth client option. |
-| `oAuth2` | `String` | `System.getenv("SCALAR_O_AUTH2")` | Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each scope implies the weaker ones. |
+| `oAuth2` | `String` | `System.getenv("SCALAR_OAUTH_TOKEN")` | Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each scope implies the weaker ones. |
 | `baseUrl` | `String` | - | Override the default API base URL. |
 | `putHeader` | `(String, String) -> Builder` | - | Set a header sent with every request. |
 | `putQueryParam` | `(String, String) -> Builder` | - | Set a query parameter sent with every request. |

@@ -67,7 +67,8 @@ internal class ProGuardCompatibilityTest {
 
     @Test
     fun value400Roundtrips() {
-        val value400 = Value400.builder().message("").code("").build()
+        val value400 =
+            Value400.builder().message("Invalid request parameters.").code("bad-request").build()
         val value400Json = jsonMapper().writeValueAsString(value400)
 
         assertEquals(

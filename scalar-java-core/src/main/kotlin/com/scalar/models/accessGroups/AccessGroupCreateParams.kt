@@ -17,7 +17,6 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * Create a group for the current team. Requires docs edit permission and the access groups billing
@@ -46,7 +45,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun allowedDomains(): Optional<Any> = body.allowedDomains()
+    fun allowedDomains(): Optional<String> = body.allowedDomains()
 
     /**
      * Returns the raw JSON value of [name].
@@ -67,7 +66,7 @@ private constructor(
      *
      * Unlike [allowedDomains], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _allowedDomains(): JsonField<Any> = body._allowedDomains()
+    fun _allowedDomains(): JsonField<String> = body._allowedDomains()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -132,21 +131,16 @@ private constructor(
          */
         fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
 
-        fun allowedDomains(allowedDomains: Any?) = apply { body.allowedDomains(allowedDomains) }
-
-        /** Alias for calling [Builder.allowedDomains] with `allowedDomains.orElse(null)`. */
-        fun allowedDomains(allowedDomains: Optional<Any>) = apply {
-            body.allowedDomains(allowedDomains.getOrNull())
-        }
+        fun allowedDomains(allowedDomains: String) = apply { body.allowedDomains(allowedDomains) }
 
         /**
          * Sets [Builder.allowedDomains] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.allowedDomains] with a well-typed [Any] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.allowedDomains] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun allowedDomains(allowedDomains: JsonField<Any>) = apply {
+        fun allowedDomains(allowedDomains: JsonField<String>) = apply {
             body.allowedDomains(allowedDomains)
         }
 
@@ -291,7 +285,7 @@ private constructor(
     private constructor(
         private val name: JsonField<String>,
         private val slug: JsonField<String>,
-        private val allowedDomains: JsonField<Any>,
+        private val allowedDomains: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -301,7 +295,7 @@ private constructor(
             @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
             @JsonProperty("allowedDomains")
             @ExcludeMissing
-            allowedDomains: JsonField<Any> = JsonMissing.of(),
+            allowedDomains: JsonField<String> = JsonMissing.of(),
         ) : this(name, slug, allowedDomains, mutableMapOf())
 
         /**
@@ -320,7 +314,7 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun allowedDomains(): Optional<Any> = allowedDomains.getOptional("allowedDomains")
+        fun allowedDomains(): Optional<String> = allowedDomains.getOptional("allowedDomains")
 
         /**
          * Returns the raw JSON value of [name].
@@ -344,7 +338,7 @@ private constructor(
          */
         @JsonProperty("allowedDomains")
         @ExcludeMissing
-        fun _allowedDomains(): JsonField<Any> = allowedDomains
+        fun _allowedDomains(): JsonField<String> = allowedDomains
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -369,7 +363,7 @@ private constructor(
 
             private var name: JsonField<String> = JsonMissing.of()
             private var slug: JsonField<String> = JsonMissing.of()
-            private var allowedDomains: JsonField<Any> = JsonMissing.of()
+            private var allowedDomains: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -402,21 +396,17 @@ private constructor(
              */
             fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
-            fun allowedDomains(allowedDomains: Any?) =
-                allowedDomains(JsonField.ofNullable(allowedDomains))
-
-            /** Alias for calling [Builder.allowedDomains] with `allowedDomains.orElse(null)`. */
-            fun allowedDomains(allowedDomains: Optional<Any>) =
-                allowedDomains(allowedDomains.getOrNull())
+            fun allowedDomains(allowedDomains: String) =
+                allowedDomains(JsonField.of(allowedDomains))
 
             /**
              * Sets [Builder.allowedDomains] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.allowedDomains] with a well-typed [Any] value
+             * You should usually call [Builder.allowedDomains] with a well-typed [String] value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun allowedDomains(allowedDomains: JsonField<Any>) = apply {
+            fun allowedDomains(allowedDomains: JsonField<String>) = apply {
                 this.allowedDomains = allowedDomains
             }
 

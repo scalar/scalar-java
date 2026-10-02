@@ -14,8 +14,6 @@ import com.scalar.core.checkRequired
 import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
-import java.util.Optional
-import kotlin.jvm.optionals.getOrNull
 
 class AccessGroupCreateResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -23,8 +21,8 @@ private constructor(
     private val uid: JsonField<String>,
     private val name: JsonField<String>,
     private val slug: JsonField<String>,
-    private val allowedDomains: JsonField<Any>,
-    private val allowedEmails: JsonField<Any>,
+    private val allowedDomains: JsonField<String>,
+    private val allowedEmails: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -35,10 +33,10 @@ private constructor(
         @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
         @JsonProperty("allowedDomains")
         @ExcludeMissing
-        allowedDomains: JsonField<Any> = JsonMissing.of(),
+        allowedDomains: JsonField<String> = JsonMissing.of(),
         @JsonProperty("allowedEmails")
         @ExcludeMissing
-        allowedEmails: JsonField<Any> = JsonMissing.of(),
+        allowedEmails: JsonField<String> = JsonMissing.of(),
     ) : this(uid, name, slug, allowedDomains, allowedEmails, mutableMapOf())
 
     /**
@@ -60,16 +58,16 @@ private constructor(
     fun slug(): String = slug.getRequired("slug")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun allowedDomains(): Optional<Any> = allowedDomains.getOptional("allowedDomains")
+    fun allowedDomains(): String = allowedDomains.getRequired("allowedDomains")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun allowedEmails(): Optional<Any> = allowedEmails.getOptional("allowedEmails")
+    fun allowedEmails(): String = allowedEmails.getRequired("allowedEmails")
 
     /**
      * Returns the raw JSON value of [uid].
@@ -99,7 +97,7 @@ private constructor(
      */
     @JsonProperty("allowedDomains")
     @ExcludeMissing
-    fun _allowedDomains(): JsonField<Any> = allowedDomains
+    fun _allowedDomains(): JsonField<String> = allowedDomains
 
     /**
      * Returns the raw JSON value of [allowedEmails].
@@ -108,7 +106,7 @@ private constructor(
      */
     @JsonProperty("allowedEmails")
     @ExcludeMissing
-    fun _allowedEmails(): JsonField<Any> = allowedEmails
+    fun _allowedEmails(): JsonField<String> = allowedEmails
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -145,8 +143,8 @@ private constructor(
         private var uid: JsonField<String>? = null
         private var name: JsonField<String>? = null
         private var slug: JsonField<String>? = null
-        private var allowedDomains: JsonField<Any>? = null
-        private var allowedEmails: JsonField<Any>? = null
+        private var allowedDomains: JsonField<String>? = null
+        private var allowedEmails: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -189,37 +187,29 @@ private constructor(
          */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
-        fun allowedDomains(allowedDomains: Any?) =
-            allowedDomains(JsonField.ofNullable(allowedDomains))
-
-        /** Alias for calling [Builder.allowedDomains] with `allowedDomains.orElse(null)`. */
-        fun allowedDomains(allowedDomains: Optional<Any>) =
-            allowedDomains(allowedDomains.getOrNull())
+        fun allowedDomains(allowedDomains: String) = allowedDomains(JsonField.of(allowedDomains))
 
         /**
          * Sets [Builder.allowedDomains] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.allowedDomains] with a well-typed [Any] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.allowedDomains] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun allowedDomains(allowedDomains: JsonField<Any>) = apply {
+        fun allowedDomains(allowedDomains: JsonField<String>) = apply {
             this.allowedDomains = allowedDomains
         }
 
-        fun allowedEmails(allowedEmails: Any?) = allowedEmails(JsonField.ofNullable(allowedEmails))
-
-        /** Alias for calling [Builder.allowedEmails] with `allowedEmails.orElse(null)`. */
-        fun allowedEmails(allowedEmails: Optional<Any>) = allowedEmails(allowedEmails.getOrNull())
+        fun allowedEmails(allowedEmails: String) = allowedEmails(JsonField.of(allowedEmails))
 
         /**
          * Sets [Builder.allowedEmails] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.allowedEmails] with a well-typed [Any] value instead.
+         * You should usually call [Builder.allowedEmails] with a well-typed [String] value instead.
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun allowedEmails(allowedEmails: JsonField<Any>) = apply {
+        fun allowedEmails(allowedEmails: JsonField<String>) = apply {
             this.allowedEmails = allowedEmails
         }
 

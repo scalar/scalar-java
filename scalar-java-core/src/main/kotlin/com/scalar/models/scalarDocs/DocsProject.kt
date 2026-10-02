@@ -24,7 +24,7 @@ private constructor(
     private val name: JsonField<String>,
     private val slug: JsonField<String>,
     private val isPrivate: JsonField<Boolean>,
-    private val accessGroups: JsonField<Any>,
+    private val accessGroups: JsonField<String>,
     private val loginPortalUid: JsonField<String>,
     private val activeThemeId: JsonField<String>,
     private val agentEnabled: JsonField<Boolean>,
@@ -42,7 +42,7 @@ private constructor(
         @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("accessGroups")
         @ExcludeMissing
-        accessGroups: JsonField<Any> = JsonMissing.of(),
+        accessGroups: JsonField<String> = JsonMissing.of(),
         @JsonProperty("loginPortalUid")
         @ExcludeMissing
         loginPortalUid: JsonField<String> = JsonMissing.of(),
@@ -101,10 +101,10 @@ private constructor(
     fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun accessGroups(): Optional<Any> = accessGroups.getOptional("accessGroups")
+    fun accessGroups(): String = accessGroups.getRequired("accessGroups")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -175,7 +175,9 @@ private constructor(
      *
      * Unlike [accessGroups], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("accessGroups") @ExcludeMissing fun _accessGroups(): JsonField<Any> = accessGroups
+    @JsonProperty("accessGroups")
+    @ExcludeMissing
+    fun _accessGroups(): JsonField<String> = accessGroups
 
     /**
      * Returns the raw JSON value of [loginPortalUid].
@@ -274,7 +276,7 @@ private constructor(
         private var name: JsonField<String>? = null
         private var slug: JsonField<String>? = null
         private var isPrivate: JsonField<Boolean>? = null
-        private var accessGroups: JsonField<Any>? = null
+        private var accessGroups: JsonField<String>? = null
         private var loginPortalUid: JsonField<String>? = null
         private var activeThemeId: JsonField<String>? = null
         private var agentEnabled: JsonField<Boolean>? = null
@@ -340,19 +342,18 @@ private constructor(
          */
         fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
 
-        fun accessGroups(accessGroups: Any?) = accessGroups(JsonField.ofNullable(accessGroups))
-
-        /** Alias for calling [Builder.accessGroups] with `accessGroups.orElse(null)`. */
-        fun accessGroups(accessGroups: Optional<Any>) = accessGroups(accessGroups.getOrNull())
+        fun accessGroups(accessGroups: String) = accessGroups(JsonField.of(accessGroups))
 
         /**
          * Sets [Builder.accessGroups] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.accessGroups] with a well-typed [Any] value instead.
+         * You should usually call [Builder.accessGroups] with a well-typed [String] value instead.
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun accessGroups(accessGroups: JsonField<Any>) = apply { this.accessGroups = accessGroups }
+        fun accessGroups(accessGroups: JsonField<String>) = apply {
+            this.accessGroups = accessGroups
+        }
 
         fun loginPortalUid(loginPortalUid: String) = loginPortalUid(JsonField.of(loginPortalUid))
 

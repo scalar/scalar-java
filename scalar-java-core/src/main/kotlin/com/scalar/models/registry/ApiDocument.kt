@@ -17,7 +17,6 @@ import com.scalar.errors.ScalarInvalidDataException
 import com.scalar.models.ManagedDocVersion
 import java.util.Collections
 import java.util.Objects
-import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ApiDocument
@@ -30,7 +29,7 @@ private constructor(
     private val description: JsonField<String>,
     private val namespace: JsonField<String>,
     private val isPrivate: JsonField<Boolean>,
-    private val tags: JsonField<Any>,
+    private val tags: JsonField<String>,
     private val versions: JsonField<List<ManagedDocVersion>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -46,7 +45,7 @@ private constructor(
         description: JsonField<String> = JsonMissing.of(),
         @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
         @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("tags") @ExcludeMissing tags: JsonField<Any> = JsonMissing.of(),
+        @JsonProperty("tags") @ExcludeMissing tags: JsonField<String> = JsonMissing.of(),
         @JsonProperty("versions")
         @ExcludeMissing
         versions: JsonField<List<ManagedDocVersion>> = JsonMissing.of(),
@@ -106,10 +105,10 @@ private constructor(
     fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun tags(): Optional<Any> = tags.getOptional("tags")
+    fun tags(): String = tags.getRequired("tags")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -171,7 +170,7 @@ private constructor(
      *
      * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<Any> = tags
+    @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<String> = tags
 
     /**
      * Returns the raw JSON value of [versions].
@@ -225,7 +224,7 @@ private constructor(
         private var description: JsonField<String>? = null
         private var namespace: JsonField<String>? = null
         private var isPrivate: JsonField<Boolean>? = null
-        private var tags: JsonField<Any>? = null
+        private var tags: JsonField<String>? = null
         private var versions: JsonField<MutableList<ManagedDocVersion>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -316,18 +315,15 @@ private constructor(
          */
         fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
 
-        fun tags(tags: Any?) = tags(JsonField.ofNullable(tags))
-
-        /** Alias for calling [Builder.tags] with `tags.orElse(null)`. */
-        fun tags(tags: Optional<Any>) = tags(tags.getOrNull())
+        fun tags(tags: String) = tags(JsonField.of(tags))
 
         /**
          * Sets [Builder.tags] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.tags] with a well-typed [Any] value instead. This method
-         * is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.tags] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun tags(tags: JsonField<Any>) = apply { this.tags = tags }
+        fun tags(tags: JsonField<String>) = apply { this.tags = tags }
 
         fun versions(versions: List<ManagedDocVersion>) = versions(JsonField.of(versions))
 

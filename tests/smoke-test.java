@@ -121,18 +121,20 @@ final class SmokeTest {
 
   private static void _smokeCase1() throws Exception {
     RegistryListApiDocumentsParams params =
-        RegistryListApiDocumentsParams.builder().namespace("namespace").build();
+        RegistryListApiDocumentsParams.builder().namespace("acme").build();
     var registry = client.registry().listApiDocuments(params);
   }
 
   private static void _smokeCase2() throws Exception {
     RegistryCreateApiDocumentParams params =
         RegistryCreateApiDocumentParams.builder()
-            .namespace("namespace")
-            .title("")
-            .version("x")
-            .slug("")
-            .document("")
+            .namespace("acme")
+            .title("Acme API")
+            .version("1.2.0")
+            .slug("acme-api")
+            .document(
+                "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                    + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
             .build();
     var registry = client.registry().createApiDocument(params);
   }
@@ -140,49 +142,51 @@ final class SmokeTest {
   private static void _smokeCase3() throws Exception {
     RegistryCreateApiDocumentParams params =
         RegistryCreateApiDocumentParams.builder()
-            .namespace("namespace")
-            .title("")
-            .description("")
-            .version("x")
-            .slug("")
-            .ruleset("")
+            .namespace("acme")
+            .title("Acme API")
+            .description("API for managing Acme products and orders.")
+            .version("1.2.0")
+            .slug("acme-api")
+            .ruleset("extends: [\"spectral:oas\"]")
             .isPrivate(false)
-            .document("")
+            .document(
+                "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                    + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
             .build();
     var registry = client.registry().createApiDocument(params);
   }
 
   private static void _smokeCase4() throws Exception {
     RegistryUpdateApiDocumentParams params =
-        RegistryUpdateApiDocumentParams.builder().namespace("namespace").slug("slug").build();
+        RegistryUpdateApiDocumentParams.builder().namespace("acme").slug("acme-api").build();
     var registry = client.registry().updateApiDocument(params);
   }
 
   private static void _smokeCase5() throws Exception {
     RegistryUpdateApiDocumentParams params =
         RegistryUpdateApiDocumentParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .title("")
-            .description("")
+            .namespace("acme")
+            .slug("acme-api")
+            .title("Acme API")
+            .description("API for managing Acme products and orders.")
             .isPrivate(false)
-            .ruleset("")
+            .ruleset("extends: [\"spectral:oas\"]")
             .build();
     var registry = client.registry().updateApiDocument(params);
   }
 
   private static void _smokeCase6() throws Exception {
     RegistryDeleteApiDocumentParams params =
-        RegistryDeleteApiDocumentParams.builder().namespace("namespace").slug("slug").build();
+        RegistryDeleteApiDocumentParams.builder().namespace("acme").slug("acme-api").build();
     var registry = client.registry().deleteApiDocument(params);
   }
 
   private static void _smokeCase7() throws Exception {
     RegistryRetrieveApiDocumentVersionParams params =
         RegistryRetrieveApiDocumentVersionParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .semver("semver")
+            .namespace("acme")
+            .slug("acme-api")
+            .semver("1.2.0")
             .build();
     var registry = client.registry().retrieveApiDocumentVersion(params);
   }
@@ -190,10 +194,12 @@ final class SmokeTest {
   private static void _smokeCase8() throws Exception {
     RegistryUpdateApiDocumentVersionParams params =
         RegistryUpdateApiDocumentVersionParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .semver("semver")
-            .document("")
+            .namespace("acme")
+            .slug("acme-api")
+            .semver("1.2.0")
+            .document(
+                "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                    + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
             .build();
     var registry = client.registry().updateApiDocumentVersion(params);
   }
@@ -201,9 +207,9 @@ final class SmokeTest {
   private static void _smokeCase9() throws Exception {
     RegistryDeleteApiDocumentVersionParams params =
         RegistryDeleteApiDocumentVersionParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .semver("semver")
+            .namespace("acme")
+            .slug("acme-api")
+            .semver("1.2.0")
             .build();
     var registry = client.registry().deleteApiDocumentVersion(params);
   }
@@ -211,9 +217,9 @@ final class SmokeTest {
   private static void _smokeCase10() throws Exception {
     RegistryListApiDocumentVersionMetadataParams params =
         RegistryListApiDocumentVersionMetadataParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .semver("semver")
+            .namespace("acme")
+            .slug("acme-api")
+            .semver("1.2.0")
             .build();
     var registry = client.registry().listApiDocumentVersionMetadata(params);
   }
@@ -221,10 +227,12 @@ final class SmokeTest {
   private static void _smokeCase11() throws Exception {
     RegistryCreateApiDocumentVersionParams params =
         RegistryCreateApiDocumentVersionParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .version("x")
-            .document("")
+            .namespace("acme")
+            .slug("acme-api")
+            .version("1.2.0")
+            .document(
+                "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                    + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
             .build();
     var registry = client.registry().createApiDocumentVersion(params);
   }
@@ -232,10 +240,12 @@ final class SmokeTest {
   private static void _smokeCase12() throws Exception {
     RegistryCreateApiDocumentVersionParams params =
         RegistryCreateApiDocumentVersionParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .version("x")
-            .document("")
+            .namespace("acme")
+            .slug("acme-api")
+            .version("1.2.0")
+            .document(
+                "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                    + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
             .force(false)
             .build();
     var registry = client.registry().createApiDocumentVersion(params);
@@ -244,9 +254,9 @@ final class SmokeTest {
   private static void _smokeCase13() throws Exception {
     RegistryCreateApiDocumentAccessGroupParams params =
         RegistryCreateApiDocumentAccessGroupParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+            .namespace("acme")
+            .slug("acme-api")
+            .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
             .build();
     var registry = client.registry().createApiDocumentAccessGroup(params);
   }
@@ -254,26 +264,27 @@ final class SmokeTest {
   private static void _smokeCase14() throws Exception {
     RegistryDeleteApiDocumentAccessGroupParams params =
         RegistryDeleteApiDocumentAccessGroupParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+            .namespace("acme")
+            .slug("acme-api")
+            .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
             .build();
     var registry = client.registry().deleteApiDocumentAccessGroup(params);
   }
 
   private static void _smokeCase15() throws Exception {
-    SchemaListParams params = SchemaListParams.builder().namespace("namespace").build();
+    SchemaListParams params = SchemaListParams.builder().namespace("acme").build();
     var schema = client.schemas().list(params);
   }
 
   private static void _smokeCase16() throws Exception {
     SchemaCreateParams params =
         SchemaCreateParams.builder()
-            .namespace("namespace")
-            .title("")
-            .version("x")
-            .slug("")
-            .document("")
+            .namespace("acme")
+            .title("Customer")
+            .version("1.2.0")
+            .slug("customer")
+            .document(
+                "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}")
             .build();
     var schema = client.schemas().create(params);
   }
@@ -281,30 +292,31 @@ final class SmokeTest {
   private static void _smokeCase17() throws Exception {
     SchemaCreateParams params =
         SchemaCreateParams.builder()
-            .namespace("namespace")
-            .title("")
-            .description("")
-            .version("x")
-            .slug("")
+            .namespace("acme")
+            .title("Customer")
+            .description("API for managing Acme products and orders.")
+            .version("1.2.0")
+            .slug("customer")
             .isPrivate(false)
-            .document("")
+            .document(
+                "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}")
             .build();
     var schema = client.schemas().create(params);
   }
 
   private static void _smokeCase18() throws Exception {
     SchemaUpdateParams params =
-        SchemaUpdateParams.builder().namespace("namespace").slug("slug").build();
+        SchemaUpdateParams.builder().namespace("acme").slug("customer").build();
     var schema = client.schemas().update(params);
   }
 
   private static void _smokeCase19() throws Exception {
     SchemaUpdateParams params =
         SchemaUpdateParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .title("")
-            .description("")
+            .namespace("acme")
+            .slug("customer")
+            .title("Customer")
+            .description("API for managing Acme products and orders.")
             .isPrivate(false)
             .build();
     var schema = client.schemas().update(params);
@@ -312,26 +324,22 @@ final class SmokeTest {
 
   private static void _smokeCase20() throws Exception {
     SchemaDeleteParams params =
-        SchemaDeleteParams.builder().namespace("namespace").slug("slug").build();
+        SchemaDeleteParams.builder().namespace("acme").slug("customer").build();
     var schema = client.schemas().delete(params);
   }
 
   private static void _smokeCase21() throws Exception {
     VersionRetrieveParams params =
-        VersionRetrieveParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .semver("semver")
-            .build();
+        VersionRetrieveParams.builder().namespace("acme").slug("customer").semver("1.2.0").build();
     var version = client.schemas().version().retrieve(params);
   }
 
   private static void _smokeCase22() throws Exception {
     com.scalar.models.schemas.version.VersionDeleteParams params =
         com.scalar.models.schemas.version.VersionDeleteParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .semver("semver")
+            .namespace("acme")
+            .slug("customer")
+            .semver("1.2.0")
             .build();
     var version = client.schemas().version().delete(params);
   }
@@ -339,10 +347,11 @@ final class SmokeTest {
   private static void _smokeCase23() throws Exception {
     com.scalar.models.schemas.version.VersionCreateParams params =
         com.scalar.models.schemas.version.VersionCreateParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .version("x")
-            .document("")
+            .namespace("acme")
+            .slug("customer")
+            .version("1.2.0")
+            .document(
+                "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}")
             .build();
     var version = client.schemas().version().create(params);
   }
@@ -350,10 +359,11 @@ final class SmokeTest {
   private static void _smokeCase24() throws Exception {
     com.scalar.models.schemas.version.VersionCreateParams params =
         com.scalar.models.schemas.version.VersionCreateParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .version("x")
-            .document("")
+            .namespace("acme")
+            .slug("customer")
+            .version("1.2.0")
+            .document(
+                "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}")
             .force(false)
             .build();
     var version = client.schemas().version().create(params);
@@ -367,9 +377,9 @@ final class SmokeTest {
             .accessGroup
             .AccessGroupCreateParams
             .builder()
-            .namespace("namespace")
-            .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+            .namespace("acme")
+            .slug("customer")
+            .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
             .build();
     var accessGroup = client.schemas().accessGroup().create(params);
   }
@@ -382,39 +392,43 @@ final class SmokeTest {
             .accessGroup
             .AccessGroupDeleteParams
             .builder()
-            .namespace("namespace")
-            .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+            .namespace("acme")
+            .slug("customer")
+            .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
             .build();
     var accessGroup = client.schemas().accessGroup().delete(params);
   }
 
   private static void _smokeCase27() throws Exception {
-    LoginPortalRetrieveParams params = LoginPortalRetrieveParams.builder().slug("slug").build();
+    LoginPortalRetrieveParams params =
+        LoginPortalRetrieveParams.builder().slug("acme-login").build();
     var loginPortal = client.loginPortals().retrieve(params);
   }
 
   private static void _smokeCase28() throws Exception {
-    LoginPortalUpdateParams params = LoginPortalUpdateParams.builder().slug("slug").build();
+    LoginPortalUpdateParams params = LoginPortalUpdateParams.builder().slug("acme-login").build();
     var loginPortal = client.loginPortals().update(params);
   }
 
   private static void _smokeCase29() throws Exception {
     LoginPortalUpdateParams params =
-        LoginPortalUpdateParams.builder().slug("slug").title("").build();
+        LoginPortalUpdateParams.builder()
+            .slug("acme-login")
+            .title("Acme Private Documentation")
+            .build();
     var loginPortal = client.loginPortals().update(params);
   }
 
   private static void _smokeCase30() throws Exception {
-    LoginPortalDeleteParams params = LoginPortalDeleteParams.builder().slug("slug").build();
+    LoginPortalDeleteParams params = LoginPortalDeleteParams.builder().slug("acme-login").build();
     var loginPortal = client.loginPortals().delete(params);
   }
 
   private static void _smokeCase31() throws Exception {
     LoginPortalCreateParams params =
         LoginPortalCreateParams.builder()
-            .title("")
-            .slug("")
+            .title("Acme Private Documentation")
+            .slug("acme-login")
             .email(
                 LoginPortalEmail.builder()
                     .logo("")
@@ -465,57 +479,63 @@ final class SmokeTest {
             .accessGroups
             .AccessGroupCreateParams
             .builder()
-            .name("")
-            .slug("x")
-            .allowedDomains("value")
+            .name("Engineering")
+            .slug("acme-api")
+            .allowedDomains("example.com")
             .build();
     var accessGroup = client.accessGroups().create(params);
   }
 
   private static void _smokeCase35() throws Exception {
-    AccessGroupRetrieveParams params = AccessGroupRetrieveParams.builder().slug("slug").build();
+    AccessGroupRetrieveParams params = AccessGroupRetrieveParams.builder().slug("acme-api").build();
     var accessGroup = client.accessGroups().retrieve(params);
   }
 
   private static void _smokeCase36() throws Exception {
-    AccessGroupUpdateParams params = AccessGroupUpdateParams.builder().pathSlug("pathSlug").build();
+    AccessGroupUpdateParams params = AccessGroupUpdateParams.builder().pathSlug("acme-api").build();
     var accessGroup = client.accessGroups().update(params);
   }
 
   private static void _smokeCase37() throws Exception {
     AccessGroupUpdateParams params =
-        AccessGroupUpdateParams.builder().pathSlug("pathSlug").name("").bodySlug("x").build();
+        AccessGroupUpdateParams.builder()
+            .pathSlug("acme-api")
+            .name("Engineering")
+            .bodySlug("acme-api")
+            .build();
     var accessGroup = client.accessGroups().update(params);
   }
 
   private static void _smokeCase38() throws Exception {
     com.scalar.models.accessGroups.AccessGroupDeleteParams params =
-        com.scalar.models.accessGroups.AccessGroupDeleteParams.builder().slug("slug").build();
+        com.scalar.models.accessGroups.AccessGroupDeleteParams.builder().slug("acme-api").build();
     var accessGroup = client.accessGroups().delete(params);
   }
 
   private static void _smokeCase39() throws Exception {
-    DomainCreateParams params = DomainCreateParams.builder().slug("slug").domain("").build();
+    DomainCreateParams params =
+        DomainCreateParams.builder().slug("acme-api").domain("example.com").build();
     var domain = client.accessGroups().domains().create(params);
   }
 
   private static void _smokeCase40() throws Exception {
-    DomainDeleteParams params = DomainDeleteParams.builder().slug("slug").domain("").build();
+    DomainDeleteParams params =
+        DomainDeleteParams.builder().slug("acme-api").domain("example.com").build();
     var domain = client.accessGroups().domains().delete(params);
   }
 
   private static void _smokeCase41() throws Exception {
-    RuleListRulesetsParams params = RuleListRulesetsParams.builder().namespace("namespace").build();
+    RuleListRulesetsParams params = RuleListRulesetsParams.builder().namespace("acme").build();
     var rule = client.rules().listRulesets(params);
   }
 
   private static void _smokeCase42() throws Exception {
     RuleCreateRulesetParams params =
         RuleCreateRulesetParams.builder()
-            .namespace("namespace")
-            .title("")
-            .slug("")
-            .document("")
+            .namespace("acme")
+            .title("Acme API Rules")
+            .slug("acme-rules")
+            .document("extends: [\"spectral:oas\"]\nrules:\n  info-contact: warn\n")
             .build();
     var rule = client.rules().createRuleset(params);
   }
@@ -523,34 +543,31 @@ final class SmokeTest {
   private static void _smokeCase43() throws Exception {
     RuleCreateRulesetParams params =
         RuleCreateRulesetParams.builder()
-            .namespace("namespace")
-            .title("")
-            .description("")
-            .slug("")
+            .namespace("acme")
+            .title("Acme API Rules")
+            .description("API for managing Acme products and orders.")
+            .slug("acme-rules")
             .isPrivate(false)
-            .document("")
+            .document("extends: [\"spectral:oas\"]\nrules:\n  info-contact: warn\n")
             .build();
     var rule = client.rules().createRuleset(params);
   }
 
   private static void _smokeCase44() throws Exception {
     RuleUpdateRulesetParams params =
-        RuleUpdateRulesetParams.builder()
-            .pathNamespace("pathNamespace")
-            .pathSlug("pathSlug")
-            .build();
+        RuleUpdateRulesetParams.builder().pathNamespace("acme").pathSlug("acme-rules").build();
     var rule = client.rules().updateRuleset(params);
   }
 
   private static void _smokeCase45() throws Exception {
     RuleUpdateRulesetParams params =
         RuleUpdateRulesetParams.builder()
-            .pathNamespace("pathNamespace")
-            .pathSlug("pathSlug")
-            .bodyNamespace("")
-            .bodySlug("")
-            .title("")
-            .description("")
+            .pathNamespace("acme")
+            .pathSlug("acme-rules")
+            .bodyNamespace("acme")
+            .bodySlug("acme-rules")
+            .title("Acme API Rules")
+            .description("API for managing Acme products and orders.")
             .isPrivate(false)
             .build();
     var rule = client.rules().updateRuleset(params);
@@ -558,22 +575,22 @@ final class SmokeTest {
 
   private static void _smokeCase46() throws Exception {
     RuleDeleteRulesetParams params =
-        RuleDeleteRulesetParams.builder().namespace("namespace").slug("slug").build();
+        RuleDeleteRulesetParams.builder().namespace("acme").slug("acme-rules").build();
     var rule = client.rules().deleteRuleset(params);
   }
 
   private static void _smokeCase47() throws Exception {
     RuleRetrieveRulesetDocumentParams params =
-        RuleRetrieveRulesetDocumentParams.builder().namespace("namespace").slug("slug").build();
+        RuleRetrieveRulesetDocumentParams.builder().namespace("acme").slug("acme-rules").build();
     var rule = client.rules().retrieveRulesetDocument(params);
   }
 
   private static void _smokeCase48() throws Exception {
     RuleCreateRulesetAccessGroupParams params =
         RuleCreateRulesetAccessGroupParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+            .namespace("acme")
+            .slug("acme-rules")
+            .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
             .build();
     var rule = client.rules().createRulesetAccessGroup(params);
   }
@@ -581,9 +598,9 @@ final class SmokeTest {
   private static void _smokeCase49() throws Exception {
     RuleDeleteRulesetAccessGroupParams params =
         RuleDeleteRulesetAccessGroupParams.builder()
-            .namespace("namespace")
-            .slug("slug")
-            .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+            .namespace("acme")
+            .slug("acme-rules")
+            .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
             .build();
     var rule = client.rules().deleteRulesetAccessGroup(params);
   }
@@ -593,40 +610,57 @@ final class SmokeTest {
   }
 
   private static void _smokeCase51() throws Exception {
-    ThemeCreateParams params = ThemeCreateParams.builder().name("").slug("").document("").build();
+    ThemeCreateParams params =
+        ThemeCreateParams.builder()
+            .name("Acme Theme")
+            .slug("acme-theme")
+            .document(":root { --scalar-color-1: #1f2937; }")
+            .build();
     var theme = client.themes().create(params);
   }
 
   private static void _smokeCase52() throws Exception {
     ThemeCreateParams params =
-        ThemeCreateParams.builder().name("").description("").slug("").document("").build();
+        ThemeCreateParams.builder()
+            .name("Acme Theme")
+            .description("API for managing Acme products and orders.")
+            .slug("acme-theme")
+            .document(":root { --scalar-color-1: #1f2937; }")
+            .build();
     var theme = client.themes().create(params);
   }
 
   private static void _smokeCase53() throws Exception {
-    ThemeUpdateParams params = ThemeUpdateParams.builder().slug("slug").build();
+    ThemeUpdateParams params = ThemeUpdateParams.builder().slug("acme-theme").build();
     var theme = client.themes().update(params);
   }
 
   private static void _smokeCase54() throws Exception {
     ThemeUpdateParams params =
-        ThemeUpdateParams.builder().slug("slug").name("").description("").build();
+        ThemeUpdateParams.builder()
+            .slug("acme-theme")
+            .name("Acme Theme")
+            .description("API for managing Acme products and orders.")
+            .build();
     var theme = client.themes().update(params);
   }
 
   private static void _smokeCase55() throws Exception {
     ThemeReplaceDocumentParams params =
-        ThemeReplaceDocumentParams.builder().slug("slug").document("").build();
+        ThemeReplaceDocumentParams.builder()
+            .slug("acme-theme")
+            .document(":root { --scalar-color-1: #1f2937; }")
+            .build();
     var theme = client.themes().replaceDocument(params);
   }
 
   private static void _smokeCase56() throws Exception {
-    ThemeDeleteParams params = ThemeDeleteParams.builder().slug("slug").build();
+    ThemeDeleteParams params = ThemeDeleteParams.builder().slug("acme-theme").build();
     var theme = client.themes().delete(params);
   }
 
   private static void _smokeCase57() throws Exception {
-    ThemeRetrieveParams params = ThemeRetrieveParams.builder().slug("slug").build();
+    ThemeRetrieveParams params = ThemeRetrieveParams.builder().slug("acme-theme").build();
     var theme = client.themes().retrieve(params);
   }
 
@@ -639,28 +673,29 @@ final class SmokeTest {
   }
 
   private static void _smokeCase60() throws Exception {
-    MemberUpdateParams params = MemberUpdateParams.builder().uid("uidxx").role(Role.OWNER).build();
+    MemberUpdateParams params =
+        MemberUpdateParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").role(Role.OWNER).build();
     var member = client.teams().members().update(params);
   }
 
   private static void _smokeCase61() throws Exception {
-    MemberDeleteParams params = MemberDeleteParams.builder().uid("uidxx").build();
+    MemberDeleteParams params = MemberDeleteParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
     var member = client.teams().members().delete(params);
   }
 
   private static void _smokeCase62() throws Exception {
     InviteMemberParams params =
-        InviteMemberParams.builder().email("user@example.com").role(Role.OWNER).build();
+        InviteMemberParams.builder().email("alex@example.com").role(Role.OWNER).build();
     var invite = client.teams().invites().member(params);
   }
 
   private static void _smokeCase63() throws Exception {
-    InviteResendParams params = InviteResendParams.builder().uid("uidxx").build();
+    InviteResendParams params = InviteResendParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
     var invite = client.teams().invites().resend(params);
   }
 
   private static void _smokeCase64() throws Exception {
-    InviteCancelParams params = InviteCancelParams.builder().uid("uidxx").build();
+    InviteCancelParams params = InviteCancelParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
     var invite = client.teams().invites().cancel(params);
   }
 
@@ -671,7 +706,7 @@ final class SmokeTest {
   private static void _smokeCase66() throws Exception {
     ScalarDocCreateGuideParams params =
         ScalarDocCreateGuideParams.builder()
-            .name("")
+            .name("Acme Documentation")
             .isPrivate(false)
             .allowedUsers(java.util.List.of())
             .allowedDomains(java.util.List.of())
@@ -682,8 +717,8 @@ final class SmokeTest {
   private static void _smokeCase67() throws Exception {
     ScalarDocCreateGuideParams params =
         ScalarDocCreateGuideParams.builder()
-            .name("")
-            .slug("x")
+            .name("Acme Documentation")
+            .slug("acme-api")
             .isPrivate(false)
             .allowedUsers(java.util.List.of())
             .allowedDomains(java.util.List.of())
@@ -692,7 +727,8 @@ final class SmokeTest {
   }
 
   private static void _smokeCase68() throws Exception {
-    ScalarDocPublishGuideParams params = ScalarDocPublishGuideParams.builder().slug("slug").build();
+    ScalarDocPublishGuideParams params =
+        ScalarDocPublishGuideParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().publishGuide(params);
   }
 
@@ -701,14 +737,14 @@ final class SmokeTest {
   }
 
   private static void _smokeCase70() throws Exception {
-    ScalarDocListProjectsParams params = ScalarDocListProjectsParams.builder().limit(1L).build();
+    ScalarDocListProjectsParams params = ScalarDocListProjectsParams.builder().limit(20L).build();
     var scalarDoc = client.scalarDocs().listProjects(params);
   }
 
   private static void _smokeCase71() throws Exception {
     ScalarDocCreateProjectParams params =
         ScalarDocCreateProjectParams.builder()
-            .name("")
+            .name("Acme Documentation")
             .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
             .build();
     var scalarDoc = client.scalarDocs().createProject(params);
@@ -717,20 +753,20 @@ final class SmokeTest {
   private static void _smokeCase72() throws Exception {
     ScalarDocCreateProjectParams params =
         ScalarDocCreateProjectParams.builder()
-            .name("")
-            .slug("x")
+            .name("Acme Documentation")
+            .slug("acme-api")
             .isPrivate(false)
-            .blank(false)
+            .blank(true)
             .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
             .githubRepository(
                 ScalarDocCreateProjectParams.GithubRepository.builder()
-                    .installationId(0L)
-                    .repoId(0L)
+                    .installationId(84L)
+                    .repoId(123456789L)
                     .build())
             .bitbucketRepository(
                 ScalarDocCreateProjectParams.BitbucketRepository.builder()
-                    .workspaceUuid("")
-                    .repoUuid("")
+                    .workspaceUuid("{12345678-1234-4234-8234-123456789abc}")
+                    .repoUuid("{abcdef01-1234-4234-8234-123456789abc}")
                     .build())
             .build();
     var scalarDoc = client.scalarDocs().createProject(params);
@@ -738,94 +774,98 @@ final class SmokeTest {
 
   private static void _smokeCase73() throws Exception {
     ScalarDocRetrieveProjectParams params =
-        ScalarDocRetrieveProjectParams.builder().slug("slug").build();
+        ScalarDocRetrieveProjectParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().retrieveProject(params);
   }
 
   private static void _smokeCase74() throws Exception {
     ScalarDocUpdateProjectParams params =
-        ScalarDocUpdateProjectParams.builder().slug("slug").build();
+        ScalarDocUpdateProjectParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().updateProject(params);
   }
 
   private static void _smokeCase75() throws Exception {
     ScalarDocUpdateProjectParams params =
         ScalarDocUpdateProjectParams.builder()
-            .slug("slug")
-            .name("")
+            .slug("acme-docs")
+            .name("Acme Documentation")
             .isPrivate(false)
-            .accessGroups(java.util.List.of("xxxxx"))
-            .loginPortalUid(ScalarDocUpdateProjectParams.LoginPortalUid.ofNanoid("xxxxx"))
-            .activeThemeId("xxxxx")
-            .agentEnabled(false)
-            .analyticsEnabled(false)
+            .accessGroups(java.util.List.of("UakgbKJ5m9gl0JDMbcJqL"))
+            .loginPortalUid(
+                ScalarDocUpdateProjectParams.LoginPortalUid.ofNanoid("UakgbKJ5m9gl0JDMbcJqL"))
+            .activeThemeId("UakgbKJ5m9gl0JDMbcJqL")
+            .agentEnabled(true)
+            .analyticsEnabled(true)
             .build();
     var scalarDoc = client.scalarDocs().updateProject(params);
   }
 
   private static void _smokeCase76() throws Exception {
     ScalarDocDeleteProjectParams params =
-        ScalarDocDeleteProjectParams.builder().slug("slug").build();
+        ScalarDocDeleteProjectParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().deleteProject(params);
   }
 
   private static void _smokeCase77() throws Exception {
     ScalarDocPublishProjectParams params =
-        ScalarDocPublishProjectParams.builder().slug("slug").build();
+        ScalarDocPublishProjectParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().publishProject(params);
   }
 
   private static void _smokeCase78() throws Exception {
     ScalarDocPublishProjectParams params =
         ScalarDocPublishProjectParams.builder()
-            .slug("slug")
-            .commitSha("")
+            .slug("acme-docs")
+            .commitSha("0123456789abcdef0123456789abcdef01234567")
             .preview(false)
-            .configPath("")
+            .configPath("scalar.config.json")
             .build();
     var scalarDoc = client.scalarDocs().publishProject(params);
   }
 
   private static void _smokeCase79() throws Exception {
     ScalarDocListProjectConfigParams params =
-        ScalarDocListProjectConfigParams.builder().slug("slug").build();
+        ScalarDocListProjectConfigParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().listProjectConfig(params);
   }
 
   private static void _smokeCase80() throws Exception {
     ScalarDocListProjectConfigParams params =
-        ScalarDocListProjectConfigParams.builder().slug("slug").ref("ref").build();
+        ScalarDocListProjectConfigParams.builder().slug("acme-docs").ref("main").build();
     var scalarDoc = client.scalarDocs().listProjectConfig(params);
   }
 
   private static void _smokeCase81() throws Exception {
     ScalarDocUpdateProjectConfigParams params =
-        ScalarDocUpdateProjectConfigParams.builder().slug("slug").content("").build();
+        ScalarDocUpdateProjectConfigParams.builder()
+            .slug("acme-docs")
+            .content("{\"name\":\"Acme Documentation\"}")
+            .build();
     var scalarDoc = client.scalarDocs().updateProjectConfig(params);
   }
 
   private static void _smokeCase82() throws Exception {
     ScalarDocUpdateProjectConfigParams params =
         ScalarDocUpdateProjectConfigParams.builder()
-            .slug("slug")
-            .content("")
-            .ref("")
-            .baseToken("")
-            .message("")
-            .path("")
+            .slug("acme-docs")
+            .content("{\"name\":\"Acme Documentation\"}")
+            .ref("main")
+            .baseToken("example-edit-token")
+            .message("Update documentation configuration")
+            .path("scalar.config.json")
             .build();
     var scalarDoc = client.scalarDocs().updateProjectConfig(params);
   }
 
   private static void _smokeCase83() throws Exception {
     ScalarDocListProjectDomainParams params =
-        ScalarDocListProjectDomainParams.builder().slug("slug").build();
+        ScalarDocListProjectDomainParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().listProjectDomain(params);
   }
 
   private static void _smokeCase84() throws Exception {
     ScalarDocListProjectDomainStatusParams params =
-        ScalarDocListProjectDomainStatusParams.builder().slug("slug").build();
+        ScalarDocListProjectDomainStatusParams.builder().slug("acme-docs").build();
     var scalarDoc = client.scalarDocs().listProjectDomainStatus(params);
   }
 
@@ -835,7 +875,9 @@ final class SmokeTest {
 
   private static void _smokeCase86() throws Exception {
     AuthenticationExchangePersonalTokenParams params =
-        AuthenticationExchangePersonalTokenParams.builder().personalToken("").build();
+        AuthenticationExchangePersonalTokenParams.builder()
+            .personalToken("scalar_example_personal_token")
+            .build();
     var authentication = client.authentication().exchangePersonalToken(params);
   }
 
@@ -848,14 +890,14 @@ final class SmokeTest {
   }
 
   private static void _smokeCase89() throws Exception {
-    SdkListParams params = SdkListParams.builder().limit(1L).build();
+    SdkListParams params = SdkListParams.builder().limit(20L).build();
     var sdk = client.sdks().list(params);
   }
 
   private static void _smokeCase90() throws Exception {
     SdkCreateParams params =
         SdkCreateParams.builder()
-            .apiUid("xxxxx")
+            .apiUid("UakgbKJ5m9gl0JDMbcJqL")
             .languages(java.util.List.of(SdkCreateParams.Language.of("typescript")))
             .build();
     var sdk = client.sdks().create(params);
@@ -864,34 +906,34 @@ final class SmokeTest {
   private static void _smokeCase91() throws Exception {
     SdkCreateParams params =
         SdkCreateParams.builder()
-            .apiUid("xxxxx")
+            .apiUid("UakgbKJ5m9gl0JDMbcJqL")
             .languages(java.util.List.of(SdkCreateParams.Language.of("typescript")))
-            .title("")
-            .slug("x")
-            .className("")
-            .config("")
+            .title("Acme SDK")
+            .slug("acme-api")
+            .className("Acme")
+            .config("{\"targets\":{\"typescript\":{\"packageName\":\"@acme/sdk\"}}}")
             .build();
     var sdk = client.sdks().create(params);
   }
 
   private static void _smokeCase92() throws Exception {
-    SdkRetrieveParams params = SdkRetrieveParams.builder().uid("uidxx").build();
+    SdkRetrieveParams params = SdkRetrieveParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
     var sdk = client.sdks().retrieve(params);
   }
 
   private static void _smokeCase93() throws Exception {
-    SdkUpdateParams params = SdkUpdateParams.builder().uid("uidxx").build();
+    SdkUpdateParams params = SdkUpdateParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
     var sdk = client.sdks().update(params);
   }
 
   private static void _smokeCase94() throws Exception {
     SdkUpdateParams params =
         SdkUpdateParams.builder()
-            .uid("uidxx")
-            .title("")
-            .slug("x")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
+            .title("Acme SDK")
+            .slug("acme-api")
             .isPrivate(false)
-            .config("")
+            .config("{\"targets\":{\"typescript\":{\"packageName\":\"@acme/sdk\"}}}")
             .apiUid("")
             .apiVersion("")
             .build();
@@ -899,20 +941,20 @@ final class SmokeTest {
   }
 
   private static void _smokeCase95() throws Exception {
-    SdkDeleteParams params = SdkDeleteParams.builder().uid("uidxx").build();
+    SdkDeleteParams params = SdkDeleteParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
     var sdk = client.sdks().delete(params);
   }
 
   private static void _smokeCase96() throws Exception {
-    SdkBuildParams params = SdkBuildParams.builder().uid("uidxx").build();
+    SdkBuildParams params = SdkBuildParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
     var sdk = client.sdks().build(params);
   }
 
   private static void _smokeCase97() throws Exception {
     SdkBuildParams params =
         SdkBuildParams.builder()
-            .uid("uidxx")
-            .version("")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
+            .version("1.2.0")
             .languages(java.util.List.of(SdkBuildParams.Language.of("typescript")))
             .build();
     var sdk = client.sdks().build(params);
@@ -921,9 +963,9 @@ final class SmokeTest {
   private static void _smokeCase98() throws Exception {
     com.scalar.models.sdks.versions.VersionCreateParams params =
         com.scalar.models.sdks.versions.VersionCreateParams.builder()
-            .uid("uidxx")
-            .version("")
-            .apiVersion("")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
+            .version("1.2.0")
+            .apiVersion("1.2.0")
             .build();
     var version = client.sdks().versions().create(params);
   }
@@ -931,8 +973,8 @@ final class SmokeTest {
   private static void _smokeCase99() throws Exception {
     com.scalar.models.sdks.versions.VersionDeleteParams params =
         com.scalar.models.sdks.versions.VersionDeleteParams.builder()
-            .uid("uidxx")
-            .version("version")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
+            .version("1.2.0")
             .build();
     var version = client.sdks().versions().delete(params);
   }
@@ -940,10 +982,10 @@ final class SmokeTest {
   private static void _smokeCase100() throws Exception {
     RepositoryLinkParams params =
         RepositoryLinkParams.builder()
-            .uid("uidxx")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
             .language(RepositoryLinkParams.Language.of("typescript"))
-            .repositoryId(0L)
-            .baseBranch("")
+            .repositoryId(123456789L)
+            .baseBranch("main")
             .build();
     var repository = client.sdks().repositories().link(params);
   }
@@ -951,11 +993,11 @@ final class SmokeTest {
   private static void _smokeCase101() throws Exception {
     RepositoryLinkParams params =
         RepositoryLinkParams.builder()
-            .uid("uidxx")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
             .language(RepositoryLinkParams.Language.of("typescript"))
-            .repositoryId(0L)
-            .baseBranch("")
-            .prereleaseType("")
+            .repositoryId(123456789L)
+            .baseBranch("main")
+            .prereleaseType("beta")
             .build();
     var repository = client.sdks().repositories().link(params);
   }
@@ -963,7 +1005,7 @@ final class SmokeTest {
   private static void _smokeCase102() throws Exception {
     RepositoryUnlinkParams params =
         RepositoryUnlinkParams.builder()
-            .uid("uidxx")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
             .language(RepositoryUnlinkParams.Language.of("typescript"))
             .build();
     var repository = client.sdks().repositories().unlink(params);
@@ -972,9 +1014,9 @@ final class SmokeTest {
   private static void _smokeCase103() throws Exception {
     RepositoryUpdatePublishingParams params =
         RepositoryUpdatePublishingParams.builder()
-            .uid("uidxx")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
             .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
-            .publishOnMerge(false)
+            .publishOnMerge(true)
             .build();
     var repository = client.sdks().repositories().updatePublishing(params);
   }
@@ -982,12 +1024,12 @@ final class SmokeTest {
   private static void _smokeCase104() throws Exception {
     RepositoryUpdatePublishingParams params =
         RepositoryUpdatePublishingParams.builder()
-            .uid("uidxx")
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
             .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
-            .publishOnMerge(false)
+            .publishOnMerge(true)
             .authMethod(RepositoryUpdatePublishingParams.AuthMethod.of("oidc"))
             .access(RepositoryUpdatePublishingParams.Access.of("public"))
-            .tag("")
+            .tag("latest")
             .build();
     var repository = client.sdks().repositories().updatePublishing(params);
   }
@@ -997,15 +1039,15 @@ final class SmokeTest {
   }
 
   private static void _smokeCase106() throws Exception {
-    ServerCreateParams params = ServerCreateParams.builder().name("x").build();
+    ServerCreateParams params = ServerCreateParams.builder().name("Acme MCP").build();
     var server = client.mcp().servers().create(params);
   }
 
   private static void _smokeCase107() throws Exception {
     ServerCreateParams params =
         ServerCreateParams.builder()
-            .name("x")
-            .slug("x")
+            .name("Acme MCP")
+            .slug("acme-api")
             .versionUids(java.util.List.of(""))
             .projectUids(java.util.List.of(""))
             .build();
@@ -1013,22 +1055,22 @@ final class SmokeTest {
   }
 
   private static void _smokeCase108() throws Exception {
-    ServerRetrieveParams params = ServerRetrieveParams.builder().id("id").build();
+    ServerRetrieveParams params = ServerRetrieveParams.builder().id("42").build();
     var server = client.mcp().servers().retrieve(params);
   }
 
   private static void _smokeCase109() throws Exception {
-    ServerUpdateParams params = ServerUpdateParams.builder().id("id").build();
+    ServerUpdateParams params = ServerUpdateParams.builder().id("42").build();
     var server = client.mcp().servers().update(params);
   }
 
   private static void _smokeCase110() throws Exception {
     ServerUpdateParams params =
         ServerUpdateParams.builder()
-            .id("id")
-            .name("x")
-            .slug("x")
-            .autoAddOperations(false)
+            .id("42")
+            .name("Acme MCP")
+            .slug("acme-api")
+            .autoAddOperations(true)
             .operations(java.util.List.of(""))
             .docsPages(java.util.List.of(""))
             .build();
@@ -1036,20 +1078,20 @@ final class SmokeTest {
   }
 
   private static void _smokeCase111() throws Exception {
-    ServerDeleteParams params = ServerDeleteParams.builder().id("id").build();
+    ServerDeleteParams params = ServerDeleteParams.builder().id("42").build();
     var server = client.mcp().servers().delete(params);
   }
 
   private static void _smokeCase112() throws Exception {
-    InstallationListParams params = InstallationListParams.builder().id("id").build();
+    InstallationListParams params = InstallationListParams.builder().id("42").build();
     var installation = client.mcp().servers().installations().list(params);
   }
 
   private static void _smokeCase113() throws Exception {
     InstallationCreateParams params =
         InstallationCreateParams.builder()
-            .id("id")
-            .name("x")
+            .id("42")
+            .name("Acme MCP")
             .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
             .build();
     var installation = client.mcp().servers().installations().create(params);
@@ -1058,9 +1100,9 @@ final class SmokeTest {
   private static void _smokeCase114() throws Exception {
     InstallationCreateParams params =
         InstallationCreateParams.builder()
-            .id("id")
-            .name("x")
-            .slug("x")
+            .id("42")
+            .name("Acme MCP")
+            .slug("acme-api")
             .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
             .build();
     var installation = client.mcp().servers().installations().create(params);
@@ -1068,23 +1110,23 @@ final class SmokeTest {
 
   private static void _smokeCase115() throws Exception {
     InstallationRetrieveParams params =
-        InstallationRetrieveParams.builder().id("id").installationId("installationId").build();
+        InstallationRetrieveParams.builder().id("42").installationId("84").build();
     var installation = client.mcp().servers().installations().retrieve(params);
   }
 
   private static void _smokeCase116() throws Exception {
     InstallationUpdateParams params =
-        InstallationUpdateParams.builder().id("id").installationId("installationId").build();
+        InstallationUpdateParams.builder().id("42").installationId("84").build();
     var installation = client.mcp().servers().installations().update(params);
   }
 
   private static void _smokeCase117() throws Exception {
     InstallationUpdateParams params =
         InstallationUpdateParams.builder()
-            .id("id")
-            .installationId("installationId")
-            .name("x")
-            .slug("x")
+            .id("42")
+            .installationId("84")
+            .name("Acme MCP")
+            .slug("acme-api")
             .isPrivate(false)
             .loginPortalUid("")
             .documentAuth(InstallationUpdateParams.DocumentAuth.builder().build())
@@ -1095,16 +1137,16 @@ final class SmokeTest {
 
   private static void _smokeCase118() throws Exception {
     InstallationDeleteParams params =
-        InstallationDeleteParams.builder().id("id").installationId("installationId").build();
+        InstallationDeleteParams.builder().id("42").installationId("84").build();
     var installation = client.mcp().servers().installations().delete(params);
   }
 
   private static void _smokeCase119() throws Exception {
     InstallationCreateAccessGroupParams params =
         InstallationCreateAccessGroupParams.builder()
-            .id("id")
-            .installationId("installationId")
-            .accessGroupUid("xxxxx")
+            .id("42")
+            .installationId("84")
+            .accessGroupUid("UakgbKJ5m9gl0JDMbcJqL")
             .build();
     var installation = client.mcp().servers().installations().createAccessGroup(params);
   }
@@ -1112,9 +1154,9 @@ final class SmokeTest {
   private static void _smokeCase120() throws Exception {
     InstallationDeleteAccessGroupParams params =
         InstallationDeleteAccessGroupParams.builder()
-            .id("id")
-            .installationId("installationId")
-            .accessGroupUid("xxxxx")
+            .id("42")
+            .installationId("84")
+            .accessGroupUid("UakgbKJ5m9gl0JDMbcJqL")
             .build();
     var installation = client.mcp().servers().installations().deleteAccessGroup(params);
   }

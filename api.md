@@ -175,7 +175,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 RegistryListApiDocumentsParams params =
-    RegistryListApiDocumentsParams.builder().namespace("namespace").build();
+    RegistryListApiDocumentsParams.builder().namespace("acme").build();
 var registry = client.registry().listApiDocuments(params);
 
 System.out.println(registry);
@@ -200,11 +200,13 @@ ScalarClient client =
 
 RegistryCreateApiDocumentParams params =
     RegistryCreateApiDocumentParams.builder()
-        .namespace("namespace")
-        .title("")
-        .version("x")
-        .slug("")
-        .document("")
+        .namespace("acme")
+        .title("Acme API")
+        .version("1.2.0")
+        .slug("acme-api")
+        .document(
+            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
         .build();
 var registry = client.registry().createApiDocument(params);
 
@@ -228,7 +230,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 RegistryUpdateApiDocumentParams params =
-    RegistryUpdateApiDocumentParams.builder().namespace("namespace").slug("slug").build();
+    RegistryUpdateApiDocumentParams.builder().namespace("acme").slug("acme-api").build();
 var registry = client.registry().updateApiDocument(params);
 
 System.out.println(registry);
@@ -251,7 +253,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 RegistryDeleteApiDocumentParams params =
-    RegistryDeleteApiDocumentParams.builder().namespace("namespace").slug("slug").build();
+    RegistryDeleteApiDocumentParams.builder().namespace("acme").slug("acme-api").build();
 var registry = client.registry().deleteApiDocument(params);
 
 System.out.println(registry);
@@ -275,9 +277,9 @@ ScalarClient client =
 
 RegistryRetrieveApiDocumentVersionParams params =
     RegistryRetrieveApiDocumentVersionParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .semver("semver")
+        .namespace("acme")
+        .slug("acme-api")
+        .semver("1.2.0")
         .build();
 var registry = client.registry().retrieveApiDocumentVersion(params);
 
@@ -303,10 +305,12 @@ ScalarClient client =
 
 RegistryUpdateApiDocumentVersionParams params =
     RegistryUpdateApiDocumentVersionParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .semver("semver")
-        .document("")
+        .namespace("acme")
+        .slug("acme-api")
+        .semver("1.2.0")
+        .document(
+            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
         .build();
 var registry = client.registry().updateApiDocumentVersion(params);
 
@@ -331,9 +335,9 @@ ScalarClient client =
 
 RegistryDeleteApiDocumentVersionParams params =
     RegistryDeleteApiDocumentVersionParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .semver("semver")
+        .namespace("acme")
+        .slug("acme-api")
+        .semver("1.2.0")
         .build();
 var registry = client.registry().deleteApiDocumentVersion(params);
 
@@ -359,9 +363,9 @@ ScalarClient client =
 
 RegistryListApiDocumentVersionMetadataParams params =
     RegistryListApiDocumentVersionMetadataParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .semver("semver")
+        .namespace("acme")
+        .slug("acme-api")
+        .semver("1.2.0")
         .build();
 var registry = client.registry().listApiDocumentVersionMetadata(params);
 
@@ -387,10 +391,12 @@ ScalarClient client =
 
 RegistryCreateApiDocumentVersionParams params =
     RegistryCreateApiDocumentVersionParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .version("x")
-        .document("")
+        .namespace("acme")
+        .slug("acme-api")
+        .version("1.2.0")
+        .document(
+            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme"
+                + " API\",\"version\":\"1.2.0\"},\"paths\":{}}")
         .build();
 var registry = client.registry().createApiDocumentVersion(params);
 
@@ -416,9 +422,9 @@ ScalarClient client =
 
 RegistryCreateApiDocumentAccessGroupParams params =
     RegistryCreateApiDocumentAccessGroupParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+        .namespace("acme")
+        .slug("acme-api")
+        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
         .build();
 var registry = client.registry().createApiDocumentAccessGroup(params);
 
@@ -444,9 +450,9 @@ ScalarClient client =
 
 RegistryDeleteApiDocumentAccessGroupParams params =
     RegistryDeleteApiDocumentAccessGroupParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+        .namespace("acme")
+        .slug("acme-api")
+        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
         .build();
 var registry = client.registry().deleteApiDocumentAccessGroup(params);
 
@@ -474,7 +480,7 @@ import com.scalar.models.schemas.SchemaListParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-SchemaListParams params = SchemaListParams.builder().namespace("namespace").build();
+SchemaListParams params = SchemaListParams.builder().namespace("acme").build();
 var schema = client.schemas().list(params);
 
 System.out.println(schema);
@@ -499,11 +505,12 @@ ScalarClient client =
 
 SchemaCreateParams params =
     SchemaCreateParams.builder()
-        .namespace("namespace")
-        .title("")
-        .version("x")
-        .slug("")
-        .document("")
+        .namespace("acme")
+        .title("Customer")
+        .version("1.2.0")
+        .slug("customer")
+        .document(
+            "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}")
         .build();
 var schema = client.schemas().create(params);
 
@@ -527,7 +534,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 SchemaUpdateParams params =
-    SchemaUpdateParams.builder().namespace("namespace").slug("slug").build();
+    SchemaUpdateParams.builder().namespace("acme").slug("customer").build();
 var schema = client.schemas().update(params);
 
 System.out.println(schema);
@@ -550,7 +557,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 SchemaDeleteParams params =
-    SchemaDeleteParams.builder().namespace("namespace").slug("slug").build();
+    SchemaDeleteParams.builder().namespace("acme").slug("customer").build();
 var schema = client.schemas().delete(params);
 
 System.out.println(schema);
@@ -577,11 +584,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 VersionRetrieveParams params =
-    VersionRetrieveParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .semver("semver")
-        .build();
+    VersionRetrieveParams.builder().namespace("acme").slug("customer").semver("1.2.0").build();
 var version = client.schemas().version().retrieve(params);
 
 System.out.println(version);
@@ -604,7 +607,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 VersionDeleteParams params =
-    VersionDeleteParams.builder().namespace("namespace").slug("slug").semver("semver").build();
+    VersionDeleteParams.builder().namespace("acme").slug("customer").semver("1.2.0").build();
 var version = client.schemas().version().delete(params);
 
 System.out.println(version);
@@ -629,10 +632,11 @@ ScalarClient client =
 
 VersionCreateParams params =
     VersionCreateParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .version("x")
-        .document("")
+        .namespace("acme")
+        .slug("customer")
+        .version("1.2.0")
+        .document(
+            "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}")
         .build();
 var version = client.schemas().version().create(params);
 
@@ -662,9 +666,9 @@ ScalarClient client =
 
 AccessGroupCreateParams params =
     AccessGroupCreateParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+        .namespace("acme")
+        .slug("customer")
+        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
         .build();
 var accessGroup = client.schemas().accessGroup().create(params);
 
@@ -690,9 +694,9 @@ ScalarClient client =
 
 AccessGroupDeleteParams params =
     AccessGroupDeleteParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+        .namespace("acme")
+        .slug("customer")
+        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
         .build();
 var accessGroup = client.schemas().accessGroup().delete(params);
 
@@ -720,7 +724,8 @@ import com.scalar.models.loginPortals.LoginPortalRetrieveParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-LoginPortalRetrieveParams params = LoginPortalRetrieveParams.builder().slug("slug").build();
+LoginPortalRetrieveParams params =
+    LoginPortalRetrieveParams.builder().slug("acme-login").build();
 var loginPortal = client.loginPortals().retrieve(params);
 
 System.out.println(loginPortal);
@@ -742,7 +747,7 @@ import com.scalar.models.loginPortals.LoginPortalUpdateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-LoginPortalUpdateParams params = LoginPortalUpdateParams.builder().slug("slug").build();
+LoginPortalUpdateParams params = LoginPortalUpdateParams.builder().slug("acme-login").build();
 var loginPortal = client.loginPortals().update(params);
 
 System.out.println(loginPortal);
@@ -764,7 +769,7 @@ import com.scalar.models.loginPortals.LoginPortalDeleteParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-LoginPortalDeleteParams params = LoginPortalDeleteParams.builder().slug("slug").build();
+LoginPortalDeleteParams params = LoginPortalDeleteParams.builder().slug("acme-login").build();
 var loginPortal = client.loginPortals().delete(params);
 
 System.out.println(loginPortal);
@@ -791,8 +796,8 @@ ScalarClient client =
 
 LoginPortalCreateParams params =
     LoginPortalCreateParams.builder()
-        .title("")
-        .slug("")
+        .title("Acme Private Documentation")
+        .slug("acme-login")
         .email(
             LoginPortalEmail.builder()
                 .logo("")
@@ -893,7 +898,7 @@ import com.scalar.models.accessGroups.AccessGroupRetrieveParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-AccessGroupRetrieveParams params = AccessGroupRetrieveParams.builder().slug("slug").build();
+AccessGroupRetrieveParams params = AccessGroupRetrieveParams.builder().slug("acme-api").build();
 var accessGroup = client.accessGroups().retrieve(params);
 
 System.out.println(accessGroup);
@@ -915,7 +920,7 @@ import com.scalar.models.accessGroups.AccessGroupUpdateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-AccessGroupUpdateParams params = AccessGroupUpdateParams.builder().pathSlug("pathSlug").build();
+AccessGroupUpdateParams params = AccessGroupUpdateParams.builder().pathSlug("acme-api").build();
 var accessGroup = client.accessGroups().update(params);
 
 System.out.println(accessGroup);
@@ -937,7 +942,7 @@ import com.scalar.models.accessGroups.AccessGroupDeleteParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-AccessGroupDeleteParams params = AccessGroupDeleteParams.builder().slug("slug").build();
+AccessGroupDeleteParams params = AccessGroupDeleteParams.builder().slug("acme-api").build();
 var accessGroup = client.accessGroups().delete(params);
 
 System.out.println(accessGroup);
@@ -963,7 +968,8 @@ import com.scalar.models.accessGroups.domains.DomainCreateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-DomainCreateParams params = DomainCreateParams.builder().slug("slug").domain("").build();
+DomainCreateParams params =
+    DomainCreateParams.builder().slug("acme-api").domain("example.com").build();
 var domain = client.accessGroups().domains().create(params);
 
 System.out.println(domain);
@@ -985,7 +991,8 @@ import com.scalar.models.accessGroups.domains.DomainDeleteParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-DomainDeleteParams params = DomainDeleteParams.builder().slug("slug").domain("").build();
+DomainDeleteParams params =
+    DomainDeleteParams.builder().slug("acme-api").domain("example.com").build();
 var domain = client.accessGroups().domains().delete(params);
 
 System.out.println(domain);
@@ -1012,7 +1019,7 @@ import com.scalar.models.rules.RuleListRulesetsParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-RuleListRulesetsParams params = RuleListRulesetsParams.builder().namespace("namespace").build();
+RuleListRulesetsParams params = RuleListRulesetsParams.builder().namespace("acme").build();
 var rule = client.rules().listRulesets(params);
 
 System.out.println(rule);
@@ -1037,10 +1044,10 @@ ScalarClient client =
 
 RuleCreateRulesetParams params =
     RuleCreateRulesetParams.builder()
-        .namespace("namespace")
-        .title("")
-        .slug("")
-        .document("")
+        .namespace("acme")
+        .title("Acme API Rules")
+        .slug("acme-rules")
+        .document("extends: [\"spectral:oas\"]\nrules:\n  info-contact: warn\n")
         .build();
 var rule = client.rules().createRuleset(params);
 
@@ -1064,10 +1071,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 RuleUpdateRulesetParams params =
-    RuleUpdateRulesetParams.builder()
-        .pathNamespace("pathNamespace")
-        .pathSlug("pathSlug")
-        .build();
+    RuleUpdateRulesetParams.builder().pathNamespace("acme").pathSlug("acme-rules").build();
 var rule = client.rules().updateRuleset(params);
 
 System.out.println(rule);
@@ -1090,7 +1094,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 RuleDeleteRulesetParams params =
-    RuleDeleteRulesetParams.builder().namespace("namespace").slug("slug").build();
+    RuleDeleteRulesetParams.builder().namespace("acme").slug("acme-rules").build();
 var rule = client.rules().deleteRuleset(params);
 
 System.out.println(rule);
@@ -1113,7 +1117,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 RuleRetrieveRulesetDocumentParams params =
-    RuleRetrieveRulesetDocumentParams.builder().namespace("namespace").slug("slug").build();
+    RuleRetrieveRulesetDocumentParams.builder().namespace("acme").slug("acme-rules").build();
 var rule = client.rules().retrieveRulesetDocument(params);
 
 System.out.println(rule);
@@ -1138,9 +1142,9 @@ ScalarClient client =
 
 RuleCreateRulesetAccessGroupParams params =
     RuleCreateRulesetAccessGroupParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+        .namespace("acme")
+        .slug("acme-rules")
+        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
         .build();
 var rule = client.rules().createRulesetAccessGroup(params);
 
@@ -1166,9 +1170,9 @@ ScalarClient client =
 
 RuleDeleteRulesetAccessGroupParams params =
     RuleDeleteRulesetAccessGroupParams.builder()
-        .namespace("namespace")
-        .slug("slug")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("x").build())
+        .namespace("acme")
+        .slug("acme-rules")
+        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
         .build();
 var rule = client.rules().deleteRulesetAccessGroup(params);
 
@@ -1217,7 +1221,12 @@ import com.scalar.models.themes.ThemeCreateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ThemeCreateParams params = ThemeCreateParams.builder().name("").slug("").document("").build();
+ThemeCreateParams params =
+    ThemeCreateParams.builder()
+        .name("Acme Theme")
+        .slug("acme-theme")
+        .document(":root { --scalar-color-1: #1f2937; }")
+        .build();
 var theme = client.themes().create(params);
 
 System.out.println(theme);
@@ -1239,7 +1248,7 @@ import com.scalar.models.themes.ThemeUpdateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ThemeUpdateParams params = ThemeUpdateParams.builder().slug("slug").build();
+ThemeUpdateParams params = ThemeUpdateParams.builder().slug("acme-theme").build();
 var theme = client.themes().update(params);
 
 System.out.println(theme);
@@ -1262,7 +1271,10 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ThemeReplaceDocumentParams params =
-    ThemeReplaceDocumentParams.builder().slug("slug").document("").build();
+    ThemeReplaceDocumentParams.builder()
+        .slug("acme-theme")
+        .document(":root { --scalar-color-1: #1f2937; }")
+        .build();
 var theme = client.themes().replaceDocument(params);
 
 System.out.println(theme);
@@ -1284,7 +1296,7 @@ import com.scalar.models.themes.ThemeDeleteParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ThemeDeleteParams params = ThemeDeleteParams.builder().slug("slug").build();
+ThemeDeleteParams params = ThemeDeleteParams.builder().slug("acme-theme").build();
 var theme = client.themes().delete(params);
 
 System.out.println(theme);
@@ -1306,7 +1318,7 @@ import com.scalar.models.themes.ThemeRetrieveParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ThemeRetrieveParams params = ThemeRetrieveParams.builder().slug("slug").build();
+ThemeRetrieveParams params = ThemeRetrieveParams.builder().slug("acme-theme").build();
 var theme = client.themes().retrieve(params);
 
 System.out.println(theme);
@@ -1379,7 +1391,8 @@ import com.scalar.models.teams.members.MemberUpdateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-MemberUpdateParams params = MemberUpdateParams.builder().uid("uidxx").role(Role.OWNER).build();
+MemberUpdateParams params =
+    MemberUpdateParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").role(Role.OWNER).build();
 var member = client.teams().members().update(params);
 
 System.out.println(member);
@@ -1401,7 +1414,7 @@ import com.scalar.models.teams.members.MemberDeleteParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-MemberDeleteParams params = MemberDeleteParams.builder().uid("uidxx").build();
+MemberDeleteParams params = MemberDeleteParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
 var member = client.teams().members().delete(params);
 
 System.out.println(member);
@@ -1429,7 +1442,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 InviteMemberParams params =
-    InviteMemberParams.builder().email("user@example.com").role(Role.OWNER).build();
+    InviteMemberParams.builder().email("alex@example.com").role(Role.OWNER).build();
 var invite = client.teams().invites().member(params);
 
 System.out.println(invite);
@@ -1451,7 +1464,7 @@ import com.scalar.models.teams.invites.InviteResendParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-InviteResendParams params = InviteResendParams.builder().uid("uidxx").build();
+InviteResendParams params = InviteResendParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
 var invite = client.teams().invites().resend(params);
 
 System.out.println(invite);
@@ -1473,7 +1486,7 @@ import com.scalar.models.teams.invites.InviteCancelParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-InviteCancelParams params = InviteCancelParams.builder().uid("uidxx").build();
+InviteCancelParams params = InviteCancelParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
 var invite = client.teams().invites().cancel(params);
 
 System.out.println(invite);
@@ -1523,7 +1536,7 @@ ScalarClient client =
 
 ScalarDocCreateGuideParams params =
     ScalarDocCreateGuideParams.builder()
-        .name("")
+        .name("Acme Documentation")
         .isPrivate(false)
         .allowedUsers(java.util.List.of())
         .allowedDomains(java.util.List.of())
@@ -1550,7 +1563,8 @@ import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ScalarDocPublishGuideParams params = ScalarDocPublishGuideParams.builder().slug("slug").build();
+ScalarDocPublishGuideParams params =
+    ScalarDocPublishGuideParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().publishGuide(params);
 
 System.out.println(scalarDoc);
@@ -1596,7 +1610,7 @@ ScalarClient client =
 
 ScalarDocCreateProjectParams params =
     ScalarDocCreateProjectParams.builder()
-        .name("")
+        .name("Acme Documentation")
         .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
         .build();
 var scalarDoc = client.scalarDocs().createProject(params);
@@ -1622,7 +1636,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocRetrieveProjectParams params =
-    ScalarDocRetrieveProjectParams.builder().slug("slug").build();
+    ScalarDocRetrieveProjectParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().retrieveProject(params);
 
 System.out.println(scalarDoc);
@@ -1645,7 +1659,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocUpdateProjectParams params =
-    ScalarDocUpdateProjectParams.builder().slug("slug").build();
+    ScalarDocUpdateProjectParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().updateProject(params);
 
 System.out.println(scalarDoc);
@@ -1668,7 +1682,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocDeleteProjectParams params =
-    ScalarDocDeleteProjectParams.builder().slug("slug").build();
+    ScalarDocDeleteProjectParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().deleteProject(params);
 
 System.out.println(scalarDoc);
@@ -1692,7 +1706,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocPublishProjectParams params =
-    ScalarDocPublishProjectParams.builder().slug("slug").build();
+    ScalarDocPublishProjectParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().publishProject(params);
 
 System.out.println(scalarDoc);
@@ -1716,7 +1730,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocListProjectConfigParams params =
-    ScalarDocListProjectConfigParams.builder().slug("slug").build();
+    ScalarDocListProjectConfigParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().listProjectConfig(params);
 
 System.out.println(scalarDoc);
@@ -1740,7 +1754,10 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocUpdateProjectConfigParams params =
-    ScalarDocUpdateProjectConfigParams.builder().slug("slug").content("").build();
+    ScalarDocUpdateProjectConfigParams.builder()
+        .slug("acme-docs")
+        .content("{\"name\":\"Acme Documentation\"}")
+        .build();
 var scalarDoc = client.scalarDocs().updateProjectConfig(params);
 
 System.out.println(scalarDoc);
@@ -1764,7 +1781,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocListProjectDomainParams params =
-    ScalarDocListProjectDomainParams.builder().slug("slug").build();
+    ScalarDocListProjectDomainParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().listProjectDomain(params);
 
 System.out.println(scalarDoc);
@@ -1788,7 +1805,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 ScalarDocListProjectDomainStatusParams params =
-    ScalarDocListProjectDomainStatusParams.builder().slug("slug").build();
+    ScalarDocListProjectDomainStatusParams.builder().slug("acme-docs").build();
 var scalarDoc = client.scalarDocs().listProjectDomainStatus(params);
 
 System.out.println(scalarDoc);
@@ -1840,7 +1857,9 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 AuthenticationExchangePersonalTokenParams params =
-    AuthenticationExchangePersonalTokenParams.builder().personalToken("").build();
+    AuthenticationExchangePersonalTokenParams.builder()
+        .personalToken("scalar_example_personal_token")
+        .build();
 var authentication = client.authentication().exchangePersonalToken(params);
 
 System.out.println(authentication);
@@ -1911,7 +1930,7 @@ ScalarClient client =
 
 SdkCreateParams params =
     SdkCreateParams.builder()
-        .apiUid("xxxxx")
+        .apiUid("UakgbKJ5m9gl0JDMbcJqL")
         .languages(java.util.List.of(SdkCreateParams.Language.of("typescript")))
         .build();
 var sdk = client.sdks().create(params);
@@ -1936,7 +1955,7 @@ import com.scalar.models.sdks.SdkRetrieveParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-SdkRetrieveParams params = SdkRetrieveParams.builder().uid("uidxx").build();
+SdkRetrieveParams params = SdkRetrieveParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
 var sdk = client.sdks().retrieve(params);
 
 System.out.println(sdk);
@@ -1958,7 +1977,7 @@ import com.scalar.models.sdks.SdkUpdateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-SdkUpdateParams params = SdkUpdateParams.builder().uid("uidxx").build();
+SdkUpdateParams params = SdkUpdateParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
 var sdk = client.sdks().update(params);
 
 System.out.println(sdk);
@@ -1980,7 +1999,7 @@ import com.scalar.models.sdks.SdkDeleteParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-SdkDeleteParams params = SdkDeleteParams.builder().uid("uidxx").build();
+SdkDeleteParams params = SdkDeleteParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
 var sdk = client.sdks().delete(params);
 
 System.out.println(sdk);
@@ -2003,7 +2022,7 @@ import com.scalar.models.sdks.SdkBuildParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-SdkBuildParams params = SdkBuildParams.builder().uid("uidxx").build();
+SdkBuildParams params = SdkBuildParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").build();
 var sdk = client.sdks().build(params);
 
 System.out.println(sdk);
@@ -2030,7 +2049,11 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 VersionCreateParams params =
-    VersionCreateParams.builder().uid("uidxx").version("").apiVersion("").build();
+    VersionCreateParams.builder()
+        .uid("UakgbKJ5m9gl0JDMbcJqL")
+        .version("1.2.0")
+        .apiVersion("1.2.0")
+        .build();
 var version = client.sdks().versions().create(params);
 
 System.out.println(version);
@@ -2053,7 +2076,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 VersionDeleteParams params =
-    VersionDeleteParams.builder().uid("uidxx").version("version").build();
+    VersionDeleteParams.builder().uid("UakgbKJ5m9gl0JDMbcJqL").version("1.2.0").build();
 var version = client.sdks().versions().delete(params);
 
 System.out.println(version);
@@ -2082,10 +2105,10 @@ ScalarClient client =
 
 RepositoryLinkParams params =
     RepositoryLinkParams.builder()
-        .uid("uidxx")
+        .uid("UakgbKJ5m9gl0JDMbcJqL")
         .language(RepositoryLinkParams.Language.of("typescript"))
-        .repositoryId(0L)
-        .baseBranch("")
+        .repositoryId(123456789L)
+        .baseBranch("main")
         .build();
 var repository = client.sdks().repositories().link(params);
 
@@ -2110,7 +2133,7 @@ ScalarClient client =
 
 RepositoryUnlinkParams params =
     RepositoryUnlinkParams.builder()
-        .uid("uidxx")
+        .uid("UakgbKJ5m9gl0JDMbcJqL")
         .language(RepositoryUnlinkParams.Language.of("typescript"))
         .build();
 var repository = client.sdks().repositories().unlink(params);
@@ -2136,9 +2159,9 @@ ScalarClient client =
 
 RepositoryUpdatePublishingParams params =
     RepositoryUpdatePublishingParams.builder()
-        .uid("uidxx")
+        .uid("UakgbKJ5m9gl0JDMbcJqL")
         .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
-        .publishOnMerge(false)
+        .publishOnMerge(true)
         .build();
 var repository = client.sdks().repositories().updatePublishing(params);
 
@@ -2189,7 +2212,7 @@ import com.scalar.models.mcp.servers.ServerCreateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ServerCreateParams params = ServerCreateParams.builder().name("x").build();
+ServerCreateParams params = ServerCreateParams.builder().name("Acme MCP").build();
 var server = client.mcp().servers().create(params);
 
 System.out.println(server);
@@ -2212,7 +2235,7 @@ import com.scalar.models.mcp.servers.ServerRetrieveParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ServerRetrieveParams params = ServerRetrieveParams.builder().id("id").build();
+ServerRetrieveParams params = ServerRetrieveParams.builder().id("42").build();
 var server = client.mcp().servers().retrieve(params);
 
 System.out.println(server);
@@ -2235,7 +2258,7 @@ import com.scalar.models.mcp.servers.ServerUpdateParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ServerUpdateParams params = ServerUpdateParams.builder().id("id").build();
+ServerUpdateParams params = ServerUpdateParams.builder().id("42").build();
 var server = client.mcp().servers().update(params);
 
 System.out.println(server);
@@ -2257,7 +2280,7 @@ import com.scalar.models.mcp.servers.ServerDeleteParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-ServerDeleteParams params = ServerDeleteParams.builder().id("id").build();
+ServerDeleteParams params = ServerDeleteParams.builder().id("42").build();
 var server = client.mcp().servers().delete(params);
 
 System.out.println(server);
@@ -2284,7 +2307,7 @@ import com.scalar.models.mcp.servers.installations.InstallationListParams;
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
-InstallationListParams params = InstallationListParams.builder().id("id").build();
+InstallationListParams params = InstallationListParams.builder().id("42").build();
 var installation = client.mcp().servers().installations().list(params);
 
 System.out.println(installation);
@@ -2309,8 +2332,8 @@ ScalarClient client =
 
 InstallationCreateParams params =
     InstallationCreateParams.builder()
-        .id("id")
-        .name("x")
+        .id("42")
+        .name("Acme MCP")
         .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
         .build();
 var installation = client.mcp().servers().installations().create(params);
@@ -2336,7 +2359,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 InstallationRetrieveParams params =
-    InstallationRetrieveParams.builder().id("id").installationId("installationId").build();
+    InstallationRetrieveParams.builder().id("42").installationId("84").build();
 var installation = client.mcp().servers().installations().retrieve(params);
 
 System.out.println(installation);
@@ -2360,7 +2383,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 InstallationUpdateParams params =
-    InstallationUpdateParams.builder().id("id").installationId("installationId").build();
+    InstallationUpdateParams.builder().id("42").installationId("84").build();
 var installation = client.mcp().servers().installations().update(params);
 
 System.out.println(installation);
@@ -2383,7 +2406,7 @@ ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
 
 InstallationDeleteParams params =
-    InstallationDeleteParams.builder().id("id").installationId("installationId").build();
+    InstallationDeleteParams.builder().id("42").installationId("84").build();
 var installation = client.mcp().servers().installations().delete(params);
 
 System.out.println(installation);
@@ -2407,9 +2430,9 @@ ScalarClient client =
 
 InstallationCreateAccessGroupParams params =
     InstallationCreateAccessGroupParams.builder()
-        .id("id")
-        .installationId("installationId")
-        .accessGroupUid("xxxxx")
+        .id("42")
+        .installationId("84")
+        .accessGroupUid("UakgbKJ5m9gl0JDMbcJqL")
         .build();
 var installation = client.mcp().servers().installations().createAccessGroup(params);
 
@@ -2434,9 +2457,9 @@ ScalarClient client =
 
 InstallationDeleteAccessGroupParams params =
     InstallationDeleteAccessGroupParams.builder()
-        .id("id")
-        .installationId("installationId")
-        .accessGroupUid("xxxxx")
+        .id("42")
+        .installationId("84")
+        .accessGroupUid("UakgbKJ5m9gl0JDMbcJqL")
         .build();
 var installation = client.mcp().servers().installations().deleteAccessGroup(params);
 

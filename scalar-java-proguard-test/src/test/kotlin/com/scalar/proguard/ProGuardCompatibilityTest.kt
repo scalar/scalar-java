@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.scalar.client.okhttp.ScalarOkHttpClient
 import com.scalar.core.jsonMapper
 import com.scalar.models.Value400
-import com.scalar.models.registry.Method
+import com.scalar.models.teams.invites.Role
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -34,7 +34,7 @@ internal class ProGuardCompatibilityTest {
             test.keepRulesAreOnTheClasspath()
             test.clientResolvesEveryService()
             test.value400Roundtrips()
-            test.methodRoundtrips()
+            test.roleRoundtrips()
         }
     }
 
@@ -80,15 +80,15 @@ internal class ProGuardCompatibilityTest {
     }
 
     @Test
-    fun methodRoundtrips() {
-        val method = Method.DELETE
-        val methodJson = jsonMapper().writeValueAsString(method)
+    fun roleRoundtrips() {
+        val role = Role.OWNER
+        val roleJson = jsonMapper().writeValueAsString(role)
 
         assertEquals(
-            methodJson,
+            roleJson,
             jsonMapper()
                 .writeValueAsString(
-                    jsonMapper().readValue(methodJson, object : TypeReference<Method>() {})
+                    jsonMapper().readValue(roleJson, object : TypeReference<Role>() {})
                 ),
         )
     }

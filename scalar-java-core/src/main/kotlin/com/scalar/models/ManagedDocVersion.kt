@@ -15,7 +15,6 @@ import com.scalar.core.checkKnown
 import com.scalar.core.checkRequired
 import com.scalar.core.toImmutable
 import com.scalar.errors.ScalarInvalidDataException
-import com.scalar.models.registry.Method
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
@@ -656,7 +655,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val path: JsonField<String>,
-        private val method: JsonField<Method>,
+        private val method: JsonField<String>,
         private val enabledTools: JsonField<List<EnabledTool>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -664,7 +663,7 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("path") @ExcludeMissing path: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
+            @JsonProperty("method") @ExcludeMissing method: JsonField<String> = JsonMissing.of(),
             @JsonProperty("enabledTools")
             @ExcludeMissing
             enabledTools: JsonField<List<EnabledTool>> = JsonMissing.of(),
@@ -680,7 +679,7 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun method(): Method = method.getRequired("method")
+        fun method(): String = method.getRequired("method")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -700,7 +699,7 @@ private constructor(
          *
          * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<Method> = method
+        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<String> = method
 
         /**
          * Returns the raw JSON value of [enabledTools].
@@ -743,7 +742,7 @@ private constructor(
         class Builder internal constructor() {
 
             private var path: JsonField<String>? = null
-            private var method: JsonField<Method>? = null
+            private var method: JsonField<String>? = null
             private var enabledTools: JsonField<MutableList<EnabledTool>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -766,16 +765,16 @@ private constructor(
              */
             fun path(path: JsonField<String>) = apply { this.path = path }
 
-            fun method(method: Method) = method(JsonField.of(method))
+            fun method(method: String) = method(JsonField.of(method))
 
             /**
              * Sets [Builder.method] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.method] with a well-typed [Method] value instead.
+             * You should usually call [Builder.method] with a well-typed [String] value instead.
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun method(method: JsonField<Method>) = apply { this.method = method }
+            fun method(method: JsonField<String>) = apply { this.method = method }
 
             fun enabledTools(enabledTools: List<EnabledTool>) =
                 enabledTools(JsonField.of(enabledTools))
@@ -862,7 +861,7 @@ private constructor(
             }
 
             path()
-            method().validate()
+            method()
             enabledTools().forEach { it.validate() }
             validated = true
         }
@@ -884,7 +883,7 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (path.asKnown().isPresent) 1 else 0) +
-                (method.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (method.asKnown().isPresent) 1 else 0) +
                 (enabledTools.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         class EnabledTool @JsonCreator private constructor(private val value: JsonField<String>) :

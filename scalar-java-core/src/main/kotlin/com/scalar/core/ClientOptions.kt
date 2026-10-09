@@ -119,7 +119,8 @@ private constructor(
      * Defaults to [LogLevel.fromEnv].
      */
     @get:JvmName("logLevel") val logLevel: LogLevel,
-    @get:JvmName("bearerAuth") val bearerAuth: String,
+    private val bearerAuth: String?,
+    private val oAuth2: String?,
 ) {
 
     init {
@@ -135,6 +136,10 @@ private constructor(
      */
     fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
 
+    fun bearerAuth(): Optional<String> = Optional.ofNullable(bearerAuth)
+
+    fun oAuth2(): Optional<String> = Optional.ofNullable(oAuth2)
+
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -147,7 +152,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .httpClient()
-         * .bearerAuth()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -177,6 +181,7 @@ private constructor(
         private var maxRetries: Int = 2
         private var logLevel: LogLevel = LogLevel.fromEnv()
         private var bearerAuth: String? = null
+        private var oAuth2: String? = null
 
         @JvmSynthetic
         internal fun from(clientOptions: ClientOptions) = apply {
@@ -194,6 +199,7 @@ private constructor(
             maxRetries = clientOptions.maxRetries
             logLevel = clientOptions.logLevel
             bearerAuth = clientOptions.bearerAuth
+            oAuth2 = clientOptions.oAuth2
         }
 
         /**
@@ -326,7 +332,15 @@ private constructor(
          */
         fun logLevel(logLevel: LogLevel) = apply { this.logLevel = logLevel }
 
-        fun bearerAuth(bearerAuth: String) = apply { this.bearerAuth = bearerAuth }
+        fun bearerAuth(bearerAuth: String?) = apply { this.bearerAuth = bearerAuth }
+
+        /** Alias for calling [Builder.bearerAuth] with `bearerAuth.orElse(null)`. */
+        fun bearerAuth(bearerAuth: Optional<String>) = bearerAuth(bearerAuth.getOrNull())
+
+        fun oAuth2(oAuth2: String?) = apply { this.oAuth2 = oAuth2 }
+
+        /** Alias for calling [Builder.oAuth2] with `oAuth2.orElse(null)`. */
+        fun oAuth2(oAuth2: Optional<String>) = oAuth2(oAuth2.getOrNull())
 
         fun headers(headers: Headers) = apply {
             this.headers.clear()
@@ -417,7 +431,8 @@ private constructor(
          *
          * |Setter      |System property    |Environment variable|Required|Default value                |
          * |------------|-------------------|--------------------|--------|-----------------------------|
-         * |`bearerAuth`|`scalar.bearerAuth`|`BEARER_AUTH`       |true    |-                            |
+         * |`bearerAuth`|`scalar.bearerAuth`|`BEARER_AUTH`       |false   |-                            |
+         * |`oAuth2`    |`scalar.oauthToken`|`SCALAR_OAUTH_TOKEN`|false   |-                            |
          * |`baseUrl`   |`scalar.baseUrl`   |`SCALAR_BASE_URL`   |true    |`"https://access.scalar.com"`|
          *
          * System properties take precedence over environment variables.
@@ -429,6 +444,9 @@ private constructor(
             }
             (System.getProperty("scalar.bearerAuth") ?: System.getenv("BEARER_AUTH"))?.let {
                 bearerAuth(it)
+            }
+            (System.getProperty("scalar.oauthToken") ?: System.getenv("SCALAR_OAUTH_TOKEN"))?.let {
+                oAuth2(it)
             }
             System.getenv("SCALAR_CUSTOM_HEADERS")?.let { customHeadersEnv ->
                 for (line in customHeadersEnv.split("\n")) {
@@ -448,7 +466,6 @@ private constructor(
          * The following fields are required:
          * ```java
          * .httpClient()
-         * .bearerAuth()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -474,7 +491,6 @@ private constructor(
                         )
                     )
             val sleeper = sleeper ?: PhantomReachableSleeper(DefaultSleeper())
-            val bearerAuth = checkRequired("bearerAuth", bearerAuth)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()
@@ -489,7 +505,12 @@ private constructor(
             // We replace after all the default headers to allow end-users to overwrite them.
             headers.replaceAll(this.headers.build())
             queryParams.replaceAll(this.queryParams.build())
-            bearerAuth.let {
+            bearerAuth?.let {
+                if (!it.isEmpty()) {
+                    headers.replace("Authorization", "Bearer $it")
+                }
+            }
+            oAuth2?.let {
                 if (!it.isEmpty()) {
                     headers.replace("Authorization", "Bearer $it")
                 }
@@ -522,6 +543,7 @@ private constructor(
                 maxRetries,
                 logLevel,
                 bearerAuth,
+                oAuth2,
             )
         }
     }

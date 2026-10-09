@@ -7,10 +7,10 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.themes.Theme
 import com.scalar.models.themes.ThemeCreateParams
 import com.scalar.models.themes.ThemeDeleteParams
 import com.scalar.models.themes.ThemeListParams
-import com.scalar.models.themes.ThemeListResponse
 import com.scalar.models.themes.ThemeReplaceDocumentParams
 import com.scalar.models.themes.ThemeRetrieveParams
 import com.scalar.models.themes.ThemeUpdateParams
@@ -95,19 +95,19 @@ interface ThemeService {
         update(slug, ThemeUpdateParams.none(), requestOptions)
 
     /** List all team themes. */
-    fun list(): List<ThemeListResponse> = list(ThemeListParams.none())
+    fun list(): List<Theme> = list(ThemeListParams.none())
 
     /** @see list */
     fun list(
         params: ThemeListParams = ThemeListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<ThemeListResponse>
+    ): List<Theme>
 
     /** @see list */
-    fun list(params: ThemeListParams): List<ThemeListResponse> = list(params, RequestOptions.none())
+    fun list(params: ThemeListParams): List<Theme> = list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): List<ThemeListResponse> =
+    fun list(requestOptions: RequestOptions): List<Theme> =
         list(ThemeListParams.none(), requestOptions)
 
     /** Delete a theme by slug. */
@@ -262,24 +262,23 @@ interface ThemeService {
          * Returns a raw HTTP response for `get /v1/themes`, but is otherwise the same as
          * [ThemeService.list].
          */
-        @MustBeClosed
-        fun list(): HttpResponseFor<List<ThemeListResponse>> = list(ThemeListParams.none())
+        @MustBeClosed fun list(): HttpResponseFor<List<Theme>> = list(ThemeListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: ThemeListParams = ThemeListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<ThemeListResponse>>
+        ): HttpResponseFor<List<Theme>>
 
         /** @see list */
         @MustBeClosed
-        fun list(params: ThemeListParams): HttpResponseFor<List<ThemeListResponse>> =
+        fun list(params: ThemeListParams): HttpResponseFor<List<Theme>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<List<ThemeListResponse>> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<List<Theme>> =
             list(ThemeListParams.none(), requestOptions)
 
         /**

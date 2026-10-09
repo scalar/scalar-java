@@ -6,10 +6,10 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.loginPortals.LoginPortal
 import com.scalar.models.loginPortals.LoginPortalCreateParams
 import com.scalar.models.loginPortals.LoginPortalDeleteParams
 import com.scalar.models.loginPortals.LoginPortalListParams
-import com.scalar.models.loginPortals.LoginPortalListResponse
 import com.scalar.models.loginPortals.LoginPortalRetrieveParams
 import com.scalar.models.loginPortals.LoginPortalRetrieveResponse
 import com.scalar.models.loginPortals.LoginPortalUpdateParams
@@ -107,21 +107,20 @@ interface LoginPortalServiceAsync {
         update(slug, LoginPortalUpdateParams.none(), requestOptions)
 
     /** List all login portals for the current team. */
-    fun list(): CompletableFuture<List<LoginPortalListResponse>> =
-        list(LoginPortalListParams.none())
+    fun list(): CompletableFuture<List<LoginPortal>> = list(LoginPortalListParams.none())
 
     /** @see list */
     fun list(
         params: LoginPortalListParams = LoginPortalListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<LoginPortalListResponse>>
+    ): CompletableFuture<List<LoginPortal>>
 
     /** @see list */
-    fun list(params: LoginPortalListParams): CompletableFuture<List<LoginPortalListResponse>> =
+    fun list(params: LoginPortalListParams): CompletableFuture<List<LoginPortal>> =
         list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): CompletableFuture<List<LoginPortalListResponse>> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<List<LoginPortal>> =
         list(LoginPortalListParams.none(), requestOptions)
 
     /** Delete a login portal. */
@@ -265,25 +264,25 @@ interface LoginPortalServiceAsync {
          * Returns a raw HTTP response for `get /v1/login-portals`, but is otherwise the same as
          * [LoginPortalServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<List<LoginPortalListResponse>>> =
+        fun list(): CompletableFuture<HttpResponseFor<List<LoginPortal>>> =
             list(LoginPortalListParams.none())
 
         /** @see list */
         fun list(
             params: LoginPortalListParams = LoginPortalListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<LoginPortalListResponse>>>
+        ): CompletableFuture<HttpResponseFor<List<LoginPortal>>>
 
         /** @see list */
         fun list(
             params: LoginPortalListParams
-        ): CompletableFuture<HttpResponseFor<List<LoginPortalListResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<LoginPortal>>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<LoginPortalListResponse>>> =
+        ): CompletableFuture<HttpResponseFor<List<LoginPortal>>> =
             list(LoginPortalListParams.none(), requestOptions)
 
         /**

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.scalar.client.okhttp.ScalarOkHttpClient
 import com.scalar.core.jsonMapper
 import com.scalar.models.Value400
+import com.scalar.models.teams.invites.Role
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -33,6 +34,7 @@ internal class ProGuardCompatibilityTest {
             test.keepRulesAreOnTheClasspath()
             test.clientResolvesEveryService()
             test.value400Roundtrips()
+            test.roleRoundtrips()
         }
     }
 
@@ -45,22 +47,27 @@ internal class ProGuardCompatibilityTest {
 
     @Test
     fun clientResolvesEveryService() {
-        val client = ScalarOkHttpClient.builder().bearerAuth("My Bearer Auth").build()
+        val client =
+            ScalarOkHttpClient.builder().bearerAuth("My Bearer Auth").oAuth2("My O Auth2").build()
 
         assertNotNull(client.registry())
         assertNotNull(client.schemas())
         assertNotNull(client.loginPortals())
+        assertNotNull(client.accessGroups())
         assertNotNull(client.rules())
         assertNotNull(client.themes())
         assertNotNull(client.teams())
         assertNotNull(client.scalarDocs())
         assertNotNull(client.namespaces())
         assertNotNull(client.authentication())
+        assertNotNull(client.sdks())
+        assertNotNull(client.mcp())
     }
 
     @Test
     fun value400Roundtrips() {
-        val value400 = Value400.builder().message("").code("").build()
+        val value400 =
+            Value400.builder().message("Invalid request parameters.").code("bad-request").build()
         val value400Json = jsonMapper().writeValueAsString(value400)
 
         assertEquals(
@@ -68,6 +75,20 @@ internal class ProGuardCompatibilityTest {
             jsonMapper()
                 .writeValueAsString(
                     jsonMapper().readValue(value400Json, object : TypeReference<Value400>() {})
+                ),
+        )
+    }
+
+    @Test
+    fun roleRoundtrips() {
+        val role = Role.OWNER
+        val roleJson = jsonMapper().writeValueAsString(role)
+
+        assertEquals(
+            roleJson,
+            jsonMapper()
+                .writeValueAsString(
+                    jsonMapper().readValue(roleJson, object : TypeReference<Role>() {})
                 ),
         )
     }

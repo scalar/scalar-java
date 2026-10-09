@@ -3,13 +3,16 @@
 package com.scalar.client
 
 import com.scalar.core.ClientOptions
+import com.scalar.services.async.AccessGroupServiceAsync
 import com.scalar.services.async.AuthenticationServiceAsync
 import com.scalar.services.async.LoginPortalServiceAsync
+import com.scalar.services.async.McpServiceAsync
 import com.scalar.services.async.NamespaceServiceAsync
 import com.scalar.services.async.RegistryServiceAsync
 import com.scalar.services.async.RuleServiceAsync
 import com.scalar.services.async.ScalarDocServiceAsync
 import com.scalar.services.async.SchemaServiceAsync
+import com.scalar.services.async.SdkServiceAsync
 import com.scalar.services.async.TeamServiceAsync
 import com.scalar.services.async.ThemeServiceAsync
 import java.util.function.Consumer
@@ -59,6 +62,9 @@ interface ScalarClientAsync {
     /** Login Portals */
     fun loginPortals(): LoginPortalServiceAsync
 
+    /** Access Groups */
+    fun accessGroups(): AccessGroupServiceAsync
+
     /** Rules */
     fun rules(): RuleServiceAsync
 
@@ -76,6 +82,11 @@ interface ScalarClientAsync {
 
     /** Authentication */
     fun authentication(): AuthenticationServiceAsync
+
+    /** SDKs */
+    fun sdks(): SdkServiceAsync
+
+    fun mcp(): McpServiceAsync
 
     /**
      * Closes this client, relinquishing any underlying resources.
@@ -111,6 +122,9 @@ interface ScalarClientAsync {
         /** Login Portals */
         fun loginPortals(): LoginPortalServiceAsync.WithRawResponse
 
+        /** Access Groups */
+        fun accessGroups(): AccessGroupServiceAsync.WithRawResponse
+
         /** Rules */
         fun rules(): RuleServiceAsync.WithRawResponse
 
@@ -128,5 +142,10 @@ interface ScalarClientAsync {
 
         /** Authentication */
         fun authentication(): AuthenticationServiceAsync.WithRawResponse
+
+        /** SDKs */
+        fun sdks(): SdkServiceAsync.WithRawResponse
+
+        fun mcp(): McpServiceAsync.WithRawResponse
     }
 }

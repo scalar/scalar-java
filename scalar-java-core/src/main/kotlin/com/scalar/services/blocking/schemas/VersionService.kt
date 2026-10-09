@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.Uid
 import com.scalar.models.schemas.version.VersionCreateParams
+import com.scalar.models.schemas.version.VersionCreateResponse
 import com.scalar.models.schemas.version.VersionDeleteParams
 import com.scalar.models.schemas.version.VersionRetrieveParams
 import java.util.function.Consumer
@@ -28,7 +28,7 @@ interface VersionService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VersionService
 
     /** Create a schema version. */
-    fun create(slug: String, params: VersionCreateParams): Uid =
+    fun create(slug: String, params: VersionCreateParams): VersionCreateResponse =
         create(slug, params, RequestOptions.none())
 
     /** @see create */
@@ -36,16 +36,17 @@ interface VersionService {
         slug: String,
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): Uid = create(params.toBuilder().slug(slug).build(), requestOptions)
+    ): VersionCreateResponse = create(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see create */
     fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): Uid
+    ): VersionCreateResponse
 
     /** @see create */
-    fun create(params: VersionCreateParams): Uid = create(params, RequestOptions.none())
+    fun create(params: VersionCreateParams): VersionCreateResponse =
+        create(params, RequestOptions.none())
 
     /** Get a specific schema version document. */
     fun retrieve(semver: String, params: VersionRetrieveParams): String =
@@ -102,8 +103,10 @@ interface VersionService {
          * otherwise the same as [VersionService.create].
          */
         @MustBeClosed
-        fun create(slug: String, params: VersionCreateParams): HttpResponseFor<Uid> =
-            create(slug, params, RequestOptions.none())
+        fun create(
+            slug: String,
+            params: VersionCreateParams,
+        ): HttpResponseFor<VersionCreateResponse> = create(slug, params, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed
@@ -111,18 +114,19 @@ interface VersionService {
             slug: String,
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Uid> = create(params.toBuilder().slug(slug).build(), requestOptions)
+        ): HttpResponseFor<VersionCreateResponse> =
+            create(params.toBuilder().slug(slug).build(), requestOptions)
 
         /** @see create */
         @MustBeClosed
         fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Uid>
+        ): HttpResponseFor<VersionCreateResponse>
 
         /** @see create */
         @MustBeClosed
-        fun create(params: VersionCreateParams): HttpResponseFor<Uid> =
+        fun create(params: VersionCreateParams): HttpResponseFor<VersionCreateResponse> =
             create(params, RequestOptions.none())
 
         /**

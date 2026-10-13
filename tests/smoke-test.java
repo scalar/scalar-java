@@ -22,7 +22,6 @@ import com.scalar.models.mcp.servers.ServerDeleteParams;
 import com.scalar.models.mcp.servers.ServerRetrieveParams;
 import com.scalar.models.mcp.servers.ServerUpdateParams;
 import com.scalar.models.mcp.servers.installations.InstallationCreateAccessGroupParams;
-import com.scalar.models.mcp.servers.installations.InstallationCreateParams;
 import com.scalar.models.mcp.servers.installations.InstallationDeleteAccessGroupParams;
 import com.scalar.models.mcp.servers.installations.InstallationDeleteParams;
 import com.scalar.models.mcp.servers.installations.InstallationListParams;
@@ -1068,7 +1067,6 @@ final class SmokeTest {
             .id("42")
             .name("Acme MCP")
             .slug("acme-api")
-            .autoAddOperations(true)
             .operations(java.util.List.of(""))
             .docsPages(java.util.List.of(""))
             .build();
@@ -1086,60 +1084,36 @@ final class SmokeTest {
   }
 
   private static void _smokeCase113() throws Exception {
-    InstallationCreateParams params =
-        InstallationCreateParams.builder()
-            .id("42")
-            .name("Acme MCP")
-            .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
-            .build();
-    var installation = client.mcp().servers().installations().create(params);
-  }
-
-  private static void _smokeCase114() throws Exception {
-    InstallationCreateParams params =
-        InstallationCreateParams.builder()
-            .id("42")
-            .name("Acme MCP")
-            .slug("acme-api")
-            .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
-            .build();
-    var installation = client.mcp().servers().installations().create(params);
-  }
-
-  private static void _smokeCase115() throws Exception {
     InstallationRetrieveParams params =
         InstallationRetrieveParams.builder().id("42").installationId("84").build();
     var installation = client.mcp().servers().installations().retrieve(params);
   }
 
-  private static void _smokeCase116() throws Exception {
+  private static void _smokeCase114() throws Exception {
     InstallationUpdateParams params =
         InstallationUpdateParams.builder().id("42").installationId("84").build();
     var installation = client.mcp().servers().installations().update(params);
   }
 
-  private static void _smokeCase117() throws Exception {
+  private static void _smokeCase115() throws Exception {
     InstallationUpdateParams params =
         InstallationUpdateParams.builder()
             .id("42")
             .installationId("84")
             .name("Acme MCP")
             .slug("acme-api")
-            .isPrivate(false)
-            .loginPortalUid("")
-            .documentAuth(InstallationUpdateParams.DocumentAuth.builder().build())
             .mcpVersion("")
             .build();
     var installation = client.mcp().servers().installations().update(params);
   }
 
-  private static void _smokeCase118() throws Exception {
+  private static void _smokeCase116() throws Exception {
     InstallationDeleteParams params =
         InstallationDeleteParams.builder().id("42").installationId("84").build();
     var installation = client.mcp().servers().installations().delete(params);
   }
 
-  private static void _smokeCase119() throws Exception {
+  private static void _smokeCase117() throws Exception {
     InstallationCreateAccessGroupParams params =
         InstallationCreateAccessGroupParams.builder()
             .id("42")
@@ -1149,7 +1123,7 @@ final class SmokeTest {
     var installation = client.mcp().servers().installations().createAccessGroup(params);
   }
 
-  private static void _smokeCase120() throws Exception {
+  private static void _smokeCase118() throws Exception {
     InstallationDeleteAccessGroupParams params =
         InstallationDeleteAccessGroupParams.builder()
             .id("42")
@@ -1534,53 +1508,41 @@ final class SmokeTest {
           new SmokeCase(
               "list", "GET", "/v1/mcp/servers/{id}/installations", "", SmokeTest::_smokeCase112),
           new SmokeCase(
-              "create",
-              "POST",
-              "/v1/mcp/servers/{id}/installations",
-              "required params",
-              SmokeTest::_smokeCase113),
-          new SmokeCase(
-              "create",
-              "POST",
-              "/v1/mcp/servers/{id}/installations",
-              "all params",
-              SmokeTest::_smokeCase114),
-          new SmokeCase(
               "retrieve",
               "GET",
               "/v1/mcp/servers/{id}/installations/{installationId}",
               "",
-              SmokeTest::_smokeCase115),
+              SmokeTest::_smokeCase113),
           new SmokeCase(
               "update",
               "PATCH",
               "/v1/mcp/servers/{id}/installations/{installationId}",
               "required params",
-              SmokeTest::_smokeCase116),
+              SmokeTest::_smokeCase114),
           new SmokeCase(
               "update",
               "PATCH",
               "/v1/mcp/servers/{id}/installations/{installationId}",
               "all params",
-              SmokeTest::_smokeCase117),
+              SmokeTest::_smokeCase115),
           new SmokeCase(
               "delete",
               "DELETE",
               "/v1/mcp/servers/{id}/installations/{installationId}",
               "",
-              SmokeTest::_smokeCase118),
+              SmokeTest::_smokeCase116),
           new SmokeCase(
               "createAccessGroup",
               "POST",
               "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
               "",
-              SmokeTest::_smokeCase119),
+              SmokeTest::_smokeCase117),
           new SmokeCase(
               "deleteAccessGroup",
               "DELETE",
               "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
               "",
-              SmokeTest::_smokeCase120));
+              SmokeTest::_smokeCase118));
 
   private static List<SmokeCase> selectedCases() {
     String filter = System.getenv("SCALAR_SMOKE_FILTER");

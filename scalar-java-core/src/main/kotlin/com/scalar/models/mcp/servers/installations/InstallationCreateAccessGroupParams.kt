@@ -20,7 +20,11 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Let an access group reach a private installation. */
+/**
+ * Let an access group reach a private installation. Requires a team admin. Deprecated: address the
+ * environment by slug with the `/environments/:environment` form.
+ */
+@Deprecated("deprecated")
 class InstallationCreateAccessGroupParams
 private constructor(
     private val id: String,

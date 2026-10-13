@@ -12,7 +12,11 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Delete an installation of an MCP server. */
+/**
+ * Delete an installation of an MCP server. Deprecated: address the environment by slug with the
+ * `/environments/:environment` form.
+ */
+@Deprecated("deprecated")
 class InstallationDeleteParams
 private constructor(
     private val id: String,

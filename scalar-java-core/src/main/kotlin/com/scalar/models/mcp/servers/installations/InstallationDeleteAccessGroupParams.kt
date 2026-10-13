@@ -20,7 +20,11 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Stop an access group reaching a private installation. */
+/**
+ * Stop an access group reaching a private installation. Requires a team admin. Deprecated: address
+ * the environment by slug with the `/environments/:environment` form.
+ */
+@Deprecated("deprecated")
 class InstallationDeleteAccessGroupParams
 private constructor(
     private val id: String,

@@ -46,12 +46,6 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun autoAddOperations(): Optional<Boolean> = body.autoAddOperations()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
     fun operations(): Optional<List<String>> = body.operations()
 
     /**
@@ -75,14 +69,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _slug(): JsonField<String> = body._slug()
-
-    /**
-     * Returns the raw JSON value of [autoAddOperations].
-     *
-     * Unlike [autoAddOperations], this method doesn't throw if the JSON field has an unexpected
-     * type.
-     */
-    fun _autoAddOperations(): JsonField<Boolean> = body._autoAddOperations()
 
     /**
      * Returns the raw JSON value of [operations].
@@ -144,7 +130,6 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [name]
          * - [slug]
-         * - [autoAddOperations]
          * - [operations]
          * - [docsPages]
          */
@@ -169,21 +154,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
-
-        fun autoAddOperations(autoAddOperations: Boolean) = apply {
-            body.autoAddOperations(autoAddOperations)
-        }
-
-        /**
-         * Sets [Builder.autoAddOperations] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.autoAddOperations] with a well-typed [Boolean] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun autoAddOperations(autoAddOperations: JsonField<Boolean>) = apply {
-            body.autoAddOperations(autoAddOperations)
-        }
 
         fun operations(operations: List<String>) = apply { body.operations(operations) }
 
@@ -369,7 +339,6 @@ private constructor(
     private constructor(
         private val name: JsonField<String>,
         private val slug: JsonField<String>,
-        private val autoAddOperations: JsonField<Boolean>,
         private val operations: JsonField<List<String>>,
         private val docsPages: JsonField<List<String>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -379,16 +348,13 @@ private constructor(
         private constructor(
             @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
             @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("autoAddOperations")
-            @ExcludeMissing
-            autoAddOperations: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("operations")
             @ExcludeMissing
             operations: JsonField<List<String>> = JsonMissing.of(),
             @JsonProperty("docsPages")
             @ExcludeMissing
             docsPages: JsonField<List<String>> = JsonMissing.of(),
-        ) : this(name, slug, autoAddOperations, operations, docsPages, mutableMapOf())
+        ) : this(name, slug, operations, docsPages, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -401,13 +367,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun slug(): Optional<String> = slug.getOptional("slug")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun autoAddOperations(): Optional<Boolean> =
-            autoAddOperations.getOptional("autoAddOperations")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -434,16 +393,6 @@ private constructor(
          * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-        /**
-         * Returns the raw JSON value of [autoAddOperations].
-         *
-         * Unlike [autoAddOperations], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("autoAddOperations")
-        @ExcludeMissing
-        fun _autoAddOperations(): JsonField<Boolean> = autoAddOperations
 
         /**
          * Returns the raw JSON value of [operations].
@@ -486,7 +435,6 @@ private constructor(
 
             private var name: JsonField<String> = JsonMissing.of()
             private var slug: JsonField<String> = JsonMissing.of()
-            private var autoAddOperations: JsonField<Boolean> = JsonMissing.of()
             private var operations: JsonField<MutableList<String>>? = null
             private var docsPages: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -495,7 +443,6 @@ private constructor(
             internal fun from(body: Body) = apply {
                 name = body.name
                 slug = body.slug
-                autoAddOperations = body.autoAddOperations
                 operations = body.operations.map { it.toMutableList() }
                 docsPages = body.docsPages.map { it.toMutableList() }
                 additionalProperties = body.additionalProperties.toMutableMap()
@@ -522,20 +469,6 @@ private constructor(
              * value.
              */
             fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-            fun autoAddOperations(autoAddOperations: Boolean) =
-                autoAddOperations(JsonField.of(autoAddOperations))
-
-            /**
-             * Sets [Builder.autoAddOperations] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.autoAddOperations] with a well-typed [Boolean] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun autoAddOperations(autoAddOperations: JsonField<Boolean>) = apply {
-                this.autoAddOperations = autoAddOperations
-            }
 
             fun operations(operations: List<String>) = operations(JsonField.of(operations))
 
@@ -615,7 +548,6 @@ private constructor(
                 Body(
                     name,
                     slug,
-                    autoAddOperations,
                     (operations ?: JsonMissing.of()).map { it.toImmutable() },
                     (docsPages ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
@@ -640,7 +572,6 @@ private constructor(
 
             name()
             slug()
-            autoAddOperations()
             operations()
             docsPages()
             validated = true
@@ -664,7 +595,6 @@ private constructor(
         internal fun validity(): Int =
             (if (name.asKnown().isPresent) 1 else 0) +
                 (if (slug.asKnown().isPresent) 1 else 0) +
-                (if (autoAddOperations.asKnown().isPresent) 1 else 0) +
                 (operations.asKnown().getOrNull()?.size ?: 0) +
                 (docsPages.asKnown().getOrNull()?.size ?: 0)
 
@@ -676,27 +606,19 @@ private constructor(
             return other is Body &&
                 name == other.name &&
                 slug == other.slug &&
-                autoAddOperations == other.autoAddOperations &&
                 operations == other.operations &&
                 docsPages == other.docsPages &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(
-                name,
-                slug,
-                autoAddOperations,
-                operations,
-                docsPages,
-                additionalProperties,
-            )
+            Objects.hash(name, slug, operations, docsPages, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, slug=$slug, autoAddOperations=$autoAddOperations, operations=$operations, docsPages=$docsPages, additionalProperties=$additionalProperties}"
+            "Body{name=$name, slug=$slug, operations=$operations, docsPages=$docsPages, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

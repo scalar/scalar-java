@@ -18,7 +18,6 @@ import com.scalar.core.http.parseable
 import com.scalar.core.prepare
 import com.scalar.models.mcp.servers.McpInstallation
 import com.scalar.models.mcp.servers.installations.InstallationCreateAccessGroupParams
-import com.scalar.models.mcp.servers.installations.InstallationCreateParams
 import com.scalar.models.mcp.servers.installations.InstallationDeleteAccessGroupParams
 import com.scalar.models.mcp.servers.installations.InstallationDeleteParams
 import com.scalar.models.mcp.servers.installations.InstallationListParams
@@ -41,13 +40,7 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): InstallationService =
         InstallationServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun create(
-        params: InstallationCreateParams,
-        requestOptions: RequestOptions,
-    ): McpInstallation =
-        // post /v1/mcp/servers/{id}/installations
-        withRawResponse().create(params, requestOptions).parse()
-
+    @Deprecated("deprecated")
     override fun retrieve(
         params: InstallationRetrieveParams,
         requestOptions: RequestOptions,
@@ -55,6 +48,7 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
         // get /v1/mcp/servers/{id}/installations/{installationId}
         withRawResponse().retrieve(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun update(
         params: InstallationUpdateParams,
         requestOptions: RequestOptions,
@@ -69,10 +63,12 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
         // get /v1/mcp/servers/{id}/installations
         withRawResponse().list(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun delete(params: InstallationDeleteParams, requestOptions: RequestOptions): Any? =
         // delete /v1/mcp/servers/{id}/installations/{installationId}
         withRawResponse().delete(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun createAccessGroup(
         params: InstallationCreateAccessGroupParams,
         requestOptions: RequestOptions,
@@ -80,6 +76,7 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
         // post /v1/mcp/servers/{id}/installations/{installationId}/access-group
         withRawResponse().createAccessGroup(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun deleteAccessGroup(
         params: InstallationDeleteAccessGroupParams,
         requestOptions: RequestOptions,
@@ -100,40 +97,10 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val createHandler: Handler<McpInstallation> =
-            jsonHandler<McpInstallation>(clientOptions.jsonMapper)
-
-        override fun create(
-            params: InstallationCreateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<McpInstallation> {
-            // We check here instead of in the params builder because this can be specified
-            // positionally or in the params class.
-            checkRequired("id", params.id().getOrNull())
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("v1", "mcp", "servers", params._pathParam(0), "installations")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response
-                    .use { createHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-        }
-
         private val retrieveHandler: Handler<McpInstallation> =
             jsonHandler<McpInstallation>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun retrieve(
             params: InstallationRetrieveParams,
             requestOptions: RequestOptions,
@@ -171,6 +138,7 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
         private val updateHandler: Handler<McpInstallation> =
             jsonHandler<McpInstallation>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun update(
             params: InstallationUpdateParams,
             requestOptions: RequestOptions,
@@ -238,6 +206,7 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
 
         private val deleteHandler: Handler<Any?> = jsonHandler<Any?>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun delete(
             params: InstallationDeleteParams,
             requestOptions: RequestOptions,
@@ -270,6 +239,7 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
         private val createAccessGroupHandler: Handler<Any?> =
             jsonHandler<Any?>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun createAccessGroup(
             params: InstallationCreateAccessGroupParams,
             requestOptions: RequestOptions,
@@ -303,6 +273,7 @@ class InstallationServiceImpl internal constructor(private val clientOptions: Cl
         private val deleteAccessGroupHandler: Handler<Any?> =
             jsonHandler<Any?>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun deleteAccessGroup(
             params: InstallationDeleteAccessGroupParams,
             requestOptions: RequestOptions,

@@ -21,7 +21,6 @@ private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
     private val slug: JsonField<String>,
-    private val autoAddOperations: JsonField<Boolean>,
     private val createdAt: JsonField<String>,
     private val updatedAt: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -32,12 +31,9 @@ private constructor(
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("autoAddOperations")
-        @ExcludeMissing
-        autoAddOperations: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<String> = JsonMissing.of(),
         @JsonProperty("updatedAt") @ExcludeMissing updatedAt: JsonField<String> = JsonMissing.of(),
-    ) : this(id, name, slug, autoAddOperations, createdAt, updatedAt, mutableMapOf())
+    ) : this(id, name, slug, createdAt, updatedAt, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -56,12 +52,6 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun slug(): String = slug.getRequired("slug")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun autoAddOperations(): Boolean = autoAddOperations.getRequired("autoAddOperations")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -95,16 +85,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-    /**
-     * Returns the raw JSON value of [autoAddOperations].
-     *
-     * Unlike [autoAddOperations], this method doesn't throw if the JSON field has an unexpected
-     * type.
-     */
-    @JsonProperty("autoAddOperations")
-    @ExcludeMissing
-    fun _autoAddOperations(): JsonField<Boolean> = autoAddOperations
 
     /**
      * Returns the raw JSON value of [createdAt].
@@ -142,7 +122,6 @@ private constructor(
          * .id()
          * .name()
          * .slug()
-         * .autoAddOperations()
          * .createdAt()
          * .updatedAt()
          * ```
@@ -156,7 +135,6 @@ private constructor(
         private var id: JsonField<String>? = null
         private var name: JsonField<String>? = null
         private var slug: JsonField<String>? = null
-        private var autoAddOperations: JsonField<Boolean>? = null
         private var createdAt: JsonField<String>? = null
         private var updatedAt: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -166,7 +144,6 @@ private constructor(
             id = mcpServer.id
             name = mcpServer.name
             slug = mcpServer.slug
-            autoAddOperations = mcpServer.autoAddOperations
             createdAt = mcpServer.createdAt
             updatedAt = mcpServer.updatedAt
             additionalProperties = mcpServer.additionalProperties.toMutableMap()
@@ -201,20 +178,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-        fun autoAddOperations(autoAddOperations: Boolean) =
-            autoAddOperations(JsonField.of(autoAddOperations))
-
-        /**
-         * Sets [Builder.autoAddOperations] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.autoAddOperations] with a well-typed [Boolean] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun autoAddOperations(autoAddOperations: JsonField<Boolean>) = apply {
-            this.autoAddOperations = autoAddOperations
-        }
 
         fun createdAt(createdAt: String) = createdAt(JsonField.of(createdAt))
 
@@ -267,7 +230,6 @@ private constructor(
          * .id()
          * .name()
          * .slug()
-         * .autoAddOperations()
          * .createdAt()
          * .updatedAt()
          * ```
@@ -279,7 +241,6 @@ private constructor(
                 checkRequired("id", id),
                 checkRequired("name", name),
                 checkRequired("slug", slug),
-                checkRequired("autoAddOperations", autoAddOperations),
                 checkRequired("createdAt", createdAt),
                 checkRequired("updatedAt", updatedAt),
                 additionalProperties.toMutableMap(),
@@ -304,7 +265,6 @@ private constructor(
         id()
         name()
         slug()
-        autoAddOperations()
         createdAt()
         updatedAt()
         validated = true
@@ -328,7 +288,6 @@ private constructor(
         (if (id.asKnown().isPresent) 1 else 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (autoAddOperations.asKnown().isPresent) 1 else 0) +
             (if (createdAt.asKnown().isPresent) 1 else 0) +
             (if (updatedAt.asKnown().isPresent) 1 else 0)
 
@@ -341,26 +300,17 @@ private constructor(
             id == other.id &&
             name == other.name &&
             slug == other.slug &&
-            autoAddOperations == other.autoAddOperations &&
             createdAt == other.createdAt &&
             updatedAt == other.updatedAt &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(
-            id,
-            name,
-            slug,
-            autoAddOperations,
-            createdAt,
-            updatedAt,
-            additionalProperties,
-        )
+        Objects.hash(id, name, slug, createdAt, updatedAt, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "McpServer{id=$id, name=$name, slug=$slug, autoAddOperations=$autoAddOperations, createdAt=$createdAt, updatedAt=$updatedAt, additionalProperties=$additionalProperties}"
+        "McpServer{id=$id, name=$name, slug=$slug, createdAt=$createdAt, updatedAt=$updatedAt, additionalProperties=$additionalProperties}"
 }

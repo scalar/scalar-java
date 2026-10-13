@@ -7,7 +7,6 @@ import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.mcp.servers.McpInstallation
 import com.scalar.models.mcp.servers.installations.InstallationCreateAccessGroupParams
-import com.scalar.models.mcp.servers.installations.InstallationCreateParams
 import com.scalar.models.mcp.servers.installations.InstallationDeleteAccessGroupParams
 import com.scalar.models.mcp.servers.installations.InstallationDeleteParams
 import com.scalar.models.mcp.servers.installations.InstallationListParams
@@ -33,37 +32,17 @@ interface InstallationServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): InstallationServiceAsync
 
     /**
-     * Create an installation of an MCP server. `documentAuth` holds the credentials the server
-     * presents to the upstream API and is never returned.
+     * Get a single installation of an MCP server. Deprecated: address the environment by slug with
+     * the `/environments/:environment` form.
      */
-    fun create(id: String, params: InstallationCreateParams): CompletableFuture<McpInstallation> =
-        create(id, params, RequestOptions.none())
-
-    /** @see create */
-    fun create(
-        id: String,
-        params: InstallationCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<McpInstallation> =
-        create(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see create */
-    fun create(
-        params: InstallationCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<McpInstallation>
-
-    /** @see create */
-    fun create(params: InstallationCreateParams): CompletableFuture<McpInstallation> =
-        create(params, RequestOptions.none())
-
-    /** Get a single installation of an MCP server. */
+    @Deprecated("deprecated")
     fun retrieve(
         installationId: String,
         params: InstallationRetrieveParams,
     ): CompletableFuture<McpInstallation> = retrieve(installationId, params, RequestOptions.none())
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         installationId: String,
         params: InstallationRetrieveParams,
@@ -72,22 +51,29 @@ interface InstallationServiceAsync {
         retrieve(params.toBuilder().installationId(installationId).build(), requestOptions)
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         params: InstallationRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<McpInstallation>
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(params: InstallationRetrieveParams): CompletableFuture<McpInstallation> =
         retrieve(params, RequestOptions.none())
 
-    /** Update an installation. Set `isPrivate` and add access groups to put it behind a login. */
+    /**
+     * Update an installation. Deprecated: address the environment by slug with the
+     * `/environments/:environment` form.
+     */
+    @Deprecated("deprecated")
     fun update(
         installationId: String,
         params: InstallationUpdateParams,
     ): CompletableFuture<McpInstallation> = update(installationId, params, RequestOptions.none())
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         installationId: String,
         params: InstallationUpdateParams,
@@ -96,12 +82,14 @@ interface InstallationServiceAsync {
         update(params.toBuilder().installationId(installationId).build(), requestOptions)
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         params: InstallationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<McpInstallation>
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(params: InstallationUpdateParams): CompletableFuture<McpInstallation> =
         update(params, RequestOptions.none())
 
@@ -142,11 +130,16 @@ interface InstallationServiceAsync {
     ): CompletableFuture<List<McpInstallationListItem>> =
         list(id, InstallationListParams.none(), requestOptions)
 
-    /** Delete an installation of an MCP server. */
+    /**
+     * Delete an installation of an MCP server. Deprecated: address the environment by slug with the
+     * `/environments/:environment` form.
+     */
+    @Deprecated("deprecated")
     fun delete(installationId: String, params: InstallationDeleteParams): CompletableFuture<Any?> =
         delete(installationId, params, RequestOptions.none())
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(
         installationId: String,
         params: InstallationDeleteParams,
@@ -155,22 +148,29 @@ interface InstallationServiceAsync {
         delete(params.toBuilder().installationId(installationId).build(), requestOptions)
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(
         params: InstallationDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
 
     /** @see delete */
+    @Deprecated("deprecated")
     fun delete(params: InstallationDeleteParams): CompletableFuture<Any?> =
         delete(params, RequestOptions.none())
 
-    /** Let an access group reach a private installation. */
+    /**
+     * Let an access group reach a private installation. Requires a team admin. Deprecated: address
+     * the environment by slug with the `/environments/:environment` form.
+     */
+    @Deprecated("deprecated")
     fun createAccessGroup(
         installationId: String,
         params: InstallationCreateAccessGroupParams,
     ): CompletableFuture<Any?> = createAccessGroup(installationId, params, RequestOptions.none())
 
     /** @see createAccessGroup */
+    @Deprecated("deprecated")
     fun createAccessGroup(
         installationId: String,
         params: InstallationCreateAccessGroupParams,
@@ -179,22 +179,29 @@ interface InstallationServiceAsync {
         createAccessGroup(params.toBuilder().installationId(installationId).build(), requestOptions)
 
     /** @see createAccessGroup */
+    @Deprecated("deprecated")
     fun createAccessGroup(
         params: InstallationCreateAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
 
     /** @see createAccessGroup */
+    @Deprecated("deprecated")
     fun createAccessGroup(params: InstallationCreateAccessGroupParams): CompletableFuture<Any?> =
         createAccessGroup(params, RequestOptions.none())
 
-    /** Stop an access group reaching a private installation. */
+    /**
+     * Stop an access group reaching a private installation. Requires a team admin. Deprecated:
+     * address the environment by slug with the `/environments/:environment` form.
+     */
+    @Deprecated("deprecated")
     fun deleteAccessGroup(
         installationId: String,
         params: InstallationDeleteAccessGroupParams,
     ): CompletableFuture<Any?> = deleteAccessGroup(installationId, params, RequestOptions.none())
 
     /** @see deleteAccessGroup */
+    @Deprecated("deprecated")
     fun deleteAccessGroup(
         installationId: String,
         params: InstallationDeleteAccessGroupParams,
@@ -203,12 +210,14 @@ interface InstallationServiceAsync {
         deleteAccessGroup(params.toBuilder().installationId(installationId).build(), requestOptions)
 
     /** @see deleteAccessGroup */
+    @Deprecated("deprecated")
     fun deleteAccessGroup(
         params: InstallationDeleteAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
 
     /** @see deleteAccessGroup */
+    @Deprecated("deprecated")
     fun deleteAccessGroup(params: InstallationDeleteAccessGroupParams): CompletableFuture<Any?> =
         deleteAccessGroup(params, RequestOptions.none())
 
@@ -228,40 +237,11 @@ interface InstallationServiceAsync {
         ): InstallationServiceAsync.WithRawResponse
 
         /**
-         * Returns a raw HTTP response for `post /v1/mcp/servers/{id}/installations`, but is
-         * otherwise the same as [InstallationServiceAsync.create].
-         */
-        fun create(
-            id: String,
-            params: InstallationCreateParams,
-        ): CompletableFuture<HttpResponseFor<McpInstallation>> =
-            create(id, params, RequestOptions.none())
-
-        /** @see create */
-        fun create(
-            id: String,
-            params: InstallationCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<McpInstallation>> =
-            create(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see create */
-        fun create(
-            params: InstallationCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<McpInstallation>>
-
-        /** @see create */
-        fun create(
-            params: InstallationCreateParams
-        ): CompletableFuture<HttpResponseFor<McpInstallation>> =
-            create(params, RequestOptions.none())
-
-        /**
          * Returns a raw HTTP response for `get
          * /v1/mcp/servers/{id}/installations/{installationId}`, but is otherwise the same as
          * [InstallationServiceAsync.retrieve].
          */
+        @Deprecated("deprecated")
         fun retrieve(
             installationId: String,
             params: InstallationRetrieveParams,
@@ -269,6 +249,7 @@ interface InstallationServiceAsync {
             retrieve(installationId, params, RequestOptions.none())
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             installationId: String,
             params: InstallationRetrieveParams,
@@ -277,12 +258,14 @@ interface InstallationServiceAsync {
             retrieve(params.toBuilder().installationId(installationId).build(), requestOptions)
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             params: InstallationRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<McpInstallation>>
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         fun retrieve(
             params: InstallationRetrieveParams
         ): CompletableFuture<HttpResponseFor<McpInstallation>> =
@@ -293,6 +276,7 @@ interface InstallationServiceAsync {
          * /v1/mcp/servers/{id}/installations/{installationId}`, but is otherwise the same as
          * [InstallationServiceAsync.update].
          */
+        @Deprecated("deprecated")
         fun update(
             installationId: String,
             params: InstallationUpdateParams,
@@ -300,6 +284,7 @@ interface InstallationServiceAsync {
             update(installationId, params, RequestOptions.none())
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             installationId: String,
             params: InstallationUpdateParams,
@@ -308,12 +293,14 @@ interface InstallationServiceAsync {
             update(params.toBuilder().installationId(installationId).build(), requestOptions)
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             params: InstallationUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<McpInstallation>>
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             params: InstallationUpdateParams
         ): CompletableFuture<HttpResponseFor<McpInstallation>> =
@@ -365,6 +352,7 @@ interface InstallationServiceAsync {
          * /v1/mcp/servers/{id}/installations/{installationId}`, but is otherwise the same as
          * [InstallationServiceAsync.delete].
          */
+        @Deprecated("deprecated")
         fun delete(
             installationId: String,
             params: InstallationDeleteParams,
@@ -372,6 +360,7 @@ interface InstallationServiceAsync {
             delete(installationId, params, RequestOptions.none())
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(
             installationId: String,
             params: InstallationDeleteParams,
@@ -380,12 +369,14 @@ interface InstallationServiceAsync {
             delete(params.toBuilder().installationId(installationId).build(), requestOptions)
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(
             params: InstallationDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
 
         /** @see delete */
+        @Deprecated("deprecated")
         fun delete(params: InstallationDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
             delete(params, RequestOptions.none())
 
@@ -394,6 +385,7 @@ interface InstallationServiceAsync {
          * /v1/mcp/servers/{id}/installations/{installationId}/access-group`, but is otherwise the
          * same as [InstallationServiceAsync.createAccessGroup].
          */
+        @Deprecated("deprecated")
         fun createAccessGroup(
             installationId: String,
             params: InstallationCreateAccessGroupParams,
@@ -401,6 +393,7 @@ interface InstallationServiceAsync {
             createAccessGroup(installationId, params, RequestOptions.none())
 
         /** @see createAccessGroup */
+        @Deprecated("deprecated")
         fun createAccessGroup(
             installationId: String,
             params: InstallationCreateAccessGroupParams,
@@ -412,12 +405,14 @@ interface InstallationServiceAsync {
             )
 
         /** @see createAccessGroup */
+        @Deprecated("deprecated")
         fun createAccessGroup(
             params: InstallationCreateAccessGroupParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
 
         /** @see createAccessGroup */
+        @Deprecated("deprecated")
         fun createAccessGroup(
             params: InstallationCreateAccessGroupParams
         ): CompletableFuture<HttpResponseFor<Any?>> =
@@ -428,6 +423,7 @@ interface InstallationServiceAsync {
          * /v1/mcp/servers/{id}/installations/{installationId}/access-group`, but is otherwise the
          * same as [InstallationServiceAsync.deleteAccessGroup].
          */
+        @Deprecated("deprecated")
         fun deleteAccessGroup(
             installationId: String,
             params: InstallationDeleteAccessGroupParams,
@@ -435,6 +431,7 @@ interface InstallationServiceAsync {
             deleteAccessGroup(installationId, params, RequestOptions.none())
 
         /** @see deleteAccessGroup */
+        @Deprecated("deprecated")
         fun deleteAccessGroup(
             installationId: String,
             params: InstallationDeleteAccessGroupParams,
@@ -446,12 +443,14 @@ interface InstallationServiceAsync {
             )
 
         /** @see deleteAccessGroup */
+        @Deprecated("deprecated")
         fun deleteAccessGroup(
             params: InstallationDeleteAccessGroupParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
 
         /** @see deleteAccessGroup */
+        @Deprecated("deprecated")
         fun deleteAccessGroup(
             params: InstallationDeleteAccessGroupParams
         ): CompletableFuture<HttpResponseFor<Any?>> =

@@ -29,6 +29,7 @@ private constructor(
     private val lastPublishedUid: JsonField<String>,
     private val loginPortalUid: JsonField<String>,
     private val userInfoHookUrl: JsonField<String>,
+    private val userInfoHookSecretUid: JsonField<String>,
     private val activeThemeId: JsonField<String>,
     private val typesenseId: JsonField<Double>,
     private val isPrivate: JsonField<Boolean>,
@@ -63,6 +64,9 @@ private constructor(
         @JsonProperty("userInfoHookUrl")
         @ExcludeMissing
         userInfoHookUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("userInfoHookSecretUid")
+        @ExcludeMissing
+        userInfoHookSecretUid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("activeThemeId")
         @ExcludeMissing
         activeThemeId: JsonField<String> = JsonMissing.of(),
@@ -99,6 +103,7 @@ private constructor(
         lastPublishedUid,
         loginPortalUid,
         userInfoHookUrl,
+        userInfoHookSecretUid,
         activeThemeId,
         typesenseId,
         isPrivate,
@@ -166,6 +171,13 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun userInfoHookUrl(): String = userInfoHookUrl.getRequired("userInfoHookUrl")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun userInfoHookSecretUid(): Optional<String> =
+        userInfoHookSecretUid.getOptional("userInfoHookSecretUid")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -301,6 +313,16 @@ private constructor(
     @JsonProperty("userInfoHookUrl")
     @ExcludeMissing
     fun _userInfoHookUrl(): JsonField<String> = userInfoHookUrl
+
+    /**
+     * Returns the raw JSON value of [userInfoHookSecretUid].
+     *
+     * Unlike [userInfoHookSecretUid], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("userInfoHookSecretUid")
+    @ExcludeMissing
+    fun _userInfoHookSecretUid(): JsonField<String> = userInfoHookSecretUid
 
     /**
      * Returns the raw JSON value of [activeThemeId].
@@ -440,6 +462,7 @@ private constructor(
         private var lastPublishedUid: JsonField<String>? = null
         private var loginPortalUid: JsonField<String>? = null
         private var userInfoHookUrl: JsonField<String>? = null
+        private var userInfoHookSecretUid: JsonField<String> = JsonMissing.of()
         private var activeThemeId: JsonField<String>? = null
         private var typesenseId: JsonField<Double> = JsonMissing.of()
         private var isPrivate: JsonField<Boolean>? = null
@@ -463,6 +486,7 @@ private constructor(
             lastPublishedUid = githubProject.lastPublishedUid
             loginPortalUid = githubProject.loginPortalUid
             userInfoHookUrl = githubProject.userInfoHookUrl
+            userInfoHookSecretUid = githubProject.userInfoHookSecretUid
             activeThemeId = githubProject.activeThemeId
             typesenseId = githubProject.typesenseId
             isPrivate = githubProject.isPrivate
@@ -600,6 +624,27 @@ private constructor(
          */
         fun userInfoHookUrl(userInfoHookUrl: JsonField<String>) = apply {
             this.userInfoHookUrl = userInfoHookUrl
+        }
+
+        fun userInfoHookSecretUid(userInfoHookSecretUid: String?) =
+            userInfoHookSecretUid(JsonField.ofNullable(userInfoHookSecretUid))
+
+        /**
+         * Alias for calling [Builder.userInfoHookSecretUid] with
+         * `userInfoHookSecretUid.orElse(null)`.
+         */
+        fun userInfoHookSecretUid(userInfoHookSecretUid: Optional<String>) =
+            userInfoHookSecretUid(userInfoHookSecretUid.getOrNull())
+
+        /**
+         * Sets [Builder.userInfoHookSecretUid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.userInfoHookSecretUid] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun userInfoHookSecretUid(userInfoHookSecretUid: JsonField<String>) = apply {
+            this.userInfoHookSecretUid = userInfoHookSecretUid
         }
 
         fun activeThemeId(activeThemeId: String) = activeThemeId(JsonField.of(activeThemeId))
@@ -789,6 +834,7 @@ private constructor(
                 checkRequired("lastPublishedUid", lastPublishedUid),
                 checkRequired("loginPortalUid", loginPortalUid),
                 checkRequired("userInfoHookUrl", userInfoHookUrl),
+                userInfoHookSecretUid,
                 checkRequired("activeThemeId", activeThemeId),
                 typesenseId,
                 checkRequired("isPrivate", isPrivate),
@@ -827,6 +873,7 @@ private constructor(
         lastPublishedUid()
         loginPortalUid()
         userInfoHookUrl()
+        userInfoHookSecretUid()
         activeThemeId()
         typesenseId()
         isPrivate()
@@ -864,6 +911,7 @@ private constructor(
             (if (lastPublishedUid.asKnown().isPresent) 1 else 0) +
             (if (loginPortalUid.asKnown().isPresent) 1 else 0) +
             (if (userInfoHookUrl.asKnown().isPresent) 1 else 0) +
+            (if (userInfoHookSecretUid.asKnown().isPresent) 1 else 0) +
             (if (activeThemeId.asKnown().isPresent) 1 else 0) +
             (if (typesenseId.asKnown().isPresent) 1 else 0) +
             (if (isPrivate.asKnown().isPresent) 1 else 0) +
@@ -890,6 +938,7 @@ private constructor(
             lastPublishedUid == other.lastPublishedUid &&
             loginPortalUid == other.loginPortalUid &&
             userInfoHookUrl == other.userInfoHookUrl &&
+            userInfoHookSecretUid == other.userInfoHookSecretUid &&
             activeThemeId == other.activeThemeId &&
             typesenseId == other.typesenseId &&
             isPrivate == other.isPrivate &&
@@ -914,6 +963,7 @@ private constructor(
             lastPublishedUid,
             loginPortalUid,
             userInfoHookUrl,
+            userInfoHookSecretUid,
             activeThemeId,
             typesenseId,
             isPrivate,
@@ -931,5 +981,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "GithubProject{uid=$uid, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, activeDeployment=$activeDeployment, lastPublished=$lastPublished, lastPublishedUid=$lastPublishedUid, loginPortalUid=$loginPortalUid, userInfoHookUrl=$userInfoHookUrl, activeThemeId=$activeThemeId, typesenseId=$typesenseId, isPrivate=$isPrivate, agentEnabled=$agentEnabled, analyticsEnabled=$analyticsEnabled, accessGroups=$accessGroups, slug=$slug, publishStatus=$publishStatus, publishMessage=$publishMessage, repository=$repository, additionalProperties=$additionalProperties}"
+        "GithubProject{uid=$uid, createdAt=$createdAt, updatedAt=$updatedAt, name=$name, activeDeployment=$activeDeployment, lastPublished=$lastPublished, lastPublishedUid=$lastPublishedUid, loginPortalUid=$loginPortalUid, userInfoHookUrl=$userInfoHookUrl, userInfoHookSecretUid=$userInfoHookSecretUid, activeThemeId=$activeThemeId, typesenseId=$typesenseId, isPrivate=$isPrivate, agentEnabled=$agentEnabled, analyticsEnabled=$analyticsEnabled, accessGroups=$accessGroups, slug=$slug, publishStatus=$publishStatus, publishMessage=$publishMessage, repository=$repository, additionalProperties=$additionalProperties}"
 }

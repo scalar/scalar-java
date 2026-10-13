@@ -26,7 +26,6 @@ private constructor(
     private val mcpServerId: JsonField<String>,
     private val name: JsonField<String>,
     private val slug: JsonField<String>,
-    private val isPrivate: JsonField<Boolean>,
     private val accessGroups: JsonField<List<String>>,
     private val loginPortalUid: JsonField<String>,
     private val mcpVersion: JsonField<String>,
@@ -43,7 +42,6 @@ private constructor(
         mcpServerId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("accessGroups")
         @ExcludeMissing
         accessGroups: JsonField<List<String>> = JsonMissing.of(),
@@ -64,7 +62,6 @@ private constructor(
         mcpServerId,
         name,
         slug,
-        isPrivate,
         accessGroups,
         loginPortalUid,
         mcpVersion,
@@ -96,12 +93,6 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun slug(): String = slug.getRequired("slug")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -161,13 +152,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-    /**
-     * Returns the raw JSON value of [isPrivate].
-     *
-     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
 
     /**
      * Returns the raw JSON value of [accessGroups].
@@ -237,7 +221,6 @@ private constructor(
          * .mcpServerId()
          * .name()
          * .slug()
-         * .isPrivate()
          * .accessGroups()
          * .loginPortalUid()
          * .mcpVersion()
@@ -255,7 +238,6 @@ private constructor(
         private var mcpServerId: JsonField<String>? = null
         private var name: JsonField<String>? = null
         private var slug: JsonField<String>? = null
-        private var isPrivate: JsonField<Boolean>? = null
         private var accessGroups: JsonField<MutableList<String>>? = null
         private var loginPortalUid: JsonField<String>? = null
         private var mcpVersion: JsonField<String>? = null
@@ -269,7 +251,6 @@ private constructor(
             mcpServerId = mcpInstallation.mcpServerId
             name = mcpInstallation.name
             slug = mcpInstallation.slug
-            isPrivate = mcpInstallation.isPrivate
             accessGroups = mcpInstallation.accessGroups.map { it.toMutableList() }
             loginPortalUid = mcpInstallation.loginPortalUid
             mcpVersion = mcpInstallation.mcpVersion
@@ -318,17 +299,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-        fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
-
-        /**
-         * Sets [Builder.isPrivate] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
 
         fun accessGroups(accessGroups: List<String>) = accessGroups(JsonField.of(accessGroups))
 
@@ -445,7 +415,6 @@ private constructor(
          * .mcpServerId()
          * .name()
          * .slug()
-         * .isPrivate()
          * .accessGroups()
          * .loginPortalUid()
          * .mcpVersion()
@@ -461,7 +430,6 @@ private constructor(
                 checkRequired("mcpServerId", mcpServerId),
                 checkRequired("name", name),
                 checkRequired("slug", slug),
-                checkRequired("isPrivate", isPrivate),
                 checkRequired("accessGroups", accessGroups).map { it.toImmutable() },
                 checkRequired("loginPortalUid", loginPortalUid),
                 checkRequired("mcpVersion", mcpVersion),
@@ -490,7 +458,6 @@ private constructor(
         mcpServerId()
         name()
         slug()
-        isPrivate()
         accessGroups()
         loginPortalUid()
         mcpVersion()
@@ -518,7 +485,6 @@ private constructor(
             (if (mcpServerId.asKnown().isPresent) 1 else 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (isPrivate.asKnown().isPresent) 1 else 0) +
             (accessGroups.asKnown().getOrNull()?.size ?: 0) +
             (if (loginPortalUid.asKnown().isPresent) 1 else 0) +
             (if (mcpVersion.asKnown().isPresent) 1 else 0) +
@@ -535,7 +501,6 @@ private constructor(
             mcpServerId == other.mcpServerId &&
             name == other.name &&
             slug == other.slug &&
-            isPrivate == other.isPrivate &&
             accessGroups == other.accessGroups &&
             loginPortalUid == other.loginPortalUid &&
             mcpVersion == other.mcpVersion &&
@@ -550,7 +515,6 @@ private constructor(
             mcpServerId,
             name,
             slug,
-            isPrivate,
             accessGroups,
             loginPortalUid,
             mcpVersion,
@@ -563,5 +527,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "McpInstallation{id=$id, mcpServerId=$mcpServerId, name=$name, slug=$slug, isPrivate=$isPrivate, accessGroups=$accessGroups, loginPortalUid=$loginPortalUid, mcpVersion=$mcpVersion, piiRedactionEnabled=$piiRedactionEnabled, credentialRedactionEnabled=$credentialRedactionEnabled, additionalProperties=$additionalProperties}"
+        "McpInstallation{id=$id, mcpServerId=$mcpServerId, name=$name, slug=$slug, accessGroups=$accessGroups, loginPortalUid=$loginPortalUid, mcpVersion=$mcpVersion, piiRedactionEnabled=$piiRedactionEnabled, credentialRedactionEnabled=$credentialRedactionEnabled, additionalProperties=$additionalProperties}"
 }

@@ -110,7 +110,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Delete an MCP server](#delete-an-mcp-server)
     - [`Mcp Servers Installations`](#mcp-servers-installations)
       - [List installations](#list-installations)
-      - [Create an installation](#create-an-installation)
       - [Get an installation](#get-an-installation)
       - [Update an installation](#update-an-installation)
       - [Delete an installation](#delete-an-installation)
@@ -2308,37 +2307,9 @@ var installation = client.mcp().servers().installations().list(params);
 System.out.println(installation);
 ```
 
-##### Create an installation
-
-Create an installation of an MCP server. `documentAuth` holds the credentials the server presents to the upstream API and is never returned.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`InstallationCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/InstallationCreateParams.kt) |
-| Response | [`McpInstallation`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/McpInstallation.kt) |
-
-```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.installations.InstallationCreateParams;
-
-ScalarClient client =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
-
-InstallationCreateParams params =
-    InstallationCreateParams.builder()
-        .id("42")
-        .name("Acme MCP")
-        .documentAuth(InstallationCreateParams.DocumentAuth.builder().build())
-        .build();
-var installation = client.mcp().servers().installations().create(params);
-
-System.out.println(installation);
-```
-
 ##### Get an installation
 
-Get a single installation of an MCP server.
+Get a single installation of an MCP server. Deprecated: address the environment by slug with the `/environments/:environment` form.
 
 | Direction | Type |
 | --- | --- |
@@ -2362,7 +2333,7 @@ System.out.println(installation);
 
 ##### Update an installation
 
-Update an installation. Set `isPrivate` and add access groups to put it behind a login.
+Update an installation. Deprecated: address the environment by slug with the `/environments/:environment` form.
 
 | Direction | Type |
 | --- | --- |
@@ -2386,7 +2357,7 @@ System.out.println(installation);
 
 ##### Delete an installation
 
-Delete an installation of an MCP server.
+Delete an installation of an MCP server. Deprecated: address the environment by slug with the `/environments/:environment` form.
 
 | Direction | Type |
 | --- | --- |
@@ -2409,7 +2380,7 @@ System.out.println(installation);
 
 ##### Add an access group
 
-Let an access group reach a private installation.
+Let an access group reach a private installation. Requires a team admin. Deprecated: address the environment by slug with the `/environments/:environment` form.
 
 | Direction | Type |
 | --- | --- |
@@ -2436,7 +2407,7 @@ System.out.println(installation);
 
 ##### Remove an access group
 
-Stop an access group reaching a private installation.
+Stop an access group reaching a private installation. Requires a team admin. Deprecated: address the environment by slug with the `/environments/:environment` form.
 
 | Direction | Type |
 | --- | --- |

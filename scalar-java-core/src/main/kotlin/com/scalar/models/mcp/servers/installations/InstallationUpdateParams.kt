@@ -14,14 +14,17 @@ import com.scalar.core.Params
 import com.scalar.core.checkRequired
 import com.scalar.core.http.Headers
 import com.scalar.core.http.QueryParams
-import com.scalar.core.toImmutable
 import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Update an installation. Set `isPrivate` and add access groups to put it behind a login. */
+/**
+ * Update an installation. Deprecated: address the environment by slug with the
+ * `/environments/:environment` form.
+ */
+@Deprecated("deprecated")
 class InstallationUpdateParams
 private constructor(
     private val id: String,
@@ -38,28 +41,13 @@ private constructor(
     fun name(): Optional<String> = body.name()
 
     /**
+     * The environment’s current slug. An environment cannot be renamed, so any other slug is
+     * refused.
+     *
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun slug(): Optional<String> = body.slug()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun isPrivate(): Optional<Boolean> = body.isPrivate()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun loginPortalUid(): Optional<String> = body.loginPortalUid()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun documentAuth(): Optional<DocumentAuth> = body.documentAuth()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -84,27 +72,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _slug(): JsonField<String> = body._slug()
-
-    /**
-     * Returns the raw JSON value of [isPrivate].
-     *
-     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _isPrivate(): JsonField<Boolean> = body._isPrivate()
-
-    /**
-     * Returns the raw JSON value of [loginPortalUid].
-     *
-     * Unlike [loginPortalUid], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _loginPortalUid(): JsonField<String> = body._loginPortalUid()
-
-    /**
-     * Returns the raw JSON value of [documentAuth].
-     *
-     * Unlike [documentAuth], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _documentAuth(): JsonField<DocumentAuth> = body._documentAuth()
 
     /**
      * Returns the raw JSON value of [mcpVersion].
@@ -169,10 +136,7 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [name]
          * - [slug]
-         * - [isPrivate]
-         * - [loginPortalUid]
-         * - [documentAuth]
-         * - etc.
+         * - [mcpVersion]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -186,6 +150,10 @@ private constructor(
          */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
+        /**
+         * The environment’s current slug. An environment cannot be renamed, so any other slug is
+         * refused.
+         */
         fun slug(slug: String) = apply { body.slug(slug) }
 
         /**
@@ -195,48 +163,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
-
-        fun isPrivate(isPrivate: Boolean) = apply { body.isPrivate(isPrivate) }
-
-        /**
-         * Sets [Builder.isPrivate] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { body.isPrivate(isPrivate) }
-
-        fun loginPortalUid(loginPortalUid: String?) = apply { body.loginPortalUid(loginPortalUid) }
-
-        /** Alias for calling [Builder.loginPortalUid] with `loginPortalUid.orElse(null)`. */
-        fun loginPortalUid(loginPortalUid: Optional<String>) = apply {
-            body.loginPortalUid(loginPortalUid.getOrNull())
-        }
-
-        /**
-         * Sets [Builder.loginPortalUid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.loginPortalUid] with a well-typed [String] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun loginPortalUid(loginPortalUid: JsonField<String>) = apply {
-            body.loginPortalUid(loginPortalUid)
-        }
-
-        fun documentAuth(documentAuth: DocumentAuth) = apply { body.documentAuth(documentAuth) }
-
-        /**
-         * Sets [Builder.documentAuth] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.documentAuth] with a well-typed [DocumentAuth] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun documentAuth(documentAuth: JsonField<DocumentAuth>) = apply {
-            body.documentAuth(documentAuth)
-        }
 
         fun mcpVersion(mcpVersion: String?) = apply { body.mcpVersion(mcpVersion) }
 
@@ -411,9 +337,6 @@ private constructor(
     private constructor(
         private val name: JsonField<String>,
         private val slug: JsonField<String>,
-        private val isPrivate: JsonField<Boolean>,
-        private val loginPortalUid: JsonField<String>,
-        private val documentAuth: JsonField<DocumentAuth>,
         private val mcpVersion: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -422,19 +345,10 @@ private constructor(
         private constructor(
             @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
             @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("isPrivate")
-            @ExcludeMissing
-            isPrivate: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("loginPortalUid")
-            @ExcludeMissing
-            loginPortalUid: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("documentAuth")
-            @ExcludeMissing
-            documentAuth: JsonField<DocumentAuth> = JsonMissing.of(),
             @JsonProperty("mcpVersion")
             @ExcludeMissing
             mcpVersion: JsonField<String> = JsonMissing.of(),
-        ) : this(name, slug, isPrivate, loginPortalUid, documentAuth, mcpVersion, mutableMapOf())
+        ) : this(name, slug, mcpVersion, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -443,28 +357,13 @@ private constructor(
         fun name(): Optional<String> = name.getOptional("name")
 
         /**
+         * The environment’s current slug. An environment cannot be renamed, so any other slug is
+         * refused.
+         *
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun slug(): Optional<String> = slug.getOptional("slug")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun isPrivate(): Optional<Boolean> = isPrivate.getOptional("isPrivate")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun loginPortalUid(): Optional<String> = loginPortalUid.getOptional("loginPortalUid")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun documentAuth(): Optional<DocumentAuth> = documentAuth.getOptional("documentAuth")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -485,33 +384,6 @@ private constructor(
          * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-        /**
-         * Returns the raw JSON value of [isPrivate].
-         *
-         * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
-
-        /**
-         * Returns the raw JSON value of [loginPortalUid].
-         *
-         * Unlike [loginPortalUid], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("loginPortalUid")
-        @ExcludeMissing
-        fun _loginPortalUid(): JsonField<String> = loginPortalUid
-
-        /**
-         * Returns the raw JSON value of [documentAuth].
-         *
-         * Unlike [documentAuth], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("documentAuth")
-        @ExcludeMissing
-        fun _documentAuth(): JsonField<DocumentAuth> = documentAuth
 
         /**
          * Returns the raw JSON value of [mcpVersion].
@@ -545,9 +417,6 @@ private constructor(
 
             private var name: JsonField<String> = JsonMissing.of()
             private var slug: JsonField<String> = JsonMissing.of()
-            private var isPrivate: JsonField<Boolean> = JsonMissing.of()
-            private var loginPortalUid: JsonField<String> = JsonMissing.of()
-            private var documentAuth: JsonField<DocumentAuth> = JsonMissing.of()
             private var mcpVersion: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -555,9 +424,6 @@ private constructor(
             internal fun from(body: Body) = apply {
                 name = body.name
                 slug = body.slug
-                isPrivate = body.isPrivate
-                loginPortalUid = body.loginPortalUid
-                documentAuth = body.documentAuth
                 mcpVersion = body.mcpVersion
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
@@ -573,6 +439,10 @@ private constructor(
              */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
+            /**
+             * The environment’s current slug. An environment cannot be renamed, so any other slug
+             * is refused.
+             */
             fun slug(slug: String) = slug(JsonField.of(slug))
 
             /**
@@ -583,48 +453,6 @@ private constructor(
              * value.
              */
             fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-            fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
-
-            /**
-             * Sets [Builder.isPrivate] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
-
-            fun loginPortalUid(loginPortalUid: String?) =
-                loginPortalUid(JsonField.ofNullable(loginPortalUid))
-
-            /** Alias for calling [Builder.loginPortalUid] with `loginPortalUid.orElse(null)`. */
-            fun loginPortalUid(loginPortalUid: Optional<String>) =
-                loginPortalUid(loginPortalUid.getOrNull())
-
-            /**
-             * Sets [Builder.loginPortalUid] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.loginPortalUid] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun loginPortalUid(loginPortalUid: JsonField<String>) = apply {
-                this.loginPortalUid = loginPortalUid
-            }
-
-            fun documentAuth(documentAuth: DocumentAuth) = documentAuth(JsonField.of(documentAuth))
-
-            /**
-             * Sets [Builder.documentAuth] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.documentAuth] with a well-typed [DocumentAuth] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun documentAuth(documentAuth: JsonField<DocumentAuth>) = apply {
-                this.documentAuth = documentAuth
-            }
 
             fun mcpVersion(mcpVersion: String?) = mcpVersion(JsonField.ofNullable(mcpVersion))
 
@@ -664,16 +492,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Body =
-                Body(
-                    name,
-                    slug,
-                    isPrivate,
-                    loginPortalUid,
-                    documentAuth,
-                    mcpVersion,
-                    additionalProperties.toMutableMap(),
-                )
+            fun build(): Body = Body(name, slug, mcpVersion, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -694,9 +513,6 @@ private constructor(
 
             name()
             slug()
-            isPrivate()
-            loginPortalUid()
-            documentAuth().ifPresent { it.validate() }
             mcpVersion()
             validated = true
         }
@@ -719,9 +535,6 @@ private constructor(
         internal fun validity(): Int =
             (if (name.asKnown().isPresent) 1 else 0) +
                 (if (slug.asKnown().isPresent) 1 else 0) +
-                (if (isPrivate.asKnown().isPresent) 1 else 0) +
-                (if (loginPortalUid.asKnown().isPresent) 1 else 0) +
-                (documentAuth.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (mcpVersion.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
@@ -732,138 +545,18 @@ private constructor(
             return other is Body &&
                 name == other.name &&
                 slug == other.slug &&
-                isPrivate == other.isPrivate &&
-                loginPortalUid == other.loginPortalUid &&
-                documentAuth == other.documentAuth &&
                 mcpVersion == other.mcpVersion &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(
-                name,
-                slug,
-                isPrivate,
-                loginPortalUid,
-                documentAuth,
-                mcpVersion,
-                additionalProperties,
-            )
+            Objects.hash(name, slug, mcpVersion, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, slug=$slug, isPrivate=$isPrivate, loginPortalUid=$loginPortalUid, documentAuth=$documentAuth, mcpVersion=$mcpVersion, additionalProperties=$additionalProperties}"
-    }
-
-    class DocumentAuth
-    @JsonCreator
-    private constructor(
-        @com.fasterxml.jackson.annotation.JsonValue
-        private val additionalProperties: Map<String, JsonValue>
-    ) {
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /** Returns a mutable builder for constructing an instance of [DocumentAuth]. */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [DocumentAuth]. */
-        class Builder internal constructor() {
-
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(documentAuth: DocumentAuth) = apply {
-                additionalProperties = documentAuth.additionalProperties.toMutableMap()
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [DocumentAuth].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             */
-            fun build(): DocumentAuth = DocumentAuth(additionalProperties.toImmutable())
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws ScalarInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): DocumentAuth = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: ScalarInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic
-        internal fun validity(): Int = additionalProperties.count { (_, value) ->
-            !value.isNull() && !value.isMissing()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is DocumentAuth && additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() = "DocumentAuth{additionalProperties=$additionalProperties}"
+            "Body{name=$name, slug=$slug, mcpVersion=$mcpVersion, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

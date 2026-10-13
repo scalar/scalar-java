@@ -23,7 +23,6 @@ private constructor(
     private val id: JsonField<String>,
     private val name: JsonField<String>,
     private val slug: JsonField<String>,
-    private val isPrivate: JsonField<Boolean>,
     private val mcpVersion: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -33,11 +32,10 @@ private constructor(
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("mcpVersion")
         @ExcludeMissing
         mcpVersion: JsonField<String> = JsonMissing.of(),
-    ) : this(id, name, slug, isPrivate, mcpVersion, mutableMapOf())
+    ) : this(id, name, slug, mcpVersion, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -56,12 +54,6 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun slug(): String = slug.getRequired("slug")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -89,13 +81,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-    /**
-     * Returns the raw JSON value of [isPrivate].
-     *
-     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
 
     /**
      * Returns the raw JSON value of [mcpVersion].
@@ -126,7 +111,6 @@ private constructor(
          * .id()
          * .name()
          * .slug()
-         * .isPrivate()
          * .mcpVersion()
          * ```
          */
@@ -139,7 +123,6 @@ private constructor(
         private var id: JsonField<String>? = null
         private var name: JsonField<String>? = null
         private var slug: JsonField<String>? = null
-        private var isPrivate: JsonField<Boolean>? = null
         private var mcpVersion: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -148,7 +131,6 @@ private constructor(
             id = mcpInstallationListItem.id
             name = mcpInstallationListItem.name
             slug = mcpInstallationListItem.slug
-            isPrivate = mcpInstallationListItem.isPrivate
             mcpVersion = mcpInstallationListItem.mcpVersion
             additionalProperties = mcpInstallationListItem.additionalProperties.toMutableMap()
         }
@@ -182,17 +164,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-        fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
-
-        /**
-         * Sets [Builder.isPrivate] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
 
         fun mcpVersion(mcpVersion: String?) = mcpVersion(JsonField.ofNullable(mcpVersion))
 
@@ -237,7 +208,6 @@ private constructor(
          * .id()
          * .name()
          * .slug()
-         * .isPrivate()
          * .mcpVersion()
          * ```
          *
@@ -248,7 +218,6 @@ private constructor(
                 checkRequired("id", id),
                 checkRequired("name", name),
                 checkRequired("slug", slug),
-                checkRequired("isPrivate", isPrivate),
                 checkRequired("mcpVersion", mcpVersion),
                 additionalProperties.toMutableMap(),
             )
@@ -272,7 +241,6 @@ private constructor(
         id()
         name()
         slug()
-        isPrivate()
         mcpVersion()
         validated = true
     }
@@ -295,7 +263,6 @@ private constructor(
         (if (id.asKnown().isPresent) 1 else 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (isPrivate.asKnown().isPresent) 1 else 0) +
             (if (mcpVersion.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -307,17 +274,16 @@ private constructor(
             id == other.id &&
             name == other.name &&
             slug == other.slug &&
-            isPrivate == other.isPrivate &&
             mcpVersion == other.mcpVersion &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(id, name, slug, isPrivate, mcpVersion, additionalProperties)
+        Objects.hash(id, name, slug, mcpVersion, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "McpInstallationListItem{id=$id, name=$name, slug=$slug, isPrivate=$isPrivate, mcpVersion=$mcpVersion, additionalProperties=$additionalProperties}"
+        "McpInstallationListItem{id=$id, name=$name, slug=$slug, mcpVersion=$mcpVersion, additionalProperties=$additionalProperties}"
 }

@@ -49,8 +49,9 @@ interface AuthenticationService {
     ): User
 
     /** @see listCurrentUser */
-    fun listCurrentUser(params: AuthenticationListCurrentUserParams): User =
-        listCurrentUser(params, RequestOptions.none())
+    fun listCurrentUser(
+        params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
+    ): User = listCurrentUser(params, RequestOptions.none())
 
     /** @see listCurrentUser */
     fun listCurrentUser(requestOptions: RequestOptions): User =
@@ -105,8 +106,9 @@ interface AuthenticationService {
 
         /** @see listCurrentUser */
         @MustBeClosed
-        fun listCurrentUser(params: AuthenticationListCurrentUserParams): HttpResponseFor<User> =
-            listCurrentUser(params, RequestOptions.none())
+        fun listCurrentUser(
+            params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
+        ): HttpResponseFor<User> = listCurrentUser(params, RequestOptions.none())
 
         /** @see listCurrentUser */
         @MustBeClosed

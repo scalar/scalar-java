@@ -40,14 +40,14 @@ interface RepositoryServiceAsync {
         link(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see link */
+    fun link(params: RepositoryLinkParams): CompletableFuture<RepositoryLinkResponse> =
+        link(params, RequestOptions.none())
+
+    /** @see link */
     fun link(
         params: RepositoryLinkParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RepositoryLinkResponse>
-
-    /** @see link */
-    fun link(params: RepositoryLinkParams): CompletableFuture<RepositoryLinkResponse> =
-        link(params, RequestOptions.none())
 
     /** Unlink one language target from its repository. */
     fun unlink(
@@ -64,14 +64,14 @@ interface RepositoryServiceAsync {
         unlink(params.toBuilder().language(language).build(), requestOptions)
 
     /** @see unlink */
+    fun unlink(params: RepositoryUnlinkParams): CompletableFuture<Any?> =
+        unlink(params, RequestOptions.none())
+
+    /** @see unlink */
     fun unlink(
         params: RepositoryUnlinkParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see unlink */
-    fun unlink(params: RepositoryUnlinkParams): CompletableFuture<Any?> =
-        unlink(params, RequestOptions.none())
 
     /** Toggle publish-on-merge and the release settings for a linked target. */
     fun updatePublishing(
@@ -88,14 +88,14 @@ interface RepositoryServiceAsync {
         updatePublishing(params.toBuilder().language(language).build(), requestOptions)
 
     /** @see updatePublishing */
+    fun updatePublishing(params: RepositoryUpdatePublishingParams): CompletableFuture<Any?> =
+        updatePublishing(params, RequestOptions.none())
+
+    /** @see updatePublishing */
     fun updatePublishing(
         params: RepositoryUpdatePublishingParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see updatePublishing */
-    fun updatePublishing(params: RepositoryUpdatePublishingParams): CompletableFuture<Any?> =
-        updatePublishing(params, RequestOptions.none())
 
     /**
      * A view of [RepositoryServiceAsync] that provides access to raw HTTP responses for each
@@ -132,15 +132,15 @@ interface RepositoryServiceAsync {
 
         /** @see link */
         fun link(
-            params: RepositoryLinkParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<RepositoryLinkResponse>>
-
-        /** @see link */
-        fun link(
             params: RepositoryLinkParams
         ): CompletableFuture<HttpResponseFor<RepositoryLinkResponse>> =
             link(params, RequestOptions.none())
+
+        /** @see link */
+        fun link(
+            params: RepositoryLinkParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RepositoryLinkResponse>>
 
         /**
          * Returns a raw HTTP response for `delete /v1/sdks/{uid}/repositories/{language}`, but is
@@ -161,14 +161,14 @@ interface RepositoryServiceAsync {
             unlink(params.toBuilder().language(language).build(), requestOptions)
 
         /** @see unlink */
+        fun unlink(params: RepositoryUnlinkParams): CompletableFuture<HttpResponseFor<Any?>> =
+            unlink(params, RequestOptions.none())
+
+        /** @see unlink */
         fun unlink(
             params: RepositoryUnlinkParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see unlink */
-        fun unlink(params: RepositoryUnlinkParams): CompletableFuture<HttpResponseFor<Any?>> =
-            unlink(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `post /v1/sdks/{uid}/repositories/{language}/publishing`,
@@ -190,14 +190,14 @@ interface RepositoryServiceAsync {
 
         /** @see updatePublishing */
         fun updatePublishing(
-            params: RepositoryUpdatePublishingParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see updatePublishing */
-        fun updatePublishing(
             params: RepositoryUpdatePublishingParams
         ): CompletableFuture<HttpResponseFor<Any?>> =
             updatePublishing(params, RequestOptions.none())
+
+        /** @see updatePublishing */
+        fun updatePublishing(
+            params: RepositoryUpdatePublishingParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
     }
 }

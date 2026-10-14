@@ -34,7 +34,8 @@ interface NamespaceService {
     ): List<String>
 
     /** @see list */
-    fun list(params: NamespaceListParams): List<String> = list(params, RequestOptions.none())
+    fun list(params: NamespaceListParams = NamespaceListParams.none()): List<String> =
+        list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): List<String> =
@@ -65,8 +66,9 @@ interface NamespaceService {
 
         /** @see list */
         @MustBeClosed
-        fun list(params: NamespaceListParams): HttpResponseFor<List<String>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: NamespaceListParams = NamespaceListParams.none()
+        ): HttpResponseFor<List<String>> = list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed

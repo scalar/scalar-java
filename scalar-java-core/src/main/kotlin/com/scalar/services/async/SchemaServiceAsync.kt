@@ -50,14 +50,14 @@ interface SchemaServiceAsync {
         create(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see create */
+    fun create(params: SchemaCreateParams): CompletableFuture<Uid> =
+        create(params, RequestOptions.none())
+
+    /** @see create */
     fun create(
         params: SchemaCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Uid>
-
-    /** @see create */
-    fun create(params: SchemaCreateParams): CompletableFuture<Uid> =
-        create(params, RequestOptions.none())
 
     /** Update schema metadata. */
     fun update(slug: String, params: SchemaUpdateParams): CompletableFuture<Any?> =
@@ -71,14 +71,14 @@ interface SchemaServiceAsync {
     ): CompletableFuture<Any?> = update(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see update */
+    fun update(params: SchemaUpdateParams): CompletableFuture<Any?> =
+        update(params, RequestOptions.none())
+
+    /** @see update */
     fun update(
         params: SchemaUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see update */
-    fun update(params: SchemaUpdateParams): CompletableFuture<Any?> =
-        update(params, RequestOptions.none())
 
     /** List schemas in a namespace. */
     fun list(namespace: String): CompletableFuture<List<Schema>> =
@@ -93,8 +93,10 @@ interface SchemaServiceAsync {
         list(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see list */
-    fun list(namespace: String, params: SchemaListParams): CompletableFuture<List<Schema>> =
-        list(namespace, params, RequestOptions.none())
+    fun list(
+        namespace: String,
+        params: SchemaListParams = SchemaListParams.none(),
+    ): CompletableFuture<List<Schema>> = list(namespace, params, RequestOptions.none())
 
     /** @see list */
     fun list(
@@ -122,14 +124,14 @@ interface SchemaServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: SchemaDeleteParams): CompletableFuture<Any?> =
+        delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: SchemaDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see delete */
-    fun delete(params: SchemaDeleteParams): CompletableFuture<Any?> =
-        delete(params, RequestOptions.none())
 
     /**
      * A view of [SchemaServiceAsync] that provides access to raw HTTP responses for each method.
@@ -170,14 +172,14 @@ interface SchemaServiceAsync {
             create(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see create */
+        fun create(params: SchemaCreateParams): CompletableFuture<HttpResponseFor<Uid>> =
+            create(params, RequestOptions.none())
+
+        /** @see create */
         fun create(
             params: SchemaCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Uid>>
-
-        /** @see create */
-        fun create(params: SchemaCreateParams): CompletableFuture<HttpResponseFor<Uid>> =
-            create(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `patch /v1/schemas/{namespace}/{slug}`, but is otherwise
@@ -197,14 +199,14 @@ interface SchemaServiceAsync {
             update(params.toBuilder().slug(slug).build(), requestOptions)
 
         /** @see update */
+        fun update(params: SchemaUpdateParams): CompletableFuture<HttpResponseFor<Any?>> =
+            update(params, RequestOptions.none())
+
+        /** @see update */
         fun update(
             params: SchemaUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see update */
-        fun update(params: SchemaUpdateParams): CompletableFuture<HttpResponseFor<Any?>> =
-            update(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `get /v1/schemas/{namespace}`, but is otherwise the same
@@ -224,7 +226,7 @@ interface SchemaServiceAsync {
         /** @see list */
         fun list(
             namespace: String,
-            params: SchemaListParams,
+            params: SchemaListParams = SchemaListParams.none(),
         ): CompletableFuture<HttpResponseFor<List<Schema>>> =
             list(namespace, params, RequestOptions.none())
 
@@ -263,13 +265,13 @@ interface SchemaServiceAsync {
             delete(params.toBuilder().slug(slug).build(), requestOptions)
 
         /** @see delete */
+        fun delete(params: SchemaDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
         fun delete(
             params: SchemaDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see delete */
-        fun delete(params: SchemaDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(params, RequestOptions.none())
     }
 }

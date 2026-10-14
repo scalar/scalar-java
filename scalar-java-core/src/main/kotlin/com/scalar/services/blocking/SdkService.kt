@@ -58,7 +58,7 @@ interface SdkService {
     ): Sdk = retrieve(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(uid: String, params: SdkRetrieveParams): Sdk =
+    fun retrieve(uid: String, params: SdkRetrieveParams = SdkRetrieveParams.none()): Sdk =
         retrieve(uid, params, RequestOptions.none())
 
     /** @see retrieve */
@@ -85,7 +85,7 @@ interface SdkService {
     ): Any? = update(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see update */
-    fun update(uid: String, params: SdkUpdateParams): Any? =
+    fun update(uid: String, params: SdkUpdateParams = SdkUpdateParams.none()): Any? =
         update(uid, params, RequestOptions.none())
 
     /** @see update */
@@ -111,7 +111,8 @@ interface SdkService {
     ): SdkListResponse
 
     /** @see list */
-    fun list(params: SdkListParams): SdkListResponse = list(params, RequestOptions.none())
+    fun list(params: SdkListParams = SdkListParams.none()): SdkListResponse =
+        list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): SdkListResponse =
@@ -128,7 +129,7 @@ interface SdkService {
     ): Any? = delete(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see delete */
-    fun delete(uid: String, params: SdkDeleteParams): Any? =
+    fun delete(uid: String, params: SdkDeleteParams = SdkDeleteParams.none()): Any? =
         delete(uid, params, RequestOptions.none())
 
     /** @see delete */
@@ -158,7 +159,7 @@ interface SdkService {
     ): SdkBuildResponse = build(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see build */
-    fun build(uid: String, params: SdkBuildParams): SdkBuildResponse =
+    fun build(uid: String, params: SdkBuildParams = SdkBuildParams.none()): SdkBuildResponse =
         build(uid, params, RequestOptions.none())
 
     /** @see build */
@@ -222,8 +223,10 @@ interface SdkService {
 
         /** @see retrieve */
         @MustBeClosed
-        fun retrieve(uid: String, params: SdkRetrieveParams): HttpResponseFor<Sdk> =
-            retrieve(uid, params, RequestOptions.none())
+        fun retrieve(
+            uid: String,
+            params: SdkRetrieveParams = SdkRetrieveParams.none(),
+        ): HttpResponseFor<Sdk> = retrieve(uid, params, RequestOptions.none())
 
         /** @see retrieve */
         @MustBeClosed
@@ -259,8 +262,10 @@ interface SdkService {
 
         /** @see update */
         @MustBeClosed
-        fun update(uid: String, params: SdkUpdateParams): HttpResponseFor<Any?> =
-            update(uid, params, RequestOptions.none())
+        fun update(
+            uid: String,
+            params: SdkUpdateParams = SdkUpdateParams.none(),
+        ): HttpResponseFor<Any?> = update(uid, params, RequestOptions.none())
 
         /** @see update */
         @MustBeClosed
@@ -294,7 +299,7 @@ interface SdkService {
 
         /** @see list */
         @MustBeClosed
-        fun list(params: SdkListParams): HttpResponseFor<SdkListResponse> =
+        fun list(params: SdkListParams = SdkListParams.none()): HttpResponseFor<SdkListResponse> =
             list(params, RequestOptions.none())
 
         /** @see list */
@@ -319,8 +324,10 @@ interface SdkService {
 
         /** @see delete */
         @MustBeClosed
-        fun delete(uid: String, params: SdkDeleteParams): HttpResponseFor<Any?> =
-            delete(uid, params, RequestOptions.none())
+        fun delete(
+            uid: String,
+            params: SdkDeleteParams = SdkDeleteParams.none(),
+        ): HttpResponseFor<Any?> = delete(uid, params, RequestOptions.none())
 
         /** @see delete */
         @MustBeClosed
@@ -358,8 +365,10 @@ interface SdkService {
 
         /** @see build */
         @MustBeClosed
-        fun build(uid: String, params: SdkBuildParams): HttpResponseFor<SdkBuildResponse> =
-            build(uid, params, RequestOptions.none())
+        fun build(
+            uid: String,
+            params: SdkBuildParams = SdkBuildParams.none(),
+        ): HttpResponseFor<SdkBuildResponse> = build(uid, params, RequestOptions.none())
 
         /** @see build */
         @MustBeClosed

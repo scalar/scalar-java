@@ -16,27 +16,22 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("installation", "server")
 class ServerCreateResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val server: JsonField<McpServer>,
     private val installation: JsonField<McpInstallation>,
+    private val server: JsonField<McpServer>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("server") @ExcludeMissing server: JsonField<McpServer> = JsonMissing.of(),
         @JsonProperty("installation")
         @ExcludeMissing
         installation: JsonField<McpInstallation> = JsonMissing.of(),
-    ) : this(server, installation, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun server(): McpServer = server.getRequired("server")
+        @JsonProperty("server") @ExcludeMissing server: JsonField<McpServer> = JsonMissing.of(),
+    ) : this(installation, server, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -45,11 +40,10 @@ private constructor(
     fun installation(): McpInstallation = installation.getRequired("installation")
 
     /**
-     * Returns the raw JSON value of [server].
-     *
-     * Unlike [server], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    @JsonProperty("server") @ExcludeMissing fun _server(): JsonField<McpServer> = server
+    fun server(): McpServer = server.getRequired("server")
 
     /**
      * Returns the raw JSON value of [installation].
@@ -59,6 +53,13 @@ private constructor(
     @JsonProperty("installation")
     @ExcludeMissing
     fun _installation(): JsonField<McpInstallation> = installation
+
+    /**
+     * Returns the raw JSON value of [server].
+     *
+     * Unlike [server], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("server") @ExcludeMissing fun _server(): JsonField<McpServer> = server
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -78,9 +79,9 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [ServerCreateResponse].
          *
          * The following fields are required:
-         * ```kotlin
-         * .server()
+         * ```java
          * .installation()
+         * .server()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -89,27 +90,16 @@ private constructor(
     /** A builder for [ServerCreateResponse]. */
     class Builder internal constructor() {
 
-        private var server: JsonField<McpServer>? = null
         private var installation: JsonField<McpInstallation>? = null
+        private var server: JsonField<McpServer>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(serverCreateResponse: ServerCreateResponse) = apply {
-            server = serverCreateResponse.server
             installation = serverCreateResponse.installation
+            server = serverCreateResponse.server
             additionalProperties = serverCreateResponse.additionalProperties.toMutableMap()
         }
-
-        fun server(server: McpServer) = server(JsonField.of(server))
-
-        /**
-         * Sets [Builder.server] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.server] with a well-typed [McpServer] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun server(server: JsonField<McpServer>) = apply { this.server = server }
 
         fun installation(installation: McpInstallation) = installation(JsonField.of(installation))
 
@@ -123,6 +113,17 @@ private constructor(
         fun installation(installation: JsonField<McpInstallation>) = apply {
             this.installation = installation
         }
+
+        fun server(server: McpServer) = server(JsonField.of(server))
+
+        /**
+         * Sets [Builder.server] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.server] with a well-typed [McpServer] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun server(server: JsonField<McpServer>) = apply { this.server = server }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -149,17 +150,17 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .server()
+         * ```java
          * .installation()
+         * .server()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ServerCreateResponse =
             ServerCreateResponse(
-                checkRequired("server", server),
                 checkRequired("installation", installation),
+                checkRequired("server", server),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -179,8 +180,8 @@ private constructor(
             return@apply
         }
 
-        server().validate()
         installation().validate()
+        server().validate()
         validated = true
     }
 
@@ -199,8 +200,8 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (server.asKnown().getOrNull()?.validity() ?: 0) +
-            (installation.asKnown().getOrNull()?.validity() ?: 0)
+        (installation.asKnown().getOrNull()?.validity() ?: 0) +
+            (server.asKnown().getOrNull()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -208,15 +209,15 @@ private constructor(
         }
 
         return other is ServerCreateResponse &&
-            server == other.server &&
             installation == other.installation &&
+            server == other.server &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(server, installation, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(installation, server, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ServerCreateResponse{server=$server, installation=$installation, additionalProperties=$additionalProperties}"
+        "ServerCreateResponse{installation=$installation, server=$server, additionalProperties=$additionalProperties}"
 }

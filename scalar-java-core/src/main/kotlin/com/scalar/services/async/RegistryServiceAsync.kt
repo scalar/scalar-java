@@ -56,15 +56,15 @@ interface RegistryServiceAsync {
 
     /** @see createApiDocument */
     fun createApiDocument(
-        params: RegistryCreateApiDocumentParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<RegistryCreateApiDocumentResponse>
-
-    /** @see createApiDocument */
-    fun createApiDocument(
         params: RegistryCreateApiDocumentParams
     ): CompletableFuture<RegistryCreateApiDocumentResponse> =
         createApiDocument(params, RequestOptions.none())
+
+    /** @see createApiDocument */
+    fun createApiDocument(
+        params: RegistryCreateApiDocumentParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<RegistryCreateApiDocumentResponse>
 
     /** Add an access group to an API document. */
     fun createApiDocumentAccessGroup(
@@ -82,14 +82,14 @@ interface RegistryServiceAsync {
 
     /** @see createApiDocumentAccessGroup */
     fun createApiDocumentAccessGroup(
-        params: RegistryCreateApiDocumentAccessGroupParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Any?>
+        params: RegistryCreateApiDocumentAccessGroupParams
+    ): CompletableFuture<Any?> = createApiDocumentAccessGroup(params, RequestOptions.none())
 
     /** @see createApiDocumentAccessGroup */
     fun createApiDocumentAccessGroup(
-        params: RegistryCreateApiDocumentAccessGroupParams
-    ): CompletableFuture<Any?> = createApiDocumentAccessGroup(params, RequestOptions.none())
+        params: RegistryCreateApiDocumentAccessGroupParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Any?>
 
     /** Create a new API document version. */
     fun createApiDocumentVersion(
@@ -108,15 +108,15 @@ interface RegistryServiceAsync {
 
     /** @see createApiDocumentVersion */
     fun createApiDocumentVersion(
-        params: RegistryCreateApiDocumentVersionParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ManagedDocVersion>
-
-    /** @see createApiDocumentVersion */
-    fun createApiDocumentVersion(
         params: RegistryCreateApiDocumentVersionParams
     ): CompletableFuture<ManagedDocVersion> =
         createApiDocumentVersion(params, RequestOptions.none())
+
+    /** @see createApiDocumentVersion */
+    fun createApiDocumentVersion(
+        params: RegistryCreateApiDocumentVersionParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ManagedDocVersion>
 
     /** Delete an API document and all versions. */
     fun deleteApiDocument(
@@ -133,14 +133,14 @@ interface RegistryServiceAsync {
         deleteApiDocument(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see deleteApiDocument */
+    fun deleteApiDocument(params: RegistryDeleteApiDocumentParams): CompletableFuture<Any?> =
+        deleteApiDocument(params, RequestOptions.none())
+
+    /** @see deleteApiDocument */
     fun deleteApiDocument(
         params: RegistryDeleteApiDocumentParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see deleteApiDocument */
-    fun deleteApiDocument(params: RegistryDeleteApiDocumentParams): CompletableFuture<Any?> =
-        deleteApiDocument(params, RequestOptions.none())
 
     /** Remove an access group from an API document. */
     fun deleteApiDocumentAccessGroup(
@@ -158,14 +158,14 @@ interface RegistryServiceAsync {
 
     /** @see deleteApiDocumentAccessGroup */
     fun deleteApiDocumentAccessGroup(
-        params: RegistryDeleteApiDocumentAccessGroupParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Any?>
+        params: RegistryDeleteApiDocumentAccessGroupParams
+    ): CompletableFuture<Any?> = deleteApiDocumentAccessGroup(params, RequestOptions.none())
 
     /** @see deleteApiDocumentAccessGroup */
     fun deleteApiDocumentAccessGroup(
-        params: RegistryDeleteApiDocumentAccessGroupParams
-    ): CompletableFuture<Any?> = deleteApiDocumentAccessGroup(params, RequestOptions.none())
+        params: RegistryDeleteApiDocumentAccessGroupParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Any?>
 
     /** Delete a specific API document version. */
     fun deleteApiDocumentVersion(
@@ -183,14 +183,14 @@ interface RegistryServiceAsync {
 
     /** @see deleteApiDocumentVersion */
     fun deleteApiDocumentVersion(
-        params: RegistryDeleteApiDocumentVersionParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Any?>
+        params: RegistryDeleteApiDocumentVersionParams
+    ): CompletableFuture<Any?> = deleteApiDocumentVersion(params, RequestOptions.none())
 
     /** @see deleteApiDocumentVersion */
     fun deleteApiDocumentVersion(
-        params: RegistryDeleteApiDocumentVersionParams
-    ): CompletableFuture<Any?> = deleteApiDocumentVersion(params, RequestOptions.none())
+        params: RegistryDeleteApiDocumentVersionParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Any?>
 
     /** List all API documents across every namespace the caller can access. */
     fun listAllApiDocuments(): CompletableFuture<List<ApiDocument>> =
@@ -204,7 +204,7 @@ interface RegistryServiceAsync {
 
     /** @see listAllApiDocuments */
     fun listAllApiDocuments(
-        params: RegistryListAllApiDocumentsParams
+        params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none()
     ): CompletableFuture<List<ApiDocument>> = listAllApiDocuments(params, RequestOptions.none())
 
     /** @see listAllApiDocuments */
@@ -228,15 +228,15 @@ interface RegistryServiceAsync {
 
     /** @see listApiDocumentVersionMetadata */
     fun listApiDocumentVersionMetadata(
-        params: RegistryListApiDocumentVersionMetadataParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ManagedDocVersion>
-
-    /** @see listApiDocumentVersionMetadata */
-    fun listApiDocumentVersionMetadata(
         params: RegistryListApiDocumentVersionMetadataParams
     ): CompletableFuture<ManagedDocVersion> =
         listApiDocumentVersionMetadata(params, RequestOptions.none())
+
+    /** @see listApiDocumentVersionMetadata */
+    fun listApiDocumentVersionMetadata(
+        params: RegistryListApiDocumentVersionMetadataParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ManagedDocVersion>
 
     /** List API documents in a namespace. */
     fun listApiDocuments(namespace: String): CompletableFuture<List<ApiDocument>> =
@@ -253,7 +253,7 @@ interface RegistryServiceAsync {
     /** @see listApiDocuments */
     fun listApiDocuments(
         namespace: String,
-        params: RegistryListApiDocumentsParams,
+        params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
     ): CompletableFuture<List<ApiDocument>> =
         listApiDocuments(namespace, params, RequestOptions.none())
 
@@ -291,14 +291,14 @@ interface RegistryServiceAsync {
 
     /** @see retrieveApiDocumentVersion */
     fun retrieveApiDocumentVersion(
-        params: RegistryRetrieveApiDocumentVersionParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<String>
+        params: RegistryRetrieveApiDocumentVersionParams
+    ): CompletableFuture<String> = retrieveApiDocumentVersion(params, RequestOptions.none())
 
     /** @see retrieveApiDocumentVersion */
     fun retrieveApiDocumentVersion(
-        params: RegistryRetrieveApiDocumentVersionParams
-    ): CompletableFuture<String> = retrieveApiDocumentVersion(params, RequestOptions.none())
+        params: RegistryRetrieveApiDocumentVersionParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<String>
 
     /** Update metadata for an API document. */
     fun updateApiDocument(
@@ -315,14 +315,14 @@ interface RegistryServiceAsync {
         updateApiDocument(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see updateApiDocument */
+    fun updateApiDocument(params: RegistryUpdateApiDocumentParams): CompletableFuture<Any?> =
+        updateApiDocument(params, RequestOptions.none())
+
+    /** @see updateApiDocument */
     fun updateApiDocument(
         params: RegistryUpdateApiDocumentParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see updateApiDocument */
-    fun updateApiDocument(params: RegistryUpdateApiDocumentParams): CompletableFuture<Any?> =
-        updateApiDocument(params, RequestOptions.none())
 
     /** Update the registry file content for an API document version. */
     fun updateApiDocumentVersion(
@@ -341,15 +341,15 @@ interface RegistryServiceAsync {
 
     /** @see updateApiDocumentVersion */
     fun updateApiDocumentVersion(
-        params: RegistryUpdateApiDocumentVersionParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<RegistryUpdateApiDocumentVersionResponse>
-
-    /** @see updateApiDocumentVersion */
-    fun updateApiDocumentVersion(
         params: RegistryUpdateApiDocumentVersionParams
     ): CompletableFuture<RegistryUpdateApiDocumentVersionResponse> =
         updateApiDocumentVersion(params, RequestOptions.none())
+
+    /** @see updateApiDocumentVersion */
+    fun updateApiDocumentVersion(
+        params: RegistryUpdateApiDocumentVersionParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<RegistryUpdateApiDocumentVersionResponse>
 
     /**
      * A view of [RegistryServiceAsync] that provides access to raw HTTP responses for each method.
@@ -385,15 +385,15 @@ interface RegistryServiceAsync {
 
         /** @see createApiDocument */
         fun createApiDocument(
-            params: RegistryCreateApiDocumentParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<RegistryCreateApiDocumentResponse>>
-
-        /** @see createApiDocument */
-        fun createApiDocument(
             params: RegistryCreateApiDocumentParams
         ): CompletableFuture<HttpResponseFor<RegistryCreateApiDocumentResponse>> =
             createApiDocument(params, RequestOptions.none())
+
+        /** @see createApiDocument */
+        fun createApiDocument(
+            params: RegistryCreateApiDocumentParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RegistryCreateApiDocumentResponse>>
 
         /**
          * Returns a raw HTTP response for `post /v1/apis/{namespace}/{slug}/access-group`, but is
@@ -415,15 +415,15 @@ interface RegistryServiceAsync {
 
         /** @see createApiDocumentAccessGroup */
         fun createApiDocumentAccessGroup(
-            params: RegistryCreateApiDocumentAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see createApiDocumentAccessGroup */
-        fun createApiDocumentAccessGroup(
             params: RegistryCreateApiDocumentAccessGroupParams
         ): CompletableFuture<HttpResponseFor<Any?>> =
             createApiDocumentAccessGroup(params, RequestOptions.none())
+
+        /** @see createApiDocumentAccessGroup */
+        fun createApiDocumentAccessGroup(
+            params: RegistryCreateApiDocumentAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
 
         /**
          * Returns a raw HTTP response for `post /v1/apis/{namespace}/{slug}/version`, but is
@@ -445,15 +445,15 @@ interface RegistryServiceAsync {
 
         /** @see createApiDocumentVersion */
         fun createApiDocumentVersion(
-            params: RegistryCreateApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ManagedDocVersion>>
-
-        /** @see createApiDocumentVersion */
-        fun createApiDocumentVersion(
             params: RegistryCreateApiDocumentVersionParams
         ): CompletableFuture<HttpResponseFor<ManagedDocVersion>> =
             createApiDocumentVersion(params, RequestOptions.none())
+
+        /** @see createApiDocumentVersion */
+        fun createApiDocumentVersion(
+            params: RegistryCreateApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ManagedDocVersion>>
 
         /**
          * Returns a raw HTTP response for `delete /v1/apis/{namespace}/{slug}`, but is otherwise
@@ -475,15 +475,15 @@ interface RegistryServiceAsync {
 
         /** @see deleteApiDocument */
         fun deleteApiDocument(
-            params: RegistryDeleteApiDocumentParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see deleteApiDocument */
-        fun deleteApiDocument(
             params: RegistryDeleteApiDocumentParams
         ): CompletableFuture<HttpResponseFor<Any?>> =
             deleteApiDocument(params, RequestOptions.none())
+
+        /** @see deleteApiDocument */
+        fun deleteApiDocument(
+            params: RegistryDeleteApiDocumentParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
 
         /**
          * Returns a raw HTTP response for `delete /v1/apis/{namespace}/{slug}/access-group`, but is
@@ -505,15 +505,15 @@ interface RegistryServiceAsync {
 
         /** @see deleteApiDocumentAccessGroup */
         fun deleteApiDocumentAccessGroup(
-            params: RegistryDeleteApiDocumentAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see deleteApiDocumentAccessGroup */
-        fun deleteApiDocumentAccessGroup(
             params: RegistryDeleteApiDocumentAccessGroupParams
         ): CompletableFuture<HttpResponseFor<Any?>> =
             deleteApiDocumentAccessGroup(params, RequestOptions.none())
+
+        /** @see deleteApiDocumentAccessGroup */
+        fun deleteApiDocumentAccessGroup(
+            params: RegistryDeleteApiDocumentAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
 
         /**
          * Returns a raw HTTP response for `delete /v1/apis/{namespace}/{slug}/version/{semver}`,
@@ -535,15 +535,15 @@ interface RegistryServiceAsync {
 
         /** @see deleteApiDocumentVersion */
         fun deleteApiDocumentVersion(
-            params: RegistryDeleteApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see deleteApiDocumentVersion */
-        fun deleteApiDocumentVersion(
             params: RegistryDeleteApiDocumentVersionParams
         ): CompletableFuture<HttpResponseFor<Any?>> =
             deleteApiDocumentVersion(params, RequestOptions.none())
+
+        /** @see deleteApiDocumentVersion */
+        fun deleteApiDocumentVersion(
+            params: RegistryDeleteApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
 
         /**
          * Returns a raw HTTP response for `get /v1/apis`, but is otherwise the same as
@@ -560,7 +560,7 @@ interface RegistryServiceAsync {
 
         /** @see listAllApiDocuments */
         fun listAllApiDocuments(
-            params: RegistryListAllApiDocumentsParams
+            params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none()
         ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listAllApiDocuments(params, RequestOptions.none())
 
@@ -594,15 +594,15 @@ interface RegistryServiceAsync {
 
         /** @see listApiDocumentVersionMetadata */
         fun listApiDocumentVersionMetadata(
-            params: RegistryListApiDocumentVersionMetadataParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ManagedDocVersion>>
-
-        /** @see listApiDocumentVersionMetadata */
-        fun listApiDocumentVersionMetadata(
             params: RegistryListApiDocumentVersionMetadataParams
         ): CompletableFuture<HttpResponseFor<ManagedDocVersion>> =
             listApiDocumentVersionMetadata(params, RequestOptions.none())
+
+        /** @see listApiDocumentVersionMetadata */
+        fun listApiDocumentVersionMetadata(
+            params: RegistryListApiDocumentVersionMetadataParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ManagedDocVersion>>
 
         /**
          * Returns a raw HTTP response for `get /v1/apis/{namespace}`, but is otherwise the same as
@@ -624,7 +624,7 @@ interface RegistryServiceAsync {
         /** @see listApiDocuments */
         fun listApiDocuments(
             namespace: String,
-            params: RegistryListApiDocumentsParams,
+            params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
         ): CompletableFuture<HttpResponseFor<List<ApiDocument>>> =
             listApiDocuments(namespace, params, RequestOptions.none())
 
@@ -667,15 +667,15 @@ interface RegistryServiceAsync {
 
         /** @see retrieveApiDocumentVersion */
         fun retrieveApiDocumentVersion(
-            params: RegistryRetrieveApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<String>>
-
-        /** @see retrieveApiDocumentVersion */
-        fun retrieveApiDocumentVersion(
             params: RegistryRetrieveApiDocumentVersionParams
         ): CompletableFuture<HttpResponseFor<String>> =
             retrieveApiDocumentVersion(params, RequestOptions.none())
+
+        /** @see retrieveApiDocumentVersion */
+        fun retrieveApiDocumentVersion(
+            params: RegistryRetrieveApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<String>>
 
         /**
          * Returns a raw HTTP response for `patch /v1/apis/{namespace}/{slug}`, but is otherwise the
@@ -697,15 +697,15 @@ interface RegistryServiceAsync {
 
         /** @see updateApiDocument */
         fun updateApiDocument(
-            params: RegistryUpdateApiDocumentParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see updateApiDocument */
-        fun updateApiDocument(
             params: RegistryUpdateApiDocumentParams
         ): CompletableFuture<HttpResponseFor<Any?>> =
             updateApiDocument(params, RequestOptions.none())
+
+        /** @see updateApiDocument */
+        fun updateApiDocument(
+            params: RegistryUpdateApiDocumentParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
 
         /**
          * Returns a raw HTTP response for `patch /v1/apis/{namespace}/{slug}/version/{semver}`, but
@@ -727,14 +727,14 @@ interface RegistryServiceAsync {
 
         /** @see updateApiDocumentVersion */
         fun updateApiDocumentVersion(
-            params: RegistryUpdateApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<RegistryUpdateApiDocumentVersionResponse>>
-
-        /** @see updateApiDocumentVersion */
-        fun updateApiDocumentVersion(
             params: RegistryUpdateApiDocumentVersionParams
         ): CompletableFuture<HttpResponseFor<RegistryUpdateApiDocumentVersionResponse>> =
             updateApiDocumentVersion(params, RequestOptions.none())
+
+        /** @see updateApiDocumentVersion */
+        fun updateApiDocumentVersion(
+            params: RegistryUpdateApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RegistryUpdateApiDocumentVersionResponse>>
     }
 }

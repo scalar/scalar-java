@@ -37,14 +37,14 @@ interface VersionServiceAsync {
     ): CompletableFuture<Any?> = create(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see create */
+    fun create(params: VersionCreateParams): CompletableFuture<Any?> =
+        create(params, RequestOptions.none())
+
+    /** @see create */
     fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see create */
-    fun create(params: VersionCreateParams): CompletableFuture<Any?> =
-        create(params, RequestOptions.none())
 
     /** Permanently delete one version of an SDK. */
     fun delete(version: String, params: VersionDeleteParams): CompletableFuture<Any?> =
@@ -58,14 +58,14 @@ interface VersionServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().version(version).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: VersionDeleteParams): CompletableFuture<Any?> =
+        delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: VersionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see delete */
-    fun delete(params: VersionDeleteParams): CompletableFuture<Any?> =
-        delete(params, RequestOptions.none())
 
     /**
      * A view of [VersionServiceAsync] that provides access to raw HTTP responses for each method.
@@ -99,14 +99,14 @@ interface VersionServiceAsync {
             create(params.toBuilder().uid(uid).build(), requestOptions)
 
         /** @see create */
+        fun create(params: VersionCreateParams): CompletableFuture<HttpResponseFor<Any?>> =
+            create(params, RequestOptions.none())
+
+        /** @see create */
         fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see create */
-        fun create(params: VersionCreateParams): CompletableFuture<HttpResponseFor<Any?>> =
-            create(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/sdks/{uid}/versions/{version}`, but is
@@ -126,13 +126,13 @@ interface VersionServiceAsync {
             delete(params.toBuilder().version(version).build(), requestOptions)
 
         /** @see delete */
+        fun delete(params: VersionDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
         fun delete(
             params: VersionDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see delete */
-        fun delete(params: VersionDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(params, RequestOptions.none())
     }
 }

@@ -62,8 +62,10 @@ interface SdkServiceAsync {
     ): CompletableFuture<Sdk> = retrieve(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(uid: String, params: SdkRetrieveParams): CompletableFuture<Sdk> =
-        retrieve(uid, params, RequestOptions.none())
+    fun retrieve(
+        uid: String,
+        params: SdkRetrieveParams = SdkRetrieveParams.none(),
+    ): CompletableFuture<Sdk> = retrieve(uid, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
@@ -90,8 +92,10 @@ interface SdkServiceAsync {
     ): CompletableFuture<Any?> = update(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see update */
-    fun update(uid: String, params: SdkUpdateParams): CompletableFuture<Any?> =
-        update(uid, params, RequestOptions.none())
+    fun update(
+        uid: String,
+        params: SdkUpdateParams = SdkUpdateParams.none(),
+    ): CompletableFuture<Any?> = update(uid, params, RequestOptions.none())
 
     /** @see update */
     fun update(
@@ -117,7 +121,7 @@ interface SdkServiceAsync {
     ): CompletableFuture<SdkListResponse>
 
     /** @see list */
-    fun list(params: SdkListParams): CompletableFuture<SdkListResponse> =
+    fun list(params: SdkListParams = SdkListParams.none()): CompletableFuture<SdkListResponse> =
         list(params, RequestOptions.none())
 
     /** @see list */
@@ -135,8 +139,10 @@ interface SdkServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see delete */
-    fun delete(uid: String, params: SdkDeleteParams): CompletableFuture<Any?> =
-        delete(uid, params, RequestOptions.none())
+    fun delete(
+        uid: String,
+        params: SdkDeleteParams = SdkDeleteParams.none(),
+    ): CompletableFuture<Any?> = delete(uid, params, RequestOptions.none())
 
     /** @see delete */
     fun delete(
@@ -167,8 +173,10 @@ interface SdkServiceAsync {
         build(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see build */
-    fun build(uid: String, params: SdkBuildParams): CompletableFuture<SdkBuildResponse> =
-        build(uid, params, RequestOptions.none())
+    fun build(
+        uid: String,
+        params: SdkBuildParams = SdkBuildParams.none(),
+    ): CompletableFuture<SdkBuildResponse> = build(uid, params, RequestOptions.none())
 
     /** @see build */
     fun build(
@@ -231,7 +239,7 @@ interface SdkServiceAsync {
         /** @see retrieve */
         fun retrieve(
             uid: String,
-            params: SdkRetrieveParams,
+            params: SdkRetrieveParams = SdkRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<Sdk>> = retrieve(uid, params, RequestOptions.none())
 
         /** @see retrieve */
@@ -267,8 +275,10 @@ interface SdkServiceAsync {
             update(params.toBuilder().uid(uid).build(), requestOptions)
 
         /** @see update */
-        fun update(uid: String, params: SdkUpdateParams): CompletableFuture<HttpResponseFor<Any?>> =
-            update(uid, params, RequestOptions.none())
+        fun update(
+            uid: String,
+            params: SdkUpdateParams = SdkUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>> = update(uid, params, RequestOptions.none())
 
         /** @see update */
         fun update(
@@ -300,8 +310,9 @@ interface SdkServiceAsync {
         ): CompletableFuture<HttpResponseFor<SdkListResponse>>
 
         /** @see list */
-        fun list(params: SdkListParams): CompletableFuture<HttpResponseFor<SdkListResponse>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: SdkListParams = SdkListParams.none()
+        ): CompletableFuture<HttpResponseFor<SdkListResponse>> = list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
@@ -325,8 +336,10 @@ interface SdkServiceAsync {
             delete(params.toBuilder().uid(uid).build(), requestOptions)
 
         /** @see delete */
-        fun delete(uid: String, params: SdkDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(uid, params, RequestOptions.none())
+        fun delete(
+            uid: String,
+            params: SdkDeleteParams = SdkDeleteParams.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>> = delete(uid, params, RequestOptions.none())
 
         /** @see delete */
         fun delete(
@@ -363,7 +376,7 @@ interface SdkServiceAsync {
         /** @see build */
         fun build(
             uid: String,
-            params: SdkBuildParams,
+            params: SdkBuildParams = SdkBuildParams.none(),
         ): CompletableFuture<HttpResponseFor<SdkBuildResponse>> =
             build(uid, params, RequestOptions.none())
 

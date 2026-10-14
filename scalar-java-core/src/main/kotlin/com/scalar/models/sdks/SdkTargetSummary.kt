@@ -17,6 +17,7 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("language", "slug")
 class SdkTargetSummary
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -75,7 +76,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [SdkTargetSummary].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .language()
          * .slug()
          * ```
@@ -143,7 +144,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .language()
          * .slug()
          * ```

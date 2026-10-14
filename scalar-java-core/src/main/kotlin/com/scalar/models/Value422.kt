@@ -15,25 +15,20 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("code", "message")
 class Value422
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val message: JsonField<String>,
     private val code: JsonField<String>,
+    private val message: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
         @JsonProperty("code") @ExcludeMissing code: JsonField<String> = JsonMissing.of(),
-    ) : this(message, code, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun message(): String = message.getRequired("message")
+        @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
+    ) : this(code, message, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -42,11 +37,10 @@ private constructor(
     fun code(): String = code.getRequired("code")
 
     /**
-     * Returns the raw JSON value of [message].
-     *
-     * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
+    fun message(): String = message.getRequired("message")
 
     /**
      * Returns the raw JSON value of [code].
@@ -54,6 +48,13 @@ private constructor(
      * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
+
+    /**
+     * Returns the raw JSON value of [message].
+     *
+     * Unlike [message], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("message") @ExcludeMissing fun _message(): JsonField<String> = message
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -73,9 +74,9 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [Value422].
          *
          * The following fields are required:
-         * ```kotlin
-         * .message()
+         * ```java
          * .code()
+         * .message()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -84,26 +85,16 @@ private constructor(
     /** A builder for [Value422]. */
     class Builder internal constructor() {
 
-        private var message: JsonField<String>? = null
         private var code: JsonField<String>? = null
+        private var message: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(value422: Value422) = apply {
-            message = value422.message
             code = value422.code
+            message = value422.message
             additionalProperties = value422.additionalProperties.toMutableMap()
         }
-
-        fun message(message: String) = message(JsonField.of(message))
-
-        /**
-         * Sets [Builder.message] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.message] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun message(message: JsonField<String>) = apply { this.message = message }
 
         fun code(code: String) = code(JsonField.of(code))
 
@@ -114,6 +105,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun code(code: JsonField<String>) = apply { this.code = code }
+
+        fun message(message: String) = message(JsonField.of(message))
+
+        /**
+         * Sets [Builder.message] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.message] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun message(message: JsonField<String>) = apply { this.message = message }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -140,17 +141,17 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .message()
+         * ```java
          * .code()
+         * .message()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): Value422 =
             Value422(
-                checkRequired("message", message),
                 checkRequired("code", code),
+                checkRequired("message", message),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -170,8 +171,8 @@ private constructor(
             return@apply
         }
 
-        message()
         code()
+        message()
         validated = true
     }
 
@@ -190,7 +191,7 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (message.asKnown().isPresent) 1 else 0) + (if (code.asKnown().isPresent) 1 else 0)
+        (if (code.asKnown().isPresent) 1 else 0) + (if (message.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -198,15 +199,15 @@ private constructor(
         }
 
         return other is Value422 &&
-            message == other.message &&
             code == other.code &&
+            message == other.message &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(message, code, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(code, message, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Value422{message=$message, code=$code, additionalProperties=$additionalProperties}"
+        "Value422{code=$code, message=$message, additionalProperties=$additionalProperties}"
 }

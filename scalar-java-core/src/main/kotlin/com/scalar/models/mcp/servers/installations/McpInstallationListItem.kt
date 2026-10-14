@@ -17,31 +17,38 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("id", "mcpVersion", "name", "slug")
 class McpInstallationListItem
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
+    private val mcpVersion: JsonField<String>,
     private val name: JsonField<String>,
     private val slug: JsonField<String>,
-    private val mcpVersion: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
         @JsonProperty("mcpVersion")
         @ExcludeMissing
         mcpVersion: JsonField<String> = JsonMissing.of(),
-    ) : this(id, name, slug, mcpVersion, mutableMapOf())
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+    ) : this(id, mcpVersion, name, slug, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun id(): String = id.getRequired("id")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun mcpVersion(): Optional<String> = mcpVersion.getOptional("mcpVersion")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -56,17 +63,18 @@ private constructor(
     fun slug(): String = slug.getRequired("slug")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun mcpVersion(): Optional<String> = mcpVersion.getOptional("mcpVersion")
-
-    /**
      * Returns the raw JSON value of [id].
      *
      * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+    /**
+     * Returns the raw JSON value of [mcpVersion].
+     *
+     * Unlike [mcpVersion], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("mcpVersion") @ExcludeMissing fun _mcpVersion(): JsonField<String> = mcpVersion
 
     /**
      * Returns the raw JSON value of [name].
@@ -81,13 +89,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-    /**
-     * Returns the raw JSON value of [mcpVersion].
-     *
-     * Unlike [mcpVersion], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("mcpVersion") @ExcludeMissing fun _mcpVersion(): JsonField<String> = mcpVersion
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -107,11 +108,11 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [McpInstallationListItem].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .id()
+         * .mcpVersion()
          * .name()
          * .slug()
-         * .mcpVersion()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -121,17 +122,17 @@ private constructor(
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
+        private var mcpVersion: JsonField<String>? = null
         private var name: JsonField<String>? = null
         private var slug: JsonField<String>? = null
-        private var mcpVersion: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(mcpInstallationListItem: McpInstallationListItem) = apply {
             id = mcpInstallationListItem.id
+            mcpVersion = mcpInstallationListItem.mcpVersion
             name = mcpInstallationListItem.name
             slug = mcpInstallationListItem.slug
-            mcpVersion = mcpInstallationListItem.mcpVersion
             additionalProperties = mcpInstallationListItem.additionalProperties.toMutableMap()
         }
 
@@ -144,6 +145,20 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun id(id: JsonField<String>) = apply { this.id = id }
+
+        fun mcpVersion(mcpVersion: String?) = mcpVersion(JsonField.ofNullable(mcpVersion))
+
+        /** Alias for calling [Builder.mcpVersion] with `mcpVersion.orElse(null)`. */
+        fun mcpVersion(mcpVersion: Optional<String>) = mcpVersion(mcpVersion.getOrNull())
+
+        /**
+         * Sets [Builder.mcpVersion] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.mcpVersion] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun mcpVersion(mcpVersion: JsonField<String>) = apply { this.mcpVersion = mcpVersion }
 
         fun name(name: String) = name(JsonField.of(name))
 
@@ -164,20 +179,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-        fun mcpVersion(mcpVersion: String?) = mcpVersion(JsonField.ofNullable(mcpVersion))
-
-        /** Alias for calling [Builder.mcpVersion] with `mcpVersion.orElse(null)`. */
-        fun mcpVersion(mcpVersion: Optional<String>) = mcpVersion(mcpVersion.getOrNull())
-
-        /**
-         * Sets [Builder.mcpVersion] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.mcpVersion] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun mcpVersion(mcpVersion: JsonField<String>) = apply { this.mcpVersion = mcpVersion }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -204,11 +205,11 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .id()
+         * .mcpVersion()
          * .name()
          * .slug()
-         * .mcpVersion()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -216,9 +217,9 @@ private constructor(
         fun build(): McpInstallationListItem =
             McpInstallationListItem(
                 checkRequired("id", id),
+                checkRequired("mcpVersion", mcpVersion),
                 checkRequired("name", name),
                 checkRequired("slug", slug),
-                checkRequired("mcpVersion", mcpVersion),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -239,9 +240,9 @@ private constructor(
         }
 
         id()
+        mcpVersion()
         name()
         slug()
-        mcpVersion()
         validated = true
     }
 
@@ -261,9 +262,9 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (id.asKnown().isPresent) 1 else 0) +
+            (if (mcpVersion.asKnown().isPresent) 1 else 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
-            (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (mcpVersion.asKnown().isPresent) 1 else 0)
+            (if (slug.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -272,18 +273,18 @@ private constructor(
 
         return other is McpInstallationListItem &&
             id == other.id &&
+            mcpVersion == other.mcpVersion &&
             name == other.name &&
             slug == other.slug &&
-            mcpVersion == other.mcpVersion &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(id, name, slug, mcpVersion, additionalProperties)
+        Objects.hash(id, mcpVersion, name, slug, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "McpInstallationListItem{id=$id, name=$name, slug=$slug, mcpVersion=$mcpVersion, additionalProperties=$additionalProperties}"
+        "McpInstallationListItem{id=$id, mcpVersion=$mcpVersion, name=$name, slug=$slug, additionalProperties=$additionalProperties}"
 }

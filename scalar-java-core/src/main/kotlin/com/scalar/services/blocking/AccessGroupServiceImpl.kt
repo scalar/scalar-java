@@ -16,14 +16,14 @@ import com.scalar.core.http.HttpResponseFor
 import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepare
-import com.scalar.models.accessGroups.AccessGroupCreateParams
-import com.scalar.models.accessGroups.AccessGroupCreateResponse
-import com.scalar.models.accessGroups.AccessGroupDeleteParams
-import com.scalar.models.accessGroups.AccessGroupRetrieveParams
-import com.scalar.models.accessGroups.AccessGroupRetrieveResponse
-import com.scalar.models.accessGroups.AccessGroupUpdateParams
-import com.scalar.services.blocking.accessGroups.DomainService
-import com.scalar.services.blocking.accessGroups.DomainServiceImpl
+import com.scalar.models.accessgroups.AccessGroupCreateParams
+import com.scalar.models.accessgroups.AccessGroupCreateResponse
+import com.scalar.models.accessgroups.AccessGroupDeleteParams
+import com.scalar.models.accessgroups.AccessGroupRetrieveParams
+import com.scalar.models.accessgroups.AccessGroupRetrieveResponse
+import com.scalar.models.accessgroups.AccessGroupUpdateParams
+import com.scalar.services.blocking.accessgroups.DomainService
+import com.scalar.services.blocking.accessgroups.DomainServiceImpl
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 

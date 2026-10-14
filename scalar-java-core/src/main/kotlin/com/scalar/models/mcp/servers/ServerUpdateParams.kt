@@ -34,13 +34,13 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun name(): Optional<String> = body.name()
+    fun docsPages(): Optional<List<String>> = body.docsPages()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun slug(): Optional<String> = body.slug()
+    fun name(): Optional<String> = body.name()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -52,9 +52,16 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun docsPages(): Optional<List<String>> = body.docsPages()
+    fun slug(): Optional<String> = body.slug()
 
     fun id(): Optional<String> = Optional.ofNullable(id)
+
+    /**
+     * Returns the raw JSON value of [docsPages].
+     *
+     * Unlike [docsPages], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _docsPages(): JsonField<List<String>> = body._docsPages()
 
     /**
      * Returns the raw JSON value of [name].
@@ -64,13 +71,6 @@ private constructor(
     fun _name(): JsonField<String> = body._name()
 
     /**
-     * Returns the raw JSON value of [slug].
-     *
-     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _slug(): JsonField<String> = body._slug()
-
-    /**
      * Returns the raw JSON value of [operations].
      *
      * Unlike [operations], this method doesn't throw if the JSON field has an unexpected type.
@@ -78,11 +78,11 @@ private constructor(
     fun _operations(): JsonField<List<String>> = body._operations()
 
     /**
-     * Returns the raw JSON value of [docsPages].
+     * Returns the raw JSON value of [slug].
      *
-     * Unlike [docsPages], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _docsPages(): JsonField<List<String>> = body._docsPages()
+    fun _slug(): JsonField<String> = body._slug()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -128,12 +128,30 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [name]
-         * - [slug]
-         * - [operations]
          * - [docsPages]
+         * - [name]
+         * - [operations]
+         * - [slug]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        fun docsPages(docsPages: List<String>) = apply { body.docsPages(docsPages) }
+
+        /**
+         * Sets [Builder.docsPages] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.docsPages] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun docsPages(docsPages: JsonField<List<String>>) = apply { body.docsPages(docsPages) }
+
+        /**
+         * Adds a single [String] to [docsPages].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addDocsPage(docsPage: String) = apply { body.addDocsPage(docsPage) }
 
         fun name(name: String) = apply { body.name(name) }
 
@@ -144,16 +162,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun name(name: JsonField<String>) = apply { body.name(name) }
-
-        fun slug(slug: String) = apply { body.slug(slug) }
-
-        /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
 
         fun operations(operations: List<String>) = apply { body.operations(operations) }
 
@@ -173,23 +181,15 @@ private constructor(
          */
         fun addOperation(operation: String) = apply { body.addOperation(operation) }
 
-        fun docsPages(docsPages: List<String>) = apply { body.docsPages(docsPages) }
+        fun slug(slug: String) = apply { body.slug(slug) }
 
         /**
-         * Sets [Builder.docsPages] to an arbitrary JSON value.
+         * Sets [Builder.slug] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.docsPages] with a well-typed `List<String>` value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun docsPages(docsPages: JsonField<List<String>>) = apply { body.docsPages(docsPages) }
-
-        /**
-         * Adds a single [String] to [docsPages].
-         *
-         * @throws IllegalStateException if the field was previously set to a non-list.
-         */
-        fun addDocsPage(docsPage: String) = apply { body.addDocsPage(docsPage) }
+        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -334,27 +334,34 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("docsPages", "name", "operations", "slug")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val name: JsonField<String>,
-        private val slug: JsonField<String>,
-        private val operations: JsonField<List<String>>,
         private val docsPages: JsonField<List<String>>,
+        private val name: JsonField<String>,
+        private val operations: JsonField<List<String>>,
+        private val slug: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("operations")
-            @ExcludeMissing
-            operations: JsonField<List<String>> = JsonMissing.of(),
             @JsonProperty("docsPages")
             @ExcludeMissing
             docsPages: JsonField<List<String>> = JsonMissing.of(),
-        ) : this(name, slug, operations, docsPages, mutableMapOf())
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("operations")
+            @ExcludeMissing
+            operations: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+        ) : this(docsPages, name, operations, slug, mutableMapOf())
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun docsPages(): Optional<List<String>> = docsPages.getOptional("docsPages")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -366,19 +373,22 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun slug(): Optional<String> = slug.getOptional("slug")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
         fun operations(): Optional<List<String>> = operations.getOptional("operations")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun docsPages(): Optional<List<String>> = docsPages.getOptional("docsPages")
+        fun slug(): Optional<String> = slug.getOptional("slug")
+
+        /**
+         * Returns the raw JSON value of [docsPages].
+         *
+         * Unlike [docsPages], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("docsPages")
+        @ExcludeMissing
+        fun _docsPages(): JsonField<List<String>> = docsPages
 
         /**
          * Returns the raw JSON value of [name].
@@ -386,13 +396,6 @@ private constructor(
          * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
-
-        /**
-         * Returns the raw JSON value of [slug].
-         *
-         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
         /**
          * Returns the raw JSON value of [operations].
@@ -404,13 +407,11 @@ private constructor(
         fun _operations(): JsonField<List<String>> = operations
 
         /**
-         * Returns the raw JSON value of [docsPages].
+         * Returns the raw JSON value of [slug].
          *
-         * Unlike [docsPages], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("docsPages")
-        @ExcludeMissing
-        fun _docsPages(): JsonField<List<String>> = docsPages
+        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -433,66 +434,19 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var name: JsonField<String> = JsonMissing.of()
-            private var slug: JsonField<String> = JsonMissing.of()
-            private var operations: JsonField<MutableList<String>>? = null
             private var docsPages: JsonField<MutableList<String>>? = null
+            private var name: JsonField<String> = JsonMissing.of()
+            private var operations: JsonField<MutableList<String>>? = null
+            private var slug: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                name = body.name
-                slug = body.slug
-                operations = body.operations.map { it.toMutableList() }
                 docsPages = body.docsPages.map { it.toMutableList() }
+                name = body.name
+                operations = body.operations.map { it.toMutableList() }
+                slug = body.slug
                 additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            fun name(name: String) = name(JsonField.of(name))
-
-            /**
-             * Sets [Builder.name] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.name] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun name(name: JsonField<String>) = apply { this.name = name }
-
-            fun slug(slug: String) = slug(JsonField.of(slug))
-
-            /**
-             * Sets [Builder.slug] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-            fun operations(operations: List<String>) = operations(JsonField.of(operations))
-
-            /**
-             * Sets [Builder.operations] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.operations] with a well-typed `List<String>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun operations(operations: JsonField<List<String>>) = apply {
-                this.operations = operations.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [String] to [operations].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addOperation(operation: String) = apply {
-                operations =
-                    (operations ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("operations", it).add(operation)
-                    }
             }
 
             fun docsPages(docsPages: List<String>) = docsPages(JsonField.of(docsPages))
@@ -520,6 +474,53 @@ private constructor(
                     }
             }
 
+            fun name(name: String) = name(JsonField.of(name))
+
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            fun operations(operations: List<String>) = operations(JsonField.of(operations))
+
+            /**
+             * Sets [Builder.operations] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.operations] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun operations(operations: JsonField<List<String>>) = apply {
+                this.operations = operations.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [operations].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addOperation(operation: String) = apply {
+                operations =
+                    (operations ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("operations", it).add(operation)
+                    }
+            }
+
+            fun slug(slug: String) = slug(JsonField.of(slug))
+
+            /**
+             * Sets [Builder.slug] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -546,10 +547,10 @@ private constructor(
              */
             fun build(): Body =
                 Body(
-                    name,
-                    slug,
-                    (operations ?: JsonMissing.of()).map { it.toImmutable() },
                     (docsPages ?: JsonMissing.of()).map { it.toImmutable() },
+                    name,
+                    (operations ?: JsonMissing.of()).map { it.toImmutable() },
+                    slug,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -570,10 +571,10 @@ private constructor(
                 return@apply
             }
 
-            name()
-            slug()
-            operations()
             docsPages()
+            name()
+            operations()
+            slug()
             validated = true
         }
 
@@ -593,10 +594,10 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (name.asKnown().isPresent) 1 else 0) +
-                (if (slug.asKnown().isPresent) 1 else 0) +
+            (docsPages.asKnown().getOrNull()?.size ?: 0) +
+                (if (name.asKnown().isPresent) 1 else 0) +
                 (operations.asKnown().getOrNull()?.size ?: 0) +
-                (docsPages.asKnown().getOrNull()?.size ?: 0)
+                (if (slug.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -604,21 +605,21 @@ private constructor(
             }
 
             return other is Body &&
-                name == other.name &&
-                slug == other.slug &&
-                operations == other.operations &&
                 docsPages == other.docsPages &&
+                name == other.name &&
+                operations == other.operations &&
+                slug == other.slug &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(name, slug, operations, docsPages, additionalProperties)
+            Objects.hash(docsPages, name, operations, slug, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, slug=$slug, operations=$operations, docsPages=$docsPages, additionalProperties=$additionalProperties}"
+            "Body{docsPages=$docsPages, name=$name, operations=$operations, slug=$slug, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

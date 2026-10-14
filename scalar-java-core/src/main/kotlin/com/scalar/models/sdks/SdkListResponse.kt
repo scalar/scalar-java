@@ -18,6 +18,7 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("data", "hasMore")
 class SdkListResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -76,7 +77,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [SdkListResponse].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .data()
          * .hasMore()
          * ```
@@ -155,7 +156,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .data()
          * .hasMore()
          * ```

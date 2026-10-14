@@ -41,13 +41,13 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun authMethod(): Optional<AuthMethod> = body.authMethod()
+    fun access(): Optional<Access> = body.access()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun access(): Optional<Access> = body.access()
+    fun authMethod(): Optional<AuthMethod> = body.authMethod()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -67,18 +67,18 @@ private constructor(
     fun _publishOnMerge(): JsonField<Boolean> = body._publishOnMerge()
 
     /**
-     * Returns the raw JSON value of [authMethod].
-     *
-     * Unlike [authMethod], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _authMethod(): JsonField<AuthMethod> = body._authMethod()
-
-    /**
      * Returns the raw JSON value of [access].
      *
      * Unlike [access], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _access(): JsonField<Access> = body._access()
+
+    /**
+     * Returns the raw JSON value of [authMethod].
+     *
+     * Unlike [authMethod], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _authMethod(): JsonField<AuthMethod> = body._authMethod()
 
     /**
      * Returns the raw JSON value of [tag].
@@ -104,7 +104,7 @@ private constructor(
          * [RepositoryUpdatePublishingParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .uid()
          * .publishOnMerge()
          * ```
@@ -145,8 +145,8 @@ private constructor(
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [publishOnMerge]
-         * - [authMethod]
          * - [access]
+         * - [authMethod]
          * - [tag]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -164,6 +164,16 @@ private constructor(
             body.publishOnMerge(publishOnMerge)
         }
 
+        fun access(access: Access) = apply { body.access(access) }
+
+        /**
+         * Sets [Builder.access] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.access] with a well-typed [Access] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun access(access: JsonField<Access>) = apply { body.access(access) }
+
         fun authMethod(authMethod: AuthMethod) = apply { body.authMethod(authMethod) }
 
         /**
@@ -174,16 +184,6 @@ private constructor(
          * supported value.
          */
         fun authMethod(authMethod: JsonField<AuthMethod>) = apply { body.authMethod(authMethod) }
-
-        fun access(access: Access) = apply { body.access(access) }
-
-        /**
-         * Sets [Builder.access] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.access] with a well-typed [Access] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun access(access: JsonField<Access>) = apply { body.access(access) }
 
         fun tag(tag: String) = apply { body.tag(tag) }
 
@@ -318,7 +318,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .uid()
          * .publishOnMerge()
          * ```
@@ -348,12 +348,18 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "publishOnMerge",
+        "access",
+        "authMethod",
+        "tag",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val publishOnMerge: JsonField<Boolean>,
-        private val authMethod: JsonField<AuthMethod>,
         private val access: JsonField<Access>,
+        private val authMethod: JsonField<AuthMethod>,
         private val tag: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -363,12 +369,12 @@ private constructor(
             @JsonProperty("publishOnMerge")
             @ExcludeMissing
             publishOnMerge: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("access") @ExcludeMissing access: JsonField<Access> = JsonMissing.of(),
             @JsonProperty("authMethod")
             @ExcludeMissing
             authMethod: JsonField<AuthMethod> = JsonMissing.of(),
-            @JsonProperty("access") @ExcludeMissing access: JsonField<Access> = JsonMissing.of(),
             @JsonProperty("tag") @ExcludeMissing tag: JsonField<String> = JsonMissing.of(),
-        ) : this(publishOnMerge, authMethod, access, tag, mutableMapOf())
+        ) : this(publishOnMerge, access, authMethod, tag, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -380,13 +386,13 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun authMethod(): Optional<AuthMethod> = authMethod.getOptional("authMethod")
+        fun access(): Optional<Access> = access.getOptional("access")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun access(): Optional<Access> = access.getOptional("access")
+        fun authMethod(): Optional<AuthMethod> = authMethod.getOptional("authMethod")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -405,6 +411,13 @@ private constructor(
         fun _publishOnMerge(): JsonField<Boolean> = publishOnMerge
 
         /**
+         * Returns the raw JSON value of [access].
+         *
+         * Unlike [access], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("access") @ExcludeMissing fun _access(): JsonField<Access> = access
+
+        /**
          * Returns the raw JSON value of [authMethod].
          *
          * Unlike [authMethod], this method doesn't throw if the JSON field has an unexpected type.
@@ -412,13 +425,6 @@ private constructor(
         @JsonProperty("authMethod")
         @ExcludeMissing
         fun _authMethod(): JsonField<AuthMethod> = authMethod
-
-        /**
-         * Returns the raw JSON value of [access].
-         *
-         * Unlike [access], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("access") @ExcludeMissing fun _access(): JsonField<Access> = access
 
         /**
          * Returns the raw JSON value of [tag].
@@ -445,7 +451,7 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .publishOnMerge()
              * ```
              */
@@ -456,16 +462,16 @@ private constructor(
         class Builder internal constructor() {
 
             private var publishOnMerge: JsonField<Boolean>? = null
-            private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
             private var access: JsonField<Access> = JsonMissing.of()
+            private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
             private var tag: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 publishOnMerge = body.publishOnMerge
-                authMethod = body.authMethod
                 access = body.access
+                authMethod = body.authMethod
                 tag = body.tag
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
@@ -484,6 +490,17 @@ private constructor(
                 this.publishOnMerge = publishOnMerge
             }
 
+            fun access(access: Access) = access(JsonField.of(access))
+
+            /**
+             * Sets [Builder.access] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.access] with a well-typed [Access] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun access(access: JsonField<Access>) = apply { this.access = access }
+
             fun authMethod(authMethod: AuthMethod) = authMethod(JsonField.of(authMethod))
 
             /**
@@ -496,17 +513,6 @@ private constructor(
             fun authMethod(authMethod: JsonField<AuthMethod>) = apply {
                 this.authMethod = authMethod
             }
-
-            fun access(access: Access) = access(JsonField.of(access))
-
-            /**
-             * Sets [Builder.access] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.access] with a well-typed [Access] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun access(access: JsonField<Access>) = apply { this.access = access }
 
             fun tag(tag: String) = tag(JsonField.of(tag))
 
@@ -544,7 +550,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .publishOnMerge()
              * ```
              *
@@ -553,8 +559,8 @@ private constructor(
             fun build(): Body =
                 Body(
                     checkRequired("publishOnMerge", publishOnMerge),
-                    authMethod,
                     access,
+                    authMethod,
                     tag,
                     additionalProperties.toMutableMap(),
                 )
@@ -577,8 +583,8 @@ private constructor(
             }
 
             publishOnMerge()
-            authMethod().ifPresent { it.validate() }
             access().ifPresent { it.validate() }
+            authMethod().ifPresent { it.validate() }
             tag()
             validated = true
         }
@@ -600,8 +606,8 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (publishOnMerge.asKnown().isPresent) 1 else 0) +
-                (authMethod.asKnown().getOrNull()?.validity() ?: 0) +
                 (access.asKnown().getOrNull()?.validity() ?: 0) +
+                (authMethod.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (tag.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
@@ -611,20 +617,20 @@ private constructor(
 
             return other is Body &&
                 publishOnMerge == other.publishOnMerge &&
-                authMethod == other.authMethod &&
                 access == other.access &&
+                authMethod == other.authMethod &&
                 tag == other.tag &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(publishOnMerge, authMethod, access, tag, additionalProperties)
+            Objects.hash(publishOnMerge, access, authMethod, tag, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{publishOnMerge=$publishOnMerge, authMethod=$authMethod, access=$access, tag=$tag, additionalProperties=$additionalProperties}"
+            "Body{publishOnMerge=$publishOnMerge, access=$access, authMethod=$authMethod, tag=$tag, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

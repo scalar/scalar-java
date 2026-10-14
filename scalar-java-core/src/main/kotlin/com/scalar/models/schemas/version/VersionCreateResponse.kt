@@ -15,6 +15,7 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("uid")
 class VersionCreateResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -58,7 +59,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [VersionCreateResponse].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .uid()
          * ```
          */
@@ -112,7 +113,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .uid()
          * ```
          *

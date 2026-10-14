@@ -6,29 +6,29 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.scalarDocs.DocsProject
-import com.scalar.models.scalarDocs.GithubProject
-import com.scalar.models.scalarDocs.ScalarDocCreateGuideParams
-import com.scalar.models.scalarDocs.ScalarDocCreateGuideResponse
-import com.scalar.models.scalarDocs.ScalarDocCreateProjectParams
-import com.scalar.models.scalarDocs.ScalarDocDeleteProjectParams
-import com.scalar.models.scalarDocs.ScalarDocListGuidesParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectConfigParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectConfigResponse
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainResponse
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusResponse
-import com.scalar.models.scalarDocs.ScalarDocListProjectsParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectsResponse
-import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams
-import com.scalar.models.scalarDocs.ScalarDocPublishGuideResponse
-import com.scalar.models.scalarDocs.ScalarDocPublishProjectParams
-import com.scalar.models.scalarDocs.ScalarDocPublishProjectResponse
-import com.scalar.models.scalarDocs.ScalarDocRetrieveProjectParams
-import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigParams
-import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigResponse
-import com.scalar.models.scalarDocs.ScalarDocUpdateProjectParams
+import com.scalar.models.scalardocs.DocsProject
+import com.scalar.models.scalardocs.GithubProject
+import com.scalar.models.scalardocs.ScalarDocCreateGuideParams
+import com.scalar.models.scalardocs.ScalarDocCreateGuideResponse
+import com.scalar.models.scalardocs.ScalarDocCreateProjectParams
+import com.scalar.models.scalardocs.ScalarDocDeleteProjectParams
+import com.scalar.models.scalardocs.ScalarDocListGuidesParams
+import com.scalar.models.scalardocs.ScalarDocListProjectConfigParams
+import com.scalar.models.scalardocs.ScalarDocListProjectConfigResponse
+import com.scalar.models.scalardocs.ScalarDocListProjectDomainParams
+import com.scalar.models.scalardocs.ScalarDocListProjectDomainResponse
+import com.scalar.models.scalardocs.ScalarDocListProjectDomainStatusParams
+import com.scalar.models.scalardocs.ScalarDocListProjectDomainStatusResponse
+import com.scalar.models.scalardocs.ScalarDocListProjectsParams
+import com.scalar.models.scalardocs.ScalarDocListProjectsResponse
+import com.scalar.models.scalardocs.ScalarDocPublishGuideParams
+import com.scalar.models.scalardocs.ScalarDocPublishGuideResponse
+import com.scalar.models.scalardocs.ScalarDocPublishProjectParams
+import com.scalar.models.scalardocs.ScalarDocPublishProjectResponse
+import com.scalar.models.scalardocs.ScalarDocRetrieveProjectParams
+import com.scalar.models.scalardocs.ScalarDocUpdateProjectConfigParams
+import com.scalar.models.scalardocs.ScalarDocUpdateProjectConfigResponse
+import com.scalar.models.scalardocs.ScalarDocUpdateProjectParams
 import java.util.function.Consumer
 
 /** Scalar Docs */
@@ -77,8 +77,10 @@ interface ScalarDocService {
     ): Any? = deleteProject(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see deleteProject */
-    fun deleteProject(slug: String, params: ScalarDocDeleteProjectParams): Any? =
-        deleteProject(slug, params, RequestOptions.none())
+    fun deleteProject(
+        slug: String,
+        params: ScalarDocDeleteProjectParams = ScalarDocDeleteProjectParams.none(),
+    ): Any? = deleteProject(slug, params, RequestOptions.none())
 
     /** @see deleteProject */
     fun deleteProject(
@@ -104,8 +106,9 @@ interface ScalarDocService {
     ): List<GithubProject>
 
     /** @see listGuides */
-    fun listGuides(params: ScalarDocListGuidesParams): List<GithubProject> =
-        listGuides(params, RequestOptions.none())
+    fun listGuides(
+        params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none()
+    ): List<GithubProject> = listGuides(params, RequestOptions.none())
 
     /** @see listGuides */
     fun listGuides(requestOptions: RequestOptions): List<GithubProject> =
@@ -129,7 +132,7 @@ interface ScalarDocService {
     /** @see listProjectConfig */
     fun listProjectConfig(
         slug: String,
-        params: ScalarDocListProjectConfigParams,
+        params: ScalarDocListProjectConfigParams = ScalarDocListProjectConfigParams.none(),
     ): ScalarDocListProjectConfigResponse = listProjectConfig(slug, params, RequestOptions.none())
 
     /** @see listProjectConfig */
@@ -165,7 +168,7 @@ interface ScalarDocService {
     /** @see listProjectDomain */
     fun listProjectDomain(
         slug: String,
-        params: ScalarDocListProjectDomainParams,
+        params: ScalarDocListProjectDomainParams = ScalarDocListProjectDomainParams.none(),
     ): ScalarDocListProjectDomainResponse = listProjectDomain(slug, params, RequestOptions.none())
 
     /** @see listProjectDomain */
@@ -206,7 +209,8 @@ interface ScalarDocService {
     /** @see listProjectDomainStatus */
     fun listProjectDomainStatus(
         slug: String,
-        params: ScalarDocListProjectDomainStatusParams,
+        params: ScalarDocListProjectDomainStatusParams =
+            ScalarDocListProjectDomainStatusParams.none(),
     ): ScalarDocListProjectDomainStatusResponse =
         listProjectDomainStatus(slug, params, RequestOptions.none())
 
@@ -240,8 +244,9 @@ interface ScalarDocService {
     ): ScalarDocListProjectsResponse
 
     /** @see listProjects */
-    fun listProjects(params: ScalarDocListProjectsParams): ScalarDocListProjectsResponse =
-        listProjects(params, RequestOptions.none())
+    fun listProjects(
+        params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none()
+    ): ScalarDocListProjectsResponse = listProjects(params, RequestOptions.none())
 
     /** @see listProjects */
     fun listProjects(requestOptions: RequestOptions): ScalarDocListProjectsResponse =
@@ -262,7 +267,7 @@ interface ScalarDocService {
     /** @see publishGuide */
     fun publishGuide(
         slug: String,
-        params: ScalarDocPublishGuideParams,
+        params: ScalarDocPublishGuideParams = ScalarDocPublishGuideParams.none(),
     ): ScalarDocPublishGuideResponse = publishGuide(slug, params, RequestOptions.none())
 
     /** @see publishGuide */
@@ -294,7 +299,7 @@ interface ScalarDocService {
     /** @see publishProject */
     fun publishProject(
         slug: String,
-        params: ScalarDocPublishProjectParams,
+        params: ScalarDocPublishProjectParams = ScalarDocPublishProjectParams.none(),
     ): ScalarDocPublishProjectResponse = publishProject(slug, params, RequestOptions.none())
 
     /** @see publishProject */
@@ -326,8 +331,10 @@ interface ScalarDocService {
     ): DocsProject = retrieveProject(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see retrieveProject */
-    fun retrieveProject(slug: String, params: ScalarDocRetrieveProjectParams): DocsProject =
-        retrieveProject(slug, params, RequestOptions.none())
+    fun retrieveProject(
+        slug: String,
+        params: ScalarDocRetrieveProjectParams = ScalarDocRetrieveProjectParams.none(),
+    ): DocsProject = retrieveProject(slug, params, RequestOptions.none())
 
     /** @see retrieveProject */
     fun retrieveProject(
@@ -356,8 +363,10 @@ interface ScalarDocService {
     ): Any? = updateProject(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see updateProject */
-    fun updateProject(slug: String, params: ScalarDocUpdateProjectParams): Any? =
-        updateProject(slug, params, RequestOptions.none())
+    fun updateProject(
+        slug: String,
+        params: ScalarDocUpdateProjectParams = ScalarDocUpdateProjectParams.none(),
+    ): Any? = updateProject(slug, params, RequestOptions.none())
 
     /** @see updateProject */
     fun updateProject(
@@ -393,14 +402,14 @@ interface ScalarDocService {
 
     /** @see updateProjectConfig */
     fun updateProjectConfig(
-        params: ScalarDocUpdateProjectConfigParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): ScalarDocUpdateProjectConfigResponse
+        params: ScalarDocUpdateProjectConfigParams
+    ): ScalarDocUpdateProjectConfigResponse = updateProjectConfig(params, RequestOptions.none())
 
     /** @see updateProjectConfig */
     fun updateProjectConfig(
-        params: ScalarDocUpdateProjectConfigParams
-    ): ScalarDocUpdateProjectConfigResponse = updateProjectConfig(params, RequestOptions.none())
+        params: ScalarDocUpdateProjectConfigParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ScalarDocUpdateProjectConfigResponse
 
     /** A view of [ScalarDocService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -465,7 +474,7 @@ interface ScalarDocService {
         @MustBeClosed
         fun deleteProject(
             slug: String,
-            params: ScalarDocDeleteProjectParams,
+            params: ScalarDocDeleteProjectParams = ScalarDocDeleteProjectParams.none(),
         ): HttpResponseFor<Any?> = deleteProject(slug, params, RequestOptions.none())
 
         /** @see deleteProject */
@@ -502,8 +511,9 @@ interface ScalarDocService {
 
         /** @see listGuides */
         @MustBeClosed
-        fun listGuides(params: ScalarDocListGuidesParams): HttpResponseFor<List<GithubProject>> =
-            listGuides(params, RequestOptions.none())
+        fun listGuides(
+            params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none()
+        ): HttpResponseFor<List<GithubProject>> = listGuides(params, RequestOptions.none())
 
         /** @see listGuides */
         @MustBeClosed
@@ -531,7 +541,7 @@ interface ScalarDocService {
         @MustBeClosed
         fun listProjectConfig(
             slug: String,
-            params: ScalarDocListProjectConfigParams,
+            params: ScalarDocListProjectConfigParams = ScalarDocListProjectConfigParams.none(),
         ): HttpResponseFor<ScalarDocListProjectConfigResponse> =
             listProjectConfig(slug, params, RequestOptions.none())
 
@@ -578,7 +588,7 @@ interface ScalarDocService {
         @MustBeClosed
         fun listProjectDomain(
             slug: String,
-            params: ScalarDocListProjectDomainParams,
+            params: ScalarDocListProjectDomainParams = ScalarDocListProjectDomainParams.none(),
         ): HttpResponseFor<ScalarDocListProjectDomainResponse> =
             listProjectDomain(slug, params, RequestOptions.none())
 
@@ -628,7 +638,8 @@ interface ScalarDocService {
         @MustBeClosed
         fun listProjectDomainStatus(
             slug: String,
-            params: ScalarDocListProjectDomainStatusParams,
+            params: ScalarDocListProjectDomainStatusParams =
+                ScalarDocListProjectDomainStatusParams.none(),
         ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
             listProjectDomainStatus(slug, params, RequestOptions.none())
 
@@ -676,7 +687,7 @@ interface ScalarDocService {
         /** @see listProjects */
         @MustBeClosed
         fun listProjects(
-            params: ScalarDocListProjectsParams
+            params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none()
         ): HttpResponseFor<ScalarDocListProjectsResponse> =
             listProjects(params, RequestOptions.none())
 
@@ -708,7 +719,7 @@ interface ScalarDocService {
         @MustBeClosed
         fun publishGuide(
             slug: String,
-            params: ScalarDocPublishGuideParams,
+            params: ScalarDocPublishGuideParams = ScalarDocPublishGuideParams.none(),
         ): HttpResponseFor<ScalarDocPublishGuideResponse> =
             publishGuide(slug, params, RequestOptions.none())
 
@@ -755,7 +766,7 @@ interface ScalarDocService {
         @MustBeClosed
         fun publishProject(
             slug: String,
-            params: ScalarDocPublishProjectParams,
+            params: ScalarDocPublishProjectParams = ScalarDocPublishProjectParams.none(),
         ): HttpResponseFor<ScalarDocPublishProjectResponse> =
             publishProject(slug, params, RequestOptions.none())
 
@@ -802,7 +813,7 @@ interface ScalarDocService {
         @MustBeClosed
         fun retrieveProject(
             slug: String,
-            params: ScalarDocRetrieveProjectParams,
+            params: ScalarDocRetrieveProjectParams = ScalarDocRetrieveProjectParams.none(),
         ): HttpResponseFor<DocsProject> = retrieveProject(slug, params, RequestOptions.none())
 
         /** @see retrieveProject */
@@ -846,7 +857,7 @@ interface ScalarDocService {
         @MustBeClosed
         fun updateProject(
             slug: String,
-            params: ScalarDocUpdateProjectParams,
+            params: ScalarDocUpdateProjectParams = ScalarDocUpdateProjectParams.none(),
         ): HttpResponseFor<Any?> = updateProject(slug, params, RequestOptions.none())
 
         /** @see updateProject */
@@ -889,15 +900,15 @@ interface ScalarDocService {
         /** @see updateProjectConfig */
         @MustBeClosed
         fun updateProjectConfig(
-            params: ScalarDocUpdateProjectConfigParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse>
+            params: ScalarDocUpdateProjectConfigParams
+        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse> =
+            updateProjectConfig(params, RequestOptions.none())
 
         /** @see updateProjectConfig */
         @MustBeClosed
         fun updateProjectConfig(
-            params: ScalarDocUpdateProjectConfigParams
-        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse> =
-            updateProjectConfig(params, RequestOptions.none())
+            params: ScalarDocUpdateProjectConfigParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse>
     }
 }

@@ -19,51 +19,61 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "activeTeamId",
+    "createdAt",
+    "email",
+    "hasGithub",
+    "teams",
+    "uid",
+    "updatedAt",
+    "theme",
+)
 class User
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
-    private val createdAt: JsonField<Long>,
-    private val updatedAt: JsonField<Long>,
-    private val email: JsonField<String>,
-    private val theme: JsonField<String>,
     private val activeTeamId: JsonField<String>,
+    private val createdAt: JsonField<Long>,
+    private val email: JsonField<String>,
     private val hasGithub: JsonField<Boolean>,
     private val teams: JsonField<List<TeamSummary>>,
+    private val uid: JsonField<String>,
+    private val updatedAt: JsonField<Long>,
+    private val theme: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("updatedAt") @ExcludeMissing updatedAt: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("email") @ExcludeMissing email: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("theme") @ExcludeMissing theme: JsonField<String> = JsonMissing.of(),
         @JsonProperty("activeTeamId")
         @ExcludeMissing
         activeTeamId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("email") @ExcludeMissing email: JsonField<String> = JsonMissing.of(),
         @JsonProperty("hasGithub") @ExcludeMissing hasGithub: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("teams")
         @ExcludeMissing
         teams: JsonField<List<TeamSummary>> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("updatedAt") @ExcludeMissing updatedAt: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("theme") @ExcludeMissing theme: JsonField<String> = JsonMissing.of(),
     ) : this(
-        uid,
-        createdAt,
-        updatedAt,
-        email,
-        theme,
         activeTeamId,
+        createdAt,
+        email,
         hasGithub,
         teams,
+        uid,
+        updatedAt,
+        theme,
         mutableMapOf(),
     )
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun uid(): String = uid.getRequired("uid")
+    fun activeTeamId(): Optional<String> = activeTeamId.getOptional("activeTeamId")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -75,25 +85,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun updatedAt(): Long = updatedAt.getRequired("updatedAt")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
     fun email(): String = email.getRequired("email")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun theme(): Optional<String> = theme.getOptional("theme")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun activeTeamId(): Optional<String> = activeTeamId.getOptional("activeTeamId")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -108,39 +100,22 @@ private constructor(
     fun teams(): List<TeamSummary> = teams.getRequired("teams")
 
     /**
-     * Returns the raw JSON value of [uid].
-     *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+    fun uid(): String = uid.getRequired("uid")
 
     /**
-     * Returns the raw JSON value of [createdAt].
-     *
-     * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<Long> = createdAt
+    fun updatedAt(): Long = updatedAt.getRequired("updatedAt")
 
     /**
-     * Returns the raw JSON value of [updatedAt].
-     *
-     * Unlike [updatedAt], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    @JsonProperty("updatedAt") @ExcludeMissing fun _updatedAt(): JsonField<Long> = updatedAt
-
-    /**
-     * Returns the raw JSON value of [email].
-     *
-     * Unlike [email], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("email") @ExcludeMissing fun _email(): JsonField<String> = email
-
-    /**
-     * Returns the raw JSON value of [theme].
-     *
-     * Unlike [theme], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("theme") @ExcludeMissing fun _theme(): JsonField<String> = theme
+    fun theme(): Optional<String> = theme.getOptional("theme")
 
     /**
      * Returns the raw JSON value of [activeTeamId].
@@ -150,6 +125,20 @@ private constructor(
     @JsonProperty("activeTeamId")
     @ExcludeMissing
     fun _activeTeamId(): JsonField<String> = activeTeamId
+
+    /**
+     * Returns the raw JSON value of [createdAt].
+     *
+     * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<Long> = createdAt
+
+    /**
+     * Returns the raw JSON value of [email].
+     *
+     * Unlike [email], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("email") @ExcludeMissing fun _email(): JsonField<String> = email
 
     /**
      * Returns the raw JSON value of [hasGithub].
@@ -164,6 +153,27 @@ private constructor(
      * Unlike [teams], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("teams") @ExcludeMissing fun _teams(): JsonField<List<TeamSummary>> = teams
+
+    /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+
+    /**
+     * Returns the raw JSON value of [updatedAt].
+     *
+     * Unlike [updatedAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("updatedAt") @ExcludeMissing fun _updatedAt(): JsonField<Long> = updatedAt
+
+    /**
+     * Returns the raw JSON value of [theme].
+     *
+     * Unlike [theme], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("theme") @ExcludeMissing fun _theme(): JsonField<String> = theme
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -183,14 +193,14 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [User].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .createdAt()
-         * .updatedAt()
-         * .email()
+         * ```java
          * .activeTeamId()
+         * .createdAt()
+         * .email()
          * .hasGithub()
          * .teams()
+         * .uid()
+         * .updatedAt()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -199,78 +209,28 @@ private constructor(
     /** A builder for [User]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
-        private var createdAt: JsonField<Long>? = null
-        private var updatedAt: JsonField<Long>? = null
-        private var email: JsonField<String>? = null
-        private var theme: JsonField<String> = JsonMissing.of()
         private var activeTeamId: JsonField<String>? = null
+        private var createdAt: JsonField<Long>? = null
+        private var email: JsonField<String>? = null
         private var hasGithub: JsonField<Boolean>? = null
         private var teams: JsonField<MutableList<TeamSummary>>? = null
+        private var uid: JsonField<String>? = null
+        private var updatedAt: JsonField<Long>? = null
+        private var theme: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(user: User) = apply {
-            uid = user.uid
-            createdAt = user.createdAt
-            updatedAt = user.updatedAt
-            email = user.email
-            theme = user.theme
             activeTeamId = user.activeTeamId
+            createdAt = user.createdAt
+            email = user.email
             hasGithub = user.hasGithub
             teams = user.teams.map { it.toMutableList() }
+            uid = user.uid
+            updatedAt = user.updatedAt
+            theme = user.theme
             additionalProperties = user.additionalProperties.toMutableMap()
         }
-
-        fun uid(uid: String) = uid(JsonField.of(uid))
-
-        /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
-
-        fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
-
-        /**
-         * Sets [Builder.createdAt] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.createdAt] with a well-typed [Long] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun createdAt(createdAt: JsonField<Long>) = apply { this.createdAt = createdAt }
-
-        fun updatedAt(updatedAt: Long) = updatedAt(JsonField.of(updatedAt))
-
-        /**
-         * Sets [Builder.updatedAt] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.updatedAt] with a well-typed [Long] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun updatedAt(updatedAt: JsonField<Long>) = apply { this.updatedAt = updatedAt }
-
-        fun email(email: String) = email(JsonField.of(email))
-
-        /**
-         * Sets [Builder.email] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.email] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun email(email: JsonField<String>) = apply { this.email = email }
-
-        fun theme(theme: String) = theme(JsonField.of(theme))
-
-        /**
-         * Sets [Builder.theme] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.theme] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun theme(theme: JsonField<String>) = apply { this.theme = theme }
 
         fun activeTeamId(activeTeamId: String?) = activeTeamId(JsonField.ofNullable(activeTeamId))
 
@@ -287,6 +247,26 @@ private constructor(
         fun activeTeamId(activeTeamId: JsonField<String>) = apply {
             this.activeTeamId = activeTeamId
         }
+
+        fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
+
+        /**
+         * Sets [Builder.createdAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.createdAt] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun createdAt(createdAt: JsonField<Long>) = apply { this.createdAt = createdAt }
+
+        fun email(email: String) = email(JsonField.of(email))
+
+        /**
+         * Sets [Builder.email] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.email] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun email(email: JsonField<String>) = apply { this.email = email }
 
         fun hasGithub(hasGithub: Boolean) = hasGithub(JsonField.of(hasGithub))
 
@@ -322,6 +302,36 @@ private constructor(
                 (teams ?: JsonField.of(mutableListOf())).also { checkKnown("teams", it).add(team) }
         }
 
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
+
+        fun updatedAt(updatedAt: Long) = updatedAt(JsonField.of(updatedAt))
+
+        /**
+         * Sets [Builder.updatedAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.updatedAt] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun updatedAt(updatedAt: JsonField<Long>) = apply { this.updatedAt = updatedAt }
+
+        fun theme(theme: String) = theme(JsonField.of(theme))
+
+        /**
+         * Sets [Builder.theme] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.theme] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun theme(theme: JsonField<String>) = apply { this.theme = theme }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -347,28 +357,28 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .createdAt()
-         * .updatedAt()
-         * .email()
+         * ```java
          * .activeTeamId()
+         * .createdAt()
+         * .email()
          * .hasGithub()
          * .teams()
+         * .uid()
+         * .updatedAt()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): User =
             User(
-                checkRequired("uid", uid),
-                checkRequired("createdAt", createdAt),
-                checkRequired("updatedAt", updatedAt),
-                checkRequired("email", email),
-                theme,
                 checkRequired("activeTeamId", activeTeamId),
+                checkRequired("createdAt", createdAt),
+                checkRequired("email", email),
                 checkRequired("hasGithub", hasGithub),
                 checkRequired("teams", teams).map { it.toImmutable() },
+                checkRequired("uid", uid),
+                checkRequired("updatedAt", updatedAt),
+                theme,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -388,14 +398,14 @@ private constructor(
             return@apply
         }
 
-        uid()
-        createdAt()
-        updatedAt()
-        email()
-        theme()
         activeTeamId()
+        createdAt()
+        email()
         hasGithub()
         teams().forEach { it.validate() }
+        uid()
+        updatedAt()
+        theme()
         validated = true
     }
 
@@ -414,14 +424,14 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
+        (if (activeTeamId.asKnown().isPresent) 1 else 0) +
             (if (createdAt.asKnown().isPresent) 1 else 0) +
-            (if (updatedAt.asKnown().isPresent) 1 else 0) +
             (if (email.asKnown().isPresent) 1 else 0) +
-            (if (theme.asKnown().isPresent) 1 else 0) +
-            (if (activeTeamId.asKnown().isPresent) 1 else 0) +
             (if (hasGithub.asKnown().isPresent) 1 else 0) +
-            (teams.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+            (teams.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
+            (if (updatedAt.asKnown().isPresent) 1 else 0) +
+            (if (theme.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -429,27 +439,27 @@ private constructor(
         }
 
         return other is User &&
-            uid == other.uid &&
-            createdAt == other.createdAt &&
-            updatedAt == other.updatedAt &&
-            email == other.email &&
-            theme == other.theme &&
             activeTeamId == other.activeTeamId &&
+            createdAt == other.createdAt &&
+            email == other.email &&
             hasGithub == other.hasGithub &&
             teams == other.teams &&
+            uid == other.uid &&
+            updatedAt == other.updatedAt &&
+            theme == other.theme &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
-            uid,
-            createdAt,
-            updatedAt,
-            email,
-            theme,
             activeTeamId,
+            createdAt,
+            email,
             hasGithub,
             teams,
+            uid,
+            updatedAt,
+            theme,
             additionalProperties,
         )
     }
@@ -457,5 +467,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "User{uid=$uid, createdAt=$createdAt, updatedAt=$updatedAt, email=$email, theme=$theme, activeTeamId=$activeTeamId, hasGithub=$hasGithub, teams=$teams, additionalProperties=$additionalProperties}"
+        "User{activeTeamId=$activeTeamId, createdAt=$createdAt, email=$email, hasGithub=$hasGithub, teams=$teams, uid=$uid, updatedAt=$updatedAt, theme=$theme, additionalProperties=$additionalProperties}"
 }

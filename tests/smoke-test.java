@@ -6,17 +6,18 @@
 // against a mock server and reads the JSON report produced via SCALAR_SMOKE_REPORT.
 import com.scalar.client.ScalarClient;
 import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.accessGroups.AccessGroupRetrieveParams;
-import com.scalar.models.accessGroups.AccessGroupUpdateParams;
-import com.scalar.models.accessGroups.domains.DomainCreateParams;
-import com.scalar.models.accessGroups.domains.DomainDeleteParams;
+import com.scalar.core.JsonValue;
+import com.scalar.models.accessgroups.AccessGroupRetrieveParams;
+import com.scalar.models.accessgroups.AccessGroupUpdateParams;
+import com.scalar.models.accessgroups.domains.DomainCreateParams;
+import com.scalar.models.accessgroups.domains.DomainDeleteParams;
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams;
-import com.scalar.models.loginPortals.LoginPortalCreateParams;
-import com.scalar.models.loginPortals.LoginPortalDeleteParams;
-import com.scalar.models.loginPortals.LoginPortalEmail;
-import com.scalar.models.loginPortals.LoginPortalPage;
-import com.scalar.models.loginPortals.LoginPortalRetrieveParams;
-import com.scalar.models.loginPortals.LoginPortalUpdateParams;
+import com.scalar.models.loginportals.LoginPortalCreateParams;
+import com.scalar.models.loginportals.LoginPortalDeleteParams;
+import com.scalar.models.loginportals.LoginPortalEmail;
+import com.scalar.models.loginportals.LoginPortalPage;
+import com.scalar.models.loginportals.LoginPortalRetrieveParams;
+import com.scalar.models.loginportals.LoginPortalUpdateParams;
 import com.scalar.models.mcp.servers.ServerCreateParams;
 import com.scalar.models.mcp.servers.ServerDeleteParams;
 import com.scalar.models.mcp.servers.ServerRetrieveParams;
@@ -46,18 +47,18 @@ import com.scalar.models.rules.RuleDeleteRulesetParams;
 import com.scalar.models.rules.RuleListRulesetsParams;
 import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams;
 import com.scalar.models.rules.RuleUpdateRulesetParams;
-import com.scalar.models.scalarDocs.ScalarDocCreateGuideParams;
-import com.scalar.models.scalarDocs.ScalarDocCreateProjectParams;
-import com.scalar.models.scalarDocs.ScalarDocDeleteProjectParams;
-import com.scalar.models.scalarDocs.ScalarDocListProjectConfigParams;
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainParams;
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusParams;
-import com.scalar.models.scalarDocs.ScalarDocListProjectsParams;
-import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams;
-import com.scalar.models.scalarDocs.ScalarDocPublishProjectParams;
-import com.scalar.models.scalarDocs.ScalarDocRetrieveProjectParams;
-import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigParams;
-import com.scalar.models.scalarDocs.ScalarDocUpdateProjectParams;
+import com.scalar.models.scalardocs.ScalarDocCreateGuideParams;
+import com.scalar.models.scalardocs.ScalarDocCreateProjectParams;
+import com.scalar.models.scalardocs.ScalarDocDeleteProjectParams;
+import com.scalar.models.scalardocs.ScalarDocListProjectConfigParams;
+import com.scalar.models.scalardocs.ScalarDocListProjectDomainParams;
+import com.scalar.models.scalardocs.ScalarDocListProjectDomainStatusParams;
+import com.scalar.models.scalardocs.ScalarDocListProjectsParams;
+import com.scalar.models.scalardocs.ScalarDocPublishGuideParams;
+import com.scalar.models.scalardocs.ScalarDocPublishProjectParams;
+import com.scalar.models.scalardocs.ScalarDocRetrieveProjectParams;
+import com.scalar.models.scalardocs.ScalarDocUpdateProjectConfigParams;
+import com.scalar.models.scalardocs.ScalarDocUpdateProjectParams;
 import com.scalar.models.schemas.SchemaCreateParams;
 import com.scalar.models.schemas.SchemaDeleteParams;
 import com.scalar.models.schemas.SchemaListParams;
@@ -102,8 +103,10 @@ final class SmokeTest {
       long durationMs,
       String error) {}
 
-  // `label` says which of an operation's two calls this is — "required params" or "all params".
-  // It is empty when the operation contributed a single case.
+  // `label` says which call this is — "required params" or "all params" for an operation's two
+  // calls, "async client" for the one call made through the async client, "async stream" for a
+  // streaming call subscribed on the async client. It is empty when the operation contributed a
+  // single blocking case.
   private record SmokeCase(
       String operation, String method, String path, String label, SmokeRunnable run) {}
 
@@ -367,13 +370,8 @@ final class SmokeTest {
   }
 
   private static void _smokeCase25() throws Exception {
-    com.scalar.models.schemas.accessGroup.AccessGroupCreateParams params =
-        com.scalar
-            .models
-            .schemas
-            .accessGroup
-            .AccessGroupCreateParams
-            .builder()
+    com.scalar.models.schemas.accessgroup.AccessGroupCreateParams params =
+        com.scalar.models.schemas.accessgroup.AccessGroupCreateParams.builder()
             .namespace("acme")
             .slug("customer")
             .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
@@ -382,13 +380,8 @@ final class SmokeTest {
   }
 
   private static void _smokeCase26() throws Exception {
-    com.scalar.models.schemas.accessGroup.AccessGroupDeleteParams params =
-        com.scalar
-            .models
-            .schemas
-            .accessGroup
-            .AccessGroupDeleteParams
-            .builder()
+    com.scalar.models.schemas.accessgroup.AccessGroupDeleteParams params =
+        com.scalar.models.schemas.accessgroup.AccessGroupDeleteParams.builder()
             .namespace("acme")
             .slug("customer")
             .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
@@ -470,15 +463,11 @@ final class SmokeTest {
   }
 
   private static void _smokeCase34() throws Exception {
-    com.scalar.models.accessGroups.AccessGroupCreateParams params =
-        com.scalar
-            .models
-            .accessGroups
-            .AccessGroupCreateParams
-            .builder()
+    com.scalar.models.accessgroups.AccessGroupCreateParams params =
+        com.scalar.models.accessgroups.AccessGroupCreateParams.builder()
             .name("Engineering")
             .slug("acme-api")
-            .allowedDomains("example.com")
+            .allowedDomains(JsonValue.from("example.com"))
             .build();
     var accessGroup = client.accessGroups().create(params);
   }
@@ -504,8 +493,8 @@ final class SmokeTest {
   }
 
   private static void _smokeCase38() throws Exception {
-    com.scalar.models.accessGroups.AccessGroupDeleteParams params =
-        com.scalar.models.accessGroups.AccessGroupDeleteParams.builder().slug("acme-api").build();
+    com.scalar.models.accessgroups.AccessGroupDeleteParams params =
+        com.scalar.models.accessgroups.AccessGroupDeleteParams.builder().slug("acme-api").build();
     var accessGroup = client.accessGroups().delete(params);
   }
 
@@ -1133,6 +1122,10 @@ final class SmokeTest {
     var installation = client.mcp().servers().installations().deleteAccessGroup(params);
   }
 
+  private static void _smokeCase119() throws Exception {
+    var registry = client.async().registry().listAllApiDocuments().get();
+  }
+
   private static final List<SmokeCase> cases =
       List.of(
           new SmokeCase("listAllApiDocuments", "GET", "/v1/apis", "", SmokeTest::_smokeCase0),
@@ -1542,7 +1535,9 @@ final class SmokeTest {
               "DELETE",
               "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
               "",
-              SmokeTest::_smokeCase118));
+              SmokeTest::_smokeCase118),
+          new SmokeCase(
+              "listAllApiDocuments", "GET", "/v1/apis", "async client", SmokeTest::_smokeCase119));
 
   private static List<SmokeCase> selectedCases() {
     String filter = System.getenv("SCALAR_SMOKE_FILTER");

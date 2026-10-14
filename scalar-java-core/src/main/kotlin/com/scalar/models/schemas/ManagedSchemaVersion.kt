@@ -16,39 +16,47 @@ import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "createdAt",
+    "uid",
+    "updatedAt",
+    "version",
+    "jsonSha",
+    "yamlSha",
+)
 class ManagedSchemaVersion
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
     private val createdAt: JsonField<Long>,
+    private val uid: JsonField<String>,
     private val updatedAt: JsonField<Long>,
     private val version: JsonField<String>,
-    private val yamlSha: JsonField<String>,
     private val jsonSha: JsonField<String>,
+    private val yamlSha: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("updatedAt") @ExcludeMissing updatedAt: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("yamlSha") @ExcludeMissing yamlSha: JsonField<String> = JsonMissing.of(),
         @JsonProperty("jsonSha") @ExcludeMissing jsonSha: JsonField<String> = JsonMissing.of(),
-    ) : this(uid, createdAt, updatedAt, version, yamlSha, jsonSha, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun uid(): String = uid.getRequired("uid")
+        @JsonProperty("yamlSha") @ExcludeMissing yamlSha: JsonField<String> = JsonMissing.of(),
+    ) : this(createdAt, uid, updatedAt, version, jsonSha, yamlSha, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun createdAt(): Long = createdAt.getRequired("createdAt")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun uid(): String = uid.getRequired("uid")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -66,20 +74,13 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun yamlSha(): Optional<String> = yamlSha.getOptional("yamlSha")
+    fun jsonSha(): Optional<String> = jsonSha.getOptional("jsonSha")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun jsonSha(): Optional<String> = jsonSha.getOptional("jsonSha")
-
-    /**
-     * Returns the raw JSON value of [uid].
-     *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+    fun yamlSha(): Optional<String> = yamlSha.getOptional("yamlSha")
 
     /**
      * Returns the raw JSON value of [createdAt].
@@ -87,6 +88,13 @@ private constructor(
      * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<Long> = createdAt
+
+    /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
 
     /**
      * Returns the raw JSON value of [updatedAt].
@@ -103,18 +111,18 @@ private constructor(
     @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
     /**
-     * Returns the raw JSON value of [yamlSha].
-     *
-     * Unlike [yamlSha], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("yamlSha") @ExcludeMissing fun _yamlSha(): JsonField<String> = yamlSha
-
-    /**
      * Returns the raw JSON value of [jsonSha].
      *
      * Unlike [jsonSha], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("jsonSha") @ExcludeMissing fun _jsonSha(): JsonField<String> = jsonSha
+
+    /**
+     * Returns the raw JSON value of [yamlSha].
+     *
+     * Unlike [yamlSha], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("yamlSha") @ExcludeMissing fun _yamlSha(): JsonField<String> = yamlSha
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -134,9 +142,9 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [ManagedSchemaVersion].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .createdAt()
+         * .uid()
          * .updatedAt()
          * .version()
          * ```
@@ -147,34 +155,24 @@ private constructor(
     /** A builder for [ManagedSchemaVersion]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
         private var createdAt: JsonField<Long>? = null
+        private var uid: JsonField<String>? = null
         private var updatedAt: JsonField<Long>? = null
         private var version: JsonField<String>? = null
-        private var yamlSha: JsonField<String> = JsonMissing.of()
         private var jsonSha: JsonField<String> = JsonMissing.of()
+        private var yamlSha: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(managedSchemaVersion: ManagedSchemaVersion) = apply {
-            uid = managedSchemaVersion.uid
             createdAt = managedSchemaVersion.createdAt
+            uid = managedSchemaVersion.uid
             updatedAt = managedSchemaVersion.updatedAt
             version = managedSchemaVersion.version
-            yamlSha = managedSchemaVersion.yamlSha
             jsonSha = managedSchemaVersion.jsonSha
+            yamlSha = managedSchemaVersion.yamlSha
             additionalProperties = managedSchemaVersion.additionalProperties.toMutableMap()
         }
-
-        fun uid(uid: String) = uid(JsonField.of(uid))
-
-        /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
 
@@ -185,6 +183,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun createdAt(createdAt: JsonField<Long>) = apply { this.createdAt = createdAt }
+
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun updatedAt(updatedAt: Long) = updatedAt(JsonField.of(updatedAt))
 
@@ -206,16 +214,6 @@ private constructor(
          */
         fun version(version: JsonField<String>) = apply { this.version = version }
 
-        fun yamlSha(yamlSha: String) = yamlSha(JsonField.of(yamlSha))
-
-        /**
-         * Sets [Builder.yamlSha] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.yamlSha] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun yamlSha(yamlSha: JsonField<String>) = apply { this.yamlSha = yamlSha }
-
         fun jsonSha(jsonSha: String) = jsonSha(JsonField.of(jsonSha))
 
         /**
@@ -225,6 +223,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun jsonSha(jsonSha: JsonField<String>) = apply { this.jsonSha = jsonSha }
+
+        fun yamlSha(yamlSha: String) = yamlSha(JsonField.of(yamlSha))
+
+        /**
+         * Sets [Builder.yamlSha] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.yamlSha] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun yamlSha(yamlSha: JsonField<String>) = apply { this.yamlSha = yamlSha }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -251,9 +259,9 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .createdAt()
+         * .uid()
          * .updatedAt()
          * .version()
          * ```
@@ -262,12 +270,12 @@ private constructor(
          */
         fun build(): ManagedSchemaVersion =
             ManagedSchemaVersion(
-                checkRequired("uid", uid),
                 checkRequired("createdAt", createdAt),
+                checkRequired("uid", uid),
                 checkRequired("updatedAt", updatedAt),
                 checkRequired("version", version),
-                yamlSha,
                 jsonSha,
+                yamlSha,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -287,12 +295,12 @@ private constructor(
             return@apply
         }
 
-        uid()
         createdAt()
+        uid()
         updatedAt()
         version()
-        yamlSha()
         jsonSha()
+        yamlSha()
         validated = true
     }
 
@@ -311,12 +319,12 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (createdAt.asKnown().isPresent) 1 else 0) +
+        (if (createdAt.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
             (if (updatedAt.asKnown().isPresent) 1 else 0) +
             (if (version.asKnown().isPresent) 1 else 0) +
-            (if (yamlSha.asKnown().isPresent) 1 else 0) +
-            (if (jsonSha.asKnown().isPresent) 1 else 0)
+            (if (jsonSha.asKnown().isPresent) 1 else 0) +
+            (if (yamlSha.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -324,21 +332,21 @@ private constructor(
         }
 
         return other is ManagedSchemaVersion &&
-            uid == other.uid &&
             createdAt == other.createdAt &&
+            uid == other.uid &&
             updatedAt == other.updatedAt &&
             version == other.version &&
-            yamlSha == other.yamlSha &&
             jsonSha == other.jsonSha &&
+            yamlSha == other.yamlSha &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(uid, createdAt, updatedAt, version, yamlSha, jsonSha, additionalProperties)
+        Objects.hash(createdAt, uid, updatedAt, version, jsonSha, yamlSha, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ManagedSchemaVersion{uid=$uid, createdAt=$createdAt, updatedAt=$updatedAt, version=$version, yamlSha=$yamlSha, jsonSha=$jsonSha, additionalProperties=$additionalProperties}"
+        "ManagedSchemaVersion{createdAt=$createdAt, uid=$uid, updatedAt=$updatedAt, version=$version, jsonSha=$jsonSha, yamlSha=$yamlSha, additionalProperties=$additionalProperties}"
 }

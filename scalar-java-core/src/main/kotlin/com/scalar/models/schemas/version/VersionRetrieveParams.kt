@@ -40,7 +40,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [VersionRetrieveParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
          * .slug()
          * ```
@@ -179,7 +179,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
          * .slug()
          * ```

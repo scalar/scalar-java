@@ -37,8 +37,10 @@ interface InviteServiceAsync {
     ): CompletableFuture<Any?> = cancel(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see cancel */
-    fun cancel(uid: String, params: InviteCancelParams): CompletableFuture<Any?> =
-        cancel(uid, params, RequestOptions.none())
+    fun cancel(
+        uid: String,
+        params: InviteCancelParams = InviteCancelParams.none(),
+    ): CompletableFuture<Any?> = cancel(uid, params, RequestOptions.none())
 
     /** @see cancel */
     fun cancel(
@@ -75,8 +77,10 @@ interface InviteServiceAsync {
     ): CompletableFuture<Any?> = resend(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see resend */
-    fun resend(uid: String, params: InviteResendParams): CompletableFuture<Any?> =
-        resend(uid, params, RequestOptions.none())
+    fun resend(
+        uid: String,
+        params: InviteResendParams = InviteResendParams.none(),
+    ): CompletableFuture<Any?> = resend(uid, params, RequestOptions.none())
 
     /** @see resend */
     fun resend(
@@ -124,7 +128,7 @@ interface InviteServiceAsync {
         /** @see cancel */
         fun cancel(
             uid: String,
-            params: InviteCancelParams,
+            params: InviteCancelParams = InviteCancelParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = cancel(uid, params, RequestOptions.none())
 
         /** @see cancel */
@@ -175,7 +179,7 @@ interface InviteServiceAsync {
         /** @see resend */
         fun resend(
             uid: String,
-            params: InviteResendParams,
+            params: InviteResendParams = InviteResendParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = resend(uid, params, RequestOptions.none())
 
         /** @see resend */

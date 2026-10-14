@@ -1,3 +1,5 @@
+@file:JvmName("PrepareRequest")
+
 package com.scalar.core
 
 import com.scalar.core.http.HttpRequest

@@ -47,7 +47,13 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun title(): Optional<String> = body.title()
+    fun className(): Optional<String> = body.className()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun config(): Optional<String> = body.config()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -59,13 +65,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun className(): Optional<String> = body.className()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun config(): Optional<String> = body.config()
+    fun title(): Optional<String> = body.title()
 
     /**
      * Returns the raw JSON value of [apiUid].
@@ -82,20 +82,6 @@ private constructor(
     fun _languages(): JsonField<List<Language>> = body._languages()
 
     /**
-     * Returns the raw JSON value of [title].
-     *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _title(): JsonField<String> = body._title()
-
-    /**
-     * Returns the raw JSON value of [slug].
-     *
-     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _slug(): JsonField<String> = body._slug()
-
-    /**
      * Returns the raw JSON value of [className].
      *
      * Unlike [className], this method doesn't throw if the JSON field has an unexpected type.
@@ -108,6 +94,20 @@ private constructor(
      * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _config(): JsonField<String> = body._config()
+
+    /**
+     * Returns the raw JSON value of [slug].
+     *
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _slug(): JsonField<String> = body._slug()
+
+    /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _title(): JsonField<String> = body._title()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -125,7 +125,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [SdkCreateParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .apiUid()
          * .languages()
          * ```
@@ -154,9 +154,9 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [apiUid]
          * - [languages]
-         * - [title]
-         * - [slug]
          * - [className]
+         * - [config]
+         * - [slug]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -189,26 +189,6 @@ private constructor(
          */
         fun addLanguage(language: Language) = apply { body.addLanguage(language) }
 
-        fun title(title: String) = apply { body.title(title) }
-
-        /**
-         * Sets [Builder.title] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.title] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun title(title: JsonField<String>) = apply { body.title(title) }
-
-        fun slug(slug: String) = apply { body.slug(slug) }
-
-        /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
-
         fun className(className: String) = apply { body.className(className) }
 
         /**
@@ -229,6 +209,26 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun config(config: JsonField<String>) = apply { body.config(config) }
+
+        fun slug(slug: String) = apply { body.slug(slug) }
+
+        /**
+         * Sets [Builder.slug] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
+
+        fun title(title: String) = apply { body.title(title) }
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { body.title(title) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -353,7 +353,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .apiUid()
          * .languages()
          * ```
@@ -370,15 +370,23 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "apiUid",
+        "languages",
+        "className",
+        "config",
+        "slug",
+        "title",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val apiUid: JsonField<String>,
         private val languages: JsonField<List<Language>>,
-        private val title: JsonField<String>,
-        private val slug: JsonField<String>,
         private val className: JsonField<String>,
         private val config: JsonField<String>,
+        private val slug: JsonField<String>,
+        private val title: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -388,13 +396,13 @@ private constructor(
             @JsonProperty("languages")
             @ExcludeMissing
             languages: JsonField<List<Language>> = JsonMissing.of(),
-            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
             @JsonProperty("className")
             @ExcludeMissing
             className: JsonField<String> = JsonMissing.of(),
             @JsonProperty("config") @ExcludeMissing config: JsonField<String> = JsonMissing.of(),
-        ) : this(apiUid, languages, title, slug, className, config, mutableMapOf())
+            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        ) : this(apiUid, languages, className, config, slug, title, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -412,7 +420,13 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun title(): Optional<String> = title.getOptional("title")
+        fun className(): Optional<String> = className.getOptional("className")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun config(): Optional<String> = config.getOptional("config")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -424,13 +438,7 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun className(): Optional<String> = className.getOptional("className")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun config(): Optional<String> = config.getOptional("config")
+        fun title(): Optional<String> = title.getOptional("title")
 
         /**
          * Returns the raw JSON value of [apiUid].
@@ -449,20 +457,6 @@ private constructor(
         fun _languages(): JsonField<List<Language>> = languages
 
         /**
-         * Returns the raw JSON value of [title].
-         *
-         * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
-
-        /**
-         * Returns the raw JSON value of [slug].
-         *
-         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-        /**
          * Returns the raw JSON value of [className].
          *
          * Unlike [className], this method doesn't throw if the JSON field has an unexpected type.
@@ -475,6 +469,20 @@ private constructor(
          * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<String> = config
+
+        /**
+         * Returns the raw JSON value of [slug].
+         *
+         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+        /**
+         * Returns the raw JSON value of [title].
+         *
+         * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -494,7 +502,7 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .apiUid()
              * .languages()
              * ```
@@ -507,20 +515,20 @@ private constructor(
 
             private var apiUid: JsonField<String>? = null
             private var languages: JsonField<MutableList<Language>>? = null
-            private var title: JsonField<String> = JsonMissing.of()
-            private var slug: JsonField<String> = JsonMissing.of()
             private var className: JsonField<String> = JsonMissing.of()
             private var config: JsonField<String> = JsonMissing.of()
+            private var slug: JsonField<String> = JsonMissing.of()
+            private var title: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 apiUid = body.apiUid
                 languages = body.languages.map { it.toMutableList() }
-                title = body.title
-                slug = body.slug
                 className = body.className
                 config = body.config
+                slug = body.slug
+                title = body.title
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -560,28 +568,6 @@ private constructor(
                     }
             }
 
-            fun title(title: String) = title(JsonField.of(title))
-
-            /**
-             * Sets [Builder.title] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.title] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun title(title: JsonField<String>) = apply { this.title = title }
-
-            fun slug(slug: String) = slug(JsonField.of(slug))
-
-            /**
-             * Sets [Builder.slug] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
             fun className(className: String) = className(JsonField.of(className))
 
             /**
@@ -603,6 +589,28 @@ private constructor(
              * supported value.
              */
             fun config(config: JsonField<String>) = apply { this.config = config }
+
+            fun slug(slug: String) = slug(JsonField.of(slug))
+
+            /**
+             * Sets [Builder.slug] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+            fun title(title: String) = title(JsonField.of(title))
+
+            /**
+             * Sets [Builder.title] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.title] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun title(title: JsonField<String>) = apply { this.title = title }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -629,7 +637,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .apiUid()
              * .languages()
              * ```
@@ -640,10 +648,10 @@ private constructor(
                 Body(
                     checkRequired("apiUid", apiUid),
                     checkRequired("languages", languages).map { it.toImmutable() },
-                    title,
-                    slug,
                     className,
                     config,
+                    slug,
+                    title,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -666,10 +674,10 @@ private constructor(
 
             apiUid()
             languages().forEach { it.validate() }
-            title()
-            slug()
             className()
             config()
+            slug()
+            title()
             validated = true
         }
 
@@ -691,10 +699,10 @@ private constructor(
         internal fun validity(): Int =
             (if (apiUid.asKnown().isPresent) 1 else 0) +
                 (languages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-                (if (title.asKnown().isPresent) 1 else 0) +
-                (if (slug.asKnown().isPresent) 1 else 0) +
                 (if (className.asKnown().isPresent) 1 else 0) +
-                (if (config.asKnown().isPresent) 1 else 0)
+                (if (config.asKnown().isPresent) 1 else 0) +
+                (if (slug.asKnown().isPresent) 1 else 0) +
+                (if (title.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -704,10 +712,10 @@ private constructor(
             return other is Body &&
                 apiUid == other.apiUid &&
                 languages == other.languages &&
-                title == other.title &&
-                slug == other.slug &&
                 className == other.className &&
                 config == other.config &&
+                slug == other.slug &&
+                title == other.title &&
                 additionalProperties == other.additionalProperties
         }
 
@@ -715,10 +723,10 @@ private constructor(
             Objects.hash(
                 apiUid,
                 languages,
-                title,
-                slug,
                 className,
                 config,
+                slug,
+                title,
                 additionalProperties,
             )
         }
@@ -726,7 +734,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{apiUid=$apiUid, languages=$languages, title=$title, slug=$slug, className=$className, config=$config, additionalProperties=$additionalProperties}"
+            "Body{apiUid=$apiUid, languages=$languages, className=$className, config=$config, slug=$slug, title=$title, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

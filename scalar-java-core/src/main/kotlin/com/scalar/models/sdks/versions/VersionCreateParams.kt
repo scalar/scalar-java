@@ -33,22 +33,15 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun version(): String = body.version()
+    fun apiVersion(): String = body.apiVersion()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun apiVersion(): String = body.apiVersion()
+    fun version(): String = body.version()
 
     fun uid(): Optional<String> = Optional.ofNullable(uid)
-
-    /**
-     * Returns the raw JSON value of [version].
-     *
-     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _version(): JsonField<String> = body._version()
 
     /**
      * Returns the raw JSON value of [apiVersion].
@@ -56,6 +49,13 @@ private constructor(
      * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _apiVersion(): JsonField<String> = body._apiVersion()
+
+    /**
+     * Returns the raw JSON value of [version].
+     *
+     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _version(): JsonField<String> = body._version()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -73,9 +73,9 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [VersionCreateParams].
          *
          * The following fields are required:
-         * ```kotlin
-         * .version()
+         * ```java
          * .apiVersion()
+         * .version()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -107,20 +107,10 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [version]
          * - [apiVersion]
+         * - [version]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
-
-        fun version(version: String) = apply { body.version(version) }
-
-        /**
-         * Sets [Builder.version] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.version] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun version(version: JsonField<String>) = apply { body.version(version) }
 
         fun apiVersion(apiVersion: String) = apply { body.apiVersion(apiVersion) }
 
@@ -132,6 +122,16 @@ private constructor(
          * value.
          */
         fun apiVersion(apiVersion: JsonField<String>) = apply { body.apiVersion(apiVersion) }
+
+        fun version(version: String) = apply { body.version(version) }
+
+        /**
+         * Sets [Builder.version] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.version] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun version(version: JsonField<String>) = apply { body.version(version) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -256,9 +256,9 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .version()
+         * ```java
          * .apiVersion()
+         * .version()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -284,27 +284,22 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("apiVersion", "version")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val version: JsonField<String>,
         private val apiVersion: JsonField<String>,
+        private val version: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
             @JsonProperty("apiVersion")
             @ExcludeMissing
             apiVersion: JsonField<String> = JsonMissing.of(),
-        ) : this(version, apiVersion, mutableMapOf())
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun version(): String = version.getRequired("version")
+            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
+        ) : this(apiVersion, version, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -313,11 +308,10 @@ private constructor(
         fun apiVersion(): String = apiVersion.getRequired("apiVersion")
 
         /**
-         * Returns the raw JSON value of [version].
-         *
-         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
+        fun version(): String = version.getRequired("version")
 
         /**
          * Returns the raw JSON value of [apiVersion].
@@ -327,6 +321,13 @@ private constructor(
         @JsonProperty("apiVersion")
         @ExcludeMissing
         fun _apiVersion(): JsonField<String> = apiVersion
+
+        /**
+         * Returns the raw JSON value of [version].
+         *
+         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -346,9 +347,9 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
-             * .version()
+             * ```java
              * .apiVersion()
+             * .version()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -357,27 +358,16 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var version: JsonField<String>? = null
             private var apiVersion: JsonField<String>? = null
+            private var version: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                version = body.version
                 apiVersion = body.apiVersion
+                version = body.version
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
-
-            fun version(version: String) = version(JsonField.of(version))
-
-            /**
-             * Sets [Builder.version] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.version] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun version(version: JsonField<String>) = apply { this.version = version }
 
             fun apiVersion(apiVersion: String) = apiVersion(JsonField.of(apiVersion))
 
@@ -389,6 +379,17 @@ private constructor(
              * supported value.
              */
             fun apiVersion(apiVersion: JsonField<String>) = apply { this.apiVersion = apiVersion }
+
+            fun version(version: String) = version(JsonField.of(version))
+
+            /**
+             * Sets [Builder.version] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.version] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun version(version: JsonField<String>) = apply { this.version = version }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -415,17 +416,17 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
-             * .version()
+             * ```java
              * .apiVersion()
+             * .version()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Body =
                 Body(
-                    checkRequired("version", version),
                     checkRequired("apiVersion", apiVersion),
+                    checkRequired("version", version),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -446,8 +447,8 @@ private constructor(
                 return@apply
             }
 
-            version()
             apiVersion()
+            version()
             validated = true
         }
 
@@ -467,8 +468,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (version.asKnown().isPresent) 1 else 0) +
-                (if (apiVersion.asKnown().isPresent) 1 else 0)
+            (if (apiVersion.asKnown().isPresent) 1 else 0) +
+                (if (version.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -476,19 +477,19 @@ private constructor(
             }
 
             return other is Body &&
-                version == other.version &&
                 apiVersion == other.apiVersion &&
+                version == other.version &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(version, apiVersion, additionalProperties)
+            Objects.hash(apiVersion, version, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{version=$version, apiVersion=$apiVersion, additionalProperties=$additionalProperties}"
+            "Body{apiVersion=$apiVersion, version=$version, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

@@ -50,8 +50,9 @@ interface AuthenticationServiceAsync {
     ): CompletableFuture<User>
 
     /** @see listCurrentUser */
-    fun listCurrentUser(params: AuthenticationListCurrentUserParams): CompletableFuture<User> =
-        listCurrentUser(params, RequestOptions.none())
+    fun listCurrentUser(
+        params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
+    ): CompletableFuture<User> = listCurrentUser(params, RequestOptions.none())
 
     /** @see listCurrentUser */
     fun listCurrentUser(requestOptions: RequestOptions): CompletableFuture<User> =
@@ -103,7 +104,7 @@ interface AuthenticationServiceAsync {
 
         /** @see listCurrentUser */
         fun listCurrentUser(
-            params: AuthenticationListCurrentUserParams
+            params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
         ): CompletableFuture<HttpResponseFor<User>> = listCurrentUser(params, RequestOptions.none())
 
         /** @see listCurrentUser */

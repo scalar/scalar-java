@@ -19,80 +19,67 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "accessGroups",
+    "credentialRedactionEnabled",
+    "id",
+    "loginPortalUid",
+    "mcpServerId",
+    "mcpVersion",
+    "name",
+    "piiRedactionEnabled",
+    "slug",
+)
 class McpInstallation
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val id: JsonField<String>,
-    private val mcpServerId: JsonField<String>,
-    private val name: JsonField<String>,
-    private val slug: JsonField<String>,
     private val accessGroups: JsonField<List<String>>,
-    private val loginPortalUid: JsonField<String>,
-    private val mcpVersion: JsonField<String>,
-    private val piiRedactionEnabled: JsonField<Boolean>,
     private val credentialRedactionEnabled: JsonField<Boolean>,
+    private val id: JsonField<String>,
+    private val loginPortalUid: JsonField<String>,
+    private val mcpServerId: JsonField<String>,
+    private val mcpVersion: JsonField<String>,
+    private val name: JsonField<String>,
+    private val piiRedactionEnabled: JsonField<Boolean>,
+    private val slug: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("mcpServerId")
-        @ExcludeMissing
-        mcpServerId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
         @JsonProperty("accessGroups")
         @ExcludeMissing
         accessGroups: JsonField<List<String>> = JsonMissing.of(),
-        @JsonProperty("loginPortalUid")
-        @ExcludeMissing
-        loginPortalUid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("mcpVersion")
-        @ExcludeMissing
-        mcpVersion: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("piiRedactionEnabled")
-        @ExcludeMissing
-        piiRedactionEnabled: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("credentialRedactionEnabled")
         @ExcludeMissing
         credentialRedactionEnabled: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("loginPortalUid")
+        @ExcludeMissing
+        loginPortalUid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("mcpServerId")
+        @ExcludeMissing
+        mcpServerId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("mcpVersion")
+        @ExcludeMissing
+        mcpVersion: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("piiRedactionEnabled")
+        @ExcludeMissing
+        piiRedactionEnabled: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
     ) : this(
-        id,
-        mcpServerId,
-        name,
-        slug,
         accessGroups,
-        loginPortalUid,
-        mcpVersion,
-        piiRedactionEnabled,
         credentialRedactionEnabled,
+        id,
+        loginPortalUid,
+        mcpServerId,
+        mcpVersion,
+        name,
+        piiRedactionEnabled,
+        slug,
         mutableMapOf(),
     )
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun id(): String = id.getRequired("id")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun mcpServerId(): String = mcpServerId.getRequired("mcpServerId")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun name(): String = name.getRequired("name")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun slug(): String = slug.getRequired("slug")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -101,10 +88,29 @@ private constructor(
     fun accessGroups(): List<String> = accessGroups.getRequired("accessGroups")
 
     /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun credentialRedactionEnabled(): Boolean =
+        credentialRedactionEnabled.getRequired("credentialRedactionEnabled")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun id(): String = id.getRequired("id")
+
+    /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun loginPortalUid(): Optional<String> = loginPortalUid.getOptional("loginPortalUid")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun mcpServerId(): String = mcpServerId.getRequired("mcpServerId")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -116,42 +122,19 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    fun name(): String = name.getRequired("name")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun piiRedactionEnabled(): Boolean = piiRedactionEnabled.getRequired("piiRedactionEnabled")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun credentialRedactionEnabled(): Boolean =
-        credentialRedactionEnabled.getRequired("credentialRedactionEnabled")
-
-    /**
-     * Returns the raw JSON value of [id].
-     *
-     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
-
-    /**
-     * Returns the raw JSON value of [mcpServerId].
-     *
-     * Unlike [mcpServerId], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("mcpServerId") @ExcludeMissing fun _mcpServerId(): JsonField<String> = mcpServerId
-
-    /**
-     * Returns the raw JSON value of [name].
-     *
-     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
-
-    /**
-     * Returns the raw JSON value of [slug].
-     *
-     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+    fun slug(): String = slug.getRequired("slug")
 
     /**
      * Returns the raw JSON value of [accessGroups].
@@ -163,6 +146,23 @@ private constructor(
     fun _accessGroups(): JsonField<List<String>> = accessGroups
 
     /**
+     * Returns the raw JSON value of [credentialRedactionEnabled].
+     *
+     * Unlike [credentialRedactionEnabled], this method doesn't throw if the JSON field has an
+     * unexpected type.
+     */
+    @JsonProperty("credentialRedactionEnabled")
+    @ExcludeMissing
+    fun _credentialRedactionEnabled(): JsonField<Boolean> = credentialRedactionEnabled
+
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+    /**
      * Returns the raw JSON value of [loginPortalUid].
      *
      * Unlike [loginPortalUid], this method doesn't throw if the JSON field has an unexpected type.
@@ -172,11 +172,25 @@ private constructor(
     fun _loginPortalUid(): JsonField<String> = loginPortalUid
 
     /**
+     * Returns the raw JSON value of [mcpServerId].
+     *
+     * Unlike [mcpServerId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("mcpServerId") @ExcludeMissing fun _mcpServerId(): JsonField<String> = mcpServerId
+
+    /**
      * Returns the raw JSON value of [mcpVersion].
      *
      * Unlike [mcpVersion], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("mcpVersion") @ExcludeMissing fun _mcpVersion(): JsonField<String> = mcpVersion
+
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /**
      * Returns the raw JSON value of [piiRedactionEnabled].
@@ -189,14 +203,11 @@ private constructor(
     fun _piiRedactionEnabled(): JsonField<Boolean> = piiRedactionEnabled
 
     /**
-     * Returns the raw JSON value of [credentialRedactionEnabled].
+     * Returns the raw JSON value of [slug].
      *
-     * Unlike [credentialRedactionEnabled], this method doesn't throw if the JSON field has an
-     * unexpected type.
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("credentialRedactionEnabled")
-    @ExcludeMissing
-    fun _credentialRedactionEnabled(): JsonField<Boolean> = credentialRedactionEnabled
+    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -216,16 +227,16 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [McpInstallation].
          *
          * The following fields are required:
-         * ```kotlin
-         * .id()
-         * .mcpServerId()
-         * .name()
-         * .slug()
+         * ```java
          * .accessGroups()
-         * .loginPortalUid()
-         * .mcpVersion()
-         * .piiRedactionEnabled()
          * .credentialRedactionEnabled()
+         * .id()
+         * .loginPortalUid()
+         * .mcpServerId()
+         * .mcpVersion()
+         * .name()
+         * .piiRedactionEnabled()
+         * .slug()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -234,71 +245,30 @@ private constructor(
     /** A builder for [McpInstallation]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String>? = null
-        private var mcpServerId: JsonField<String>? = null
-        private var name: JsonField<String>? = null
-        private var slug: JsonField<String>? = null
         private var accessGroups: JsonField<MutableList<String>>? = null
-        private var loginPortalUid: JsonField<String>? = null
-        private var mcpVersion: JsonField<String>? = null
-        private var piiRedactionEnabled: JsonField<Boolean>? = null
         private var credentialRedactionEnabled: JsonField<Boolean>? = null
+        private var id: JsonField<String>? = null
+        private var loginPortalUid: JsonField<String>? = null
+        private var mcpServerId: JsonField<String>? = null
+        private var mcpVersion: JsonField<String>? = null
+        private var name: JsonField<String>? = null
+        private var piiRedactionEnabled: JsonField<Boolean>? = null
+        private var slug: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(mcpInstallation: McpInstallation) = apply {
-            id = mcpInstallation.id
-            mcpServerId = mcpInstallation.mcpServerId
-            name = mcpInstallation.name
-            slug = mcpInstallation.slug
             accessGroups = mcpInstallation.accessGroups.map { it.toMutableList() }
-            loginPortalUid = mcpInstallation.loginPortalUid
-            mcpVersion = mcpInstallation.mcpVersion
-            piiRedactionEnabled = mcpInstallation.piiRedactionEnabled
             credentialRedactionEnabled = mcpInstallation.credentialRedactionEnabled
+            id = mcpInstallation.id
+            loginPortalUid = mcpInstallation.loginPortalUid
+            mcpServerId = mcpInstallation.mcpServerId
+            mcpVersion = mcpInstallation.mcpVersion
+            name = mcpInstallation.name
+            piiRedactionEnabled = mcpInstallation.piiRedactionEnabled
+            slug = mcpInstallation.slug
             additionalProperties = mcpInstallation.additionalProperties.toMutableMap()
         }
-
-        fun id(id: String) = id(JsonField.of(id))
-
-        /**
-         * Sets [Builder.id] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.id] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun id(id: JsonField<String>) = apply { this.id = id }
-
-        fun mcpServerId(mcpServerId: String) = mcpServerId(JsonField.of(mcpServerId))
-
-        /**
-         * Sets [Builder.mcpServerId] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.mcpServerId] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun mcpServerId(mcpServerId: JsonField<String>) = apply { this.mcpServerId = mcpServerId }
-
-        fun name(name: String) = name(JsonField.of(name))
-
-        /**
-         * Sets [Builder.name] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.name] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun name(name: JsonField<String>) = apply { this.name = name }
-
-        fun slug(slug: String) = slug(JsonField.of(slug))
-
-        /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
         fun accessGroups(accessGroups: List<String>) = accessGroups(JsonField.of(accessGroups))
 
@@ -325,6 +295,30 @@ private constructor(
                 }
         }
 
+        fun credentialRedactionEnabled(credentialRedactionEnabled: Boolean) =
+            credentialRedactionEnabled(JsonField.of(credentialRedactionEnabled))
+
+        /**
+         * Sets [Builder.credentialRedactionEnabled] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.credentialRedactionEnabled] with a well-typed [Boolean]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun credentialRedactionEnabled(credentialRedactionEnabled: JsonField<Boolean>) = apply {
+            this.credentialRedactionEnabled = credentialRedactionEnabled
+        }
+
+        fun id(id: String) = id(JsonField.of(id))
+
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun id(id: JsonField<String>) = apply { this.id = id }
+
         fun loginPortalUid(loginPortalUid: String?) =
             loginPortalUid(JsonField.ofNullable(loginPortalUid))
 
@@ -343,6 +337,17 @@ private constructor(
             this.loginPortalUid = loginPortalUid
         }
 
+        fun mcpServerId(mcpServerId: String) = mcpServerId(JsonField.of(mcpServerId))
+
+        /**
+         * Sets [Builder.mcpServerId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.mcpServerId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun mcpServerId(mcpServerId: JsonField<String>) = apply { this.mcpServerId = mcpServerId }
+
         fun mcpVersion(mcpVersion: String?) = mcpVersion(JsonField.ofNullable(mcpVersion))
 
         /** Alias for calling [Builder.mcpVersion] with `mcpVersion.orElse(null)`. */
@@ -356,6 +361,16 @@ private constructor(
          * value.
          */
         fun mcpVersion(mcpVersion: JsonField<String>) = apply { this.mcpVersion = mcpVersion }
+
+        fun name(name: String) = name(JsonField.of(name))
+
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         fun piiRedactionEnabled(piiRedactionEnabled: Boolean) =
             piiRedactionEnabled(JsonField.of(piiRedactionEnabled))
@@ -371,19 +386,15 @@ private constructor(
             this.piiRedactionEnabled = piiRedactionEnabled
         }
 
-        fun credentialRedactionEnabled(credentialRedactionEnabled: Boolean) =
-            credentialRedactionEnabled(JsonField.of(credentialRedactionEnabled))
+        fun slug(slug: String) = slug(JsonField.of(slug))
 
         /**
-         * Sets [Builder.credentialRedactionEnabled] to an arbitrary JSON value.
+         * Sets [Builder.slug] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.credentialRedactionEnabled] with a well-typed [Boolean]
-         * value instead. This method is primarily for setting the field to an undocumented or not
-         * yet supported value.
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun credentialRedactionEnabled(credentialRedactionEnabled: JsonField<Boolean>) = apply {
-            this.credentialRedactionEnabled = credentialRedactionEnabled
-        }
+        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -410,31 +421,31 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .id()
-         * .mcpServerId()
-         * .name()
-         * .slug()
+         * ```java
          * .accessGroups()
-         * .loginPortalUid()
-         * .mcpVersion()
-         * .piiRedactionEnabled()
          * .credentialRedactionEnabled()
+         * .id()
+         * .loginPortalUid()
+         * .mcpServerId()
+         * .mcpVersion()
+         * .name()
+         * .piiRedactionEnabled()
+         * .slug()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): McpInstallation =
             McpInstallation(
-                checkRequired("id", id),
-                checkRequired("mcpServerId", mcpServerId),
-                checkRequired("name", name),
-                checkRequired("slug", slug),
                 checkRequired("accessGroups", accessGroups).map { it.toImmutable() },
-                checkRequired("loginPortalUid", loginPortalUid),
-                checkRequired("mcpVersion", mcpVersion),
-                checkRequired("piiRedactionEnabled", piiRedactionEnabled),
                 checkRequired("credentialRedactionEnabled", credentialRedactionEnabled),
+                checkRequired("id", id),
+                checkRequired("loginPortalUid", loginPortalUid),
+                checkRequired("mcpServerId", mcpServerId),
+                checkRequired("mcpVersion", mcpVersion),
+                checkRequired("name", name),
+                checkRequired("piiRedactionEnabled", piiRedactionEnabled),
+                checkRequired("slug", slug),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -454,15 +465,15 @@ private constructor(
             return@apply
         }
 
-        id()
-        mcpServerId()
-        name()
-        slug()
         accessGroups()
-        loginPortalUid()
-        mcpVersion()
-        piiRedactionEnabled()
         credentialRedactionEnabled()
+        id()
+        loginPortalUid()
+        mcpServerId()
+        mcpVersion()
+        name()
+        piiRedactionEnabled()
+        slug()
         validated = true
     }
 
@@ -481,15 +492,15 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (id.asKnown().isPresent) 1 else 0) +
-            (if (mcpServerId.asKnown().isPresent) 1 else 0) +
-            (if (name.asKnown().isPresent) 1 else 0) +
-            (if (slug.asKnown().isPresent) 1 else 0) +
-            (accessGroups.asKnown().getOrNull()?.size ?: 0) +
+        (accessGroups.asKnown().getOrNull()?.size ?: 0) +
+            (if (credentialRedactionEnabled.asKnown().isPresent) 1 else 0) +
+            (if (id.asKnown().isPresent) 1 else 0) +
             (if (loginPortalUid.asKnown().isPresent) 1 else 0) +
+            (if (mcpServerId.asKnown().isPresent) 1 else 0) +
             (if (mcpVersion.asKnown().isPresent) 1 else 0) +
+            (if (name.asKnown().isPresent) 1 else 0) +
             (if (piiRedactionEnabled.asKnown().isPresent) 1 else 0) +
-            (if (credentialRedactionEnabled.asKnown().isPresent) 1 else 0)
+            (if (slug.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -497,29 +508,29 @@ private constructor(
         }
 
         return other is McpInstallation &&
-            id == other.id &&
-            mcpServerId == other.mcpServerId &&
-            name == other.name &&
-            slug == other.slug &&
             accessGroups == other.accessGroups &&
-            loginPortalUid == other.loginPortalUid &&
-            mcpVersion == other.mcpVersion &&
-            piiRedactionEnabled == other.piiRedactionEnabled &&
             credentialRedactionEnabled == other.credentialRedactionEnabled &&
+            id == other.id &&
+            loginPortalUid == other.loginPortalUid &&
+            mcpServerId == other.mcpServerId &&
+            mcpVersion == other.mcpVersion &&
+            name == other.name &&
+            piiRedactionEnabled == other.piiRedactionEnabled &&
+            slug == other.slug &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
-            id,
-            mcpServerId,
-            name,
-            slug,
             accessGroups,
-            loginPortalUid,
-            mcpVersion,
-            piiRedactionEnabled,
             credentialRedactionEnabled,
+            id,
+            loginPortalUid,
+            mcpServerId,
+            mcpVersion,
+            name,
+            piiRedactionEnabled,
+            slug,
             additionalProperties,
         )
     }
@@ -527,5 +538,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "McpInstallation{id=$id, mcpServerId=$mcpServerId, name=$name, slug=$slug, accessGroups=$accessGroups, loginPortalUid=$loginPortalUid, mcpVersion=$mcpVersion, piiRedactionEnabled=$piiRedactionEnabled, credentialRedactionEnabled=$credentialRedactionEnabled, additionalProperties=$additionalProperties}"
+        "McpInstallation{accessGroups=$accessGroups, credentialRedactionEnabled=$credentialRedactionEnabled, id=$id, loginPortalUid=$loginPortalUid, mcpServerId=$mcpServerId, mcpVersion=$mcpVersion, name=$name, piiRedactionEnabled=$piiRedactionEnabled, slug=$slug, additionalProperties=$additionalProperties}"
 }

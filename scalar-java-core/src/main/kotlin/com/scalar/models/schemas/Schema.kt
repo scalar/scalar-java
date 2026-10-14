@@ -18,45 +18,42 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "description",
+    "isPrivate",
+    "namespace",
+    "slug",
+    "title",
+    "uid",
+    "versions",
+)
 class Schema
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
-    private val title: JsonField<String>,
     private val description: JsonField<String>,
-    private val slug: JsonField<String>,
-    private val namespace: JsonField<String>,
     private val isPrivate: JsonField<Boolean>,
+    private val namespace: JsonField<String>,
+    private val slug: JsonField<String>,
+    private val title: JsonField<String>,
+    private val uid: JsonField<String>,
     private val versions: JsonField<List<ManagedSchemaVersion>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
         @JsonProperty("description")
         @ExcludeMissing
         description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
         @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("versions")
         @ExcludeMissing
         versions: JsonField<List<ManagedSchemaVersion>> = JsonMissing.of(),
-    ) : this(uid, title, description, slug, namespace, isPrivate, versions, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun uid(): String = uid.getRequired("uid")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun title(): String = title.getRequired("title")
+    ) : this(description, isPrivate, namespace, slug, title, uid, versions, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -68,7 +65,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun slug(): String = slug.getRequired("slug")
+    fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -80,27 +77,25 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
+    fun slug(): String = slug.getRequired("slug")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun title(): String = title.getRequired("title")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun uid(): String = uid.getRequired("uid")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun versions(): List<ManagedSchemaVersion> = versions.getRequired("versions")
-
-    /**
-     * Returns the raw JSON value of [uid].
-     *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
-
-    /**
-     * Returns the raw JSON value of [title].
-     *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
     /**
      * Returns the raw JSON value of [description].
@@ -110,11 +105,11 @@ private constructor(
     @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
 
     /**
-     * Returns the raw JSON value of [slug].
+     * Returns the raw JSON value of [isPrivate].
      *
-     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+    @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
 
     /**
      * Returns the raw JSON value of [namespace].
@@ -124,11 +119,25 @@ private constructor(
     @JsonProperty("namespace") @ExcludeMissing fun _namespace(): JsonField<String> = namespace
 
     /**
-     * Returns the raw JSON value of [isPrivate].
+     * Returns the raw JSON value of [slug].
      *
-     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
+    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+    /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+
+    /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
 
     /**
      * Returns the raw JSON value of [versions].
@@ -157,13 +166,13 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [Schema].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .title()
+         * ```java
          * .description()
-         * .slug()
-         * .namespace()
          * .isPrivate()
+         * .namespace()
+         * .slug()
+         * .title()
+         * .uid()
          * .versions()
          * ```
          */
@@ -173,46 +182,26 @@ private constructor(
     /** A builder for [Schema]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
-        private var title: JsonField<String>? = null
         private var description: JsonField<String>? = null
-        private var slug: JsonField<String>? = null
-        private var namespace: JsonField<String>? = null
         private var isPrivate: JsonField<Boolean>? = null
+        private var namespace: JsonField<String>? = null
+        private var slug: JsonField<String>? = null
+        private var title: JsonField<String>? = null
+        private var uid: JsonField<String>? = null
         private var versions: JsonField<MutableList<ManagedSchemaVersion>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(schema: Schema) = apply {
-            uid = schema.uid
-            title = schema.title
             description = schema.description
-            slug = schema.slug
-            namespace = schema.namespace
             isPrivate = schema.isPrivate
+            namespace = schema.namespace
+            slug = schema.slug
+            title = schema.title
+            uid = schema.uid
             versions = schema.versions.map { it.toMutableList() }
             additionalProperties = schema.additionalProperties.toMutableMap()
         }
-
-        fun uid(uid: String) = uid(JsonField.of(uid))
-
-        /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
-
-        fun title(title: String) = title(JsonField.of(title))
-
-        /**
-         * Sets [Builder.title] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.title] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun title(title: JsonField<String>) = apply { this.title = title }
 
         fun description(description: String) = description(JsonField.of(description))
 
@@ -225,15 +214,16 @@ private constructor(
          */
         fun description(description: JsonField<String>) = apply { this.description = description }
 
-        fun slug(slug: String) = slug(JsonField.of(slug))
+        fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
 
         /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
+         * Sets [Builder.isPrivate] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
-        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
 
         fun namespace(namespace: String) = namespace(JsonField.of(namespace))
 
@@ -246,16 +236,35 @@ private constructor(
          */
         fun namespace(namespace: JsonField<String>) = apply { this.namespace = namespace }
 
-        fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
+        fun slug(slug: String) = slug(JsonField.of(slug))
 
         /**
-         * Sets [Builder.isPrivate] to an arbitrary JSON value.
+         * Sets [Builder.slug] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
+        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+        fun title(title: String) = title(JsonField.of(title))
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { this.title = title }
+
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun versions(versions: List<ManagedSchemaVersion>) = versions(JsonField.of(versions))
 
@@ -307,13 +316,13 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .title()
+         * ```java
          * .description()
-         * .slug()
-         * .namespace()
          * .isPrivate()
+         * .namespace()
+         * .slug()
+         * .title()
+         * .uid()
          * .versions()
          * ```
          *
@@ -321,12 +330,12 @@ private constructor(
          */
         fun build(): Schema =
             Schema(
-                checkRequired("uid", uid),
-                checkRequired("title", title),
                 checkRequired("description", description),
-                checkRequired("slug", slug),
-                checkRequired("namespace", namespace),
                 checkRequired("isPrivate", isPrivate),
+                checkRequired("namespace", namespace),
+                checkRequired("slug", slug),
+                checkRequired("title", title),
+                checkRequired("uid", uid),
                 checkRequired("versions", versions).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -347,12 +356,12 @@ private constructor(
             return@apply
         }
 
-        uid()
-        title()
         description()
-        slug()
-        namespace()
         isPrivate()
+        namespace()
+        slug()
+        title()
+        uid()
         versions().forEach { it.validate() }
         validated = true
     }
@@ -372,12 +381,12 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (title.asKnown().isPresent) 1 else 0) +
-            (if (description.asKnown().isPresent) 1 else 0) +
-            (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (namespace.asKnown().isPresent) 1 else 0) +
+        (if (description.asKnown().isPresent) 1 else 0) +
             (if (isPrivate.asKnown().isPresent) 1 else 0) +
+            (if (namespace.asKnown().isPresent) 1 else 0) +
+            (if (slug.asKnown().isPresent) 1 else 0) +
+            (if (title.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
             (versions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     override fun equals(other: Any?): Boolean {
@@ -386,24 +395,24 @@ private constructor(
         }
 
         return other is Schema &&
-            uid == other.uid &&
-            title == other.title &&
             description == other.description &&
-            slug == other.slug &&
-            namespace == other.namespace &&
             isPrivate == other.isPrivate &&
+            namespace == other.namespace &&
+            slug == other.slug &&
+            title == other.title &&
+            uid == other.uid &&
             versions == other.versions &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
-            uid,
-            title,
             description,
-            slug,
-            namespace,
             isPrivate,
+            namespace,
+            slug,
+            title,
+            uid,
             versions,
             additionalProperties,
         )
@@ -412,5 +421,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Schema{uid=$uid, title=$title, description=$description, slug=$slug, namespace=$namespace, isPrivate=$isPrivate, versions=$versions, additionalProperties=$additionalProperties}"
+        "Schema{description=$description, isPrivate=$isPrivate, namespace=$namespace, slug=$slug, title=$title, uid=$uid, versions=$versions, additionalProperties=$additionalProperties}"
 }

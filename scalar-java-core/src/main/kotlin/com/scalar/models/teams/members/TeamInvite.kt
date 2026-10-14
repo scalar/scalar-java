@@ -18,29 +18,24 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("email", "role", "uid", "expires")
 class TeamInvite
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
     private val email: JsonField<String>,
     private val role: JsonField<Role>,
+    private val uid: JsonField<String>,
     private val expires: JsonField<Double>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("email") @ExcludeMissing email: JsonField<String> = JsonMissing.of(),
         @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("expires") @ExcludeMissing expires: JsonField<Double> = JsonMissing.of(),
-    ) : this(uid, email, role, expires, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun uid(): String = uid.getRequired("uid")
+    ) : this(email, role, uid, expires, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -55,17 +50,16 @@ private constructor(
     fun role(): Role = role.getRequired("role")
 
     /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun uid(): String = uid.getRequired("uid")
+
+    /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun expires(): Optional<Double> = expires.getOptional("expires")
-
-    /**
-     * Returns the raw JSON value of [uid].
-     *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
 
     /**
      * Returns the raw JSON value of [email].
@@ -80,6 +74,13 @@ private constructor(
      * Unlike [role], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("role") @ExcludeMissing fun _role(): JsonField<Role> = role
+
+    /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
 
     /**
      * Returns the raw JSON value of [expires].
@@ -106,10 +107,10 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [TeamInvite].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .email()
          * .role()
+         * .uid()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -118,30 +119,20 @@ private constructor(
     /** A builder for [TeamInvite]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
         private var email: JsonField<String>? = null
         private var role: JsonField<Role>? = null
+        private var uid: JsonField<String>? = null
         private var expires: JsonField<Double> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(teamInvite: TeamInvite) = apply {
-            uid = teamInvite.uid
             email = teamInvite.email
             role = teamInvite.role
+            uid = teamInvite.uid
             expires = teamInvite.expires
             additionalProperties = teamInvite.additionalProperties.toMutableMap()
         }
-
-        fun uid(uid: String) = uid(JsonField.of(uid))
-
-        /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun email(email: String) = email(JsonField.of(email))
 
@@ -162,6 +153,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun role(role: JsonField<Role>) = apply { this.role = role }
+
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun expires(expires: Double) = expires(JsonField.of(expires))
 
@@ -198,19 +199,19 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .email()
          * .role()
+         * .uid()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): TeamInvite =
             TeamInvite(
-                checkRequired("uid", uid),
                 checkRequired("email", email),
                 checkRequired("role", role),
+                checkRequired("uid", uid),
                 expires,
                 additionalProperties.toMutableMap(),
             )
@@ -231,9 +232,9 @@ private constructor(
             return@apply
         }
 
-        uid()
         email()
         role().validate()
+        uid()
         expires()
         validated = true
     }
@@ -253,9 +254,9 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (email.asKnown().isPresent) 1 else 0) +
+        (if (email.asKnown().isPresent) 1 else 0) +
             (role.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
             (if (expires.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -264,19 +265,19 @@ private constructor(
         }
 
         return other is TeamInvite &&
-            uid == other.uid &&
             email == other.email &&
             role == other.role &&
+            uid == other.uid &&
             expires == other.expires &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(uid, email, role, expires, additionalProperties)
+        Objects.hash(email, role, uid, expires, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TeamInvite{uid=$uid, email=$email, role=$role, expires=$expires, additionalProperties=$additionalProperties}"
+        "TeamInvite{email=$email, role=$role, uid=$uid, expires=$expires, additionalProperties=$additionalProperties}"
 }

@@ -15,6 +15,7 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("accessToken")
 class AuthenticationExchangePersonalTokenResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -61,7 +62,7 @@ private constructor(
          * [AuthenticationExchangePersonalTokenResponse].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .accessToken()
          * ```
          */
@@ -119,7 +120,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .accessToken()
          * ```
          *

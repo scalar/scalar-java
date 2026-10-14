@@ -6,13 +6,13 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
-import com.scalar.models.loginPortals.LoginPortal
-import com.scalar.models.loginPortals.LoginPortalCreateParams
-import com.scalar.models.loginPortals.LoginPortalDeleteParams
-import com.scalar.models.loginPortals.LoginPortalListParams
-import com.scalar.models.loginPortals.LoginPortalRetrieveParams
-import com.scalar.models.loginPortals.LoginPortalRetrieveResponse
-import com.scalar.models.loginPortals.LoginPortalUpdateParams
+import com.scalar.models.loginportals.LoginPortal
+import com.scalar.models.loginportals.LoginPortalCreateParams
+import com.scalar.models.loginportals.LoginPortalDeleteParams
+import com.scalar.models.loginportals.LoginPortalListParams
+import com.scalar.models.loginportals.LoginPortalRetrieveParams
+import com.scalar.models.loginportals.LoginPortalRetrieveResponse
+import com.scalar.models.loginportals.LoginPortalUpdateParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -56,7 +56,7 @@ interface LoginPortalServiceAsync {
     /** @see retrieve */
     fun retrieve(
         slug: String,
-        params: LoginPortalRetrieveParams,
+        params: LoginPortalRetrieveParams = LoginPortalRetrieveParams.none(),
     ): CompletableFuture<LoginPortalRetrieveResponse> =
         retrieve(slug, params, RequestOptions.none())
 
@@ -89,8 +89,10 @@ interface LoginPortalServiceAsync {
     ): CompletableFuture<Any?> = update(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see update */
-    fun update(slug: String, params: LoginPortalUpdateParams): CompletableFuture<Any?> =
-        update(slug, params, RequestOptions.none())
+    fun update(
+        slug: String,
+        params: LoginPortalUpdateParams = LoginPortalUpdateParams.none(),
+    ): CompletableFuture<Any?> = update(slug, params, RequestOptions.none())
 
     /** @see update */
     fun update(
@@ -116,8 +118,9 @@ interface LoginPortalServiceAsync {
     ): CompletableFuture<List<LoginPortal>>
 
     /** @see list */
-    fun list(params: LoginPortalListParams): CompletableFuture<List<LoginPortal>> =
-        list(params, RequestOptions.none())
+    fun list(
+        params: LoginPortalListParams = LoginPortalListParams.none()
+    ): CompletableFuture<List<LoginPortal>> = list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<List<LoginPortal>> =
@@ -134,8 +137,10 @@ interface LoginPortalServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
-    fun delete(slug: String, params: LoginPortalDeleteParams): CompletableFuture<Any?> =
-        delete(slug, params, RequestOptions.none())
+    fun delete(
+        slug: String,
+        params: LoginPortalDeleteParams = LoginPortalDeleteParams.none(),
+    ): CompletableFuture<Any?> = delete(slug, params, RequestOptions.none())
 
     /** @see delete */
     fun delete(
@@ -199,7 +204,7 @@ interface LoginPortalServiceAsync {
         /** @see retrieve */
         fun retrieve(
             slug: String,
-            params: LoginPortalRetrieveParams,
+            params: LoginPortalRetrieveParams = LoginPortalRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<LoginPortalRetrieveResponse>> =
             retrieve(slug, params, RequestOptions.none())
 
@@ -240,7 +245,7 @@ interface LoginPortalServiceAsync {
         /** @see update */
         fun update(
             slug: String,
-            params: LoginPortalUpdateParams,
+            params: LoginPortalUpdateParams = LoginPortalUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = update(slug, params, RequestOptions.none())
 
         /** @see update */
@@ -275,7 +280,7 @@ interface LoginPortalServiceAsync {
 
         /** @see list */
         fun list(
-            params: LoginPortalListParams
+            params: LoginPortalListParams = LoginPortalListParams.none()
         ): CompletableFuture<HttpResponseFor<List<LoginPortal>>> =
             list(params, RequestOptions.none())
 
@@ -303,7 +308,7 @@ interface LoginPortalServiceAsync {
         /** @see delete */
         fun delete(
             slug: String,
-            params: LoginPortalDeleteParams,
+            params: LoginPortalDeleteParams = LoginPortalDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = delete(slug, params, RequestOptions.none())
 
         /** @see delete */

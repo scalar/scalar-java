@@ -39,13 +39,13 @@ interface MemberService {
     ): Any? = update(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see update */
+    fun update(params: MemberUpdateParams): Any? = update(params, RequestOptions.none())
+
+    /** @see update */
     fun update(
         params: MemberUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see update */
-    fun update(params: MemberUpdateParams): Any? = update(params, RequestOptions.none())
 
     /** List the members of the current team, along with the invites still outstanding. */
     fun list(): MemberListResponse = list(MemberListParams.none())
@@ -57,7 +57,8 @@ interface MemberService {
     ): MemberListResponse
 
     /** @see list */
-    fun list(params: MemberListParams): MemberListResponse = list(params, RequestOptions.none())
+    fun list(params: MemberListParams = MemberListParams.none()): MemberListResponse =
+        list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): MemberListResponse =
@@ -74,7 +75,7 @@ interface MemberService {
     ): Any? = delete(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see delete */
-    fun delete(uid: String, params: MemberDeleteParams): Any? =
+    fun delete(uid: String, params: MemberDeleteParams = MemberDeleteParams.none()): Any? =
         delete(uid, params, RequestOptions.none())
 
     /** @see delete */
@@ -118,15 +119,15 @@ interface MemberService {
 
         /** @see update */
         @MustBeClosed
+        fun update(params: MemberUpdateParams): HttpResponseFor<Any?> =
+            update(params, RequestOptions.none())
+
+        /** @see update */
+        @MustBeClosed
         fun update(
             params: MemberUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see update */
-        @MustBeClosed
-        fun update(params: MemberUpdateParams): HttpResponseFor<Any?> =
-            update(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `get /v1/teams/members`, but is otherwise the same as
@@ -144,8 +145,9 @@ interface MemberService {
 
         /** @see list */
         @MustBeClosed
-        fun list(params: MemberListParams): HttpResponseFor<MemberListResponse> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: MemberListParams = MemberListParams.none()
+        ): HttpResponseFor<MemberListResponse> = list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
@@ -169,8 +171,10 @@ interface MemberService {
 
         /** @see delete */
         @MustBeClosed
-        fun delete(uid: String, params: MemberDeleteParams): HttpResponseFor<Any?> =
-            delete(uid, params, RequestOptions.none())
+        fun delete(
+            uid: String,
+            params: MemberDeleteParams = MemberDeleteParams.none(),
+        ): HttpResponseFor<Any?> = delete(uid, params, RequestOptions.none())
 
         /** @see delete */
         @MustBeClosed

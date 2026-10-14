@@ -38,6 +38,12 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    fun mcpVersion(): Optional<String> = body.mcpVersion()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
     /**
@@ -49,15 +55,16 @@ private constructor(
      */
     fun slug(): Optional<String> = body.slug()
 
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun mcpVersion(): Optional<String> = body.mcpVersion()
-
     fun id(): String = id
 
     fun installationId(): Optional<String> = Optional.ofNullable(installationId)
+
+    /**
+     * Returns the raw JSON value of [mcpVersion].
+     *
+     * Unlike [mcpVersion], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _mcpVersion(): JsonField<String> = body._mcpVersion()
 
     /**
      * Returns the raw JSON value of [name].
@@ -72,13 +79,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _slug(): JsonField<String> = body._slug()
-
-    /**
-     * Returns the raw JSON value of [mcpVersion].
-     *
-     * Unlike [mcpVersion], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _mcpVersion(): JsonField<String> = body._mcpVersion()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -96,7 +96,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [InstallationUpdateParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .id()
          * ```
          */
@@ -134,11 +134,27 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [mcpVersion]
          * - [name]
          * - [slug]
-         * - [mcpVersion]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        fun mcpVersion(mcpVersion: String?) = apply { body.mcpVersion(mcpVersion) }
+
+        /** Alias for calling [Builder.mcpVersion] with `mcpVersion.orElse(null)`. */
+        fun mcpVersion(mcpVersion: Optional<String>) = apply {
+            body.mcpVersion(mcpVersion.getOrNull())
+        }
+
+        /**
+         * Sets [Builder.mcpVersion] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.mcpVersion] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun mcpVersion(mcpVersion: JsonField<String>) = apply { body.mcpVersion(mcpVersion) }
 
         fun name(name: String) = apply { body.name(name) }
 
@@ -163,22 +179,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
-
-        fun mcpVersion(mcpVersion: String?) = apply { body.mcpVersion(mcpVersion) }
-
-        /** Alias for calling [Builder.mcpVersion] with `mcpVersion.orElse(null)`. */
-        fun mcpVersion(mcpVersion: Optional<String>) = apply {
-            body.mcpVersion(mcpVersion.getOrNull())
-        }
-
-        /**
-         * Sets [Builder.mcpVersion] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.mcpVersion] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun mcpVersion(mcpVersion: JsonField<String>) = apply { body.mcpVersion(mcpVersion) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -303,7 +303,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .id()
          * ```
          *
@@ -332,23 +332,30 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("mcpVersion", "name", "slug")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val mcpVersion: JsonField<String>,
         private val name: JsonField<String>,
         private val slug: JsonField<String>,
-        private val mcpVersion: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
             @JsonProperty("mcpVersion")
             @ExcludeMissing
             mcpVersion: JsonField<String> = JsonMissing.of(),
-        ) : this(name, slug, mcpVersion, mutableMapOf())
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+        ) : this(mcpVersion, name, slug, mutableMapOf())
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun mcpVersion(): Optional<String> = mcpVersion.getOptional("mcpVersion")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -366,10 +373,13 @@ private constructor(
         fun slug(): Optional<String> = slug.getOptional("slug")
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * Returns the raw JSON value of [mcpVersion].
+         *
+         * Unlike [mcpVersion], this method doesn't throw if the JSON field has an unexpected type.
          */
-        fun mcpVersion(): Optional<String> = mcpVersion.getOptional("mcpVersion")
+        @JsonProperty("mcpVersion")
+        @ExcludeMissing
+        fun _mcpVersion(): JsonField<String> = mcpVersion
 
         /**
          * Returns the raw JSON value of [name].
@@ -384,15 +394,6 @@ private constructor(
          * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-        /**
-         * Returns the raw JSON value of [mcpVersion].
-         *
-         * Unlike [mcpVersion], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("mcpVersion")
-        @ExcludeMissing
-        fun _mcpVersion(): JsonField<String> = mcpVersion
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -415,18 +416,32 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var mcpVersion: JsonField<String> = JsonMissing.of()
             private var name: JsonField<String> = JsonMissing.of()
             private var slug: JsonField<String> = JsonMissing.of()
-            private var mcpVersion: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
+                mcpVersion = body.mcpVersion
                 name = body.name
                 slug = body.slug
-                mcpVersion = body.mcpVersion
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
+
+            fun mcpVersion(mcpVersion: String?) = mcpVersion(JsonField.ofNullable(mcpVersion))
+
+            /** Alias for calling [Builder.mcpVersion] with `mcpVersion.orElse(null)`. */
+            fun mcpVersion(mcpVersion: Optional<String>) = mcpVersion(mcpVersion.getOrNull())
+
+            /**
+             * Sets [Builder.mcpVersion] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.mcpVersion] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun mcpVersion(mcpVersion: JsonField<String>) = apply { this.mcpVersion = mcpVersion }
 
             fun name(name: String) = name(JsonField.of(name))
 
@@ -454,20 +469,6 @@ private constructor(
              */
             fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
-            fun mcpVersion(mcpVersion: String?) = mcpVersion(JsonField.ofNullable(mcpVersion))
-
-            /** Alias for calling [Builder.mcpVersion] with `mcpVersion.orElse(null)`. */
-            fun mcpVersion(mcpVersion: Optional<String>) = mcpVersion(mcpVersion.getOrNull())
-
-            /**
-             * Sets [Builder.mcpVersion] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.mcpVersion] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun mcpVersion(mcpVersion: JsonField<String>) = apply { this.mcpVersion = mcpVersion }
-
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -492,7 +493,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Body = Body(name, slug, mcpVersion, additionalProperties.toMutableMap())
+            fun build(): Body = Body(mcpVersion, name, slug, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -511,9 +512,9 @@ private constructor(
                 return@apply
             }
 
+            mcpVersion()
             name()
             slug()
-            mcpVersion()
             validated = true
         }
 
@@ -533,9 +534,9 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (name.asKnown().isPresent) 1 else 0) +
-                (if (slug.asKnown().isPresent) 1 else 0) +
-                (if (mcpVersion.asKnown().isPresent) 1 else 0)
+            (if (mcpVersion.asKnown().isPresent) 1 else 0) +
+                (if (name.asKnown().isPresent) 1 else 0) +
+                (if (slug.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -543,20 +544,20 @@ private constructor(
             }
 
             return other is Body &&
+                mcpVersion == other.mcpVersion &&
                 name == other.name &&
                 slug == other.slug &&
-                mcpVersion == other.mcpVersion &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(name, slug, mcpVersion, additionalProperties)
+            Objects.hash(mcpVersion, name, slug, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, slug=$slug, mcpVersion=$mcpVersion, additionalProperties=$additionalProperties}"
+            "Body{mcpVersion=$mcpVersion, name=$name, slug=$slug, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

@@ -15,25 +15,20 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("branch", "repo")
 class RepositoryLinkResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val repo: JsonField<String>,
     private val branch: JsonField<String>,
+    private val repo: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("repo") @ExcludeMissing repo: JsonField<String> = JsonMissing.of(),
         @JsonProperty("branch") @ExcludeMissing branch: JsonField<String> = JsonMissing.of(),
-    ) : this(repo, branch, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun repo(): String = repo.getRequired("repo")
+        @JsonProperty("repo") @ExcludeMissing repo: JsonField<String> = JsonMissing.of(),
+    ) : this(branch, repo, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -42,11 +37,10 @@ private constructor(
     fun branch(): String = branch.getRequired("branch")
 
     /**
-     * Returns the raw JSON value of [repo].
-     *
-     * Unlike [repo], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    @JsonProperty("repo") @ExcludeMissing fun _repo(): JsonField<String> = repo
+    fun repo(): String = repo.getRequired("repo")
 
     /**
      * Returns the raw JSON value of [branch].
@@ -54,6 +48,13 @@ private constructor(
      * Unlike [branch], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("branch") @ExcludeMissing fun _branch(): JsonField<String> = branch
+
+    /**
+     * Returns the raw JSON value of [repo].
+     *
+     * Unlike [repo], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("repo") @ExcludeMissing fun _repo(): JsonField<String> = repo
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -73,9 +74,9 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [RepositoryLinkResponse].
          *
          * The following fields are required:
-         * ```kotlin
-         * .repo()
+         * ```java
          * .branch()
+         * .repo()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -84,26 +85,16 @@ private constructor(
     /** A builder for [RepositoryLinkResponse]. */
     class Builder internal constructor() {
 
-        private var repo: JsonField<String>? = null
         private var branch: JsonField<String>? = null
+        private var repo: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(repositoryLinkResponse: RepositoryLinkResponse) = apply {
-            repo = repositoryLinkResponse.repo
             branch = repositoryLinkResponse.branch
+            repo = repositoryLinkResponse.repo
             additionalProperties = repositoryLinkResponse.additionalProperties.toMutableMap()
         }
-
-        fun repo(repo: String) = repo(JsonField.of(repo))
-
-        /**
-         * Sets [Builder.repo] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.repo] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun repo(repo: JsonField<String>) = apply { this.repo = repo }
 
         fun branch(branch: String) = branch(JsonField.of(branch))
 
@@ -114,6 +105,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun branch(branch: JsonField<String>) = apply { this.branch = branch }
+
+        fun repo(repo: String) = repo(JsonField.of(repo))
+
+        /**
+         * Sets [Builder.repo] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.repo] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun repo(repo: JsonField<String>) = apply { this.repo = repo }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -140,17 +141,17 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .repo()
+         * ```java
          * .branch()
+         * .repo()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): RepositoryLinkResponse =
             RepositoryLinkResponse(
-                checkRequired("repo", repo),
                 checkRequired("branch", branch),
+                checkRequired("repo", repo),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -170,8 +171,8 @@ private constructor(
             return@apply
         }
 
-        repo()
         branch()
+        repo()
         validated = true
     }
 
@@ -190,7 +191,7 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (repo.asKnown().isPresent) 1 else 0) + (if (branch.asKnown().isPresent) 1 else 0)
+        (if (branch.asKnown().isPresent) 1 else 0) + (if (repo.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -198,15 +199,15 @@ private constructor(
         }
 
         return other is RepositoryLinkResponse &&
-            repo == other.repo &&
             branch == other.branch &&
+            repo == other.repo &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(repo, branch, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(branch, repo, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RepositoryLinkResponse{repo=$repo, branch=$branch, additionalProperties=$additionalProperties}"
+        "RepositoryLinkResponse{branch=$branch, repo=$repo, additionalProperties=$additionalProperties}"
 }

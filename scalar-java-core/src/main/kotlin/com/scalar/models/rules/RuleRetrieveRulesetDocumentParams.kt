@@ -38,7 +38,7 @@ private constructor(
          * [RuleRetrieveRulesetDocumentParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
          * ```
          */
@@ -174,7 +174,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
          * ```
          *

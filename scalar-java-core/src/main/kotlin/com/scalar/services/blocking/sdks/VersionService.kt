@@ -37,13 +37,13 @@ interface VersionService {
     ): Any? = create(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see create */
+    fun create(params: VersionCreateParams): Any? = create(params, RequestOptions.none())
+
+    /** @see create */
     fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see create */
-    fun create(params: VersionCreateParams): Any? = create(params, RequestOptions.none())
 
     /** Permanently delete one version of an SDK. */
     fun delete(version: String, params: VersionDeleteParams): Any? =
@@ -57,13 +57,13 @@ interface VersionService {
     ): Any? = delete(params.toBuilder().version(version).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: VersionDeleteParams): Any? = delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: VersionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see delete */
-    fun delete(params: VersionDeleteParams): Any? = delete(params, RequestOptions.none())
 
     /** A view of [VersionService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -93,15 +93,15 @@ interface VersionService {
 
         /** @see create */
         @MustBeClosed
+        fun create(params: VersionCreateParams): HttpResponseFor<Any?> =
+            create(params, RequestOptions.none())
+
+        /** @see create */
+        @MustBeClosed
         fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see create */
-        @MustBeClosed
-        fun create(params: VersionCreateParams): HttpResponseFor<Any?> =
-            create(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/sdks/{uid}/versions/{version}`, but is
@@ -122,14 +122,14 @@ interface VersionService {
 
         /** @see delete */
         @MustBeClosed
+        fun delete(params: VersionDeleteParams): HttpResponseFor<Any?> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
+        @MustBeClosed
         fun delete(
             params: VersionDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see delete */
-        @MustBeClosed
-        fun delete(params: VersionDeleteParams): HttpResponseFor<Any?> =
-            delete(params, RequestOptions.none())
     }
 }

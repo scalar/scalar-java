@@ -60,7 +60,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [ThemeReplaceDocumentParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .document()
          * ```
          */
@@ -230,7 +230,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .document()
          * ```
          *
@@ -257,6 +257,7 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("document")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -300,7 +301,7 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .document()
              * ```
              */
@@ -355,7 +356,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .document()
              * ```
              *

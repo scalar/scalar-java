@@ -37,7 +37,7 @@ interface InviteService {
     ): Any? = cancel(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see cancel */
-    fun cancel(uid: String, params: InviteCancelParams): Any? =
+    fun cancel(uid: String, params: InviteCancelParams = InviteCancelParams.none()): Any? =
         cancel(uid, params, RequestOptions.none())
 
     /** @see cancel */
@@ -73,7 +73,7 @@ interface InviteService {
     ): Any? = resend(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see resend */
-    fun resend(uid: String, params: InviteResendParams): Any? =
+    fun resend(uid: String, params: InviteResendParams = InviteResendParams.none()): Any? =
         resend(uid, params, RequestOptions.none())
 
     /** @see resend */
@@ -116,8 +116,10 @@ interface InviteService {
 
         /** @see cancel */
         @MustBeClosed
-        fun cancel(uid: String, params: InviteCancelParams): HttpResponseFor<Any?> =
-            cancel(uid, params, RequestOptions.none())
+        fun cancel(
+            uid: String,
+            params: InviteCancelParams = InviteCancelParams.none(),
+        ): HttpResponseFor<Any?> = cancel(uid, params, RequestOptions.none())
 
         /** @see cancel */
         @MustBeClosed
@@ -168,8 +170,10 @@ interface InviteService {
 
         /** @see resend */
         @MustBeClosed
-        fun resend(uid: String, params: InviteResendParams): HttpResponseFor<Any?> =
-            resend(uid, params, RequestOptions.none())
+        fun resend(
+            uid: String,
+            params: InviteResendParams = InviteResendParams.none(),
+        ): HttpResponseFor<Any?> = resend(uid, params, RequestOptions.none())
 
         /** @see resend */
         @MustBeClosed

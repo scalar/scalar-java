@@ -50,15 +50,15 @@ interface InstallationService {
 
     /** @see retrieve */
     @Deprecated("deprecated")
+    fun retrieve(params: InstallationRetrieveParams): McpInstallation =
+        retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         params: InstallationRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): McpInstallation
-
-    /** @see retrieve */
-    @Deprecated("deprecated")
-    fun retrieve(params: InstallationRetrieveParams): McpInstallation =
-        retrieve(params, RequestOptions.none())
 
     /**
      * Update an installation. Deprecated: address the environment by slug with the
@@ -79,15 +79,15 @@ interface InstallationService {
 
     /** @see update */
     @Deprecated("deprecated")
+    fun update(params: InstallationUpdateParams): McpInstallation =
+        update(params, RequestOptions.none())
+
+    /** @see update */
+    @Deprecated("deprecated")
     fun update(
         params: InstallationUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): McpInstallation
-
-    /** @see update */
-    @Deprecated("deprecated")
-    fun update(params: InstallationUpdateParams): McpInstallation =
-        update(params, RequestOptions.none())
 
     /**
      * List the installations of an MCP server. An installation is what an MCP client connects to.
@@ -102,8 +102,10 @@ interface InstallationService {
     ): List<McpInstallationListItem> = list(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see list */
-    fun list(id: String, params: InstallationListParams): List<McpInstallationListItem> =
-        list(id, params, RequestOptions.none())
+    fun list(
+        id: String,
+        params: InstallationListParams = InstallationListParams.none(),
+    ): List<McpInstallationListItem> = list(id, params, RequestOptions.none())
 
     /** @see list */
     fun list(
@@ -137,14 +139,14 @@ interface InstallationService {
 
     /** @see delete */
     @Deprecated("deprecated")
+    fun delete(params: InstallationDeleteParams): Any? = delete(params, RequestOptions.none())
+
+    /** @see delete */
+    @Deprecated("deprecated")
     fun delete(
         params: InstallationDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see delete */
-    @Deprecated("deprecated")
-    fun delete(params: InstallationDeleteParams): Any? = delete(params, RequestOptions.none())
 
     /**
      * Let an access group reach a private installation. Requires a team admin. Deprecated: address
@@ -167,15 +169,15 @@ interface InstallationService {
 
     /** @see createAccessGroup */
     @Deprecated("deprecated")
+    fun createAccessGroup(params: InstallationCreateAccessGroupParams): Any? =
+        createAccessGroup(params, RequestOptions.none())
+
+    /** @see createAccessGroup */
+    @Deprecated("deprecated")
     fun createAccessGroup(
         params: InstallationCreateAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see createAccessGroup */
-    @Deprecated("deprecated")
-    fun createAccessGroup(params: InstallationCreateAccessGroupParams): Any? =
-        createAccessGroup(params, RequestOptions.none())
 
     /**
      * Stop an access group reaching a private installation. Requires a team admin. Deprecated:
@@ -198,15 +200,15 @@ interface InstallationService {
 
     /** @see deleteAccessGroup */
     @Deprecated("deprecated")
+    fun deleteAccessGroup(params: InstallationDeleteAccessGroupParams): Any? =
+        deleteAccessGroup(params, RequestOptions.none())
+
+    /** @see deleteAccessGroup */
+    @Deprecated("deprecated")
     fun deleteAccessGroup(
         params: InstallationDeleteAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see deleteAccessGroup */
-    @Deprecated("deprecated")
-    fun deleteAccessGroup(params: InstallationDeleteAccessGroupParams): Any? =
-        deleteAccessGroup(params, RequestOptions.none())
 
     /**
      * A view of [InstallationService] that provides access to raw HTTP responses for each method.
@@ -248,16 +250,16 @@ interface InstallationService {
         /** @see retrieve */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun retrieve(
-            params: InstallationRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpInstallation>
+        fun retrieve(params: InstallationRetrieveParams): HttpResponseFor<McpInstallation> =
+            retrieve(params, RequestOptions.none())
 
         /** @see retrieve */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun retrieve(params: InstallationRetrieveParams): HttpResponseFor<McpInstallation> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(
+            params: InstallationRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<McpInstallation>
 
         /**
          * Returns a raw HTTP response for `patch
@@ -284,16 +286,16 @@ interface InstallationService {
         /** @see update */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun update(
-            params: InstallationUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpInstallation>
+        fun update(params: InstallationUpdateParams): HttpResponseFor<McpInstallation> =
+            update(params, RequestOptions.none())
 
         /** @see update */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun update(params: InstallationUpdateParams): HttpResponseFor<McpInstallation> =
-            update(params, RequestOptions.none())
+        fun update(
+            params: InstallationUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<McpInstallation>
 
         /**
          * Returns a raw HTTP response for `get /v1/mcp/servers/{id}/installations`, but is
@@ -316,7 +318,7 @@ interface InstallationService {
         @MustBeClosed
         fun list(
             id: String,
-            params: InstallationListParams,
+            params: InstallationListParams = InstallationListParams.none(),
         ): HttpResponseFor<List<McpInstallationListItem>> = list(id, params, RequestOptions.none())
 
         /** @see list */
@@ -364,16 +366,16 @@ interface InstallationService {
         /** @see delete */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun delete(
-            params: InstallationDeleteParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+        fun delete(params: InstallationDeleteParams): HttpResponseFor<Any?> =
+            delete(params, RequestOptions.none())
 
         /** @see delete */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun delete(params: InstallationDeleteParams): HttpResponseFor<Any?> =
-            delete(params, RequestOptions.none())
+        fun delete(
+            params: InstallationDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
 
         /**
          * Returns a raw HTTP response for `post
@@ -403,16 +405,16 @@ interface InstallationService {
         /** @see createAccessGroup */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun createAccessGroup(
-            params: InstallationCreateAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+        fun createAccessGroup(params: InstallationCreateAccessGroupParams): HttpResponseFor<Any?> =
+            createAccessGroup(params, RequestOptions.none())
 
         /** @see createAccessGroup */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun createAccessGroup(params: InstallationCreateAccessGroupParams): HttpResponseFor<Any?> =
-            createAccessGroup(params, RequestOptions.none())
+        fun createAccessGroup(
+            params: InstallationCreateAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
 
         /**
          * Returns a raw HTTP response for `delete
@@ -442,15 +444,15 @@ interface InstallationService {
         /** @see deleteAccessGroup */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun deleteAccessGroup(
-            params: InstallationDeleteAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+        fun deleteAccessGroup(params: InstallationDeleteAccessGroupParams): HttpResponseFor<Any?> =
+            deleteAccessGroup(params, RequestOptions.none())
 
         /** @see deleteAccessGroup */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun deleteAccessGroup(params: InstallationDeleteAccessGroupParams): HttpResponseFor<Any?> =
-            deleteAccessGroup(params, RequestOptions.none())
+        fun deleteAccessGroup(
+            params: InstallationDeleteAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
     }
 }

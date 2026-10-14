@@ -42,14 +42,14 @@ interface VersionServiceAsync {
         create(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see create */
+    fun create(params: VersionCreateParams): CompletableFuture<VersionCreateResponse> =
+        create(params, RequestOptions.none())
+
+    /** @see create */
     fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<VersionCreateResponse>
-
-    /** @see create */
-    fun create(params: VersionCreateParams): CompletableFuture<VersionCreateResponse> =
-        create(params, RequestOptions.none())
 
     /** Get a specific schema version document. */
     fun retrieve(semver: String, params: VersionRetrieveParams): CompletableFuture<String> =
@@ -64,14 +64,14 @@ interface VersionServiceAsync {
         retrieve(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see retrieve */
+    fun retrieve(params: VersionRetrieveParams): CompletableFuture<String> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
     fun retrieve(
         params: VersionRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<String>
-
-    /** @see retrieve */
-    fun retrieve(params: VersionRetrieveParams): CompletableFuture<String> =
-        retrieve(params, RequestOptions.none())
 
     /** Delete a schema version. */
     fun delete(semver: String, params: VersionDeleteParams): CompletableFuture<Any?> =
@@ -85,14 +85,14 @@ interface VersionServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: VersionDeleteParams): CompletableFuture<Any?> =
+        delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: VersionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see delete */
-    fun delete(params: VersionDeleteParams): CompletableFuture<Any?> =
-        delete(params, RequestOptions.none())
 
     /**
      * A view of [VersionServiceAsync] that provides access to raw HTTP responses for each method.
@@ -128,15 +128,15 @@ interface VersionServiceAsync {
 
         /** @see create */
         fun create(
-            params: VersionCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>>
-
-        /** @see create */
-        fun create(
             params: VersionCreateParams
         ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
             create(params, RequestOptions.none())
+
+        /** @see create */
+        fun create(
+            params: VersionCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>>
 
         /**
          * Returns a raw HTTP response for `get /v1/schemas/{namespace}/{slug}/version/{semver}`,
@@ -157,14 +157,14 @@ interface VersionServiceAsync {
             retrieve(params.toBuilder().semver(semver).build(), requestOptions)
 
         /** @see retrieve */
+        fun retrieve(params: VersionRetrieveParams): CompletableFuture<HttpResponseFor<String>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see retrieve */
         fun retrieve(
             params: VersionRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<String>>
-
-        /** @see retrieve */
-        fun retrieve(params: VersionRetrieveParams): CompletableFuture<HttpResponseFor<String>> =
-            retrieve(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/schemas/{namespace}/{slug}/version/{semver}`,
@@ -184,13 +184,13 @@ interface VersionServiceAsync {
             delete(params.toBuilder().semver(semver).build(), requestOptions)
 
         /** @see delete */
+        fun delete(params: VersionDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
         fun delete(
             params: VersionDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see delete */
-        fun delete(params: VersionDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(params, RequestOptions.none())
     }
 }

@@ -5,13 +5,13 @@ package com.scalar.services.async
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.accessGroups.AccessGroupCreateParams
-import com.scalar.models.accessGroups.AccessGroupCreateResponse
-import com.scalar.models.accessGroups.AccessGroupDeleteParams
-import com.scalar.models.accessGroups.AccessGroupRetrieveParams
-import com.scalar.models.accessGroups.AccessGroupRetrieveResponse
-import com.scalar.models.accessGroups.AccessGroupUpdateParams
-import com.scalar.services.async.accessGroups.DomainServiceAsync
+import com.scalar.models.accessgroups.AccessGroupCreateParams
+import com.scalar.models.accessgroups.AccessGroupCreateResponse
+import com.scalar.models.accessgroups.AccessGroupDeleteParams
+import com.scalar.models.accessgroups.AccessGroupRetrieveParams
+import com.scalar.models.accessgroups.AccessGroupRetrieveResponse
+import com.scalar.models.accessgroups.AccessGroupUpdateParams
+import com.scalar.services.async.accessgroups.DomainServiceAsync
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -48,8 +48,9 @@ interface AccessGroupServiceAsync {
     ): CompletableFuture<AccessGroupCreateResponse>
 
     /** @see create */
-    fun create(params: AccessGroupCreateParams): CompletableFuture<AccessGroupCreateResponse> =
-        create(params, RequestOptions.none())
+    fun create(
+        params: AccessGroupCreateParams = AccessGroupCreateParams.none()
+    ): CompletableFuture<AccessGroupCreateResponse> = create(params, RequestOptions.none())
 
     /** @see create */
     fun create(requestOptions: RequestOptions): CompletableFuture<AccessGroupCreateResponse> =
@@ -70,7 +71,7 @@ interface AccessGroupServiceAsync {
     /** @see retrieve */
     fun retrieve(
         slug: String,
-        params: AccessGroupRetrieveParams,
+        params: AccessGroupRetrieveParams = AccessGroupRetrieveParams.none(),
     ): CompletableFuture<AccessGroupRetrieveResponse> =
         retrieve(slug, params, RequestOptions.none())
 
@@ -108,8 +109,10 @@ interface AccessGroupServiceAsync {
         update(params.toBuilder().pathSlug(pathSlug).build(), requestOptions)
 
     /** @see update */
-    fun update(pathSlug: String, params: AccessGroupUpdateParams): CompletableFuture<Any?> =
-        update(pathSlug, params, RequestOptions.none())
+    fun update(
+        pathSlug: String,
+        params: AccessGroupUpdateParams = AccessGroupUpdateParams.none(),
+    ): CompletableFuture<Any?> = update(pathSlug, params, RequestOptions.none())
 
     /** @see update */
     fun update(
@@ -136,8 +139,10 @@ interface AccessGroupServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
-    fun delete(slug: String, params: AccessGroupDeleteParams): CompletableFuture<Any?> =
-        delete(slug, params, RequestOptions.none())
+    fun delete(
+        slug: String,
+        params: AccessGroupDeleteParams = AccessGroupDeleteParams.none(),
+    ): CompletableFuture<Any?> = delete(slug, params, RequestOptions.none())
 
     /** @see delete */
     fun delete(
@@ -186,7 +191,7 @@ interface AccessGroupServiceAsync {
 
         /** @see create */
         fun create(
-            params: AccessGroupCreateParams
+            params: AccessGroupCreateParams = AccessGroupCreateParams.none()
         ): CompletableFuture<HttpResponseFor<AccessGroupCreateResponse>> =
             create(params, RequestOptions.none())
 
@@ -216,7 +221,7 @@ interface AccessGroupServiceAsync {
         /** @see retrieve */
         fun retrieve(
             slug: String,
-            params: AccessGroupRetrieveParams,
+            params: AccessGroupRetrieveParams = AccessGroupRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<AccessGroupRetrieveResponse>> =
             retrieve(slug, params, RequestOptions.none())
 
@@ -257,7 +262,7 @@ interface AccessGroupServiceAsync {
         /** @see update */
         fun update(
             pathSlug: String,
-            params: AccessGroupUpdateParams,
+            params: AccessGroupUpdateParams = AccessGroupUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> =
             update(pathSlug, params, RequestOptions.none())
 
@@ -296,7 +301,7 @@ interface AccessGroupServiceAsync {
         /** @see delete */
         fun delete(
             slug: String,
-            params: AccessGroupDeleteParams,
+            params: AccessGroupDeleteParams = AccessGroupDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = delete(slug, params, RequestOptions.none())
 
         /** @see delete */

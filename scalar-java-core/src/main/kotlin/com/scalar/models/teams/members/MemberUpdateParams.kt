@@ -61,7 +61,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [MemberUpdateParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .role()
          * ```
          */
@@ -231,7 +231,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .role()
          * ```
          *
@@ -258,6 +258,7 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("role")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -301,7 +302,7 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .role()
              * ```
              */
@@ -356,7 +357,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .role()
              * ```
              *

@@ -32,19 +32,13 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun title(): Optional<String> = body.title()
+    fun apiUid(): Optional<String> = body.apiUid()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun slug(): Optional<String> = body.slug()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun isPrivate(): Optional<Boolean> = body.isPrivate()
+    fun apiVersion(): Optional<String> = body.apiVersion()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -56,43 +50,21 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun apiUid(): Optional<String> = body.apiUid()
+    fun isPrivate(): Optional<Boolean> = body.isPrivate()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun apiVersion(): Optional<String> = body.apiVersion()
+    fun slug(): Optional<String> = body.slug()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun title(): Optional<String> = body.title()
 
     fun uid(): Optional<String> = Optional.ofNullable(uid)
-
-    /**
-     * Returns the raw JSON value of [title].
-     *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _title(): JsonField<String> = body._title()
-
-    /**
-     * Returns the raw JSON value of [slug].
-     *
-     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _slug(): JsonField<String> = body._slug()
-
-    /**
-     * Returns the raw JSON value of [isPrivate].
-     *
-     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _isPrivate(): JsonField<Boolean> = body._isPrivate()
-
-    /**
-     * Returns the raw JSON value of [config].
-     *
-     * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _config(): JsonField<String> = body._config()
 
     /**
      * Returns the raw JSON value of [apiUid].
@@ -107,6 +79,34 @@ private constructor(
      * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _apiVersion(): JsonField<String> = body._apiVersion()
+
+    /**
+     * Returns the raw JSON value of [config].
+     *
+     * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _config(): JsonField<String> = body._config()
+
+    /**
+     * Returns the raw JSON value of [isPrivate].
+     *
+     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _isPrivate(): JsonField<Boolean> = body._isPrivate()
+
+    /**
+     * Returns the raw JSON value of [slug].
+     *
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _slug(): JsonField<String> = body._slug()
+
+    /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _title(): JsonField<String> = body._title()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -152,55 +152,14 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [title]
-         * - [slug]
-         * - [isPrivate]
-         * - [config]
          * - [apiUid]
+         * - [apiVersion]
+         * - [config]
+         * - [isPrivate]
+         * - [slug]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
-
-        fun title(title: String) = apply { body.title(title) }
-
-        /**
-         * Sets [Builder.title] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.title] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun title(title: JsonField<String>) = apply { body.title(title) }
-
-        fun slug(slug: String) = apply { body.slug(slug) }
-
-        /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
-
-        fun isPrivate(isPrivate: Boolean) = apply { body.isPrivate(isPrivate) }
-
-        /**
-         * Sets [Builder.isPrivate] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { body.isPrivate(isPrivate) }
-
-        fun config(config: String) = apply { body.config(config) }
-
-        /**
-         * Sets [Builder.config] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.config] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun config(config: JsonField<String>) = apply { body.config(config) }
 
         fun apiUid(apiUid: String?) = apply { body.apiUid(apiUid) }
 
@@ -230,6 +189,47 @@ private constructor(
          * value.
          */
         fun apiVersion(apiVersion: JsonField<String>) = apply { body.apiVersion(apiVersion) }
+
+        fun config(config: String) = apply { body.config(config) }
+
+        /**
+         * Sets [Builder.config] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.config] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun config(config: JsonField<String>) = apply { body.config(config) }
+
+        fun isPrivate(isPrivate: Boolean) = apply { body.isPrivate(isPrivate) }
+
+        /**
+         * Sets [Builder.isPrivate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { body.isPrivate(isPrivate) }
+
+        fun slug(slug: String) = apply { body.slug(slug) }
+
+        /**
+         * Sets [Builder.slug] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
+
+        fun title(title: String) = apply { body.title(title) }
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { body.title(title) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -374,55 +374,39 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "apiUid",
+        "apiVersion",
+        "config",
+        "isPrivate",
+        "slug",
+        "title",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val title: JsonField<String>,
-        private val slug: JsonField<String>,
-        private val isPrivate: JsonField<Boolean>,
-        private val config: JsonField<String>,
         private val apiUid: JsonField<String>,
         private val apiVersion: JsonField<String>,
+        private val config: JsonField<String>,
+        private val isPrivate: JsonField<Boolean>,
+        private val slug: JsonField<String>,
+        private val title: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("isPrivate")
-            @ExcludeMissing
-            isPrivate: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("config") @ExcludeMissing config: JsonField<String> = JsonMissing.of(),
             @JsonProperty("apiUid") @ExcludeMissing apiUid: JsonField<String> = JsonMissing.of(),
             @JsonProperty("apiVersion")
             @ExcludeMissing
             apiVersion: JsonField<String> = JsonMissing.of(),
-        ) : this(title, slug, isPrivate, config, apiUid, apiVersion, mutableMapOf())
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun title(): Optional<String> = title.getOptional("title")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun slug(): Optional<String> = slug.getOptional("slug")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun isPrivate(): Optional<Boolean> = isPrivate.getOptional("isPrivate")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun config(): Optional<String> = config.getOptional("config")
+            @JsonProperty("config") @ExcludeMissing config: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("isPrivate")
+            @ExcludeMissing
+            isPrivate: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        ) : this(apiUid, apiVersion, config, isPrivate, slug, title, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -437,32 +421,28 @@ private constructor(
         fun apiVersion(): Optional<String> = apiVersion.getOptional("apiVersion")
 
         /**
-         * Returns the raw JSON value of [title].
-         *
-         * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+        fun config(): Optional<String> = config.getOptional("config")
 
         /**
-         * Returns the raw JSON value of [slug].
-         *
-         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+        fun isPrivate(): Optional<Boolean> = isPrivate.getOptional("isPrivate")
 
         /**
-         * Returns the raw JSON value of [isPrivate].
-         *
-         * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
+        fun slug(): Optional<String> = slug.getOptional("slug")
 
         /**
-         * Returns the raw JSON value of [config].
-         *
-         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<String> = config
+        fun title(): Optional<String> = title.getOptional("title")
 
         /**
          * Returns the raw JSON value of [apiUid].
@@ -479,6 +459,34 @@ private constructor(
         @JsonProperty("apiVersion")
         @ExcludeMissing
         fun _apiVersion(): JsonField<String> = apiVersion
+
+        /**
+         * Returns the raw JSON value of [config].
+         *
+         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<String> = config
+
+        /**
+         * Returns the raw JSON value of [isPrivate].
+         *
+         * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
+
+        /**
+         * Returns the raw JSON value of [slug].
+         *
+         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+        /**
+         * Returns the raw JSON value of [title].
+         *
+         * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -501,68 +509,24 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var title: JsonField<String> = JsonMissing.of()
-            private var slug: JsonField<String> = JsonMissing.of()
-            private var isPrivate: JsonField<Boolean> = JsonMissing.of()
-            private var config: JsonField<String> = JsonMissing.of()
             private var apiUid: JsonField<String> = JsonMissing.of()
             private var apiVersion: JsonField<String> = JsonMissing.of()
+            private var config: JsonField<String> = JsonMissing.of()
+            private var isPrivate: JsonField<Boolean> = JsonMissing.of()
+            private var slug: JsonField<String> = JsonMissing.of()
+            private var title: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                title = body.title
-                slug = body.slug
-                isPrivate = body.isPrivate
-                config = body.config
                 apiUid = body.apiUid
                 apiVersion = body.apiVersion
+                config = body.config
+                isPrivate = body.isPrivate
+                slug = body.slug
+                title = body.title
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
-
-            fun title(title: String) = title(JsonField.of(title))
-
-            /**
-             * Sets [Builder.title] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.title] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun title(title: JsonField<String>) = apply { this.title = title }
-
-            fun slug(slug: String) = slug(JsonField.of(slug))
-
-            /**
-             * Sets [Builder.slug] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-            fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
-
-            /**
-             * Sets [Builder.isPrivate] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
-
-            fun config(config: String) = config(JsonField.of(config))
-
-            /**
-             * Sets [Builder.config] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.config] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun config(config: JsonField<String>) = apply { this.config = config }
 
             fun apiUid(apiUid: String?) = apiUid(JsonField.ofNullable(apiUid))
 
@@ -592,6 +556,50 @@ private constructor(
              */
             fun apiVersion(apiVersion: JsonField<String>) = apply { this.apiVersion = apiVersion }
 
+            fun config(config: String) = config(JsonField.of(config))
+
+            /**
+             * Sets [Builder.config] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.config] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun config(config: JsonField<String>) = apply { this.config = config }
+
+            fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
+
+            /**
+             * Sets [Builder.isPrivate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
+
+            fun slug(slug: String) = slug(JsonField.of(slug))
+
+            /**
+             * Sets [Builder.slug] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+            fun title(title: String) = title(JsonField.of(title))
+
+            /**
+             * Sets [Builder.title] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.title] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun title(title: JsonField<String>) = apply { this.title = title }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -618,12 +626,12 @@ private constructor(
              */
             fun build(): Body =
                 Body(
-                    title,
-                    slug,
-                    isPrivate,
-                    config,
                     apiUid,
                     apiVersion,
+                    config,
+                    isPrivate,
+                    slug,
+                    title,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -644,12 +652,12 @@ private constructor(
                 return@apply
             }
 
-            title()
-            slug()
-            isPrivate()
-            config()
             apiUid()
             apiVersion()
+            config()
+            isPrivate()
+            slug()
+            title()
             validated = true
         }
 
@@ -669,12 +677,12 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (title.asKnown().isPresent) 1 else 0) +
-                (if (slug.asKnown().isPresent) 1 else 0) +
-                (if (isPrivate.asKnown().isPresent) 1 else 0) +
+            (if (apiUid.asKnown().isPresent) 1 else 0) +
+                (if (apiVersion.asKnown().isPresent) 1 else 0) +
                 (if (config.asKnown().isPresent) 1 else 0) +
-                (if (apiUid.asKnown().isPresent) 1 else 0) +
-                (if (apiVersion.asKnown().isPresent) 1 else 0)
+                (if (isPrivate.asKnown().isPresent) 1 else 0) +
+                (if (slug.asKnown().isPresent) 1 else 0) +
+                (if (title.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -682,23 +690,23 @@ private constructor(
             }
 
             return other is Body &&
-                title == other.title &&
-                slug == other.slug &&
-                isPrivate == other.isPrivate &&
-                config == other.config &&
                 apiUid == other.apiUid &&
                 apiVersion == other.apiVersion &&
+                config == other.config &&
+                isPrivate == other.isPrivate &&
+                slug == other.slug &&
+                title == other.title &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
             Objects.hash(
-                title,
-                slug,
-                isPrivate,
-                config,
                 apiUid,
                 apiVersion,
+                config,
+                isPrivate,
+                slug,
+                title,
                 additionalProperties,
             )
         }
@@ -706,7 +714,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{title=$title, slug=$slug, isPrivate=$isPrivate, config=$config, apiUid=$apiUid, apiVersion=$apiVersion, additionalProperties=$additionalProperties}"
+            "Body{apiUid=$apiUid, apiVersion=$apiVersion, config=$config, isPrivate=$isPrivate, slug=$slug, title=$title, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

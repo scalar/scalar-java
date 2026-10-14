@@ -183,7 +183,7 @@ the API accepts or returns beyond it is still reachable:
 - **Undocumented response fields.** Every generated model exposes `_additionalProperties()`, a
   `Map<String, JsonValue>` of everything the server sent that the schema did not declare.
 - **Undocumented values.** A generated enum is open: an unrecognized value round-trips through
-  `Value._UNKNOWN` and is readable with `asString()`, so a value the API adds later does not throw.
+  `Value._UNKNOWN` and stays readable through `_value()`, so a value the API adds later does not throw.
 
 Responses are not validated up front by default; a field is only checked when it is read. Set
 `responseValidation(true)` on the client builder, or on a single call through `RequestOptions`, to validate
@@ -304,8 +304,9 @@ Generated clients support request timeouts and retry temporary failures such as 
 ### Why are enums not `enum`?
 
 A closed enum cannot represent a value the API adds after the SDK was published — deserialization would
-throw on a response that is otherwise perfectly valid. Generated enums are classes wrapping the raw string,
-with the known values as constants, `asString()` for the wire value, and `Value._UNKNOWN` for everything else.
+throw on a response that is otherwise perfectly valid. Generated enums are classes wrapping the raw wire value,
+with the known values as constants, an accessor for that value in its own type (`asString()`, or
+`asBoolean()`, `asLong()` or `asDouble()` for a non-string enum), and `Value._UNKNOWN` for everything else.
 
 ### Why is every field a `JsonField<T>`?
 

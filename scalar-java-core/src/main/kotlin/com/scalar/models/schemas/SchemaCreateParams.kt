@@ -33,19 +33,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun title(): String = body.title()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun description(): Optional<String> = body.description()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun version(): String = body.version()
+    fun document(): String = body.document()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -54,39 +42,37 @@ private constructor(
     fun slug(): String = body.slug()
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun isPrivate(): Optional<Boolean> = body.isPrivate()
+    fun title(): String = body.title()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun document(): String = body.document()
+    fun version(): String = body.version()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun description(): Optional<String> = body.description()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun isPrivate(): Optional<Boolean> = body.isPrivate()
 
     fun namespace(): Optional<String> = Optional.ofNullable(namespace)
 
     /**
-     * Returns the raw JSON value of [title].
+     * Returns the raw JSON value of [document].
      *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _title(): JsonField<String> = body._title()
-
-    /**
-     * Returns the raw JSON value of [description].
-     *
-     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _description(): JsonField<String> = body._description()
-
-    /**
-     * Returns the raw JSON value of [version].
-     *
-     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _version(): JsonField<String> = body._version()
+    fun _document(): JsonField<String> = body._document()
 
     /**
      * Returns the raw JSON value of [slug].
@@ -96,18 +82,32 @@ private constructor(
     fun _slug(): JsonField<String> = body._slug()
 
     /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _title(): JsonField<String> = body._title()
+
+    /**
+     * Returns the raw JSON value of [version].
+     *
+     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _version(): JsonField<String> = body._version()
+
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _description(): JsonField<String> = body._description()
+
+    /**
      * Returns the raw JSON value of [isPrivate].
      *
      * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _isPrivate(): JsonField<Boolean> = body._isPrivate()
-
-    /**
-     * Returns the raw JSON value of [document].
-     *
-     * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _document(): JsonField<String> = body._document()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -125,11 +125,11 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [SchemaCreateParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .document()
+         * .slug()
          * .title()
          * .version()
-         * .slug()
-         * .document()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -161,14 +161,34 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [title]
-         * - [description]
-         * - [version]
+         * - [document]
          * - [slug]
-         * - [isPrivate]
+         * - [title]
+         * - [version]
+         * - [description]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        fun document(document: String) = apply { body.document(document) }
+
+        /**
+         * Sets [Builder.document] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.document] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun document(document: JsonField<String>) = apply { body.document(document) }
+
+        fun slug(slug: String) = apply { body.slug(slug) }
+
+        /**
+         * Sets [Builder.slug] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
 
         fun title(title: String) = apply { body.title(title) }
 
@@ -179,6 +199,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun title(title: JsonField<String>) = apply { body.title(title) }
+
+        fun version(version: String) = apply { body.version(version) }
+
+        /**
+         * Sets [Builder.version] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.version] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun version(version: JsonField<String>) = apply { body.version(version) }
 
         fun description(description: String) = apply { body.description(description) }
 
@@ -191,26 +221,6 @@ private constructor(
          */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
-        fun version(version: String) = apply { body.version(version) }
-
-        /**
-         * Sets [Builder.version] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.version] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun version(version: JsonField<String>) = apply { body.version(version) }
-
-        fun slug(slug: String) = apply { body.slug(slug) }
-
-        /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
-
         fun isPrivate(isPrivate: Boolean) = apply { body.isPrivate(isPrivate) }
 
         /**
@@ -221,16 +231,6 @@ private constructor(
          * value.
          */
         fun isPrivate(isPrivate: JsonField<Boolean>) = apply { body.isPrivate(isPrivate) }
-
-        fun document(document: String) = apply { body.document(document) }
-
-        /**
-         * Sets [Builder.document] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.document] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun document(document: JsonField<String>) = apply { body.document(document) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -355,11 +355,11 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .document()
+         * .slug()
          * .title()
          * .version()
-         * .slug()
-         * .document()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -385,63 +385,41 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "document",
+        "slug",
+        "title",
+        "version",
+        "description",
+        "isPrivate",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val title: JsonField<String>,
-        private val description: JsonField<String>,
-        private val version: JsonField<String>,
-        private val slug: JsonField<String>,
-        private val isPrivate: JsonField<Boolean>,
         private val document: JsonField<String>,
+        private val slug: JsonField<String>,
+        private val title: JsonField<String>,
+        private val version: JsonField<String>,
+        private val description: JsonField<String>,
+        private val isPrivate: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("description")
-            @ExcludeMissing
-            description: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("isPrivate")
-            @ExcludeMissing
-            isPrivate: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("document")
             @ExcludeMissing
             document: JsonField<String> = JsonMissing.of(),
-        ) : this(title, description, version, slug, isPrivate, document, mutableMapOf())
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun title(): String = title.getRequired("title")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun description(): Optional<String> = description.getOptional("description")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun version(): String = version.getRequired("version")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun slug(): String = slug.getRequired("slug")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun isPrivate(): Optional<Boolean> = isPrivate.getOptional("isPrivate")
+            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("isPrivate")
+            @ExcludeMissing
+            isPrivate: JsonField<Boolean> = JsonMissing.of(),
+        ) : this(document, slug, title, version, description, isPrivate, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -450,11 +428,62 @@ private constructor(
         fun document(): String = document.getRequired("document")
 
         /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun slug(): String = slug.getRequired("slug")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun title(): String = title.getRequired("title")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun version(): String = version.getRequired("version")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun description(): Optional<String> = description.getOptional("description")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun isPrivate(): Optional<Boolean> = isPrivate.getOptional("isPrivate")
+
+        /**
+         * Returns the raw JSON value of [document].
+         *
+         * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("document") @ExcludeMissing fun _document(): JsonField<String> = document
+
+        /**
+         * Returns the raw JSON value of [slug].
+         *
+         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+        /**
          * Returns the raw JSON value of [title].
          *
          * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+
+        /**
+         * Returns the raw JSON value of [version].
+         *
+         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
         /**
          * Returns the raw JSON value of [description].
@@ -466,32 +495,11 @@ private constructor(
         fun _description(): JsonField<String> = description
 
         /**
-         * Returns the raw JSON value of [version].
-         *
-         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
-
-        /**
-         * Returns the raw JSON value of [slug].
-         *
-         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-        /**
          * Returns the raw JSON value of [isPrivate].
          *
          * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
-
-        /**
-         * Returns the raw JSON value of [document].
-         *
-         * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("document") @ExcludeMissing fun _document(): JsonField<String> = document
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -511,11 +519,11 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
+             * .document()
+             * .slug()
              * .title()
              * .version()
-             * .slug()
-             * .document()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -524,24 +532,46 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var title: JsonField<String>? = null
-            private var description: JsonField<String> = JsonMissing.of()
-            private var version: JsonField<String>? = null
-            private var slug: JsonField<String>? = null
-            private var isPrivate: JsonField<Boolean> = JsonMissing.of()
             private var document: JsonField<String>? = null
+            private var slug: JsonField<String>? = null
+            private var title: JsonField<String>? = null
+            private var version: JsonField<String>? = null
+            private var description: JsonField<String> = JsonMissing.of()
+            private var isPrivate: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                title = body.title
-                description = body.description
-                version = body.version
-                slug = body.slug
-                isPrivate = body.isPrivate
                 document = body.document
+                slug = body.slug
+                title = body.title
+                version = body.version
+                description = body.description
+                isPrivate = body.isPrivate
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
+
+            fun document(document: String) = document(JsonField.of(document))
+
+            /**
+             * Sets [Builder.document] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.document] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun document(document: JsonField<String>) = apply { this.document = document }
+
+            fun slug(slug: String) = slug(JsonField.of(slug))
+
+            /**
+             * Sets [Builder.slug] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
             fun title(title: String) = title(JsonField.of(title))
 
@@ -553,6 +583,17 @@ private constructor(
              * supported value.
              */
             fun title(title: JsonField<String>) = apply { this.title = title }
+
+            fun version(version: String) = version(JsonField.of(version))
+
+            /**
+             * Sets [Builder.version] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.version] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun version(version: JsonField<String>) = apply { this.version = version }
 
             fun description(description: String) = description(JsonField.of(description))
 
@@ -567,28 +608,6 @@ private constructor(
                 this.description = description
             }
 
-            fun version(version: String) = version(JsonField.of(version))
-
-            /**
-             * Sets [Builder.version] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.version] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun version(version: JsonField<String>) = apply { this.version = version }
-
-            fun slug(slug: String) = slug(JsonField.of(slug))
-
-            /**
-             * Sets [Builder.slug] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
             fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
 
             /**
@@ -599,17 +618,6 @@ private constructor(
              * supported value.
              */
             fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
-
-            fun document(document: String) = document(JsonField.of(document))
-
-            /**
-             * Sets [Builder.document] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.document] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun document(document: JsonField<String>) = apply { this.document = document }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -636,23 +644,23 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
+             * .document()
+             * .slug()
              * .title()
              * .version()
-             * .slug()
-             * .document()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Body =
                 Body(
-                    checkRequired("title", title),
-                    description,
-                    checkRequired("version", version),
-                    checkRequired("slug", slug),
-                    isPrivate,
                     checkRequired("document", document),
+                    checkRequired("slug", slug),
+                    checkRequired("title", title),
+                    checkRequired("version", version),
+                    description,
+                    isPrivate,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -673,12 +681,12 @@ private constructor(
                 return@apply
             }
 
-            title()
-            description()
-            version()
-            slug()
-            isPrivate()
             document()
+            slug()
+            title()
+            version()
+            description()
+            isPrivate()
             validated = true
         }
 
@@ -698,12 +706,12 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (title.asKnown().isPresent) 1 else 0) +
-                (if (description.asKnown().isPresent) 1 else 0) +
-                (if (version.asKnown().isPresent) 1 else 0) +
+            (if (document.asKnown().isPresent) 1 else 0) +
                 (if (slug.asKnown().isPresent) 1 else 0) +
-                (if (isPrivate.asKnown().isPresent) 1 else 0) +
-                (if (document.asKnown().isPresent) 1 else 0)
+                (if (title.asKnown().isPresent) 1 else 0) +
+                (if (version.asKnown().isPresent) 1 else 0) +
+                (if (description.asKnown().isPresent) 1 else 0) +
+                (if (isPrivate.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -711,23 +719,23 @@ private constructor(
             }
 
             return other is Body &&
-                title == other.title &&
-                description == other.description &&
-                version == other.version &&
-                slug == other.slug &&
-                isPrivate == other.isPrivate &&
                 document == other.document &&
+                slug == other.slug &&
+                title == other.title &&
+                version == other.version &&
+                description == other.description &&
+                isPrivate == other.isPrivate &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
             Objects.hash(
-                title,
-                description,
-                version,
-                slug,
-                isPrivate,
                 document,
+                slug,
+                title,
+                version,
+                description,
+                isPrivate,
                 additionalProperties,
             )
         }
@@ -735,7 +743,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{title=$title, description=$description, version=$version, slug=$slug, isPrivate=$isPrivate, document=$document, additionalProperties=$additionalProperties}"
+            "Body{document=$document, slug=$slug, title=$title, version=$version, description=$description, isPrivate=$isPrivate, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

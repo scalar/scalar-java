@@ -53,8 +53,10 @@ interface ThemeServiceAsync {
     ): CompletableFuture<String> = retrieve(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(slug: String, params: ThemeRetrieveParams): CompletableFuture<String> =
-        retrieve(slug, params, RequestOptions.none())
+    fun retrieve(
+        slug: String,
+        params: ThemeRetrieveParams = ThemeRetrieveParams.none(),
+    ): CompletableFuture<String> = retrieve(slug, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
@@ -81,8 +83,10 @@ interface ThemeServiceAsync {
     ): CompletableFuture<Any?> = update(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see update */
-    fun update(slug: String, params: ThemeUpdateParams): CompletableFuture<Any?> =
-        update(slug, params, RequestOptions.none())
+    fun update(
+        slug: String,
+        params: ThemeUpdateParams = ThemeUpdateParams.none(),
+    ): CompletableFuture<Any?> = update(slug, params, RequestOptions.none())
 
     /** @see update */
     fun update(
@@ -108,7 +112,7 @@ interface ThemeServiceAsync {
     ): CompletableFuture<List<Theme>>
 
     /** @see list */
-    fun list(params: ThemeListParams): CompletableFuture<List<Theme>> =
+    fun list(params: ThemeListParams = ThemeListParams.none()): CompletableFuture<List<Theme>> =
         list(params, RequestOptions.none())
 
     /** @see list */
@@ -126,8 +130,10 @@ interface ThemeServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
-    fun delete(slug: String, params: ThemeDeleteParams): CompletableFuture<Any?> =
-        delete(slug, params, RequestOptions.none())
+    fun delete(
+        slug: String,
+        params: ThemeDeleteParams = ThemeDeleteParams.none(),
+    ): CompletableFuture<Any?> = delete(slug, params, RequestOptions.none())
 
     /** @see delete */
     fun delete(
@@ -156,14 +162,14 @@ interface ThemeServiceAsync {
         replaceDocument(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see replaceDocument */
+    fun replaceDocument(params: ThemeReplaceDocumentParams): CompletableFuture<Any?> =
+        replaceDocument(params, RequestOptions.none())
+
+    /** @see replaceDocument */
     fun replaceDocument(
         params: ThemeReplaceDocumentParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see replaceDocument */
-    fun replaceDocument(params: ThemeReplaceDocumentParams): CompletableFuture<Any?> =
-        replaceDocument(params, RequestOptions.none())
 
     /** A view of [ThemeServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -208,7 +214,7 @@ interface ThemeServiceAsync {
         /** @see retrieve */
         fun retrieve(
             slug: String,
-            params: ThemeRetrieveParams,
+            params: ThemeRetrieveParams = ThemeRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<String>> =
             retrieve(slug, params, RequestOptions.none())
 
@@ -247,7 +253,7 @@ interface ThemeServiceAsync {
         /** @see update */
         fun update(
             slug: String,
-            params: ThemeUpdateParams,
+            params: ThemeUpdateParams = ThemeUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = update(slug, params, RequestOptions.none())
 
         /** @see update */
@@ -280,8 +286,9 @@ interface ThemeServiceAsync {
         ): CompletableFuture<HttpResponseFor<List<Theme>>>
 
         /** @see list */
-        fun list(params: ThemeListParams): CompletableFuture<HttpResponseFor<List<Theme>>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: ThemeListParams = ThemeListParams.none()
+        ): CompletableFuture<HttpResponseFor<List<Theme>>> = list(params, RequestOptions.none())
 
         /** @see list */
         fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<Theme>>> =
@@ -305,7 +312,7 @@ interface ThemeServiceAsync {
         /** @see delete */
         fun delete(
             slug: String,
-            params: ThemeDeleteParams,
+            params: ThemeDeleteParams = ThemeDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = delete(slug, params, RequestOptions.none())
 
         /** @see delete */
@@ -345,13 +352,13 @@ interface ThemeServiceAsync {
 
         /** @see replaceDocument */
         fun replaceDocument(
-            params: ThemeReplaceDocumentParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
+            params: ThemeReplaceDocumentParams
+        ): CompletableFuture<HttpResponseFor<Any?>> = replaceDocument(params, RequestOptions.none())
 
         /** @see replaceDocument */
         fun replaceDocument(
-            params: ThemeReplaceDocumentParams
-        ): CompletableFuture<HttpResponseFor<Any?>> = replaceDocument(params, RequestOptions.none())
+            params: ThemeReplaceDocumentParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<Any?>>
     }
 }

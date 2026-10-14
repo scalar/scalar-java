@@ -6,13 +6,13 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.accessGroups.AccessGroupCreateParams
-import com.scalar.models.accessGroups.AccessGroupCreateResponse
-import com.scalar.models.accessGroups.AccessGroupDeleteParams
-import com.scalar.models.accessGroups.AccessGroupRetrieveParams
-import com.scalar.models.accessGroups.AccessGroupRetrieveResponse
-import com.scalar.models.accessGroups.AccessGroupUpdateParams
-import com.scalar.services.blocking.accessGroups.DomainService
+import com.scalar.models.accessgroups.AccessGroupCreateParams
+import com.scalar.models.accessgroups.AccessGroupCreateResponse
+import com.scalar.models.accessgroups.AccessGroupDeleteParams
+import com.scalar.models.accessgroups.AccessGroupRetrieveParams
+import com.scalar.models.accessgroups.AccessGroupRetrieveResponse
+import com.scalar.models.accessgroups.AccessGroupUpdateParams
+import com.scalar.services.blocking.accessgroups.DomainService
 import java.util.function.Consumer
 
 /** Access Groups */
@@ -47,8 +47,9 @@ interface AccessGroupService {
     ): AccessGroupCreateResponse
 
     /** @see create */
-    fun create(params: AccessGroupCreateParams): AccessGroupCreateResponse =
-        create(params, RequestOptions.none())
+    fun create(
+        params: AccessGroupCreateParams = AccessGroupCreateParams.none()
+    ): AccessGroupCreateResponse = create(params, RequestOptions.none())
 
     /** @see create */
     fun create(requestOptions: RequestOptions): AccessGroupCreateResponse =
@@ -66,8 +67,10 @@ interface AccessGroupService {
     ): AccessGroupRetrieveResponse = retrieve(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(slug: String, params: AccessGroupRetrieveParams): AccessGroupRetrieveResponse =
-        retrieve(slug, params, RequestOptions.none())
+    fun retrieve(
+        slug: String,
+        params: AccessGroupRetrieveParams = AccessGroupRetrieveParams.none(),
+    ): AccessGroupRetrieveResponse = retrieve(slug, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
@@ -97,8 +100,10 @@ interface AccessGroupService {
     ): Any? = update(params.toBuilder().pathSlug(pathSlug).build(), requestOptions)
 
     /** @see update */
-    fun update(pathSlug: String, params: AccessGroupUpdateParams): Any? =
-        update(pathSlug, params, RequestOptions.none())
+    fun update(
+        pathSlug: String,
+        params: AccessGroupUpdateParams = AccessGroupUpdateParams.none(),
+    ): Any? = update(pathSlug, params, RequestOptions.none())
 
     /** @see update */
     fun update(
@@ -124,8 +129,10 @@ interface AccessGroupService {
     ): Any? = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
-    fun delete(slug: String, params: AccessGroupDeleteParams): Any? =
-        delete(slug, params, RequestOptions.none())
+    fun delete(
+        slug: String,
+        params: AccessGroupDeleteParams = AccessGroupDeleteParams.none(),
+    ): Any? = delete(slug, params, RequestOptions.none())
 
     /** @see delete */
     fun delete(
@@ -174,8 +181,9 @@ interface AccessGroupService {
 
         /** @see create */
         @MustBeClosed
-        fun create(params: AccessGroupCreateParams): HttpResponseFor<AccessGroupCreateResponse> =
-            create(params, RequestOptions.none())
+        fun create(
+            params: AccessGroupCreateParams = AccessGroupCreateParams.none()
+        ): HttpResponseFor<AccessGroupCreateResponse> = create(params, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed
@@ -203,7 +211,7 @@ interface AccessGroupService {
         @MustBeClosed
         fun retrieve(
             slug: String,
-            params: AccessGroupRetrieveParams,
+            params: AccessGroupRetrieveParams = AccessGroupRetrieveParams.none(),
         ): HttpResponseFor<AccessGroupRetrieveResponse> =
             retrieve(slug, params, RequestOptions.none())
 
@@ -247,8 +255,10 @@ interface AccessGroupService {
 
         /** @see update */
         @MustBeClosed
-        fun update(pathSlug: String, params: AccessGroupUpdateParams): HttpResponseFor<Any?> =
-            update(pathSlug, params, RequestOptions.none())
+        fun update(
+            pathSlug: String,
+            params: AccessGroupUpdateParams = AccessGroupUpdateParams.none(),
+        ): HttpResponseFor<Any?> = update(pathSlug, params, RequestOptions.none())
 
         /** @see update */
         @MustBeClosed
@@ -285,8 +295,10 @@ interface AccessGroupService {
 
         /** @see delete */
         @MustBeClosed
-        fun delete(slug: String, params: AccessGroupDeleteParams): HttpResponseFor<Any?> =
-            delete(slug, params, RequestOptions.none())
+        fun delete(
+            slug: String,
+            params: AccessGroupDeleteParams = AccessGroupDeleteParams.none(),
+        ): HttpResponseFor<Any?> = delete(slug, params, RequestOptions.none())
 
         /** @see delete */
         @MustBeClosed

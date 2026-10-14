@@ -19,48 +19,97 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "description",
+    "isPrivate",
+    "namespace",
+    "slug",
+    "tags",
+    "title",
+    "uid",
+    "version",
+    "versions",
+)
 class ApiDocument
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
+    private val description: JsonField<String>,
+    private val isPrivate: JsonField<Boolean>,
+    private val namespace: JsonField<String>,
+    private val slug: JsonField<String>,
+    private val tags: JsonValue,
+    private val title: JsonField<String>,
     private val uid: JsonField<String>,
     private val version: JsonField<String>,
-    private val title: JsonField<String>,
-    private val slug: JsonField<String>,
-    private val description: JsonField<String>,
-    private val namespace: JsonField<String>,
-    private val isPrivate: JsonField<Boolean>,
-    private val tags: JsonField<String>,
     private val versions: JsonField<List<ManagedDocVersion>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
         @JsonProperty("description")
         @ExcludeMissing
         description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
         @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("tags") @ExcludeMissing tags: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("tags") @ExcludeMissing tags: JsonValue = JsonMissing.of(),
+        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
         @JsonProperty("versions")
         @ExcludeMissing
         versions: JsonField<List<ManagedDocVersion>> = JsonMissing.of(),
     ) : this(
+        description,
+        isPrivate,
+        namespace,
+        slug,
+        tags,
+        title,
         uid,
         version,
-        title,
-        slug,
-        description,
-        namespace,
-        isPrivate,
-        tags,
         versions,
         mutableMapOf(),
     )
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun description(): String = description.getRequired("description")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun namespace(): String = namespace.getRequired("namespace")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun slug(): String = slug.getRequired("slug")
+
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```java
+     * MyClass myObject = apiDocument.tags().convert(MyClass.class);
+     * ```
+     */
+    @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonValue = tags
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun title(): String = title.getRequired("title")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -78,43 +127,42 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun title(): String = title.getRequired("title")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun slug(): String = slug.getRequired("slug")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun description(): String = description.getRequired("description")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun namespace(): String = namespace.getRequired("namespace")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun tags(): String = tags.getRequired("tags")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
     fun versions(): List<ManagedDocVersion> = versions.getRequired("versions")
+
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
+
+    /**
+     * Returns the raw JSON value of [isPrivate].
+     *
+     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
+
+    /**
+     * Returns the raw JSON value of [namespace].
+     *
+     * Unlike [namespace], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("namespace") @ExcludeMissing fun _namespace(): JsonField<String> = namespace
+
+    /**
+     * Returns the raw JSON value of [slug].
+     *
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+    /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
     /**
      * Returns the raw JSON value of [uid].
@@ -129,48 +177,6 @@ private constructor(
      * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
-
-    /**
-     * Returns the raw JSON value of [title].
-     *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
-
-    /**
-     * Returns the raw JSON value of [slug].
-     *
-     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-    /**
-     * Returns the raw JSON value of [description].
-     *
-     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
-
-    /**
-     * Returns the raw JSON value of [namespace].
-     *
-     * Unlike [namespace], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("namespace") @ExcludeMissing fun _namespace(): JsonField<String> = namespace
-
-    /**
-     * Returns the raw JSON value of [isPrivate].
-     *
-     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
-
-    /**
-     * Returns the raw JSON value of [tags].
-     *
-     * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<String> = tags
 
     /**
      * Returns the raw JSON value of [versions].
@@ -199,15 +205,15 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [ApiDocument].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .description()
+         * .isPrivate()
+         * .namespace()
+         * .slug()
+         * .tags()
+         * .title()
          * .uid()
          * .version()
-         * .title()
-         * .slug()
-         * .description()
-         * .namespace()
-         * .isPrivate()
-         * .tags()
          * .versions()
          * ```
          */
@@ -217,30 +223,85 @@ private constructor(
     /** A builder for [ApiDocument]. */
     class Builder internal constructor() {
 
+        private var description: JsonField<String>? = null
+        private var isPrivate: JsonField<Boolean>? = null
+        private var namespace: JsonField<String>? = null
+        private var slug: JsonField<String>? = null
+        private var tags: JsonValue? = null
+        private var title: JsonField<String>? = null
         private var uid: JsonField<String>? = null
         private var version: JsonField<String>? = null
-        private var title: JsonField<String>? = null
-        private var slug: JsonField<String>? = null
-        private var description: JsonField<String>? = null
-        private var namespace: JsonField<String>? = null
-        private var isPrivate: JsonField<Boolean>? = null
-        private var tags: JsonField<String>? = null
         private var versions: JsonField<MutableList<ManagedDocVersion>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(apiDocument: ApiDocument) = apply {
+            description = apiDocument.description
+            isPrivate = apiDocument.isPrivate
+            namespace = apiDocument.namespace
+            slug = apiDocument.slug
+            tags = apiDocument.tags
+            title = apiDocument.title
             uid = apiDocument.uid
             version = apiDocument.version
-            title = apiDocument.title
-            slug = apiDocument.slug
-            description = apiDocument.description
-            namespace = apiDocument.namespace
-            isPrivate = apiDocument.isPrivate
-            tags = apiDocument.tags
             versions = apiDocument.versions.map { it.toMutableList() }
             additionalProperties = apiDocument.additionalProperties.toMutableMap()
         }
+
+        fun description(description: String) = description(JsonField.of(description))
+
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun description(description: JsonField<String>) = apply { this.description = description }
+
+        fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
+
+        /**
+         * Sets [Builder.isPrivate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
+
+        fun namespace(namespace: String) = namespace(JsonField.of(namespace))
+
+        /**
+         * Sets [Builder.namespace] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.namespace] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun namespace(namespace: JsonField<String>) = apply { this.namespace = namespace }
+
+        fun slug(slug: String) = slug(JsonField.of(slug))
+
+        /**
+         * Sets [Builder.slug] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+        fun tags(tags: JsonValue) = apply { this.tags = tags }
+
+        fun title(title: String) = title(JsonField.of(title))
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { this.title = title }
 
         fun uid(uid: String) = uid(JsonField.of(uid))
 
@@ -261,69 +322,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun version(version: JsonField<String>) = apply { this.version = version }
-
-        fun title(title: String) = title(JsonField.of(title))
-
-        /**
-         * Sets [Builder.title] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.title] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun title(title: JsonField<String>) = apply { this.title = title }
-
-        fun slug(slug: String) = slug(JsonField.of(slug))
-
-        /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-        fun description(description: String) = description(JsonField.of(description))
-
-        /**
-         * Sets [Builder.description] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.description] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun description(description: JsonField<String>) = apply { this.description = description }
-
-        fun namespace(namespace: String) = namespace(JsonField.of(namespace))
-
-        /**
-         * Sets [Builder.namespace] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.namespace] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun namespace(namespace: JsonField<String>) = apply { this.namespace = namespace }
-
-        fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
-
-        /**
-         * Sets [Builder.isPrivate] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
-
-        fun tags(tags: String) = tags(JsonField.of(tags))
-
-        /**
-         * Sets [Builder.tags] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.tags] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun tags(tags: JsonField<String>) = apply { this.tags = tags }
 
         fun versions(versions: List<ManagedDocVersion>) = versions(JsonField.of(versions))
 
@@ -375,15 +373,15 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .description()
+         * .isPrivate()
+         * .namespace()
+         * .slug()
+         * .tags()
+         * .title()
          * .uid()
          * .version()
-         * .title()
-         * .slug()
-         * .description()
-         * .namespace()
-         * .isPrivate()
-         * .tags()
          * .versions()
          * ```
          *
@@ -391,14 +389,14 @@ private constructor(
          */
         fun build(): ApiDocument =
             ApiDocument(
+                checkRequired("description", description),
+                checkRequired("isPrivate", isPrivate),
+                checkRequired("namespace", namespace),
+                checkRequired("slug", slug),
+                checkRequired("tags", tags),
+                checkRequired("title", title),
                 checkRequired("uid", uid),
                 checkRequired("version", version),
-                checkRequired("title", title),
-                checkRequired("slug", slug),
-                checkRequired("description", description),
-                checkRequired("namespace", namespace),
-                checkRequired("isPrivate", isPrivate),
-                checkRequired("tags", tags),
                 checkRequired("versions", versions).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -419,14 +417,13 @@ private constructor(
             return@apply
         }
 
+        description()
+        isPrivate()
+        namespace()
+        slug()
+        title()
         uid()
         version()
-        title()
-        slug()
-        description()
-        namespace()
-        isPrivate()
-        tags()
         versions().forEach { it.validate() }
         validated = true
     }
@@ -446,14 +443,13 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (version.asKnown().isPresent) 1 else 0) +
-            (if (title.asKnown().isPresent) 1 else 0) +
-            (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (description.asKnown().isPresent) 1 else 0) +
-            (if (namespace.asKnown().isPresent) 1 else 0) +
+        (if (description.asKnown().isPresent) 1 else 0) +
             (if (isPrivate.asKnown().isPresent) 1 else 0) +
-            (if (tags.asKnown().isPresent) 1 else 0) +
+            (if (namespace.asKnown().isPresent) 1 else 0) +
+            (if (slug.asKnown().isPresent) 1 else 0) +
+            (if (title.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
+            (if (version.asKnown().isPresent) 1 else 0) +
             (versions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     override fun equals(other: Any?): Boolean {
@@ -462,28 +458,28 @@ private constructor(
         }
 
         return other is ApiDocument &&
+            description == other.description &&
+            isPrivate == other.isPrivate &&
+            namespace == other.namespace &&
+            slug == other.slug &&
+            tags == other.tags &&
+            title == other.title &&
             uid == other.uid &&
             version == other.version &&
-            title == other.title &&
-            slug == other.slug &&
-            description == other.description &&
-            namespace == other.namespace &&
-            isPrivate == other.isPrivate &&
-            tags == other.tags &&
             versions == other.versions &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
+            description,
+            isPrivate,
+            namespace,
+            slug,
+            tags,
+            title,
             uid,
             version,
-            title,
-            slug,
-            description,
-            namespace,
-            isPrivate,
-            tags,
             versions,
             additionalProperties,
         )
@@ -492,5 +488,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ApiDocument{uid=$uid, version=$version, title=$title, slug=$slug, description=$description, namespace=$namespace, isPrivate=$isPrivate, tags=$tags, versions=$versions, additionalProperties=$additionalProperties}"
+        "ApiDocument{description=$description, isPrivate=$isPrivate, namespace=$namespace, slug=$slug, tags=$tags, title=$title, uid=$uid, version=$version, versions=$versions, additionalProperties=$additionalProperties}"
 }

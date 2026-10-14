@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.schemas.accessGroup.AccessGroupCreateParams
-import com.scalar.models.schemas.accessGroup.AccessGroupDeleteParams
+import com.scalar.models.schemas.accessgroup.AccessGroupCreateParams
+import com.scalar.models.schemas.accessgroup.AccessGroupDeleteParams
 import java.util.function.Consumer
 
 /** Schemas */
@@ -37,13 +37,13 @@ interface AccessGroupService {
     ): Any? = create(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see create */
+    fun create(params: AccessGroupCreateParams): Any? = create(params, RequestOptions.none())
+
+    /** @see create */
     fun create(
         params: AccessGroupCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see create */
-    fun create(params: AccessGroupCreateParams): Any? = create(params, RequestOptions.none())
 
     /** Remove an access group from a schema. */
     fun delete(slug: String, params: AccessGroupDeleteParams): Any? =
@@ -57,13 +57,13 @@ interface AccessGroupService {
     ): Any? = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: AccessGroupDeleteParams): Any? = delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: AccessGroupDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see delete */
-    fun delete(params: AccessGroupDeleteParams): Any? = delete(params, RequestOptions.none())
 
     /**
      * A view of [AccessGroupService] that provides access to raw HTTP responses for each method.
@@ -97,15 +97,15 @@ interface AccessGroupService {
 
         /** @see create */
         @MustBeClosed
+        fun create(params: AccessGroupCreateParams): HttpResponseFor<Any?> =
+            create(params, RequestOptions.none())
+
+        /** @see create */
+        @MustBeClosed
         fun create(
             params: AccessGroupCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see create */
-        @MustBeClosed
-        fun create(params: AccessGroupCreateParams): HttpResponseFor<Any?> =
-            create(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/schemas/{namespace}/{slug}/access-group`, but
@@ -125,14 +125,14 @@ interface AccessGroupService {
 
         /** @see delete */
         @MustBeClosed
+        fun delete(params: AccessGroupDeleteParams): HttpResponseFor<Any?> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
+        @MustBeClosed
         fun delete(
             params: AccessGroupDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see delete */
-        @MustBeClosed
-        fun delete(params: AccessGroupDeleteParams): HttpResponseFor<Any?> =
-            delete(params, RequestOptions.none())
     }
 }

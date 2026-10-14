@@ -58,8 +58,10 @@ interface ServerService {
     ): McpServer = retrieve(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(id: String, params: ServerRetrieveParams): McpServer =
-        retrieve(id, params, RequestOptions.none())
+    fun retrieve(
+        id: String,
+        params: ServerRetrieveParams = ServerRetrieveParams.none(),
+    ): McpServer = retrieve(id, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
@@ -85,7 +87,7 @@ interface ServerService {
     ): McpServer = update(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see update */
-    fun update(id: String, params: ServerUpdateParams): McpServer =
+    fun update(id: String, params: ServerUpdateParams = ServerUpdateParams.none()): McpServer =
         update(id, params, RequestOptions.none())
 
     /** @see update */
@@ -111,7 +113,8 @@ interface ServerService {
     ): List<McpServer>
 
     /** @see list */
-    fun list(params: ServerListParams): List<McpServer> = list(params, RequestOptions.none())
+    fun list(params: ServerListParams = ServerListParams.none()): List<McpServer> =
+        list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): List<McpServer> =
@@ -128,7 +131,7 @@ interface ServerService {
     ): Any? = delete(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see delete */
-    fun delete(id: String, params: ServerDeleteParams): Any? =
+    fun delete(id: String, params: ServerDeleteParams = ServerDeleteParams.none()): Any? =
         delete(id, params, RequestOptions.none())
 
     /** @see delete */
@@ -190,8 +193,10 @@ interface ServerService {
 
         /** @see retrieve */
         @MustBeClosed
-        fun retrieve(id: String, params: ServerRetrieveParams): HttpResponseFor<McpServer> =
-            retrieve(id, params, RequestOptions.none())
+        fun retrieve(
+            id: String,
+            params: ServerRetrieveParams = ServerRetrieveParams.none(),
+        ): HttpResponseFor<McpServer> = retrieve(id, params, RequestOptions.none())
 
         /** @see retrieve */
         @MustBeClosed
@@ -227,8 +232,10 @@ interface ServerService {
 
         /** @see update */
         @MustBeClosed
-        fun update(id: String, params: ServerUpdateParams): HttpResponseFor<McpServer> =
-            update(id, params, RequestOptions.none())
+        fun update(
+            id: String,
+            params: ServerUpdateParams = ServerUpdateParams.none(),
+        ): HttpResponseFor<McpServer> = update(id, params, RequestOptions.none())
 
         /** @see update */
         @MustBeClosed
@@ -262,8 +269,9 @@ interface ServerService {
 
         /** @see list */
         @MustBeClosed
-        fun list(params: ServerListParams): HttpResponseFor<List<McpServer>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: ServerListParams = ServerListParams.none()
+        ): HttpResponseFor<List<McpServer>> = list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
@@ -287,8 +295,10 @@ interface ServerService {
 
         /** @see delete */
         @MustBeClosed
-        fun delete(id: String, params: ServerDeleteParams): HttpResponseFor<Any?> =
-            delete(id, params, RequestOptions.none())
+        fun delete(
+            id: String,
+            params: ServerDeleteParams = ServerDeleteParams.none(),
+        ): HttpResponseFor<Any?> = delete(id, params, RequestOptions.none())
 
         /** @see delete */
         @MustBeClosed

@@ -59,8 +59,10 @@ interface ServerServiceAsync {
     ): CompletableFuture<McpServer> = retrieve(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(id: String, params: ServerRetrieveParams): CompletableFuture<McpServer> =
-        retrieve(id, params, RequestOptions.none())
+    fun retrieve(
+        id: String,
+        params: ServerRetrieveParams = ServerRetrieveParams.none(),
+    ): CompletableFuture<McpServer> = retrieve(id, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
@@ -87,8 +89,10 @@ interface ServerServiceAsync {
     ): CompletableFuture<McpServer> = update(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see update */
-    fun update(id: String, params: ServerUpdateParams): CompletableFuture<McpServer> =
-        update(id, params, RequestOptions.none())
+    fun update(
+        id: String,
+        params: ServerUpdateParams = ServerUpdateParams.none(),
+    ): CompletableFuture<McpServer> = update(id, params, RequestOptions.none())
 
     /** @see update */
     fun update(
@@ -114,8 +118,9 @@ interface ServerServiceAsync {
     ): CompletableFuture<List<McpServer>>
 
     /** @see list */
-    fun list(params: ServerListParams): CompletableFuture<List<McpServer>> =
-        list(params, RequestOptions.none())
+    fun list(
+        params: ServerListParams = ServerListParams.none()
+    ): CompletableFuture<List<McpServer>> = list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<List<McpServer>> =
@@ -132,8 +137,10 @@ interface ServerServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see delete */
-    fun delete(id: String, params: ServerDeleteParams): CompletableFuture<Any?> =
-        delete(id, params, RequestOptions.none())
+    fun delete(
+        id: String,
+        params: ServerDeleteParams = ServerDeleteParams.none(),
+    ): CompletableFuture<Any?> = delete(id, params, RequestOptions.none())
 
     /** @see delete */
     fun delete(
@@ -199,7 +206,7 @@ interface ServerServiceAsync {
         /** @see retrieve */
         fun retrieve(
             id: String,
-            params: ServerRetrieveParams,
+            params: ServerRetrieveParams = ServerRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<McpServer>> =
             retrieve(id, params, RequestOptions.none())
 
@@ -238,7 +245,7 @@ interface ServerServiceAsync {
         /** @see update */
         fun update(
             id: String,
-            params: ServerUpdateParams,
+            params: ServerUpdateParams = ServerUpdateParams.none(),
         ): CompletableFuture<HttpResponseFor<McpServer>> = update(id, params, RequestOptions.none())
 
         /** @see update */
@@ -272,8 +279,9 @@ interface ServerServiceAsync {
         ): CompletableFuture<HttpResponseFor<List<McpServer>>>
 
         /** @see list */
-        fun list(params: ServerListParams): CompletableFuture<HttpResponseFor<List<McpServer>>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: ServerListParams = ServerListParams.none()
+        ): CompletableFuture<HttpResponseFor<List<McpServer>>> = list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
@@ -299,7 +307,7 @@ interface ServerServiceAsync {
         /** @see delete */
         fun delete(
             id: String,
-            params: ServerDeleteParams,
+            params: ServerDeleteParams = ServerDeleteParams.none(),
         ): CompletableFuture<HttpResponseFor<Any?>> = delete(id, params, RequestOptions.none())
 
         /** @see delete */

@@ -38,22 +38,15 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun version(): Optional<String> = body.version()
+    fun languages(): Optional<List<Language>> = body.languages()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun languages(): Optional<List<Language>> = body.languages()
+    fun version(): Optional<String> = body.version()
 
     fun uid(): Optional<String> = Optional.ofNullable(uid)
-
-    /**
-     * Returns the raw JSON value of [version].
-     *
-     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _version(): JsonField<String> = body._version()
 
     /**
      * Returns the raw JSON value of [languages].
@@ -61,6 +54,13 @@ private constructor(
      * Unlike [languages], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _languages(): JsonField<List<Language>> = body._languages()
+
+    /**
+     * Returns the raw JSON value of [version].
+     *
+     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _version(): JsonField<String> = body._version()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -106,20 +106,10 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [version]
          * - [languages]
+         * - [version]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
-
-        fun version(version: String) = apply { body.version(version) }
-
-        /**
-         * Sets [Builder.version] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.version] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun version(version: JsonField<String>) = apply { body.version(version) }
 
         fun languages(languages: List<Language>) = apply { body.languages(languages) }
 
@@ -138,6 +128,16 @@ private constructor(
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addLanguage(language: Language) = apply { body.addLanguage(language) }
+
+        fun version(version: String) = apply { body.version(version) }
+
+        /**
+         * Sets [Builder.version] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.version] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun version(version: JsonField<String>) = apply { body.version(version) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -282,27 +282,22 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("languages", "version")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val version: JsonField<String>,
         private val languages: JsonField<List<Language>>,
+        private val version: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
             @JsonProperty("languages")
             @ExcludeMissing
             languages: JsonField<List<Language>> = JsonMissing.of(),
-        ) : this(version, languages, mutableMapOf())
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun version(): Optional<String> = version.getOptional("version")
+            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
+        ) : this(languages, version, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -311,11 +306,10 @@ private constructor(
         fun languages(): Optional<List<Language>> = languages.getOptional("languages")
 
         /**
-         * Returns the raw JSON value of [version].
-         *
-         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
+        fun version(): Optional<String> = version.getOptional("version")
 
         /**
          * Returns the raw JSON value of [languages].
@@ -325,6 +319,13 @@ private constructor(
         @JsonProperty("languages")
         @ExcludeMissing
         fun _languages(): JsonField<List<Language>> = languages
+
+        /**
+         * Returns the raw JSON value of [version].
+         *
+         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -347,27 +348,16 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var version: JsonField<String> = JsonMissing.of()
             private var languages: JsonField<MutableList<Language>>? = null
+            private var version: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                version = body.version
                 languages = body.languages.map { it.toMutableList() }
+                version = body.version
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
-
-            fun version(version: String) = version(JsonField.of(version))
-
-            /**
-             * Sets [Builder.version] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.version] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun version(version: JsonField<String>) = apply { this.version = version }
 
             fun languages(languages: List<Language>) = languages(JsonField.of(languages))
 
@@ -393,6 +383,17 @@ private constructor(
                         checkKnown("languages", it).add(language)
                     }
             }
+
+            fun version(version: String) = version(JsonField.of(version))
+
+            /**
+             * Sets [Builder.version] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.version] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun version(version: JsonField<String>) = apply { this.version = version }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -420,8 +421,8 @@ private constructor(
              */
             fun build(): Body =
                 Body(
-                    version,
                     (languages ?: JsonMissing.of()).map { it.toImmutable() },
+                    version,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -442,8 +443,8 @@ private constructor(
                 return@apply
             }
 
-            version()
             languages().ifPresent { it.forEach { it.validate() } }
+            version()
             validated = true
         }
 
@@ -463,8 +464,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (version.asKnown().isPresent) 1 else 0) +
-                (languages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+            (languages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (version.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -472,17 +473,17 @@ private constructor(
             }
 
             return other is Body &&
-                version == other.version &&
                 languages == other.languages &&
+                version == other.version &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(version, languages, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(languages, version, additionalProperties) }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{version=$version, languages=$languages, additionalProperties=$additionalProperties}"
+            "Body{languages=$languages, version=$version, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

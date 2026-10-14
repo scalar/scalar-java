@@ -39,14 +39,14 @@ interface RepositoryService {
     ): RepositoryLinkResponse = link(params.toBuilder().uid(uid).build(), requestOptions)
 
     /** @see link */
+    fun link(params: RepositoryLinkParams): RepositoryLinkResponse =
+        link(params, RequestOptions.none())
+
+    /** @see link */
     fun link(
         params: RepositoryLinkParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RepositoryLinkResponse
-
-    /** @see link */
-    fun link(params: RepositoryLinkParams): RepositoryLinkResponse =
-        link(params, RequestOptions.none())
 
     /** Unlink one language target from its repository. */
     fun unlink(language: RepositoryUnlinkParams.Language, params: RepositoryUnlinkParams): Any? =
@@ -60,13 +60,13 @@ interface RepositoryService {
     ): Any? = unlink(params.toBuilder().language(language).build(), requestOptions)
 
     /** @see unlink */
+    fun unlink(params: RepositoryUnlinkParams): Any? = unlink(params, RequestOptions.none())
+
+    /** @see unlink */
     fun unlink(
         params: RepositoryUnlinkParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see unlink */
-    fun unlink(params: RepositoryUnlinkParams): Any? = unlink(params, RequestOptions.none())
 
     /** Toggle publish-on-merge and the release settings for a linked target. */
     fun updatePublishing(
@@ -82,14 +82,14 @@ interface RepositoryService {
     ): Any? = updatePublishing(params.toBuilder().language(language).build(), requestOptions)
 
     /** @see updatePublishing */
+    fun updatePublishing(params: RepositoryUpdatePublishingParams): Any? =
+        updatePublishing(params, RequestOptions.none())
+
+    /** @see updatePublishing */
     fun updatePublishing(
         params: RepositoryUpdatePublishingParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see updatePublishing */
-    fun updatePublishing(params: RepositoryUpdatePublishingParams): Any? =
-        updatePublishing(params, RequestOptions.none())
 
     /** A view of [RepositoryService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -124,15 +124,15 @@ interface RepositoryService {
 
         /** @see link */
         @MustBeClosed
+        fun link(params: RepositoryLinkParams): HttpResponseFor<RepositoryLinkResponse> =
+            link(params, RequestOptions.none())
+
+        /** @see link */
+        @MustBeClosed
         fun link(
             params: RepositoryLinkParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RepositoryLinkResponse>
-
-        /** @see link */
-        @MustBeClosed
-        fun link(params: RepositoryLinkParams): HttpResponseFor<RepositoryLinkResponse> =
-            link(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/sdks/{uid}/repositories/{language}`, but is
@@ -155,15 +155,15 @@ interface RepositoryService {
 
         /** @see unlink */
         @MustBeClosed
+        fun unlink(params: RepositoryUnlinkParams): HttpResponseFor<Any?> =
+            unlink(params, RequestOptions.none())
+
+        /** @see unlink */
+        @MustBeClosed
         fun unlink(
             params: RepositoryUnlinkParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see unlink */
-        @MustBeClosed
-        fun unlink(params: RepositoryUnlinkParams): HttpResponseFor<Any?> =
-            unlink(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `post /v1/sdks/{uid}/repositories/{language}/publishing`,
@@ -186,14 +186,14 @@ interface RepositoryService {
 
         /** @see updatePublishing */
         @MustBeClosed
+        fun updatePublishing(params: RepositoryUpdatePublishingParams): HttpResponseFor<Any?> =
+            updatePublishing(params, RequestOptions.none())
+
+        /** @see updatePublishing */
+        @MustBeClosed
         fun updatePublishing(
             params: RepositoryUpdatePublishingParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see updatePublishing */
-        @MustBeClosed
-        fun updatePublishing(params: RepositoryUpdatePublishingParams): HttpResponseFor<Any?> =
-            updatePublishing(params, RequestOptions.none())
     }
 }

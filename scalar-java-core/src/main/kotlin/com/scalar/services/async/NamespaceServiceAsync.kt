@@ -34,8 +34,9 @@ interface NamespaceServiceAsync {
     ): CompletableFuture<List<String>>
 
     /** @see list */
-    fun list(params: NamespaceListParams): CompletableFuture<List<String>> =
-        list(params, RequestOptions.none())
+    fun list(
+        params: NamespaceListParams = NamespaceListParams.none()
+    ): CompletableFuture<List<String>> = list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<List<String>> =
@@ -69,8 +70,9 @@ interface NamespaceServiceAsync {
         ): CompletableFuture<HttpResponseFor<List<String>>>
 
         /** @see list */
-        fun list(params: NamespaceListParams): CompletableFuture<HttpResponseFor<List<String>>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: NamespaceListParams = NamespaceListParams.none()
+        ): CompletableFuture<HttpResponseFor<List<String>>> = list(params, RequestOptions.none())
 
         /** @see list */
         fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<String>>> =

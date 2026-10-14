@@ -15,25 +15,32 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("createdAt", "id", "name", "slug", "updatedAt")
 class McpServer
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
+    private val createdAt: JsonField<String>,
     private val id: JsonField<String>,
     private val name: JsonField<String>,
     private val slug: JsonField<String>,
-    private val createdAt: JsonField<String>,
     private val updatedAt: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
+        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<String> = JsonMissing.of(),
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<String> = JsonMissing.of(),
         @JsonProperty("updatedAt") @ExcludeMissing updatedAt: JsonField<String> = JsonMissing.of(),
-    ) : this(id, name, slug, createdAt, updatedAt, mutableMapOf())
+    ) : this(createdAt, id, name, slug, updatedAt, mutableMapOf())
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun createdAt(): String = createdAt.getRequired("createdAt")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -57,13 +64,14 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun createdAt(): String = createdAt.getRequired("createdAt")
+    fun updatedAt(): String = updatedAt.getRequired("updatedAt")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     * Returns the raw JSON value of [createdAt].
+     *
+     * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun updatedAt(): String = updatedAt.getRequired("updatedAt")
+    @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<String> = createdAt
 
     /**
      * Returns the raw JSON value of [id].
@@ -85,13 +93,6 @@ private constructor(
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-    /**
-     * Returns the raw JSON value of [createdAt].
-     *
-     * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<String> = createdAt
 
     /**
      * Returns the raw JSON value of [updatedAt].
@@ -118,11 +119,11 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [McpServer].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .createdAt()
          * .id()
          * .name()
          * .slug()
-         * .createdAt()
          * .updatedAt()
          * ```
          */
@@ -132,22 +133,33 @@ private constructor(
     /** A builder for [McpServer]. */
     class Builder internal constructor() {
 
+        private var createdAt: JsonField<String>? = null
         private var id: JsonField<String>? = null
         private var name: JsonField<String>? = null
         private var slug: JsonField<String>? = null
-        private var createdAt: JsonField<String>? = null
         private var updatedAt: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(mcpServer: McpServer) = apply {
+            createdAt = mcpServer.createdAt
             id = mcpServer.id
             name = mcpServer.name
             slug = mcpServer.slug
-            createdAt = mcpServer.createdAt
             updatedAt = mcpServer.updatedAt
             additionalProperties = mcpServer.additionalProperties.toMutableMap()
         }
+
+        fun createdAt(createdAt: String) = createdAt(JsonField.of(createdAt))
+
+        /**
+         * Sets [Builder.createdAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.createdAt] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun createdAt(createdAt: JsonField<String>) = apply { this.createdAt = createdAt }
 
         fun id(id: String) = id(JsonField.of(id))
 
@@ -178,17 +190,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-        fun createdAt(createdAt: String) = createdAt(JsonField.of(createdAt))
-
-        /**
-         * Sets [Builder.createdAt] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.createdAt] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun createdAt(createdAt: JsonField<String>) = apply { this.createdAt = createdAt }
 
         fun updatedAt(updatedAt: String) = updatedAt(JsonField.of(updatedAt))
 
@@ -226,11 +227,11 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .createdAt()
          * .id()
          * .name()
          * .slug()
-         * .createdAt()
          * .updatedAt()
          * ```
          *
@@ -238,10 +239,10 @@ private constructor(
          */
         fun build(): McpServer =
             McpServer(
+                checkRequired("createdAt", createdAt),
                 checkRequired("id", id),
                 checkRequired("name", name),
                 checkRequired("slug", slug),
-                checkRequired("createdAt", createdAt),
                 checkRequired("updatedAt", updatedAt),
                 additionalProperties.toMutableMap(),
             )
@@ -262,10 +263,10 @@ private constructor(
             return@apply
         }
 
+        createdAt()
         id()
         name()
         slug()
-        createdAt()
         updatedAt()
         validated = true
     }
@@ -285,10 +286,10 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (id.asKnown().isPresent) 1 else 0) +
+        (if (createdAt.asKnown().isPresent) 1 else 0) +
+            (if (id.asKnown().isPresent) 1 else 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (createdAt.asKnown().isPresent) 1 else 0) +
             (if (updatedAt.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -297,20 +298,20 @@ private constructor(
         }
 
         return other is McpServer &&
+            createdAt == other.createdAt &&
             id == other.id &&
             name == other.name &&
             slug == other.slug &&
-            createdAt == other.createdAt &&
             updatedAt == other.updatedAt &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(id, name, slug, createdAt, updatedAt, additionalProperties)
+        Objects.hash(createdAt, id, name, slug, updatedAt, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "McpServer{id=$id, name=$name, slug=$slug, createdAt=$createdAt, updatedAt=$updatedAt, additionalProperties=$additionalProperties}"
+        "McpServer{createdAt=$createdAt, id=$id, name=$name, slug=$slug, updatedAt=$updatedAt, additionalProperties=$additionalProperties}"
 }

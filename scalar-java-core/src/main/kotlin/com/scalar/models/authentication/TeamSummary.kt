@@ -16,27 +16,22 @@ import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("name", "uid", "imageUri")
 class TeamSummary
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
     private val name: JsonField<String>,
+    private val uid: JsonField<String>,
     private val imageUri: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("imageUri") @ExcludeMissing imageUri: JsonField<String> = JsonMissing.of(),
-    ) : this(uid, name, imageUri, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun uid(): String = uid.getRequired("uid")
+    ) : this(name, uid, imageUri, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -45,17 +40,16 @@ private constructor(
     fun name(): String = name.getRequired("name")
 
     /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun uid(): String = uid.getRequired("uid")
+
+    /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun imageUri(): Optional<String> = imageUri.getOptional("imageUri")
-
-    /**
-     * Returns the raw JSON value of [uid].
-     *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
 
     /**
      * Returns the raw JSON value of [name].
@@ -63,6 +57,13 @@ private constructor(
      * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+    /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
 
     /**
      * Returns the raw JSON value of [imageUri].
@@ -89,9 +90,9 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [TeamSummary].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .name()
+         * .uid()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -100,28 +101,18 @@ private constructor(
     /** A builder for [TeamSummary]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
         private var name: JsonField<String>? = null
+        private var uid: JsonField<String>? = null
         private var imageUri: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(teamSummary: TeamSummary) = apply {
-            uid = teamSummary.uid
             name = teamSummary.name
+            uid = teamSummary.uid
             imageUri = teamSummary.imageUri
             additionalProperties = teamSummary.additionalProperties.toMutableMap()
         }
-
-        fun uid(uid: String) = uid(JsonField.of(uid))
-
-        /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun name(name: String) = name(JsonField.of(name))
 
@@ -132,6 +123,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun name(name: JsonField<String>) = apply { this.name = name }
+
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun imageUri(imageUri: String) = imageUri(JsonField.of(imageUri))
 
@@ -168,17 +169,17 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .name()
+         * .uid()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): TeamSummary =
             TeamSummary(
-                checkRequired("uid", uid),
                 checkRequired("name", name),
+                checkRequired("uid", uid),
                 imageUri,
                 additionalProperties.toMutableMap(),
             )
@@ -199,8 +200,8 @@ private constructor(
             return@apply
         }
 
-        uid()
         name()
+        uid()
         imageUri()
         validated = true
     }
@@ -220,8 +221,8 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (name.asKnown().isPresent) 1 else 0) +
+        (if (name.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
             (if (imageUri.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -230,16 +231,16 @@ private constructor(
         }
 
         return other is TeamSummary &&
-            uid == other.uid &&
             name == other.name &&
+            uid == other.uid &&
             imageUri == other.imageUri &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(uid, name, imageUri, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(name, uid, imageUri, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TeamSummary{uid=$uid, name=$name, imageUri=$imageUri, additionalProperties=$additionalProperties}"
+        "TeamSummary{name=$name, uid=$uid, imageUri=$imageUri, additionalProperties=$additionalProperties}"
 }

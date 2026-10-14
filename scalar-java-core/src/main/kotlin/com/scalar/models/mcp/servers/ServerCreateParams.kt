@@ -43,6 +43,12 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    fun projectUids(): Optional<List<String>> = body.projectUids()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun slug(): Optional<String> = body.slug()
 
     /**
@@ -52,17 +58,18 @@ private constructor(
     fun versionUids(): Optional<List<String>> = body.versionUids()
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun projectUids(): Optional<List<String>> = body.projectUids()
-
-    /**
      * Returns the raw JSON value of [name].
      *
      * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _name(): JsonField<String> = body._name()
+
+    /**
+     * Returns the raw JSON value of [projectUids].
+     *
+     * Unlike [projectUids], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _projectUids(): JsonField<List<String>> = body._projectUids()
 
     /**
      * Returns the raw JSON value of [slug].
@@ -77,13 +84,6 @@ private constructor(
      * Unlike [versionUids], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _versionUids(): JsonField<List<String>> = body._versionUids()
-
-    /**
-     * Returns the raw JSON value of [projectUids].
-     *
-     * Unlike [projectUids], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _projectUids(): JsonField<List<String>> = body._projectUids()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -101,7 +101,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [ServerCreateParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .name()
          * ```
          */
@@ -128,9 +128,9 @@ private constructor(
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [name]
+         * - [projectUids]
          * - [slug]
          * - [versionUids]
-         * - [projectUids]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -143,6 +143,26 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun name(name: JsonField<String>) = apply { body.name(name) }
+
+        fun projectUids(projectUids: List<String>) = apply { body.projectUids(projectUids) }
+
+        /**
+         * Sets [Builder.projectUids] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectUids] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun projectUids(projectUids: JsonField<List<String>>) = apply {
+            body.projectUids(projectUids)
+        }
+
+        /**
+         * Adds a single [String] to [projectUids].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addProjectUid(projectUid: String) = apply { body.addProjectUid(projectUid) }
 
         fun slug(slug: String) = apply { body.slug(slug) }
 
@@ -173,26 +193,6 @@ private constructor(
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addVersionUid(versionUid: String) = apply { body.addVersionUid(versionUid) }
-
-        fun projectUids(projectUids: List<String>) = apply { body.projectUids(projectUids) }
-
-        /**
-         * Sets [Builder.projectUids] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.projectUids] with a well-typed `List<String>` value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun projectUids(projectUids: JsonField<List<String>>) = apply {
-            body.projectUids(projectUids)
-        }
-
-        /**
-         * Adds a single [String] to [projectUids].
-         *
-         * @throws IllegalStateException if the field was previously set to a non-list.
-         */
-        fun addProjectUid(projectUid: String) = apply { body.addProjectUid(projectUid) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -317,7 +317,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .name()
          * ```
          *
@@ -337,33 +337,45 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "name",
+        "projectUids",
+        "slug",
+        "versionUids",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
+        private val projectUids: JsonField<List<String>>,
         private val slug: JsonField<String>,
         private val versionUids: JsonField<List<String>>,
-        private val projectUids: JsonField<List<String>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
             @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("projectUids")
+            @ExcludeMissing
+            projectUids: JsonField<List<String>> = JsonMissing.of(),
             @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
             @JsonProperty("versionUids")
             @ExcludeMissing
             versionUids: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("projectUids")
-            @ExcludeMissing
-            projectUids: JsonField<List<String>> = JsonMissing.of(),
-        ) : this(name, slug, versionUids, projectUids, mutableMapOf())
+        ) : this(name, projectUids, slug, versionUids, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun name(): String = name.getRequired("name")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun projectUids(): Optional<List<String>> = projectUids.getOptional("projectUids")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -378,17 +390,20 @@ private constructor(
         fun versionUids(): Optional<List<String>> = versionUids.getOptional("versionUids")
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun projectUids(): Optional<List<String>> = projectUids.getOptional("projectUids")
-
-        /**
          * Returns the raw JSON value of [name].
          *
          * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /**
+         * Returns the raw JSON value of [projectUids].
+         *
+         * Unlike [projectUids], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("projectUids")
+        @ExcludeMissing
+        fun _projectUids(): JsonField<List<String>> = projectUids
 
         /**
          * Returns the raw JSON value of [slug].
@@ -405,15 +420,6 @@ private constructor(
         @JsonProperty("versionUids")
         @ExcludeMissing
         fun _versionUids(): JsonField<List<String>> = versionUids
-
-        /**
-         * Returns the raw JSON value of [projectUids].
-         *
-         * Unlike [projectUids], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("projectUids")
-        @ExcludeMissing
-        fun _projectUids(): JsonField<List<String>> = projectUids
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -433,7 +439,7 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .name()
              * ```
              */
@@ -444,17 +450,17 @@ private constructor(
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
+            private var projectUids: JsonField<MutableList<String>>? = null
             private var slug: JsonField<String> = JsonMissing.of()
             private var versionUids: JsonField<MutableList<String>>? = null
-            private var projectUids: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 name = body.name
+                projectUids = body.projectUids.map { it.toMutableList() }
                 slug = body.slug
                 versionUids = body.versionUids.map { it.toMutableList() }
-                projectUids = body.projectUids.map { it.toMutableList() }
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -468,6 +474,31 @@ private constructor(
              * value.
              */
             fun name(name: JsonField<String>) = apply { this.name = name }
+
+            fun projectUids(projectUids: List<String>) = projectUids(JsonField.of(projectUids))
+
+            /**
+             * Sets [Builder.projectUids] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.projectUids] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun projectUids(projectUids: JsonField<List<String>>) = apply {
+                this.projectUids = projectUids.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [projectUids].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addProjectUid(projectUid: String) = apply {
+                projectUids =
+                    (projectUids ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("projectUids", it).add(projectUid)
+                    }
+            }
 
             fun slug(slug: String) = slug(JsonField.of(slug))
 
@@ -505,31 +536,6 @@ private constructor(
                     }
             }
 
-            fun projectUids(projectUids: List<String>) = projectUids(JsonField.of(projectUids))
-
-            /**
-             * Sets [Builder.projectUids] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.projectUids] with a well-typed `List<String>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun projectUids(projectUids: JsonField<List<String>>) = apply {
-                this.projectUids = projectUids.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [String] to [projectUids].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addProjectUid(projectUid: String) = apply {
-                projectUids =
-                    (projectUids ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("projectUids", it).add(projectUid)
-                    }
-            }
-
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -555,7 +561,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .name()
              * ```
              *
@@ -564,9 +570,9 @@ private constructor(
             fun build(): Body =
                 Body(
                     checkRequired("name", name),
+                    (projectUids ?: JsonMissing.of()).map { it.toImmutable() },
                     slug,
                     (versionUids ?: JsonMissing.of()).map { it.toImmutable() },
-                    (projectUids ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -588,9 +594,9 @@ private constructor(
             }
 
             name()
+            projectUids()
             slug()
             versionUids()
-            projectUids()
             validated = true
         }
 
@@ -611,9 +617,9 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (name.asKnown().isPresent) 1 else 0) +
+                (projectUids.asKnown().getOrNull()?.size ?: 0) +
                 (if (slug.asKnown().isPresent) 1 else 0) +
-                (versionUids.asKnown().getOrNull()?.size ?: 0) +
-                (projectUids.asKnown().getOrNull()?.size ?: 0)
+                (versionUids.asKnown().getOrNull()?.size ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -622,20 +628,20 @@ private constructor(
 
             return other is Body &&
                 name == other.name &&
+                projectUids == other.projectUids &&
                 slug == other.slug &&
                 versionUids == other.versionUids &&
-                projectUids == other.projectUids &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(name, slug, versionUids, projectUids, additionalProperties)
+            Objects.hash(name, projectUids, slug, versionUids, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, slug=$slug, versionUids=$versionUids, projectUids=$projectUids, additionalProperties=$additionalProperties}"
+            "Body{name=$name, projectUids=$projectUids, slug=$slug, versionUids=$versionUids, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

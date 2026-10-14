@@ -15,27 +15,46 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "jsonSha",
+    "title",
+    "uid",
+    "versionUid",
+    "yamlSha",
+)
 class RegistryCreateApiDocumentResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
+    private val jsonSha: JsonField<String>,
+    private val title: JsonField<String>,
     private val uid: JsonField<String>,
     private val versionUid: JsonField<String>,
-    private val title: JsonField<String>,
-    private val jsonSha: JsonField<String>,
     private val yamlSha: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
+        @JsonProperty("jsonSha") @ExcludeMissing jsonSha: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
         @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("versionUid")
         @ExcludeMissing
         versionUid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("jsonSha") @ExcludeMissing jsonSha: JsonField<String> = JsonMissing.of(),
         @JsonProperty("yamlSha") @ExcludeMissing yamlSha: JsonField<String> = JsonMissing.of(),
-    ) : this(uid, versionUid, title, jsonSha, yamlSha, mutableMapOf())
+    ) : this(jsonSha, title, uid, versionUid, yamlSha, mutableMapOf())
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun jsonSha(): String = jsonSha.getRequired("jsonSha")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun title(): String = title.getRequired("title")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -53,19 +72,21 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun title(): String = title.getRequired("title")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun jsonSha(): String = jsonSha.getRequired("jsonSha")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
     fun yamlSha(): String = yamlSha.getRequired("yamlSha")
+
+    /**
+     * Returns the raw JSON value of [jsonSha].
+     *
+     * Unlike [jsonSha], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("jsonSha") @ExcludeMissing fun _jsonSha(): JsonField<String> = jsonSha
+
+    /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
     /**
      * Returns the raw JSON value of [uid].
@@ -80,20 +101,6 @@ private constructor(
      * Unlike [versionUid], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("versionUid") @ExcludeMissing fun _versionUid(): JsonField<String> = versionUid
-
-    /**
-     * Returns the raw JSON value of [title].
-     *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
-
-    /**
-     * Returns the raw JSON value of [jsonSha].
-     *
-     * Unlike [jsonSha], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("jsonSha") @ExcludeMissing fun _jsonSha(): JsonField<String> = jsonSha
 
     /**
      * Returns the raw JSON value of [yamlSha].
@@ -121,11 +128,11 @@ private constructor(
          * [RegistryCreateApiDocumentResponse].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .jsonSha()
+         * .title()
          * .uid()
          * .versionUid()
-         * .title()
-         * .jsonSha()
          * .yamlSha()
          * ```
          */
@@ -135,24 +142,44 @@ private constructor(
     /** A builder for [RegistryCreateApiDocumentResponse]. */
     class Builder internal constructor() {
 
+        private var jsonSha: JsonField<String>? = null
+        private var title: JsonField<String>? = null
         private var uid: JsonField<String>? = null
         private var versionUid: JsonField<String>? = null
-        private var title: JsonField<String>? = null
-        private var jsonSha: JsonField<String>? = null
         private var yamlSha: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(registryCreateApiDocumentResponse: RegistryCreateApiDocumentResponse) =
             apply {
+                jsonSha = registryCreateApiDocumentResponse.jsonSha
+                title = registryCreateApiDocumentResponse.title
                 uid = registryCreateApiDocumentResponse.uid
                 versionUid = registryCreateApiDocumentResponse.versionUid
-                title = registryCreateApiDocumentResponse.title
-                jsonSha = registryCreateApiDocumentResponse.jsonSha
                 yamlSha = registryCreateApiDocumentResponse.yamlSha
                 additionalProperties =
                     registryCreateApiDocumentResponse.additionalProperties.toMutableMap()
             }
+
+        fun jsonSha(jsonSha: String) = jsonSha(JsonField.of(jsonSha))
+
+        /**
+         * Sets [Builder.jsonSha] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jsonSha] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun jsonSha(jsonSha: JsonField<String>) = apply { this.jsonSha = jsonSha }
+
+        fun title(title: String) = title(JsonField.of(title))
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { this.title = title }
 
         fun uid(uid: String) = uid(JsonField.of(uid))
 
@@ -174,26 +201,6 @@ private constructor(
          * value.
          */
         fun versionUid(versionUid: JsonField<String>) = apply { this.versionUid = versionUid }
-
-        fun title(title: String) = title(JsonField.of(title))
-
-        /**
-         * Sets [Builder.title] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.title] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun title(title: JsonField<String>) = apply { this.title = title }
-
-        fun jsonSha(jsonSha: String) = jsonSha(JsonField.of(jsonSha))
-
-        /**
-         * Sets [Builder.jsonSha] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.jsonSha] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun jsonSha(jsonSha: JsonField<String>) = apply { this.jsonSha = jsonSha }
 
         fun yamlSha(yamlSha: String) = yamlSha(JsonField.of(yamlSha))
 
@@ -230,11 +237,11 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .jsonSha()
+         * .title()
          * .uid()
          * .versionUid()
-         * .title()
-         * .jsonSha()
          * .yamlSha()
          * ```
          *
@@ -242,10 +249,10 @@ private constructor(
          */
         fun build(): RegistryCreateApiDocumentResponse =
             RegistryCreateApiDocumentResponse(
+                checkRequired("jsonSha", jsonSha),
+                checkRequired("title", title),
                 checkRequired("uid", uid),
                 checkRequired("versionUid", versionUid),
-                checkRequired("title", title),
-                checkRequired("jsonSha", jsonSha),
                 checkRequired("yamlSha", yamlSha),
                 additionalProperties.toMutableMap(),
             )
@@ -266,10 +273,10 @@ private constructor(
             return@apply
         }
 
+        jsonSha()
+        title()
         uid()
         versionUid()
-        title()
-        jsonSha()
         yamlSha()
         validated = true
     }
@@ -289,10 +296,10 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (versionUid.asKnown().isPresent) 1 else 0) +
+        (if (jsonSha.asKnown().isPresent) 1 else 0) +
             (if (title.asKnown().isPresent) 1 else 0) +
-            (if (jsonSha.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
+            (if (versionUid.asKnown().isPresent) 1 else 0) +
             (if (yamlSha.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -301,20 +308,20 @@ private constructor(
         }
 
         return other is RegistryCreateApiDocumentResponse &&
+            jsonSha == other.jsonSha &&
+            title == other.title &&
             uid == other.uid &&
             versionUid == other.versionUid &&
-            title == other.title &&
-            jsonSha == other.jsonSha &&
             yamlSha == other.yamlSha &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(uid, versionUid, title, jsonSha, yamlSha, additionalProperties)
+        Objects.hash(jsonSha, title, uid, versionUid, yamlSha, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RegistryCreateApiDocumentResponse{uid=$uid, versionUid=$versionUid, title=$title, jsonSha=$jsonSha, yamlSha=$yamlSha, additionalProperties=$additionalProperties}"
+        "RegistryCreateApiDocumentResponse{jsonSha=$jsonSha, title=$title, uid=$uid, versionUid=$versionUid, yamlSha=$yamlSha, additionalProperties=$additionalProperties}"
 }

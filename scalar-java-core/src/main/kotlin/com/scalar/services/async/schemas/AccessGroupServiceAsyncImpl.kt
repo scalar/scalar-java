@@ -16,8 +16,8 @@ import com.scalar.core.http.HttpResponseFor
 import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepareAsync
-import com.scalar.models.schemas.accessGroup.AccessGroupCreateParams
-import com.scalar.models.schemas.accessGroup.AccessGroupDeleteParams
+import com.scalar.models.schemas.accessgroup.AccessGroupCreateParams
+import com.scalar.models.schemas.accessgroup.AccessGroupDeleteParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull

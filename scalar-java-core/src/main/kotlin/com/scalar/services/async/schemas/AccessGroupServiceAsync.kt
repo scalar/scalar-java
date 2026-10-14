@@ -5,8 +5,8 @@ package com.scalar.services.async.schemas
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.schemas.accessGroup.AccessGroupCreateParams
-import com.scalar.models.schemas.accessGroup.AccessGroupDeleteParams
+import com.scalar.models.schemas.accessgroup.AccessGroupCreateParams
+import com.scalar.models.schemas.accessgroup.AccessGroupDeleteParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -37,14 +37,14 @@ interface AccessGroupServiceAsync {
     ): CompletableFuture<Any?> = create(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see create */
+    fun create(params: AccessGroupCreateParams): CompletableFuture<Any?> =
+        create(params, RequestOptions.none())
+
+    /** @see create */
     fun create(
         params: AccessGroupCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see create */
-    fun create(params: AccessGroupCreateParams): CompletableFuture<Any?> =
-        create(params, RequestOptions.none())
 
     /** Remove an access group from a schema. */
     fun delete(slug: String, params: AccessGroupDeleteParams): CompletableFuture<Any?> =
@@ -58,14 +58,14 @@ interface AccessGroupServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: AccessGroupDeleteParams): CompletableFuture<Any?> =
+        delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: AccessGroupDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see delete */
-    fun delete(params: AccessGroupDeleteParams): CompletableFuture<Any?> =
-        delete(params, RequestOptions.none())
 
     /**
      * A view of [AccessGroupServiceAsync] that provides access to raw HTTP responses for each
@@ -100,14 +100,14 @@ interface AccessGroupServiceAsync {
             create(params.toBuilder().slug(slug).build(), requestOptions)
 
         /** @see create */
+        fun create(params: AccessGroupCreateParams): CompletableFuture<HttpResponseFor<Any?>> =
+            create(params, RequestOptions.none())
+
+        /** @see create */
         fun create(
             params: AccessGroupCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see create */
-        fun create(params: AccessGroupCreateParams): CompletableFuture<HttpResponseFor<Any?>> =
-            create(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/schemas/{namespace}/{slug}/access-group`, but
@@ -127,13 +127,13 @@ interface AccessGroupServiceAsync {
             delete(params.toBuilder().slug(slug).build(), requestOptions)
 
         /** @see delete */
+        fun delete(params: AccessGroupDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
         fun delete(
             params: AccessGroupDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see delete */
-        fun delete(params: AccessGroupDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(params, RequestOptions.none())
     }
 }

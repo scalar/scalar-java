@@ -34,6 +34,12 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    fun baseBranch(): String = body.baseBranch()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun language(): Language = body.language()
 
     /**
@@ -43,18 +49,19 @@ private constructor(
     fun repositoryId(): Long = body.repositoryId()
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun baseBranch(): String = body.baseBranch()
-
-    /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun prereleaseType(): Optional<String> = body.prereleaseType()
 
     fun uid(): Optional<String> = Optional.ofNullable(uid)
+
+    /**
+     * Returns the raw JSON value of [baseBranch].
+     *
+     * Unlike [baseBranch], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _baseBranch(): JsonField<String> = body._baseBranch()
 
     /**
      * Returns the raw JSON value of [language].
@@ -69,13 +76,6 @@ private constructor(
      * Unlike [repositoryId], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _repositoryId(): JsonField<Long> = body._repositoryId()
-
-    /**
-     * Returns the raw JSON value of [baseBranch].
-     *
-     * Unlike [baseBranch], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _baseBranch(): JsonField<String> = body._baseBranch()
 
     /**
      * Returns the raw JSON value of [prereleaseType].
@@ -100,10 +100,10 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [RepositoryLinkParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .baseBranch()
          * .language()
          * .repositoryId()
-         * .baseBranch()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -135,12 +135,23 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [baseBranch]
          * - [language]
          * - [repositoryId]
-         * - [baseBranch]
          * - [prereleaseType]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        fun baseBranch(baseBranch: String) = apply { body.baseBranch(baseBranch) }
+
+        /**
+         * Sets [Builder.baseBranch] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.baseBranch] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun baseBranch(baseBranch: JsonField<String>) = apply { body.baseBranch(baseBranch) }
 
         fun language(language: Language) = apply { body.language(language) }
 
@@ -163,17 +174,6 @@ private constructor(
          * value.
          */
         fun repositoryId(repositoryId: JsonField<Long>) = apply { body.repositoryId(repositoryId) }
-
-        fun baseBranch(baseBranch: String) = apply { body.baseBranch(baseBranch) }
-
-        /**
-         * Sets [Builder.baseBranch] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.baseBranch] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun baseBranch(baseBranch: JsonField<String>) = apply { body.baseBranch(baseBranch) }
 
         fun prereleaseType(prereleaseType: String) = apply { body.prereleaseType(prereleaseType) }
 
@@ -311,10 +311,10 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .baseBranch()
          * .language()
          * .repositoryId()
-         * .baseBranch()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -340,31 +340,43 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "baseBranch",
+        "language",
+        "repositoryId",
+        "prereleaseType",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val baseBranch: JsonField<String>,
         private val language: JsonField<Language>,
         private val repositoryId: JsonField<Long>,
-        private val baseBranch: JsonField<String>,
         private val prereleaseType: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
+            @JsonProperty("baseBranch")
+            @ExcludeMissing
+            baseBranch: JsonField<String> = JsonMissing.of(),
             @JsonProperty("language")
             @ExcludeMissing
             language: JsonField<Language> = JsonMissing.of(),
             @JsonProperty("repositoryId")
             @ExcludeMissing
             repositoryId: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("baseBranch")
-            @ExcludeMissing
-            baseBranch: JsonField<String> = JsonMissing.of(),
             @JsonProperty("prereleaseType")
             @ExcludeMissing
             prereleaseType: JsonField<String> = JsonMissing.of(),
-        ) : this(language, repositoryId, baseBranch, prereleaseType, mutableMapOf())
+        ) : this(baseBranch, language, repositoryId, prereleaseType, mutableMapOf())
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun baseBranch(): String = baseBranch.getRequired("baseBranch")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -379,16 +391,19 @@ private constructor(
         fun repositoryId(): Long = repositoryId.getRequired("repositoryId")
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun baseBranch(): String = baseBranch.getRequired("baseBranch")
-
-        /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun prereleaseType(): Optional<String> = prereleaseType.getOptional("prereleaseType")
+
+        /**
+         * Returns the raw JSON value of [baseBranch].
+         *
+         * Unlike [baseBranch], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("baseBranch")
+        @ExcludeMissing
+        fun _baseBranch(): JsonField<String> = baseBranch
 
         /**
          * Returns the raw JSON value of [language].
@@ -406,15 +421,6 @@ private constructor(
         @JsonProperty("repositoryId")
         @ExcludeMissing
         fun _repositoryId(): JsonField<Long> = repositoryId
-
-        /**
-         * Returns the raw JSON value of [baseBranch].
-         *
-         * Unlike [baseBranch], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("baseBranch")
-        @ExcludeMissing
-        fun _baseBranch(): JsonField<String> = baseBranch
 
         /**
          * Returns the raw JSON value of [prereleaseType].
@@ -444,10 +450,10 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
+             * .baseBranch()
              * .language()
              * .repositoryId()
-             * .baseBranch()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -456,20 +462,31 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var baseBranch: JsonField<String>? = null
             private var language: JsonField<Language>? = null
             private var repositoryId: JsonField<Long>? = null
-            private var baseBranch: JsonField<String>? = null
             private var prereleaseType: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
+                baseBranch = body.baseBranch
                 language = body.language
                 repositoryId = body.repositoryId
-                baseBranch = body.baseBranch
                 prereleaseType = body.prereleaseType
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
+
+            fun baseBranch(baseBranch: String) = baseBranch(JsonField.of(baseBranch))
+
+            /**
+             * Sets [Builder.baseBranch] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.baseBranch] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun baseBranch(baseBranch: JsonField<String>) = apply { this.baseBranch = baseBranch }
 
             fun language(language: Language) = language(JsonField.of(language))
 
@@ -494,17 +511,6 @@ private constructor(
             fun repositoryId(repositoryId: JsonField<Long>) = apply {
                 this.repositoryId = repositoryId
             }
-
-            fun baseBranch(baseBranch: String) = baseBranch(JsonField.of(baseBranch))
-
-            /**
-             * Sets [Builder.baseBranch] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.baseBranch] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun baseBranch(baseBranch: JsonField<String>) = apply { this.baseBranch = baseBranch }
 
             fun prereleaseType(prereleaseType: String) =
                 prereleaseType(JsonField.of(prereleaseType))
@@ -545,19 +551,19 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
+             * .baseBranch()
              * .language()
              * .repositoryId()
-             * .baseBranch()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Body =
                 Body(
+                    checkRequired("baseBranch", baseBranch),
                     checkRequired("language", language),
                     checkRequired("repositoryId", repositoryId),
-                    checkRequired("baseBranch", baseBranch),
                     prereleaseType,
                     additionalProperties.toMutableMap(),
                 )
@@ -579,9 +585,9 @@ private constructor(
                 return@apply
             }
 
+            baseBranch()
             language().validate()
             repositoryId()
-            baseBranch()
             prereleaseType()
             validated = true
         }
@@ -602,9 +608,9 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (language.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (baseBranch.asKnown().isPresent) 1 else 0) +
+                (language.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (repositoryId.asKnown().isPresent) 1 else 0) +
-                (if (baseBranch.asKnown().isPresent) 1 else 0) +
                 (if (prereleaseType.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
@@ -613,18 +619,18 @@ private constructor(
             }
 
             return other is Body &&
+                baseBranch == other.baseBranch &&
                 language == other.language &&
                 repositoryId == other.repositoryId &&
-                baseBranch == other.baseBranch &&
                 prereleaseType == other.prereleaseType &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
             Objects.hash(
+                baseBranch,
                 language,
                 repositoryId,
-                baseBranch,
                 prereleaseType,
                 additionalProperties,
             )
@@ -633,7 +639,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{language=$language, repositoryId=$repositoryId, baseBranch=$baseBranch, prereleaseType=$prereleaseType, additionalProperties=$additionalProperties}"
+            "Body{baseBranch=$baseBranch, language=$language, repositoryId=$repositoryId, prereleaseType=$prereleaseType, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

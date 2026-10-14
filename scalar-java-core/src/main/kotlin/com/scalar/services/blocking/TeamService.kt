@@ -43,7 +43,8 @@ interface TeamService {
     ): List<Team>
 
     /** @see list */
-    fun list(params: TeamListParams): List<Team> = list(params, RequestOptions.none())
+    fun list(params: TeamListParams = TeamListParams.none()): List<Team> =
+        list(params, RequestOptions.none())
 
     /** @see list */
     fun list(requestOptions: RequestOptions): List<Team> =
@@ -80,7 +81,7 @@ interface TeamService {
 
         /** @see list */
         @MustBeClosed
-        fun list(params: TeamListParams): HttpResponseFor<List<Team>> =
+        fun list(params: TeamListParams = TeamListParams.none()): HttpResponseFor<List<Team>> =
             list(params, RequestOptions.none())
 
         /** @see list */

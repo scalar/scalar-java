@@ -20,39 +20,41 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "apiVersion",
+    "languages",
+    "status",
+    "version",
+    "createdAt",
+    "publishedAt",
+)
 class SdkVersion
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val version: JsonField<String>,
     private val apiVersion: JsonField<String>,
-    private val status: JsonField<Status>,
     private val languages: JsonField<List<Language>>,
-    private val publishedAt: JsonField<Long>,
+    private val status: JsonField<Status>,
+    private val version: JsonField<String>,
     private val createdAt: JsonField<Long>,
+    private val publishedAt: JsonField<Long>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
         @JsonProperty("apiVersion")
         @ExcludeMissing
         apiVersion: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
         @JsonProperty("languages")
         @ExcludeMissing
         languages: JsonField<List<Language>> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("publishedAt")
         @ExcludeMissing
         publishedAt: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
-    ) : this(version, apiVersion, status, languages, publishedAt, createdAt, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun version(): String = version.getRequired("version")
+    ) : this(apiVersion, languages, status, version, createdAt, publishedAt, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -64,19 +66,19 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    fun languages(): List<Language> = languages.getRequired("languages")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun status(): Status = status.getRequired("status")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun languages(): List<Language> = languages.getRequired("languages")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun publishedAt(): Optional<Long> = publishedAt.getOptional("publishedAt")
+    fun version(): String = version.getRequired("version")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -85,11 +87,10 @@ private constructor(
     fun createdAt(): Optional<Long> = createdAt.getOptional("createdAt")
 
     /**
-     * Returns the raw JSON value of [version].
-     *
-     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
+    fun publishedAt(): Optional<Long> = publishedAt.getOptional("publishedAt")
 
     /**
      * Returns the raw JSON value of [apiVersion].
@@ -97,13 +98,6 @@ private constructor(
      * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("apiVersion") @ExcludeMissing fun _apiVersion(): JsonField<String> = apiVersion
-
-    /**
-     * Returns the raw JSON value of [status].
-     *
-     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     /**
      * Returns the raw JSON value of [languages].
@@ -115,11 +109,18 @@ private constructor(
     fun _languages(): JsonField<List<Language>> = languages
 
     /**
-     * Returns the raw JSON value of [publishedAt].
+     * Returns the raw JSON value of [status].
      *
-     * Unlike [publishedAt], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("publishedAt") @ExcludeMissing fun _publishedAt(): JsonField<Long> = publishedAt
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+    /**
+     * Returns the raw JSON value of [version].
+     *
+     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
     /**
      * Returns the raw JSON value of [createdAt].
@@ -127,6 +128,13 @@ private constructor(
      * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<Long> = createdAt
+
+    /**
+     * Returns the raw JSON value of [publishedAt].
+     *
+     * Unlike [publishedAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("publishedAt") @ExcludeMissing fun _publishedAt(): JsonField<Long> = publishedAt
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -146,11 +154,11 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [SdkVersion].
          *
          * The following fields are required:
-         * ```kotlin
-         * .version()
+         * ```java
          * .apiVersion()
-         * .status()
          * .languages()
+         * .status()
+         * .version()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -159,34 +167,24 @@ private constructor(
     /** A builder for [SdkVersion]. */
     class Builder internal constructor() {
 
-        private var version: JsonField<String>? = null
         private var apiVersion: JsonField<String>? = null
-        private var status: JsonField<Status>? = null
         private var languages: JsonField<MutableList<Language>>? = null
-        private var publishedAt: JsonField<Long> = JsonMissing.of()
+        private var status: JsonField<Status>? = null
+        private var version: JsonField<String>? = null
         private var createdAt: JsonField<Long> = JsonMissing.of()
+        private var publishedAt: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sdkVersion: SdkVersion) = apply {
-            version = sdkVersion.version
             apiVersion = sdkVersion.apiVersion
-            status = sdkVersion.status
             languages = sdkVersion.languages.map { it.toMutableList() }
-            publishedAt = sdkVersion.publishedAt
+            status = sdkVersion.status
+            version = sdkVersion.version
             createdAt = sdkVersion.createdAt
+            publishedAt = sdkVersion.publishedAt
             additionalProperties = sdkVersion.additionalProperties.toMutableMap()
         }
-
-        fun version(version: String) = version(JsonField.of(version))
-
-        /**
-         * Sets [Builder.version] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.version] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun version(version: JsonField<String>) = apply { this.version = version }
 
         fun apiVersion(apiVersion: String) = apiVersion(JsonField.of(apiVersion))
 
@@ -198,16 +196,6 @@ private constructor(
          * value.
          */
         fun apiVersion(apiVersion: JsonField<String>) = apply { this.apiVersion = apiVersion }
-
-        fun status(status: Status) = status(JsonField.of(status))
-
-        /**
-         * Sets [Builder.status] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun status(status: JsonField<Status>) = apply { this.status = status }
 
         fun languages(languages: List<Language>) = languages(JsonField.of(languages))
 
@@ -234,16 +222,25 @@ private constructor(
                 }
         }
 
-        fun publishedAt(publishedAt: Long) = publishedAt(JsonField.of(publishedAt))
+        fun status(status: Status) = status(JsonField.of(status))
 
         /**
-         * Sets [Builder.publishedAt] to an arbitrary JSON value.
+         * Sets [Builder.status] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.publishedAt] with a well-typed [Long] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun publishedAt(publishedAt: JsonField<Long>) = apply { this.publishedAt = publishedAt }
+        fun status(status: JsonField<Status>) = apply { this.status = status }
+
+        fun version(version: String) = version(JsonField.of(version))
+
+        /**
+         * Sets [Builder.version] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.version] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun version(version: JsonField<String>) = apply { this.version = version }
 
         fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
 
@@ -254,6 +251,17 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun createdAt(createdAt: JsonField<Long>) = apply { this.createdAt = createdAt }
+
+        fun publishedAt(publishedAt: Long) = publishedAt(JsonField.of(publishedAt))
+
+        /**
+         * Sets [Builder.publishedAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.publishedAt] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun publishedAt(publishedAt: JsonField<Long>) = apply { this.publishedAt = publishedAt }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -280,23 +288,23 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .version()
+         * ```java
          * .apiVersion()
-         * .status()
          * .languages()
+         * .status()
+         * .version()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): SdkVersion =
             SdkVersion(
-                checkRequired("version", version),
                 checkRequired("apiVersion", apiVersion),
-                checkRequired("status", status),
                 checkRequired("languages", languages).map { it.toImmutable() },
-                publishedAt,
+                checkRequired("status", status),
+                checkRequired("version", version),
                 createdAt,
+                publishedAt,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -316,12 +324,12 @@ private constructor(
             return@apply
         }
 
-        version()
         apiVersion()
-        status().validate()
         languages().forEach { it.validate() }
-        publishedAt()
+        status().validate()
+        version()
         createdAt()
+        publishedAt()
         validated = true
     }
 
@@ -340,12 +348,12 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (version.asKnown().isPresent) 1 else 0) +
-            (if (apiVersion.asKnown().isPresent) 1 else 0) +
-            (status.asKnown().getOrNull()?.validity() ?: 0) +
+        (if (apiVersion.asKnown().isPresent) 1 else 0) +
             (languages.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-            (if (publishedAt.asKnown().isPresent) 1 else 0) +
-            (if (createdAt.asKnown().isPresent) 1 else 0)
+            (status.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (version.asKnown().isPresent) 1 else 0) +
+            (if (createdAt.asKnown().isPresent) 1 else 0) +
+            (if (publishedAt.asKnown().isPresent) 1 else 0)
 
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -687,23 +695,23 @@ private constructor(
         }
 
         return other is SdkVersion &&
-            version == other.version &&
             apiVersion == other.apiVersion &&
-            status == other.status &&
             languages == other.languages &&
-            publishedAt == other.publishedAt &&
+            status == other.status &&
+            version == other.version &&
             createdAt == other.createdAt &&
+            publishedAt == other.publishedAt &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
-            version,
             apiVersion,
-            status,
             languages,
-            publishedAt,
+            status,
+            version,
             createdAt,
+            publishedAt,
             additionalProperties,
         )
     }
@@ -711,5 +719,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SdkVersion{version=$version, apiVersion=$apiVersion, status=$status, languages=$languages, publishedAt=$publishedAt, createdAt=$createdAt, additionalProperties=$additionalProperties}"
+        "SdkVersion{apiVersion=$apiVersion, languages=$languages, status=$status, version=$version, createdAt=$createdAt, publishedAt=$publishedAt, additionalProperties=$additionalProperties}"
 }

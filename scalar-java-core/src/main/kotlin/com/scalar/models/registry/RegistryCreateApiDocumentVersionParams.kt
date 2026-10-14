@@ -34,13 +34,13 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun version(): String = body.version()
+    fun document(): String = body.document()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun document(): String = body.document()
+    fun version(): String = body.version()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -53,18 +53,18 @@ private constructor(
     fun slug(): Optional<String> = Optional.ofNullable(slug)
 
     /**
-     * Returns the raw JSON value of [version].
-     *
-     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _version(): JsonField<String> = body._version()
-
-    /**
      * Returns the raw JSON value of [document].
      *
      * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _document(): JsonField<String> = body._document()
+
+    /**
+     * Returns the raw JSON value of [version].
+     *
+     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _version(): JsonField<String> = body._version()
 
     /**
      * Returns the raw JSON value of [force].
@@ -90,10 +90,10 @@ private constructor(
          * [RegistryCreateApiDocumentVersionParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
-         * .version()
          * .document()
+         * .version()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -132,21 +132,11 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [version]
          * - [document]
+         * - [version]
          * - [force]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
-
-        fun version(version: String) = apply { body.version(version) }
-
-        /**
-         * Sets [Builder.version] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.version] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun version(version: JsonField<String>) = apply { body.version(version) }
 
         fun document(document: String) = apply { body.document(document) }
 
@@ -157,6 +147,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun document(document: JsonField<String>) = apply { body.document(document) }
+
+        fun version(version: String) = apply { body.version(version) }
+
+        /**
+         * Sets [Builder.version] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.version] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun version(version: JsonField<String>) = apply { body.version(version) }
 
         fun force(force: Boolean) = apply { body.force(force) }
 
@@ -291,10 +291,10 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
-         * .version()
          * .document()
+         * .version()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -322,29 +322,24 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("document", "version", "force")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val version: JsonField<String>,
         private val document: JsonField<String>,
+        private val version: JsonField<String>,
         private val force: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
             @JsonProperty("document")
             @ExcludeMissing
             document: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
             @JsonProperty("force") @ExcludeMissing force: JsonField<Boolean> = JsonMissing.of(),
-        ) : this(version, document, force, mutableMapOf())
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun version(): String = version.getRequired("version")
+        ) : this(document, version, force, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -353,17 +348,16 @@ private constructor(
         fun document(): String = document.getRequired("document")
 
         /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun version(): String = version.getRequired("version")
+
+        /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
         fun force(): Optional<Boolean> = force.getOptional("force")
-
-        /**
-         * Returns the raw JSON value of [version].
-         *
-         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
         /**
          * Returns the raw JSON value of [document].
@@ -371,6 +365,13 @@ private constructor(
          * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("document") @ExcludeMissing fun _document(): JsonField<String> = document
+
+        /**
+         * Returns the raw JSON value of [version].
+         *
+         * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
 
         /**
          * Returns the raw JSON value of [force].
@@ -397,9 +398,9 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
-             * .version()
+             * ```java
              * .document()
+             * .version()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -408,29 +409,18 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var version: JsonField<String>? = null
             private var document: JsonField<String>? = null
+            private var version: JsonField<String>? = null
             private var force: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                version = body.version
                 document = body.document
+                version = body.version
                 force = body.force
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
-
-            fun version(version: String) = version(JsonField.of(version))
-
-            /**
-             * Sets [Builder.version] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.version] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun version(version: JsonField<String>) = apply { this.version = version }
 
             fun document(document: String) = document(JsonField.of(document))
 
@@ -442,6 +432,17 @@ private constructor(
              * supported value.
              */
             fun document(document: JsonField<String>) = apply { this.document = document }
+
+            fun version(version: String) = version(JsonField.of(version))
+
+            /**
+             * Sets [Builder.version] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.version] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun version(version: JsonField<String>) = apply { this.version = version }
 
             fun force(force: Boolean) = force(JsonField.of(force))
 
@@ -479,17 +480,17 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
-             * .version()
+             * ```java
              * .document()
+             * .version()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Body =
                 Body(
-                    checkRequired("version", version),
                     checkRequired("document", document),
+                    checkRequired("version", version),
                     force,
                     additionalProperties.toMutableMap(),
                 )
@@ -511,8 +512,8 @@ private constructor(
                 return@apply
             }
 
-            version()
             document()
+            version()
             force()
             validated = true
         }
@@ -533,8 +534,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (version.asKnown().isPresent) 1 else 0) +
-                (if (document.asKnown().isPresent) 1 else 0) +
+            (if (document.asKnown().isPresent) 1 else 0) +
+                (if (version.asKnown().isPresent) 1 else 0) +
                 (if (force.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
@@ -543,20 +544,20 @@ private constructor(
             }
 
             return other is Body &&
-                version == other.version &&
                 document == other.document &&
+                version == other.version &&
                 force == other.force &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(version, document, force, additionalProperties)
+            Objects.hash(document, version, force, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{version=$version, document=$document, force=$force, additionalProperties=$additionalProperties}"
+            "Body{document=$document, version=$version, force=$force, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

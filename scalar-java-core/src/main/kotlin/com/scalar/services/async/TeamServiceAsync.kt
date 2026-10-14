@@ -43,7 +43,7 @@ interface TeamServiceAsync {
     ): CompletableFuture<List<Team>>
 
     /** @see list */
-    fun list(params: TeamListParams): CompletableFuture<List<Team>> =
+    fun list(params: TeamListParams = TeamListParams.none()): CompletableFuture<List<Team>> =
         list(params, RequestOptions.none())
 
     /** @see list */
@@ -79,8 +79,9 @@ interface TeamServiceAsync {
         ): CompletableFuture<HttpResponseFor<List<Team>>>
 
         /** @see list */
-        fun list(params: TeamListParams): CompletableFuture<HttpResponseFor<List<Team>>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: TeamListParams = TeamListParams.none()
+        ): CompletableFuture<HttpResponseFor<List<Team>>> = list(params, RequestOptions.none())
 
         /** @see list */
         fun list(requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<List<Team>>> =

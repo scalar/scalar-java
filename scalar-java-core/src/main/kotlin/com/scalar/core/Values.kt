@@ -323,37 +323,33 @@ sealed class JsonValue : JsonField<Nothing>() {
          *
          * This method works best on primitive types, [List] values, [Map] values, and nested
          * combinations of these. For example:
-         * ```kotlin
+         * ```java
          * // Create primitive JSON values
-         * val nullValue: JsonValue = JsonValue.from(null)
-         * val booleanValue: JsonValue = JsonValue.from(true)
-         * val numberValue: JsonValue = JsonValue.from(42)
-         * val stringValue: JsonValue = JsonValue.from("Hello World!")
+         * JsonValue nullValue = JsonValue.from(null);
+         * JsonValue booleanValue = JsonValue.from(true);
+         * JsonValue numberValue = JsonValue.from(42);
+         * JsonValue stringValue = JsonValue.from("Hello World!");
          *
          * // Create a JSON array value equivalent to `["Hello", "World"]`
-         * val arrayValue: JsonValue = JsonValue.from(listOf("Hello", "World"))
+         * JsonValue arrayValue = JsonValue.from(List.of("Hello", "World"));
          *
          * // Create a JSON object value equivalent to `{ "a": 1, "b": 2 }`
-         * val objectValue: JsonValue =
+         * JsonValue objectValue =
          *     JsonValue.from(
-         *         mapOf(
-         *             "a" to 1,
-         *             "b" to 2,
-         *         )
-         *     )
+         *         Map.of(
+         *             "a", 1,
+         *             "b", 2));
          *
          * // Create an arbitrarily nested JSON equivalent to:
          * // {
          * //   "a": [1, 2],
          * //   "b": [3, 4]
          * // }
-         * val complexValue: JsonValue =
+         * JsonValue complexValue =
          *     JsonValue.from(
-         *         mapOf(
-         *             "a" to listOf(1, 2),
-         *             "b" to listOf(3, 4),
-         *         )
-         *     )
+         *         Map.of(
+         *             "a", List.of(1, 2),
+         *             "b", List.of(3, 4)));
          * ```
          *
          * @throws IllegalArgumentException if [value] is not JSON serializable.
@@ -643,7 +639,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [MultipartField].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .value()
          * ```
          *
@@ -684,7 +680,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .value()
          * ```
          *

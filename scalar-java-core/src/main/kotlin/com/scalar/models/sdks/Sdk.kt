@@ -19,84 +19,85 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "apiUid",
+    "currentVersion",
+    "description",
+    "isPrivate",
+    "namespace",
+    "slug",
+    "targets",
+    "title",
+    "uid",
+    "versions",
+    "apiVersion",
+)
 class Sdk
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
-    private val title: JsonField<String>,
-    private val slug: JsonField<String>,
-    private val namespace: JsonField<String>,
+    private val apiUid: JsonField<String>,
+    private val currentVersion: JsonField<String>,
     private val description: JsonField<String>,
     private val isPrivate: JsonField<Boolean>,
-    private val apiUid: JsonField<String>,
-    private val apiVersion: JsonField<String>,
-    private val currentVersion: JsonField<String>,
+    private val namespace: JsonField<String>,
+    private val slug: JsonField<String>,
     private val targets: JsonField<List<SdkTargetSummary>>,
+    private val title: JsonField<String>,
+    private val uid: JsonField<String>,
     private val versions: JsonField<List<SdkVersion>>,
+    private val apiVersion: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("apiUid") @ExcludeMissing apiUid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("currentVersion")
+        @ExcludeMissing
+        currentVersion: JsonField<String> = JsonMissing.of(),
         @JsonProperty("description")
         @ExcludeMissing
         description: JsonField<String> = JsonMissing.of(),
         @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("apiUid") @ExcludeMissing apiUid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("apiVersion")
-        @ExcludeMissing
-        apiVersion: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("currentVersion")
-        @ExcludeMissing
-        currentVersion: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
         @JsonProperty("targets")
         @ExcludeMissing
         targets: JsonField<List<SdkTargetSummary>> = JsonMissing.of(),
+        @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("versions")
         @ExcludeMissing
         versions: JsonField<List<SdkVersion>> = JsonMissing.of(),
+        @JsonProperty("apiVersion")
+        @ExcludeMissing
+        apiVersion: JsonField<String> = JsonMissing.of(),
     ) : this(
-        uid,
-        title,
-        slug,
-        namespace,
+        apiUid,
+        currentVersion,
         description,
         isPrivate,
-        apiUid,
-        apiVersion,
-        currentVersion,
+        namespace,
+        slug,
         targets,
+        title,
+        uid,
         versions,
+        apiVersion,
         mutableMapOf(),
     )
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun uid(): String = uid.getRequired("uid")
+    fun apiUid(): Optional<String> = apiUid.getOptional("apiUid")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun title(): String = title.getRequired("title")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun slug(): String = slug.getRequired("slug")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun namespace(): String = namespace.getRequired("namespace")
+    fun currentVersion(): String = currentVersion.getRequired("currentVersion")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -111,22 +112,16 @@ private constructor(
     fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun apiUid(): Optional<String> = apiUid.getOptional("apiUid")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun apiVersion(): Optional<String> = apiVersion.getOptional("apiVersion")
+    fun namespace(): String = namespace.getRequired("namespace")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun currentVersion(): String = currentVersion.getRequired("currentVersion")
+    fun slug(): String = slug.getRequired("slug")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -138,35 +133,41 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    fun title(): String = title.getRequired("title")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun uid(): String = uid.getRequired("uid")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun versions(): List<SdkVersion> = versions.getRequired("versions")
 
     /**
-     * Returns the raw JSON value of [uid].
-     *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+    fun apiVersion(): Optional<String> = apiVersion.getOptional("apiVersion")
 
     /**
-     * Returns the raw JSON value of [title].
+     * Returns the raw JSON value of [apiUid].
      *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [apiUid], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+    @JsonProperty("apiUid") @ExcludeMissing fun _apiUid(): JsonField<String> = apiUid
 
     /**
-     * Returns the raw JSON value of [slug].
+     * Returns the raw JSON value of [currentVersion].
      *
-     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [currentVersion], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
-
-    /**
-     * Returns the raw JSON value of [namespace].
-     *
-     * Unlike [namespace], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("namespace") @ExcludeMissing fun _namespace(): JsonField<String> = namespace
+    @JsonProperty("currentVersion")
+    @ExcludeMissing
+    fun _currentVersion(): JsonField<String> = currentVersion
 
     /**
      * Returns the raw JSON value of [description].
@@ -183,27 +184,18 @@ private constructor(
     @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
 
     /**
-     * Returns the raw JSON value of [apiUid].
+     * Returns the raw JSON value of [namespace].
      *
-     * Unlike [apiUid], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [namespace], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("apiUid") @ExcludeMissing fun _apiUid(): JsonField<String> = apiUid
+    @JsonProperty("namespace") @ExcludeMissing fun _namespace(): JsonField<String> = namespace
 
     /**
-     * Returns the raw JSON value of [apiVersion].
+     * Returns the raw JSON value of [slug].
      *
-     * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("apiVersion") @ExcludeMissing fun _apiVersion(): JsonField<String> = apiVersion
-
-    /**
-     * Returns the raw JSON value of [currentVersion].
-     *
-     * Unlike [currentVersion], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("currentVersion")
-    @ExcludeMissing
-    fun _currentVersion(): JsonField<String> = currentVersion
+    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
     /**
      * Returns the raw JSON value of [targets].
@@ -215,6 +207,20 @@ private constructor(
     fun _targets(): JsonField<List<SdkTargetSummary>> = targets
 
     /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+
+    /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+
+    /**
      * Returns the raw JSON value of [versions].
      *
      * Unlike [versions], this method doesn't throw if the JSON field has an unexpected type.
@@ -222,6 +228,13 @@ private constructor(
     @JsonProperty("versions")
     @ExcludeMissing
     fun _versions(): JsonField<List<SdkVersion>> = versions
+
+    /**
+     * Returns the raw JSON value of [apiVersion].
+     *
+     * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("apiVersion") @ExcludeMissing fun _apiVersion(): JsonField<String> = apiVersion
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -241,16 +254,16 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [Sdk].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .title()
-         * .slug()
-         * .namespace()
-         * .description()
-         * .isPrivate()
+         * ```java
          * .apiUid()
          * .currentVersion()
+         * .description()
+         * .isPrivate()
+         * .namespace()
+         * .slug()
          * .targets()
+         * .title()
+         * .uid()
          * .versions()
          * ```
          */
@@ -260,75 +273,60 @@ private constructor(
     /** A builder for [Sdk]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
-        private var title: JsonField<String>? = null
-        private var slug: JsonField<String>? = null
-        private var namespace: JsonField<String>? = null
+        private var apiUid: JsonField<String>? = null
+        private var currentVersion: JsonField<String>? = null
         private var description: JsonField<String>? = null
         private var isPrivate: JsonField<Boolean>? = null
-        private var apiUid: JsonField<String>? = null
-        private var apiVersion: JsonField<String> = JsonMissing.of()
-        private var currentVersion: JsonField<String>? = null
+        private var namespace: JsonField<String>? = null
+        private var slug: JsonField<String>? = null
         private var targets: JsonField<MutableList<SdkTargetSummary>>? = null
+        private var title: JsonField<String>? = null
+        private var uid: JsonField<String>? = null
         private var versions: JsonField<MutableList<SdkVersion>>? = null
+        private var apiVersion: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sdk: Sdk) = apply {
-            uid = sdk.uid
-            title = sdk.title
-            slug = sdk.slug
-            namespace = sdk.namespace
+            apiUid = sdk.apiUid
+            currentVersion = sdk.currentVersion
             description = sdk.description
             isPrivate = sdk.isPrivate
-            apiUid = sdk.apiUid
-            apiVersion = sdk.apiVersion
-            currentVersion = sdk.currentVersion
+            namespace = sdk.namespace
+            slug = sdk.slug
             targets = sdk.targets.map { it.toMutableList() }
+            title = sdk.title
+            uid = sdk.uid
             versions = sdk.versions.map { it.toMutableList() }
+            apiVersion = sdk.apiVersion
             additionalProperties = sdk.additionalProperties.toMutableMap()
         }
 
-        fun uid(uid: String) = uid(JsonField.of(uid))
+        fun apiUid(apiUid: String?) = apiUid(JsonField.ofNullable(apiUid))
+
+        /** Alias for calling [Builder.apiUid] with `apiUid.orElse(null)`. */
+        fun apiUid(apiUid: Optional<String>) = apiUid(apiUid.getOrNull())
 
         /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
+         * Sets [Builder.apiUid] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * You should usually call [Builder.apiUid] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
+        fun apiUid(apiUid: JsonField<String>) = apply { this.apiUid = apiUid }
 
-        fun title(title: String) = title(JsonField.of(title))
-
-        /**
-         * Sets [Builder.title] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.title] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun title(title: JsonField<String>) = apply { this.title = title }
-
-        fun slug(slug: String) = slug(JsonField.of(slug))
+        fun currentVersion(currentVersion: String) = currentVersion(JsonField.of(currentVersion))
 
         /**
-         * Sets [Builder.slug] to an arbitrary JSON value.
+         * Sets [Builder.currentVersion] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.currentVersion] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-        fun namespace(namespace: String) = namespace(JsonField.of(namespace))
-
-        /**
-         * Sets [Builder.namespace] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.namespace] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun namespace(namespace: JsonField<String>) = apply { this.namespace = namespace }
+        fun currentVersion(currentVersion: JsonField<String>) = apply {
+            this.currentVersion = currentVersion
+        }
 
         fun description(description: String) = description(JsonField.of(description))
 
@@ -352,45 +350,26 @@ private constructor(
          */
         fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
 
-        fun apiUid(apiUid: String?) = apiUid(JsonField.ofNullable(apiUid))
-
-        /** Alias for calling [Builder.apiUid] with `apiUid.orElse(null)`. */
-        fun apiUid(apiUid: Optional<String>) = apiUid(apiUid.getOrNull())
+        fun namespace(namespace: String) = namespace(JsonField.of(namespace))
 
         /**
-         * Sets [Builder.apiUid] to an arbitrary JSON value.
+         * Sets [Builder.namespace] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.apiUid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun apiUid(apiUid: JsonField<String>) = apply { this.apiUid = apiUid }
-
-        fun apiVersion(apiVersion: String?) = apiVersion(JsonField.ofNullable(apiVersion))
-
-        /** Alias for calling [Builder.apiVersion] with `apiVersion.orElse(null)`. */
-        fun apiVersion(apiVersion: Optional<String>) = apiVersion(apiVersion.getOrNull())
-
-        /**
-         * Sets [Builder.apiVersion] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.apiVersion] with a well-typed [String] value instead.
+         * You should usually call [Builder.namespace] with a well-typed [String] value instead.
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun apiVersion(apiVersion: JsonField<String>) = apply { this.apiVersion = apiVersion }
+        fun namespace(namespace: JsonField<String>) = apply { this.namespace = namespace }
 
-        fun currentVersion(currentVersion: String) = currentVersion(JsonField.of(currentVersion))
+        fun slug(slug: String) = slug(JsonField.of(slug))
 
         /**
-         * Sets [Builder.currentVersion] to an arbitrary JSON value.
+         * Sets [Builder.slug] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.currentVersion] with a well-typed [String] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun currentVersion(currentVersion: JsonField<String>) = apply {
-            this.currentVersion = currentVersion
-        }
+        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
         fun targets(targets: List<SdkTargetSummary>) = targets(JsonField.of(targets))
 
@@ -417,6 +396,26 @@ private constructor(
                 }
         }
 
+        fun title(title: String) = title(JsonField.of(title))
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { this.title = title }
+
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
+
         fun versions(versions: List<SdkVersion>) = versions(JsonField.of(versions))
 
         /**
@@ -441,6 +440,20 @@ private constructor(
                     checkKnown("versions", it).add(version)
                 }
         }
+
+        fun apiVersion(apiVersion: String?) = apiVersion(JsonField.ofNullable(apiVersion))
+
+        /** Alias for calling [Builder.apiVersion] with `apiVersion.orElse(null)`. */
+        fun apiVersion(apiVersion: Optional<String>) = apiVersion(apiVersion.getOrNull())
+
+        /**
+         * Sets [Builder.apiVersion] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.apiVersion] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun apiVersion(apiVersion: JsonField<String>) = apply { this.apiVersion = apiVersion }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -467,16 +480,16 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .title()
-         * .slug()
-         * .namespace()
-         * .description()
-         * .isPrivate()
+         * ```java
          * .apiUid()
          * .currentVersion()
+         * .description()
+         * .isPrivate()
+         * .namespace()
+         * .slug()
          * .targets()
+         * .title()
+         * .uid()
          * .versions()
          * ```
          *
@@ -484,17 +497,17 @@ private constructor(
          */
         fun build(): Sdk =
             Sdk(
-                checkRequired("uid", uid),
-                checkRequired("title", title),
-                checkRequired("slug", slug),
-                checkRequired("namespace", namespace),
+                checkRequired("apiUid", apiUid),
+                checkRequired("currentVersion", currentVersion),
                 checkRequired("description", description),
                 checkRequired("isPrivate", isPrivate),
-                checkRequired("apiUid", apiUid),
-                apiVersion,
-                checkRequired("currentVersion", currentVersion),
+                checkRequired("namespace", namespace),
+                checkRequired("slug", slug),
                 checkRequired("targets", targets).map { it.toImmutable() },
+                checkRequired("title", title),
+                checkRequired("uid", uid),
                 checkRequired("versions", versions).map { it.toImmutable() },
+                apiVersion,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -514,17 +527,17 @@ private constructor(
             return@apply
         }
 
-        uid()
-        title()
-        slug()
-        namespace()
+        apiUid()
+        currentVersion()
         description()
         isPrivate()
-        apiUid()
-        apiVersion()
-        currentVersion()
+        namespace()
+        slug()
         targets().forEach { it.validate() }
+        title()
+        uid()
         versions().forEach { it.validate() }
+        apiVersion()
         validated = true
     }
 
@@ -543,17 +556,17 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (title.asKnown().isPresent) 1 else 0) +
-            (if (slug.asKnown().isPresent) 1 else 0) +
-            (if (namespace.asKnown().isPresent) 1 else 0) +
+        (if (apiUid.asKnown().isPresent) 1 else 0) +
+            (if (currentVersion.asKnown().isPresent) 1 else 0) +
             (if (description.asKnown().isPresent) 1 else 0) +
             (if (isPrivate.asKnown().isPresent) 1 else 0) +
-            (if (apiUid.asKnown().isPresent) 1 else 0) +
-            (if (apiVersion.asKnown().isPresent) 1 else 0) +
-            (if (currentVersion.asKnown().isPresent) 1 else 0) +
+            (if (namespace.asKnown().isPresent) 1 else 0) +
+            (if (slug.asKnown().isPresent) 1 else 0) +
             (targets.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-            (versions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+            (if (title.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
+            (versions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (apiVersion.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -561,33 +574,33 @@ private constructor(
         }
 
         return other is Sdk &&
-            uid == other.uid &&
-            title == other.title &&
-            slug == other.slug &&
-            namespace == other.namespace &&
+            apiUid == other.apiUid &&
+            currentVersion == other.currentVersion &&
             description == other.description &&
             isPrivate == other.isPrivate &&
-            apiUid == other.apiUid &&
-            apiVersion == other.apiVersion &&
-            currentVersion == other.currentVersion &&
+            namespace == other.namespace &&
+            slug == other.slug &&
             targets == other.targets &&
+            title == other.title &&
+            uid == other.uid &&
             versions == other.versions &&
+            apiVersion == other.apiVersion &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
-            uid,
-            title,
-            slug,
-            namespace,
+            apiUid,
+            currentVersion,
             description,
             isPrivate,
-            apiUid,
-            apiVersion,
-            currentVersion,
+            namespace,
+            slug,
             targets,
+            title,
+            uid,
             versions,
+            apiVersion,
             additionalProperties,
         )
     }
@@ -595,5 +608,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Sdk{uid=$uid, title=$title, slug=$slug, namespace=$namespace, description=$description, isPrivate=$isPrivate, apiUid=$apiUid, apiVersion=$apiVersion, currentVersion=$currentVersion, targets=$targets, versions=$versions, additionalProperties=$additionalProperties}"
+        "Sdk{apiUid=$apiUid, currentVersion=$currentVersion, description=$description, isPrivate=$isPrivate, namespace=$namespace, slug=$slug, targets=$targets, title=$title, uid=$uid, versions=$versions, apiVersion=$apiVersion, additionalProperties=$additionalProperties}"
 }

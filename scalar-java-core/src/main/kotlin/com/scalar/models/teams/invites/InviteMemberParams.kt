@@ -69,7 +69,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [InviteMemberParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .email()
          * .role()
          * ```
@@ -244,7 +244,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .email()
          * .role()
          * ```
@@ -265,6 +265,7 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("email", "role")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -323,7 +324,7 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .email()
              * .role()
              * ```
@@ -392,7 +393,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
              * .email()
              * .role()
              * ```

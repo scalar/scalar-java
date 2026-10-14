@@ -18,31 +18,32 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("displayName", "role", "uid", "imageUri")
 class TeamMember
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
-    private val role: JsonField<Role>,
     private val displayName: JsonField<String>,
+    private val role: JsonField<Role>,
+    private val uid: JsonField<String>,
     private val imageUri: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
         @JsonProperty("displayName")
         @ExcludeMissing
         displayName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("imageUri") @ExcludeMissing imageUri: JsonField<String> = JsonMissing.of(),
-    ) : this(uid, role, displayName, imageUri, mutableMapOf())
+    ) : this(displayName, role, uid, imageUri, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun uid(): String = uid.getRequired("uid")
+    fun displayName(): String = displayName.getRequired("displayName")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -54,7 +55,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun displayName(): String = displayName.getRequired("displayName")
+    fun uid(): String = uid.getRequired("uid")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -63,11 +64,11 @@ private constructor(
     fun imageUri(): Optional<String> = imageUri.getOptional("imageUri")
 
     /**
-     * Returns the raw JSON value of [uid].
+     * Returns the raw JSON value of [displayName].
      *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [displayName], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+    @JsonProperty("displayName") @ExcludeMissing fun _displayName(): JsonField<String> = displayName
 
     /**
      * Returns the raw JSON value of [role].
@@ -77,11 +78,11 @@ private constructor(
     @JsonProperty("role") @ExcludeMissing fun _role(): JsonField<Role> = role
 
     /**
-     * Returns the raw JSON value of [displayName].
+     * Returns the raw JSON value of [uid].
      *
-     * Unlike [displayName], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("displayName") @ExcludeMissing fun _displayName(): JsonField<String> = displayName
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
 
     /**
      * Returns the raw JSON value of [imageUri].
@@ -108,10 +109,10 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [TeamMember].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .role()
+         * ```java
          * .displayName()
+         * .role()
+         * .uid()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -120,40 +121,20 @@ private constructor(
     /** A builder for [TeamMember]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
-        private var role: JsonField<Role>? = null
         private var displayName: JsonField<String>? = null
+        private var role: JsonField<Role>? = null
+        private var uid: JsonField<String>? = null
         private var imageUri: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(teamMember: TeamMember) = apply {
-            uid = teamMember.uid
-            role = teamMember.role
             displayName = teamMember.displayName
+            role = teamMember.role
+            uid = teamMember.uid
             imageUri = teamMember.imageUri
             additionalProperties = teamMember.additionalProperties.toMutableMap()
         }
-
-        fun uid(uid: String) = uid(JsonField.of(uid))
-
-        /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
-
-        fun role(role: Role) = role(JsonField.of(role))
-
-        /**
-         * Sets [Builder.role] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.role] with a well-typed [Role] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun role(role: JsonField<Role>) = apply { this.role = role }
 
         fun displayName(displayName: String) = displayName(JsonField.of(displayName))
 
@@ -165,6 +146,26 @@ private constructor(
          * value.
          */
         fun displayName(displayName: JsonField<String>) = apply { this.displayName = displayName }
+
+        fun role(role: Role) = role(JsonField.of(role))
+
+        /**
+         * Sets [Builder.role] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.role] with a well-typed [Role] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun role(role: JsonField<Role>) = apply { this.role = role }
+
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun imageUri(imageUri: String) = imageUri(JsonField.of(imageUri))
 
@@ -201,19 +202,19 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
-         * .role()
+         * ```java
          * .displayName()
+         * .role()
+         * .uid()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): TeamMember =
             TeamMember(
-                checkRequired("uid", uid),
-                checkRequired("role", role),
                 checkRequired("displayName", displayName),
+                checkRequired("role", role),
+                checkRequired("uid", uid),
                 imageUri,
                 additionalProperties.toMutableMap(),
             )
@@ -234,9 +235,9 @@ private constructor(
             return@apply
         }
 
-        uid()
-        role().validate()
         displayName()
+        role().validate()
+        uid()
         imageUri()
         validated = true
     }
@@ -256,9 +257,9 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
+        (if (displayName.asKnown().isPresent) 1 else 0) +
             (role.asKnown().getOrNull()?.validity() ?: 0) +
-            (if (displayName.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
             (if (imageUri.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -267,19 +268,19 @@ private constructor(
         }
 
         return other is TeamMember &&
-            uid == other.uid &&
-            role == other.role &&
             displayName == other.displayName &&
+            role == other.role &&
+            uid == other.uid &&
             imageUri == other.imageUri &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(uid, role, displayName, imageUri, additionalProperties)
+        Objects.hash(displayName, role, uid, imageUri, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TeamMember{uid=$uid, role=$role, displayName=$displayName, imageUri=$imageUri, additionalProperties=$additionalProperties}"
+        "TeamMember{displayName=$displayName, role=$role, uid=$uid, imageUri=$imageUri, additionalProperties=$additionalProperties}"
 }

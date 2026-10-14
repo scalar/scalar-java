@@ -34,6 +34,18 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    fun description(): Optional<String> = body.description()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun isPrivate(): Optional<Boolean> = body.isPrivate()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun bodyNamespace(): Optional<String> = body.bodyNamespace()
 
     /**
@@ -48,21 +60,23 @@ private constructor(
      */
     fun title(): Optional<String> = body.title()
 
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun description(): Optional<String> = body.description()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun isPrivate(): Optional<Boolean> = body.isPrivate()
-
     fun pathNamespace(): String = pathNamespace
 
     fun pathSlug(): Optional<String> = Optional.ofNullable(pathSlug)
+
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _description(): JsonField<String> = body._description()
+
+    /**
+     * Returns the raw JSON value of [isPrivate].
+     *
+     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _isPrivate(): JsonField<Boolean> = body._isPrivate()
 
     /**
      * Returns the raw JSON value of [bodyNamespace].
@@ -85,20 +99,6 @@ private constructor(
      */
     fun _title(): JsonField<String> = body._title()
 
-    /**
-     * Returns the raw JSON value of [description].
-     *
-     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _description(): JsonField<String> = body._description()
-
-    /**
-     * Returns the raw JSON value of [isPrivate].
-     *
-     * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _isPrivate(): JsonField<Boolean> = body._isPrivate()
-
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     /** Additional headers to send with the request. */
@@ -115,7 +115,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [RuleUpdateRulesetParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .pathNamespace()
          * ```
          */
@@ -152,13 +152,35 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [description]
+         * - [isPrivate]
          * - [bodyNamespace]
          * - [bodySlug]
          * - [title]
-         * - [description]
-         * - [isPrivate]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        fun description(description: String) = apply { body.description(description) }
+
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
+
+        fun isPrivate(isPrivate: Boolean) = apply { body.isPrivate(isPrivate) }
+
+        /**
+         * Sets [Builder.isPrivate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { body.isPrivate(isPrivate) }
 
         fun bodyNamespace(bodyNamespace: String) = apply { body.bodyNamespace(bodyNamespace) }
 
@@ -192,28 +214,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun title(title: JsonField<String>) = apply { body.title(title) }
-
-        fun description(description: String) = apply { body.description(description) }
-
-        /**
-         * Sets [Builder.description] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.description] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun description(description: JsonField<String>) = apply { body.description(description) }
-
-        fun isPrivate(isPrivate: Boolean) = apply { body.isPrivate(isPrivate) }
-
-        /**
-         * Sets [Builder.isPrivate] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun isPrivate(isPrivate: JsonField<Boolean>) = apply { body.isPrivate(isPrivate) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -338,7 +338,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .pathNamespace()
          * ```
          *
@@ -367,31 +367,50 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "description",
+        "isPrivate",
+        "namespace",
+        "slug",
+        "title",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val description: JsonField<String>,
+        private val isPrivate: JsonField<Boolean>,
         private val bodyNamespace: JsonField<String>,
         private val bodySlug: JsonField<String>,
         private val title: JsonField<String>,
-        private val description: JsonField<String>,
-        private val isPrivate: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("namespace")
-            @ExcludeMissing
-            bodyNamespace: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug") @ExcludeMissing bodySlug: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
             @JsonProperty("description")
             @ExcludeMissing
             description: JsonField<String> = JsonMissing.of(),
             @JsonProperty("isPrivate")
             @ExcludeMissing
             isPrivate: JsonField<Boolean> = JsonMissing.of(),
-        ) : this(bodyNamespace, bodySlug, title, description, isPrivate, mutableMapOf())
+            @JsonProperty("namespace")
+            @ExcludeMissing
+            bodyNamespace: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("slug") @ExcludeMissing bodySlug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        ) : this(description, isPrivate, bodyNamespace, bodySlug, title, mutableMapOf())
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun description(): Optional<String> = description.getOptional("description")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun isPrivate(): Optional<Boolean> = isPrivate.getOptional("isPrivate")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -412,16 +431,20 @@ private constructor(
         fun title(): Optional<String> = title.getOptional("title")
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
          */
-        fun description(): Optional<String> = description.getOptional("description")
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * Returns the raw JSON value of [isPrivate].
+         *
+         * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
          */
-        fun isPrivate(): Optional<Boolean> = isPrivate.getOptional("isPrivate")
+        @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
 
         /**
          * Returns the raw JSON value of [bodyNamespace].
@@ -447,22 +470,6 @@ private constructor(
          */
         @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
 
-        /**
-         * Returns the raw JSON value of [description].
-         *
-         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        /**
-         * Returns the raw JSON value of [isPrivate].
-         *
-         * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
-
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -484,22 +491,46 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var description: JsonField<String> = JsonMissing.of()
+            private var isPrivate: JsonField<Boolean> = JsonMissing.of()
             private var bodyNamespace: JsonField<String> = JsonMissing.of()
             private var bodySlug: JsonField<String> = JsonMissing.of()
             private var title: JsonField<String> = JsonMissing.of()
-            private var description: JsonField<String> = JsonMissing.of()
-            private var isPrivate: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
+                description = body.description
+                isPrivate = body.isPrivate
                 bodyNamespace = body.bodyNamespace
                 bodySlug = body.bodySlug
                 title = body.title
-                description = body.description
-                isPrivate = body.isPrivate
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
+
+            fun description(description: String) = description(JsonField.of(description))
+
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
+
+            fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
+
+            /**
+             * Sets [Builder.isPrivate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
 
             fun bodyNamespace(bodyNamespace: String) = bodyNamespace(JsonField.of(bodyNamespace))
 
@@ -536,30 +567,6 @@ private constructor(
              */
             fun title(title: JsonField<String>) = apply { this.title = title }
 
-            fun description(description: String) = description(JsonField.of(description))
-
-            /**
-             * Sets [Builder.description] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.description] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun description(description: JsonField<String>) = apply {
-                this.description = description
-            }
-
-            fun isPrivate(isPrivate: Boolean) = isPrivate(JsonField.of(isPrivate))
-
-            /**
-             * Sets [Builder.isPrivate] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.isPrivate] with a well-typed [Boolean] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
-
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -586,11 +593,11 @@ private constructor(
              */
             fun build(): Body =
                 Body(
+                    description,
+                    isPrivate,
                     bodyNamespace,
                     bodySlug,
                     title,
-                    description,
-                    isPrivate,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -611,11 +618,11 @@ private constructor(
                 return@apply
             }
 
+            description()
+            isPrivate()
             bodyNamespace()
             bodySlug()
             title()
-            description()
-            isPrivate()
             validated = true
         }
 
@@ -635,11 +642,11 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (bodyNamespace.asKnown().isPresent) 1 else 0) +
+            (if (description.asKnown().isPresent) 1 else 0) +
+                (if (isPrivate.asKnown().isPresent) 1 else 0) +
+                (if (bodyNamespace.asKnown().isPresent) 1 else 0) +
                 (if (bodySlug.asKnown().isPresent) 1 else 0) +
-                (if (title.asKnown().isPresent) 1 else 0) +
-                (if (description.asKnown().isPresent) 1 else 0) +
-                (if (isPrivate.asKnown().isPresent) 1 else 0)
+                (if (title.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -647,21 +654,21 @@ private constructor(
             }
 
             return other is Body &&
+                description == other.description &&
+                isPrivate == other.isPrivate &&
                 bodyNamespace == other.bodyNamespace &&
                 bodySlug == other.bodySlug &&
                 title == other.title &&
-                description == other.description &&
-                isPrivate == other.isPrivate &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
             Objects.hash(
+                description,
+                isPrivate,
                 bodyNamespace,
                 bodySlug,
                 title,
-                description,
-                isPrivate,
                 additionalProperties,
             )
         }
@@ -669,7 +676,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{bodyNamespace=$bodyNamespace, bodySlug=$bodySlug, title=$title, description=$description, isPrivate=$isPrivate, additionalProperties=$additionalProperties}"
+            "Body{description=$description, isPrivate=$isPrivate, bodyNamespace=$bodyNamespace, bodySlug=$bodySlug, title=$title, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

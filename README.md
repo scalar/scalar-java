@@ -34,6 +34,24 @@ The full API of this library can be found in [api.md](./api.md).
 
 ## Installation
 
+Add the dependency to your Gradle build:
+
+```kotlin
+implementation("com.scalar:scalar-java:0.2.1") // x-release-please-version
+```
+
+Or declare it in your Maven `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>com.scalar</groupId>
+  <artifactId>scalar-java</artifactId>
+  <version>0.2.1</version> <!-- x-release-please-version -->
+</dependency>
+```
+
+Or build the SDK from source, with JDK 21 installed:
+
 ```sh
 ./gradlew :scalar-java:build
 ```
@@ -295,7 +313,6 @@ Generated clients support request timeouts and retry temporary failures such as 
 ## Requirements
 
 - Java 8 or later
-- Gradle multi-module project rooted at `scalar-java-root`, built with JDK 21
 
 <br />
 

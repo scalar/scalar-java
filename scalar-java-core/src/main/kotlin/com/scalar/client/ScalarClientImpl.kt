@@ -4,10 +4,14 @@ package com.scalar.client
 
 import com.scalar.core.ClientOptions
 import com.scalar.core.getPackageVersion
+import com.scalar.services.blocking.AccessGroupService
+import com.scalar.services.blocking.AccessGroupServiceImpl
 import com.scalar.services.blocking.AuthenticationService
 import com.scalar.services.blocking.AuthenticationServiceImpl
 import com.scalar.services.blocking.LoginPortalService
 import com.scalar.services.blocking.LoginPortalServiceImpl
+import com.scalar.services.blocking.McpService
+import com.scalar.services.blocking.McpServiceImpl
 import com.scalar.services.blocking.NamespaceService
 import com.scalar.services.blocking.NamespaceServiceImpl
 import com.scalar.services.blocking.RegistryService
@@ -18,6 +22,8 @@ import com.scalar.services.blocking.ScalarDocService
 import com.scalar.services.blocking.ScalarDocServiceImpl
 import com.scalar.services.blocking.SchemaService
 import com.scalar.services.blocking.SchemaServiceImpl
+import com.scalar.services.blocking.SdkService
+import com.scalar.services.blocking.SdkServiceImpl
 import com.scalar.services.blocking.TeamService
 import com.scalar.services.blocking.TeamServiceImpl
 import com.scalar.services.blocking.ThemeService
@@ -51,6 +57,10 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
         LoginPortalServiceImpl(clientOptionsWithUserAgent)
     }
 
+    private val accessGroups: AccessGroupService by lazy {
+        AccessGroupServiceImpl(clientOptionsWithUserAgent)
+    }
+
     private val rules: RuleService by lazy { RuleServiceImpl(clientOptionsWithUserAgent) }
 
     private val themes: ThemeService by lazy { ThemeServiceImpl(clientOptionsWithUserAgent) }
@@ -69,6 +79,10 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
         AuthenticationServiceImpl(clientOptionsWithUserAgent)
     }
 
+    private val sdks: SdkService by lazy { SdkServiceImpl(clientOptionsWithUserAgent) }
+
+    private val mcp: McpService by lazy { McpServiceImpl(clientOptionsWithUserAgent) }
+
     override fun async(): ScalarClientAsync = async
 
     override fun withRawResponse(): ScalarClient.WithRawResponse = withRawResponse
@@ -84,6 +98,9 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
 
     /** Login Portals */
     override fun loginPortals(): LoginPortalService = loginPortals
+
+    /** Access Groups */
+    override fun accessGroups(): AccessGroupService = accessGroups
 
     /** Rules */
     override fun rules(): RuleService = rules
@@ -103,6 +120,11 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
     /** Authentication */
     override fun authentication(): AuthenticationService = authentication
 
+    /** SDKs */
+    override fun sdks(): SdkService = sdks
+
+    override fun mcp(): McpService = mcp
+
     override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -118,6 +140,10 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
 
         private val loginPortals: LoginPortalService.WithRawResponse by lazy {
             LoginPortalServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val accessGroups: AccessGroupService.WithRawResponse by lazy {
+            AccessGroupServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val rules: RuleService.WithRawResponse by lazy {
@@ -144,6 +170,14 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
             AuthenticationServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val sdks: SdkService.WithRawResponse by lazy {
+            SdkServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val mcp: McpService.WithRawResponse by lazy {
+            McpServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): ScalarClient.WithRawResponse =
@@ -159,6 +193,9 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
 
         /** Login Portals */
         override fun loginPortals(): LoginPortalService.WithRawResponse = loginPortals
+
+        /** Access Groups */
+        override fun accessGroups(): AccessGroupService.WithRawResponse = accessGroups
 
         /** Rules */
         override fun rules(): RuleService.WithRawResponse = rules
@@ -177,5 +214,10 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
 
         /** Authentication */
         override fun authentication(): AuthenticationService.WithRawResponse = authentication
+
+        /** SDKs */
+        override fun sdks(): SdkService.WithRawResponse = sdks
+
+        override fun mcp(): McpService.WithRawResponse = mcp
     }
 }

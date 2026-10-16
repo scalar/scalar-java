@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.Uid
 import com.scalar.models.schemas.version.VersionCreateParams
+import com.scalar.models.schemas.version.VersionCreateResponse
 import com.scalar.models.schemas.version.VersionDeleteParams
 import com.scalar.models.schemas.version.VersionRetrieveParams
 import java.util.function.Consumer
@@ -28,7 +28,7 @@ interface VersionService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VersionService
 
     /** Create a schema version. */
-    fun create(slug: String, params: VersionCreateParams): Uid =
+    fun create(slug: String, params: VersionCreateParams): VersionCreateResponse =
         create(slug, params, RequestOptions.none())
 
     /** @see create */
@@ -36,16 +36,17 @@ interface VersionService {
         slug: String,
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): Uid = create(params.toBuilder().slug(slug).build(), requestOptions)
+    ): VersionCreateResponse = create(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see create */
+    fun create(params: VersionCreateParams): VersionCreateResponse =
+        create(params, RequestOptions.none())
 
     /** @see create */
     fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): Uid
-
-    /** @see create */
-    fun create(params: VersionCreateParams): Uid = create(params, RequestOptions.none())
+    ): VersionCreateResponse
 
     /** Get a specific schema version document. */
     fun retrieve(semver: String, params: VersionRetrieveParams): String =
@@ -59,13 +60,13 @@ interface VersionService {
     ): String = retrieve(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see retrieve */
+    fun retrieve(params: VersionRetrieveParams): String = retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
     fun retrieve(
         params: VersionRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
-
-    /** @see retrieve */
-    fun retrieve(params: VersionRetrieveParams): String = retrieve(params, RequestOptions.none())
 
     /** Delete a schema version. */
     fun delete(semver: String, params: VersionDeleteParams): Any? =
@@ -79,13 +80,13 @@ interface VersionService {
     ): Any? = delete(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: VersionDeleteParams): Any? = delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: VersionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see delete */
-    fun delete(params: VersionDeleteParams): Any? = delete(params, RequestOptions.none())
 
     /** A view of [VersionService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -102,8 +103,10 @@ interface VersionService {
          * otherwise the same as [VersionService.create].
          */
         @MustBeClosed
-        fun create(slug: String, params: VersionCreateParams): HttpResponseFor<Uid> =
-            create(slug, params, RequestOptions.none())
+        fun create(
+            slug: String,
+            params: VersionCreateParams,
+        ): HttpResponseFor<VersionCreateResponse> = create(slug, params, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed
@@ -111,19 +114,20 @@ interface VersionService {
             slug: String,
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Uid> = create(params.toBuilder().slug(slug).build(), requestOptions)
+        ): HttpResponseFor<VersionCreateResponse> =
+            create(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see create */
+        @MustBeClosed
+        fun create(params: VersionCreateParams): HttpResponseFor<VersionCreateResponse> =
+            create(params, RequestOptions.none())
 
         /** @see create */
         @MustBeClosed
         fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Uid>
-
-        /** @see create */
-        @MustBeClosed
-        fun create(params: VersionCreateParams): HttpResponseFor<Uid> =
-            create(params, RequestOptions.none())
+        ): HttpResponseFor<VersionCreateResponse>
 
         /**
          * Returns a raw HTTP response for `get /v1/schemas/{namespace}/{slug}/version/{semver}`,
@@ -144,15 +148,15 @@ interface VersionService {
 
         /** @see retrieve */
         @MustBeClosed
+        fun retrieve(params: VersionRetrieveParams): HttpResponseFor<String> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see retrieve */
+        @MustBeClosed
         fun retrieve(
             params: VersionRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<String>
-
-        /** @see retrieve */
-        @MustBeClosed
-        fun retrieve(params: VersionRetrieveParams): HttpResponseFor<String> =
-            retrieve(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/schemas/{namespace}/{slug}/version/{semver}`,
@@ -172,14 +176,14 @@ interface VersionService {
 
         /** @see delete */
         @MustBeClosed
+        fun delete(params: VersionDeleteParams): HttpResponseFor<Any?> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
+        @MustBeClosed
         fun delete(
             params: VersionDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see delete */
-        @MustBeClosed
-        fun delete(params: VersionDeleteParams): HttpResponseFor<Any?> =
-            delete(params, RequestOptions.none())
     }
 }

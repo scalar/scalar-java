@@ -7,12 +7,12 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.rules.Rule
 import com.scalar.models.rules.RuleCreateRulesetAccessGroupParams
 import com.scalar.models.rules.RuleCreateRulesetParams
 import com.scalar.models.rules.RuleDeleteRulesetAccessGroupParams
 import com.scalar.models.rules.RuleDeleteRulesetParams
 import com.scalar.models.rules.RuleListRulesetsParams
-import com.scalar.models.rules.RuleListRulesetsResponse
 import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams
 import com.scalar.models.rules.RuleUpdateRulesetParams
 import java.util.function.Consumer
@@ -44,14 +44,14 @@ interface RuleService {
     ): Uid = createRuleset(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see createRuleset */
+    fun createRuleset(params: RuleCreateRulesetParams): Uid =
+        createRuleset(params, RequestOptions.none())
+
+    /** @see createRuleset */
     fun createRuleset(
         params: RuleCreateRulesetParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Uid
-
-    /** @see createRuleset */
-    fun createRuleset(params: RuleCreateRulesetParams): Uid =
-        createRuleset(params, RequestOptions.none())
 
     /** Grant an access group to a rule. */
     fun createRulesetAccessGroup(slug: String, params: RuleCreateRulesetAccessGroupParams): Any? =
@@ -65,14 +65,14 @@ interface RuleService {
     ): Any? = createRulesetAccessGroup(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see createRulesetAccessGroup */
+    fun createRulesetAccessGroup(params: RuleCreateRulesetAccessGroupParams): Any? =
+        createRulesetAccessGroup(params, RequestOptions.none())
+
+    /** @see createRulesetAccessGroup */
     fun createRulesetAccessGroup(
         params: RuleCreateRulesetAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see createRulesetAccessGroup */
-    fun createRulesetAccessGroup(params: RuleCreateRulesetAccessGroupParams): Any? =
-        createRulesetAccessGroup(params, RequestOptions.none())
 
     /** Delete a rule by slug. */
     fun deleteRuleset(slug: String, params: RuleDeleteRulesetParams): Any? =
@@ -86,14 +86,14 @@ interface RuleService {
     ): Any? = deleteRuleset(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see deleteRuleset */
+    fun deleteRuleset(params: RuleDeleteRulesetParams): Any? =
+        deleteRuleset(params, RequestOptions.none())
+
+    /** @see deleteRuleset */
     fun deleteRuleset(
         params: RuleDeleteRulesetParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see deleteRuleset */
-    fun deleteRuleset(params: RuleDeleteRulesetParams): Any? =
-        deleteRuleset(params, RequestOptions.none())
 
     /** Remove an access group from a rule. */
     fun deleteRulesetAccessGroup(slug: String, params: RuleDeleteRulesetAccessGroupParams): Any? =
@@ -107,17 +107,17 @@ interface RuleService {
     ): Any? = deleteRulesetAccessGroup(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see deleteRulesetAccessGroup */
+    fun deleteRulesetAccessGroup(params: RuleDeleteRulesetAccessGroupParams): Any? =
+        deleteRulesetAccessGroup(params, RequestOptions.none())
+
+    /** @see deleteRulesetAccessGroup */
     fun deleteRulesetAccessGroup(
         params: RuleDeleteRulesetAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
 
-    /** @see deleteRulesetAccessGroup */
-    fun deleteRulesetAccessGroup(params: RuleDeleteRulesetAccessGroupParams): Any? =
-        deleteRulesetAccessGroup(params, RequestOptions.none())
-
     /** List all rulesets in a namespace. */
-    fun listRulesets(namespace: String): List<RuleListRulesetsResponse> =
+    fun listRulesets(namespace: String): List<Rule> =
         listRulesets(namespace, RuleListRulesetsParams.none())
 
     /** @see listRulesets */
@@ -125,30 +125,26 @@ interface RuleService {
         namespace: String,
         params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<RuleListRulesetsResponse> =
-        listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
+    ): List<Rule> = listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see listRulesets */
     fun listRulesets(
         namespace: String,
-        params: RuleListRulesetsParams,
-    ): List<RuleListRulesetsResponse> = listRulesets(namespace, params, RequestOptions.none())
+        params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
+    ): List<Rule> = listRulesets(namespace, params, RequestOptions.none())
 
     /** @see listRulesets */
     fun listRulesets(
         params: RuleListRulesetsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<RuleListRulesetsResponse>
+    ): List<Rule>
 
     /** @see listRulesets */
-    fun listRulesets(params: RuleListRulesetsParams): List<RuleListRulesetsResponse> =
+    fun listRulesets(params: RuleListRulesetsParams): List<Rule> =
         listRulesets(params, RequestOptions.none())
 
     /** @see listRulesets */
-    fun listRulesets(
-        namespace: String,
-        requestOptions: RequestOptions,
-    ): List<RuleListRulesetsResponse> =
+    fun listRulesets(namespace: String, requestOptions: RequestOptions): List<Rule> =
         listRulesets(namespace, RuleListRulesetsParams.none(), requestOptions)
 
     /** Get a rule document by slug. */
@@ -163,14 +159,14 @@ interface RuleService {
     ): String = retrieveRulesetDocument(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see retrieveRulesetDocument */
+    fun retrieveRulesetDocument(params: RuleRetrieveRulesetDocumentParams): String =
+        retrieveRulesetDocument(params, RequestOptions.none())
+
+    /** @see retrieveRulesetDocument */
     fun retrieveRulesetDocument(
         params: RuleRetrieveRulesetDocumentParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
-
-    /** @see retrieveRulesetDocument */
-    fun retrieveRulesetDocument(params: RuleRetrieveRulesetDocumentParams): String =
-        retrieveRulesetDocument(params, RequestOptions.none())
 
     /** Update rule metadata by slug. */
     fun updateRuleset(pathSlug: String, params: RuleUpdateRulesetParams): Any? =
@@ -184,14 +180,14 @@ interface RuleService {
     ): Any? = updateRuleset(params.toBuilder().pathSlug(pathSlug).build(), requestOptions)
 
     /** @see updateRuleset */
+    fun updateRuleset(params: RuleUpdateRulesetParams): Any? =
+        updateRuleset(params, RequestOptions.none())
+
+    /** @see updateRuleset */
     fun updateRuleset(
         params: RuleUpdateRulesetParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see updateRuleset */
-    fun updateRuleset(params: RuleUpdateRulesetParams): Any? =
-        updateRuleset(params, RequestOptions.none())
 
     /** A view of [RuleService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -224,15 +220,15 @@ interface RuleService {
 
         /** @see createRuleset */
         @MustBeClosed
+        fun createRuleset(params: RuleCreateRulesetParams): HttpResponseFor<Uid> =
+            createRuleset(params, RequestOptions.none())
+
+        /** @see createRuleset */
+        @MustBeClosed
         fun createRuleset(
             params: RuleCreateRulesetParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Uid>
-
-        /** @see createRuleset */
-        @MustBeClosed
-        fun createRuleset(params: RuleCreateRulesetParams): HttpResponseFor<Uid> =
-            createRuleset(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `post /v1/rulesets/{namespace}/{slug}/access-group`, but
@@ -256,15 +252,15 @@ interface RuleService {
         /** @see createRulesetAccessGroup */
         @MustBeClosed
         fun createRulesetAccessGroup(
-            params: RuleCreateRulesetAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+            params: RuleCreateRulesetAccessGroupParams
+        ): HttpResponseFor<Any?> = createRulesetAccessGroup(params, RequestOptions.none())
 
         /** @see createRulesetAccessGroup */
         @MustBeClosed
         fun createRulesetAccessGroup(
-            params: RuleCreateRulesetAccessGroupParams
-        ): HttpResponseFor<Any?> = createRulesetAccessGroup(params, RequestOptions.none())
+            params: RuleCreateRulesetAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
 
         /**
          * Returns a raw HTTP response for `delete /v1/rulesets/{namespace}/{slug}`, but is
@@ -285,15 +281,15 @@ interface RuleService {
 
         /** @see deleteRuleset */
         @MustBeClosed
+        fun deleteRuleset(params: RuleDeleteRulesetParams): HttpResponseFor<Any?> =
+            deleteRuleset(params, RequestOptions.none())
+
+        /** @see deleteRuleset */
+        @MustBeClosed
         fun deleteRuleset(
             params: RuleDeleteRulesetParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see deleteRuleset */
-        @MustBeClosed
-        fun deleteRuleset(params: RuleDeleteRulesetParams): HttpResponseFor<Any?> =
-            deleteRuleset(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/rulesets/{namespace}/{slug}/access-group`,
@@ -317,22 +313,22 @@ interface RuleService {
         /** @see deleteRulesetAccessGroup */
         @MustBeClosed
         fun deleteRulesetAccessGroup(
-            params: RuleDeleteRulesetAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+            params: RuleDeleteRulesetAccessGroupParams
+        ): HttpResponseFor<Any?> = deleteRulesetAccessGroup(params, RequestOptions.none())
 
         /** @see deleteRulesetAccessGroup */
         @MustBeClosed
         fun deleteRulesetAccessGroup(
-            params: RuleDeleteRulesetAccessGroupParams
-        ): HttpResponseFor<Any?> = deleteRulesetAccessGroup(params, RequestOptions.none())
+            params: RuleDeleteRulesetAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
 
         /**
          * Returns a raw HTTP response for `get /v1/rulesets/{namespace}`, but is otherwise the same
          * as [RuleService.listRulesets].
          */
         @MustBeClosed
-        fun listRulesets(namespace: String): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        fun listRulesets(namespace: String): HttpResponseFor<List<Rule>> =
             listRulesets(namespace, RuleListRulesetsParams.none())
 
         /** @see listRulesets */
@@ -341,29 +337,26 @@ interface RuleService {
             namespace: String,
             params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        ): HttpResponseFor<List<Rule>> =
             listRulesets(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see listRulesets */
         @MustBeClosed
         fun listRulesets(
             namespace: String,
-            params: RuleListRulesetsParams,
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
-            listRulesets(namespace, params, RequestOptions.none())
+            params: RuleListRulesetsParams = RuleListRulesetsParams.none(),
+        ): HttpResponseFor<List<Rule>> = listRulesets(namespace, params, RequestOptions.none())
 
         /** @see listRulesets */
         @MustBeClosed
         fun listRulesets(
             params: RuleListRulesetsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<RuleListRulesetsResponse>>
+        ): HttpResponseFor<List<Rule>>
 
         /** @see listRulesets */
         @MustBeClosed
-        fun listRulesets(
-            params: RuleListRulesetsParams
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        fun listRulesets(params: RuleListRulesetsParams): HttpResponseFor<List<Rule>> =
             listRulesets(params, RequestOptions.none())
 
         /** @see listRulesets */
@@ -371,7 +364,7 @@ interface RuleService {
         fun listRulesets(
             namespace: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<RuleListRulesetsResponse>> =
+        ): HttpResponseFor<List<Rule>> =
             listRulesets(namespace, RuleListRulesetsParams.none(), requestOptions)
 
         /**
@@ -396,15 +389,15 @@ interface RuleService {
         /** @see retrieveRulesetDocument */
         @MustBeClosed
         fun retrieveRulesetDocument(
-            params: RuleRetrieveRulesetDocumentParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<String>
+            params: RuleRetrieveRulesetDocumentParams
+        ): HttpResponseFor<String> = retrieveRulesetDocument(params, RequestOptions.none())
 
         /** @see retrieveRulesetDocument */
         @MustBeClosed
         fun retrieveRulesetDocument(
-            params: RuleRetrieveRulesetDocumentParams
-        ): HttpResponseFor<String> = retrieveRulesetDocument(params, RequestOptions.none())
+            params: RuleRetrieveRulesetDocumentParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<String>
 
         /**
          * Returns a raw HTTP response for `patch /v1/rulesets/{namespace}/{slug}`, but is otherwise
@@ -427,14 +420,14 @@ interface RuleService {
 
         /** @see updateRuleset */
         @MustBeClosed
+        fun updateRuleset(params: RuleUpdateRulesetParams): HttpResponseFor<Any?> =
+            updateRuleset(params, RequestOptions.none())
+
+        /** @see updateRuleset */
+        @MustBeClosed
         fun updateRuleset(
             params: RuleUpdateRulesetParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see updateRuleset */
-        @MustBeClosed
-        fun updateRuleset(params: RuleUpdateRulesetParams): HttpResponseFor<Any?> =
-            updateRuleset(params, RequestOptions.none())
     }
 }

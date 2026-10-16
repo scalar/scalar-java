@@ -20,51 +20,87 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "createdAt",
+    "embedStatus",
+    "endpointCount",
+    "tags",
+    "uid",
+    "upgraded",
+    "version",
+    "jsonSha",
+    "tools",
+    "yamlSha",
+)
 class ManagedDocVersion
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val uid: JsonField<String>,
     private val createdAt: JsonField<Double>,
-    private val version: JsonField<String>,
-    private val upgraded: JsonField<Boolean>,
     private val embedStatus: JsonField<EmbedStatus>,
+    private val endpointCount: JsonField<Long>,
     private val tags: JsonField<List<String>>,
+    private val uid: JsonField<String>,
+    private val upgraded: JsonField<Boolean>,
+    private val version: JsonField<String>,
+    private val jsonSha: JsonField<String>,
     private val tools: JsonField<List<Tool>>,
     private val yamlSha: JsonField<String>,
-    private val jsonSha: JsonField<String>,
-    private val versionSha: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
         @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Double> = JsonMissing.of(),
-        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("upgraded") @ExcludeMissing upgraded: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("embedStatus")
         @ExcludeMissing
         embedStatus: JsonField<EmbedStatus> = JsonMissing.of(),
+        @JsonProperty("endpointCount")
+        @ExcludeMissing
+        endpointCount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("tags") @ExcludeMissing tags: JsonField<List<String>> = JsonMissing.of(),
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("upgraded") @ExcludeMissing upgraded: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("jsonSha") @ExcludeMissing jsonSha: JsonField<String> = JsonMissing.of(),
         @JsonProperty("tools") @ExcludeMissing tools: JsonField<List<Tool>> = JsonMissing.of(),
         @JsonProperty("yamlSha") @ExcludeMissing yamlSha: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("jsonSha") @ExcludeMissing jsonSha: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("versionSha")
-        @ExcludeMissing
-        versionSha: JsonField<String> = JsonMissing.of(),
     ) : this(
-        uid,
         createdAt,
-        version,
-        upgraded,
         embedStatus,
+        endpointCount,
         tags,
+        uid,
+        upgraded,
+        version,
+        jsonSha,
         tools,
         yamlSha,
-        jsonSha,
-        versionSha,
         mutableMapOf(),
     )
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun createdAt(): Double = createdAt.getRequired("createdAt")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun embedStatus(): Optional<EmbedStatus> = embedStatus.getOptional("embedStatus")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun endpointCount(): Optional<Long> = endpointCount.getOptional("endpointCount")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun tags(): List<String> = tags.getRequired("tags")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -76,7 +112,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun createdAt(): Double = createdAt.getRequired("createdAt")
+    fun upgraded(): Boolean = upgraded.getRequired("upgraded")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -85,22 +121,10 @@ private constructor(
     fun version(): String = version.getRequired("version")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun upgraded(): Boolean = upgraded.getRequired("upgraded")
-
-    /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun embedStatus(): Optional<EmbedStatus> = embedStatus.getOptional("embedStatus")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun tags(): List<String> = tags.getRequired("tags")
+    fun jsonSha(): Optional<String> = jsonSha.getOptional("jsonSha")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -115,44 +139,11 @@ private constructor(
     fun yamlSha(): Optional<String> = yamlSha.getOptional("yamlSha")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun jsonSha(): Optional<String> = jsonSha.getOptional("jsonSha")
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun versionSha(): Optional<String> = versionSha.getOptional("versionSha")
-
-    /**
-     * Returns the raw JSON value of [uid].
-     *
-     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
-
-    /**
      * Returns the raw JSON value of [createdAt].
      *
      * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<Double> = createdAt
-
-    /**
-     * Returns the raw JSON value of [version].
-     *
-     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
-
-    /**
-     * Returns the raw JSON value of [upgraded].
-     *
-     * Unlike [upgraded], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("upgraded") @ExcludeMissing fun _upgraded(): JsonField<Boolean> = upgraded
 
     /**
      * Returns the raw JSON value of [embedStatus].
@@ -164,11 +155,48 @@ private constructor(
     fun _embedStatus(): JsonField<EmbedStatus> = embedStatus
 
     /**
+     * Returns the raw JSON value of [endpointCount].
+     *
+     * Unlike [endpointCount], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("endpointCount")
+    @ExcludeMissing
+    fun _endpointCount(): JsonField<Long> = endpointCount
+
+    /**
      * Returns the raw JSON value of [tags].
      *
      * Unlike [tags], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("tags") @ExcludeMissing fun _tags(): JsonField<List<String>> = tags
+
+    /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+
+    /**
+     * Returns the raw JSON value of [upgraded].
+     *
+     * Unlike [upgraded], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("upgraded") @ExcludeMissing fun _upgraded(): JsonField<Boolean> = upgraded
+
+    /**
+     * Returns the raw JSON value of [version].
+     *
+     * Unlike [version], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("version") @ExcludeMissing fun _version(): JsonField<String> = version
+
+    /**
+     * Returns the raw JSON value of [jsonSha].
+     *
+     * Unlike [jsonSha], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("jsonSha") @ExcludeMissing fun _jsonSha(): JsonField<String> = jsonSha
 
     /**
      * Returns the raw JSON value of [tools].
@@ -183,20 +211,6 @@ private constructor(
      * Unlike [yamlSha], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("yamlSha") @ExcludeMissing fun _yamlSha(): JsonField<String> = yamlSha
-
-    /**
-     * Returns the raw JSON value of [jsonSha].
-     *
-     * Unlike [jsonSha], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("jsonSha") @ExcludeMissing fun _jsonSha(): JsonField<String> = jsonSha
-
-    /**
-     * Returns the raw JSON value of [versionSha].
-     *
-     * Unlike [versionSha], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("versionSha") @ExcludeMissing fun _versionSha(): JsonField<String> = versionSha
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -216,13 +230,14 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [ManagedDocVersion].
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .createdAt()
-         * .version()
-         * .upgraded()
          * .embedStatus()
+         * .endpointCount()
          * .tags()
+         * .uid()
+         * .upgraded()
+         * .version()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -231,42 +246,32 @@ private constructor(
     /** A builder for [ManagedDocVersion]. */
     class Builder internal constructor() {
 
-        private var uid: JsonField<String>? = null
         private var createdAt: JsonField<Double>? = null
-        private var version: JsonField<String>? = null
-        private var upgraded: JsonField<Boolean>? = null
         private var embedStatus: JsonField<EmbedStatus>? = null
+        private var endpointCount: JsonField<Long>? = null
         private var tags: JsonField<MutableList<String>>? = null
+        private var uid: JsonField<String>? = null
+        private var upgraded: JsonField<Boolean>? = null
+        private var version: JsonField<String>? = null
+        private var jsonSha: JsonField<String> = JsonMissing.of()
         private var tools: JsonField<MutableList<Tool>>? = null
         private var yamlSha: JsonField<String> = JsonMissing.of()
-        private var jsonSha: JsonField<String> = JsonMissing.of()
-        private var versionSha: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(managedDocVersion: ManagedDocVersion) = apply {
-            uid = managedDocVersion.uid
             createdAt = managedDocVersion.createdAt
-            version = managedDocVersion.version
-            upgraded = managedDocVersion.upgraded
             embedStatus = managedDocVersion.embedStatus
+            endpointCount = managedDocVersion.endpointCount
             tags = managedDocVersion.tags.map { it.toMutableList() }
+            uid = managedDocVersion.uid
+            upgraded = managedDocVersion.upgraded
+            version = managedDocVersion.version
+            jsonSha = managedDocVersion.jsonSha
             tools = managedDocVersion.tools.map { it.toMutableList() }
             yamlSha = managedDocVersion.yamlSha
-            jsonSha = managedDocVersion.jsonSha
-            versionSha = managedDocVersion.versionSha
             additionalProperties = managedDocVersion.additionalProperties.toMutableMap()
         }
-
-        fun uid(uid: String) = uid(JsonField.of(uid))
-
-        /**
-         * Sets [Builder.uid] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
 
         fun createdAt(createdAt: Double) = createdAt(JsonField.of(createdAt))
 
@@ -278,27 +283,6 @@ private constructor(
          * value.
          */
         fun createdAt(createdAt: JsonField<Double>) = apply { this.createdAt = createdAt }
-
-        fun version(version: String) = version(JsonField.of(version))
-
-        /**
-         * Sets [Builder.version] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.version] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun version(version: JsonField<String>) = apply { this.version = version }
-
-        fun upgraded(upgraded: Boolean) = upgraded(JsonField.of(upgraded))
-
-        /**
-         * Sets [Builder.upgraded] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.upgraded] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun upgraded(upgraded: JsonField<Boolean>) = apply { this.upgraded = upgraded }
 
         fun embedStatus(embedStatus: EmbedStatus?) = embedStatus(JsonField.ofNullable(embedStatus))
 
@@ -314,6 +298,29 @@ private constructor(
          */
         fun embedStatus(embedStatus: JsonField<EmbedStatus>) = apply {
             this.embedStatus = embedStatus
+        }
+
+        fun endpointCount(endpointCount: Long?) = endpointCount(JsonField.ofNullable(endpointCount))
+
+        /**
+         * Alias for [Builder.endpointCount].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun endpointCount(endpointCount: Long) = endpointCount(endpointCount as Long?)
+
+        /** Alias for calling [Builder.endpointCount] with `endpointCount.orElse(null)`. */
+        fun endpointCount(endpointCount: Optional<Long>) = endpointCount(endpointCount.getOrNull())
+
+        /**
+         * Sets [Builder.endpointCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.endpointCount] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun endpointCount(endpointCount: JsonField<Long>) = apply {
+            this.endpointCount = endpointCount
         }
 
         fun tags(tags: List<String>) = tags(JsonField.of(tags))
@@ -337,6 +344,47 @@ private constructor(
         fun addTag(tag: String) = apply {
             tags = (tags ?: JsonField.of(mutableListOf())).also { checkKnown("tags", it).add(tag) }
         }
+
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
+
+        fun upgraded(upgraded: Boolean) = upgraded(JsonField.of(upgraded))
+
+        /**
+         * Sets [Builder.upgraded] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.upgraded] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun upgraded(upgraded: JsonField<Boolean>) = apply { this.upgraded = upgraded }
+
+        fun version(version: String) = version(JsonField.of(version))
+
+        /**
+         * Sets [Builder.version] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.version] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun version(version: JsonField<String>) = apply { this.version = version }
+
+        fun jsonSha(jsonSha: String) = jsonSha(JsonField.of(jsonSha))
+
+        /**
+         * Sets [Builder.jsonSha] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.jsonSha] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun jsonSha(jsonSha: JsonField<String>) = apply { this.jsonSha = jsonSha }
 
         fun tools(tools: List<Tool>) = tools(JsonField.of(tools))
 
@@ -371,27 +419,6 @@ private constructor(
          */
         fun yamlSha(yamlSha: JsonField<String>) = apply { this.yamlSha = yamlSha }
 
-        fun jsonSha(jsonSha: String) = jsonSha(JsonField.of(jsonSha))
-
-        /**
-         * Sets [Builder.jsonSha] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.jsonSha] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun jsonSha(jsonSha: JsonField<String>) = apply { this.jsonSha = jsonSha }
-
-        fun versionSha(versionSha: String) = versionSha(JsonField.of(versionSha))
-
-        /**
-         * Sets [Builder.versionSha] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.versionSha] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun versionSha(versionSha: JsonField<String>) = apply { this.versionSha = versionSha }
-
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -417,29 +444,30 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
-         * .uid()
+         * ```java
          * .createdAt()
-         * .version()
-         * .upgraded()
          * .embedStatus()
+         * .endpointCount()
          * .tags()
+         * .uid()
+         * .upgraded()
+         * .version()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ManagedDocVersion =
             ManagedDocVersion(
-                checkRequired("uid", uid),
                 checkRequired("createdAt", createdAt),
-                checkRequired("version", version),
-                checkRequired("upgraded", upgraded),
                 checkRequired("embedStatus", embedStatus),
+                checkRequired("endpointCount", endpointCount),
                 checkRequired("tags", tags).map { it.toImmutable() },
+                checkRequired("uid", uid),
+                checkRequired("upgraded", upgraded),
+                checkRequired("version", version),
+                jsonSha,
                 (tools ?: JsonMissing.of()).map { it.toImmutable() },
                 yamlSha,
-                jsonSha,
-                versionSha,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -459,16 +487,16 @@ private constructor(
             return@apply
         }
 
-        uid()
         createdAt()
-        version()
-        upgraded()
         embedStatus().ifPresent { it.validate() }
+        endpointCount()
         tags()
+        uid()
+        upgraded()
+        version()
+        jsonSha()
         tools().ifPresent { it.forEach { it.validate() } }
         yamlSha()
-        jsonSha()
-        versionSha()
         validated = true
     }
 
@@ -487,16 +515,16 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (uid.asKnown().isPresent) 1 else 0) +
-            (if (createdAt.asKnown().isPresent) 1 else 0) +
-            (if (version.asKnown().isPresent) 1 else 0) +
-            (if (upgraded.asKnown().isPresent) 1 else 0) +
+        (if (createdAt.asKnown().isPresent) 1 else 0) +
             (embedStatus.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (endpointCount.asKnown().isPresent) 1 else 0) +
             (tags.asKnown().getOrNull()?.size ?: 0) +
-            (tools.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-            (if (yamlSha.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
+            (if (upgraded.asKnown().isPresent) 1 else 0) +
+            (if (version.asKnown().isPresent) 1 else 0) +
             (if (jsonSha.asKnown().isPresent) 1 else 0) +
-            (if (versionSha.asKnown().isPresent) 1 else 0)
+            (tools.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (yamlSha.asKnown().isPresent) 1 else 0)
 
     class EmbedStatus @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
@@ -635,35 +663,24 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("enabledTools", "method", "path")
     class Tool
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val path: JsonField<String>,
-        private val method: JsonField<Method>,
         private val enabledTools: JsonField<List<EnabledTool>>,
+        private val method: JsonField<String>,
+        private val path: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("path") @ExcludeMissing path: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
             @JsonProperty("enabledTools")
             @ExcludeMissing
             enabledTools: JsonField<List<EnabledTool>> = JsonMissing.of(),
-        ) : this(path, method, enabledTools, mutableMapOf())
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun path(): String = path.getRequired("path")
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun method(): Method = method.getRequired("method")
+            @JsonProperty("method") @ExcludeMissing method: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("path") @ExcludeMissing path: JsonField<String> = JsonMissing.of(),
+        ) : this(enabledTools, method, path, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -672,18 +689,16 @@ private constructor(
         fun enabledTools(): List<EnabledTool> = enabledTools.getRequired("enabledTools")
 
         /**
-         * Returns the raw JSON value of [path].
-         *
-         * Unlike [path], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        @JsonProperty("path") @ExcludeMissing fun _path(): JsonField<String> = path
+        fun method(): String = method.getRequired("method")
 
         /**
-         * Returns the raw JSON value of [method].
-         *
-         * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<Method> = method
+        fun path(): String = path.getRequired("path")
 
         /**
          * Returns the raw JSON value of [enabledTools].
@@ -694,6 +709,20 @@ private constructor(
         @JsonProperty("enabledTools")
         @ExcludeMissing
         fun _enabledTools(): JsonField<List<EnabledTool>> = enabledTools
+
+        /**
+         * Returns the raw JSON value of [method].
+         *
+         * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<String> = method
+
+        /**
+         * Returns the raw JSON value of [path].
+         *
+         * Unlike [path], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("path") @ExcludeMissing fun _path(): JsonField<String> = path
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -713,10 +742,10 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Tool].
              *
              * The following fields are required:
-             * ```kotlin
-             * .path()
-             * .method()
+             * ```java
              * .enabledTools()
+             * .method()
+             * .path()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -725,40 +754,18 @@ private constructor(
         /** A builder for [Tool]. */
         class Builder internal constructor() {
 
-            private var path: JsonField<String>? = null
-            private var method: JsonField<Method>? = null
             private var enabledTools: JsonField<MutableList<EnabledTool>>? = null
+            private var method: JsonField<String>? = null
+            private var path: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(tool: Tool) = apply {
-                path = tool.path
-                method = tool.method
                 enabledTools = tool.enabledTools.map { it.toMutableList() }
+                method = tool.method
+                path = tool.path
                 additionalProperties = tool.additionalProperties.toMutableMap()
             }
-
-            fun path(path: String) = path(JsonField.of(path))
-
-            /**
-             * Sets [Builder.path] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.path] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun path(path: JsonField<String>) = apply { this.path = path }
-
-            fun method(method: Method) = method(JsonField.of(method))
-
-            /**
-             * Sets [Builder.method] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.method] with a well-typed [Method] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun method(method: JsonField<Method>) = apply { this.method = method }
 
             fun enabledTools(enabledTools: List<EnabledTool>) =
                 enabledTools(JsonField.of(enabledTools))
@@ -786,6 +793,28 @@ private constructor(
                     }
             }
 
+            fun method(method: String) = method(JsonField.of(method))
+
+            /**
+             * Sets [Builder.method] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.method] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun method(method: JsonField<String>) = apply { this.method = method }
+
+            fun path(path: String) = path(JsonField.of(path))
+
+            /**
+             * Sets [Builder.path] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.path] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun path(path: JsonField<String>) = apply { this.path = path }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -811,19 +840,19 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
-             * .path()
-             * .method()
+             * ```java
              * .enabledTools()
+             * .method()
+             * .path()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Tool =
                 Tool(
-                    checkRequired("path", path),
-                    checkRequired("method", method),
                     checkRequired("enabledTools", enabledTools).map { it.toImmutable() },
+                    checkRequired("method", method),
+                    checkRequired("path", path),
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -844,9 +873,9 @@ private constructor(
                 return@apply
             }
 
-            path()
-            method().validate()
             enabledTools().forEach { it.validate() }
+            method()
+            path()
             validated = true
         }
 
@@ -866,184 +895,9 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (path.asKnown().isPresent) 1 else 0) +
-                (method.asKnown().getOrNull()?.validity() ?: 0) +
-                (enabledTools.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
-
-        class Method @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val DELETE = of("delete")
-
-                @JvmField val GET = of("get")
-
-                @JvmField val HEAD = of("head")
-
-                @JvmField val OPTIONS = of("options")
-
-                @JvmField val PATCH = of("patch")
-
-                @JvmField val POST = of("post")
-
-                @JvmField val PUT = of("put")
-
-                @JvmField val TRACE = of("trace")
-
-                @JvmStatic fun of(value: String) = Method(JsonField.of(value))
-            }
-
-            /** An enum containing [Method]'s known values. */
-            enum class Known {
-                DELETE,
-                GET,
-                HEAD,
-                OPTIONS,
-                PATCH,
-                POST,
-                PUT,
-                TRACE,
-            }
-
-            /**
-             * An enum containing [Method]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Method] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                DELETE,
-                GET,
-                HEAD,
-                OPTIONS,
-                PATCH,
-                POST,
-                PUT,
-                TRACE,
-                /**
-                 * An enum member indicating that [Method] was instantiated with an unknown value.
-                 */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    DELETE -> Value.DELETE
-                    GET -> Value.GET
-                    HEAD -> Value.HEAD
-                    OPTIONS -> Value.OPTIONS
-                    PATCH -> Value.PATCH
-                    POST -> Value.POST
-                    PUT -> Value.PUT
-                    TRACE -> Value.TRACE
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws ScalarInvalidDataException if this class instance's value is a not a known
-             *   member.
-             */
-            fun known(): Known =
-                when (this) {
-                    DELETE -> Known.DELETE
-                    GET -> Known.GET
-                    HEAD -> Known.HEAD
-                    OPTIONS -> Known.OPTIONS
-                    PATCH -> Known.PATCH
-                    POST -> Known.POST
-                    PUT -> Known.PUT
-                    TRACE -> Known.TRACE
-                    else -> throw ScalarInvalidDataException("Unknown Method: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws ScalarInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    ScalarInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            /**
-             * Validates that the types of all values in this object match their expected types
-             * recursively.
-             *
-             * This method is _not_ forwards compatible with new types from the API for existing
-             * fields.
-             *
-             * @throws ScalarInvalidDataException if any value type in this object doesn't match its
-             *   expected type.
-             */
-            fun validate(): Method = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: ScalarInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Method && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-        }
+            (enabledTools.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (method.asKnown().isPresent) 1 else 0) +
+                (if (path.asKnown().isPresent) 1 else 0)
 
         class EnabledTool @JsonCreator private constructor(private val value: JsonField<String>) :
             Enum {
@@ -1192,20 +1046,20 @@ private constructor(
             }
 
             return other is Tool &&
-                path == other.path &&
-                method == other.method &&
                 enabledTools == other.enabledTools &&
+                method == other.method &&
+                path == other.path &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(path, method, enabledTools, additionalProperties)
+            Objects.hash(enabledTools, method, path, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Tool{path=$path, method=$method, enabledTools=$enabledTools, additionalProperties=$additionalProperties}"
+            "Tool{enabledTools=$enabledTools, method=$method, path=$path, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -1214,31 +1068,31 @@ private constructor(
         }
 
         return other is ManagedDocVersion &&
-            uid == other.uid &&
             createdAt == other.createdAt &&
-            version == other.version &&
-            upgraded == other.upgraded &&
             embedStatus == other.embedStatus &&
+            endpointCount == other.endpointCount &&
             tags == other.tags &&
+            uid == other.uid &&
+            upgraded == other.upgraded &&
+            version == other.version &&
+            jsonSha == other.jsonSha &&
             tools == other.tools &&
             yamlSha == other.yamlSha &&
-            jsonSha == other.jsonSha &&
-            versionSha == other.versionSha &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
-            uid,
             createdAt,
-            version,
-            upgraded,
             embedStatus,
+            endpointCount,
             tags,
+            uid,
+            upgraded,
+            version,
+            jsonSha,
             tools,
             yamlSha,
-            jsonSha,
-            versionSha,
             additionalProperties,
         )
     }
@@ -1246,5 +1100,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ManagedDocVersion{uid=$uid, createdAt=$createdAt, version=$version, upgraded=$upgraded, embedStatus=$embedStatus, tags=$tags, tools=$tools, yamlSha=$yamlSha, jsonSha=$jsonSha, versionSha=$versionSha, additionalProperties=$additionalProperties}"
+        "ManagedDocVersion{createdAt=$createdAt, embedStatus=$embedStatus, endpointCount=$endpointCount, tags=$tags, uid=$uid, upgraded=$upgraded, version=$version, jsonSha=$jsonSha, tools=$tools, yamlSha=$yamlSha, additionalProperties=$additionalProperties}"
 }

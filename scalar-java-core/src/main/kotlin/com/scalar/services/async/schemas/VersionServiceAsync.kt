@@ -5,8 +5,8 @@ package com.scalar.services.async.schemas
 import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
-import com.scalar.models.Uid
 import com.scalar.models.schemas.version.VersionCreateParams
+import com.scalar.models.schemas.version.VersionCreateResponse
 import com.scalar.models.schemas.version.VersionDeleteParams
 import com.scalar.models.schemas.version.VersionRetrieveParams
 import java.util.concurrent.CompletableFuture
@@ -28,25 +28,28 @@ interface VersionServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VersionServiceAsync
 
     /** Create a schema version. */
-    fun create(slug: String, params: VersionCreateParams): CompletableFuture<Uid> =
-        create(slug, params, RequestOptions.none())
+    fun create(
+        slug: String,
+        params: VersionCreateParams,
+    ): CompletableFuture<VersionCreateResponse> = create(slug, params, RequestOptions.none())
 
     /** @see create */
     fun create(
         slug: String,
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Uid> = create(params.toBuilder().slug(slug).build(), requestOptions)
+    ): CompletableFuture<VersionCreateResponse> =
+        create(params.toBuilder().slug(slug).build(), requestOptions)
+
+    /** @see create */
+    fun create(params: VersionCreateParams): CompletableFuture<VersionCreateResponse> =
+        create(params, RequestOptions.none())
 
     /** @see create */
     fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Uid>
-
-    /** @see create */
-    fun create(params: VersionCreateParams): CompletableFuture<Uid> =
-        create(params, RequestOptions.none())
+    ): CompletableFuture<VersionCreateResponse>
 
     /** Get a specific schema version document. */
     fun retrieve(semver: String, params: VersionRetrieveParams): CompletableFuture<String> =
@@ -61,14 +64,14 @@ interface VersionServiceAsync {
         retrieve(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see retrieve */
+    fun retrieve(params: VersionRetrieveParams): CompletableFuture<String> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
     fun retrieve(
         params: VersionRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<String>
-
-    /** @see retrieve */
-    fun retrieve(params: VersionRetrieveParams): CompletableFuture<String> =
-        retrieve(params, RequestOptions.none())
 
     /** Delete a schema version. */
     fun delete(semver: String, params: VersionDeleteParams): CompletableFuture<Any?> =
@@ -82,14 +85,14 @@ interface VersionServiceAsync {
     ): CompletableFuture<Any?> = delete(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: VersionDeleteParams): CompletableFuture<Any?> =
+        delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: VersionDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Any?>
-
-    /** @see delete */
-    fun delete(params: VersionDeleteParams): CompletableFuture<Any?> =
-        delete(params, RequestOptions.none())
 
     /**
      * A view of [VersionServiceAsync] that provides access to raw HTTP responses for each method.
@@ -112,25 +115,28 @@ interface VersionServiceAsync {
         fun create(
             slug: String,
             params: VersionCreateParams,
-        ): CompletableFuture<HttpResponseFor<Uid>> = create(slug, params, RequestOptions.none())
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
+            create(slug, params, RequestOptions.none())
 
         /** @see create */
         fun create(
             slug: String,
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Uid>> =
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
             create(params.toBuilder().slug(slug).build(), requestOptions)
+
+        /** @see create */
+        fun create(
+            params: VersionCreateParams
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
+            create(params, RequestOptions.none())
 
         /** @see create */
         fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Uid>>
-
-        /** @see create */
-        fun create(params: VersionCreateParams): CompletableFuture<HttpResponseFor<Uid>> =
-            create(params, RequestOptions.none())
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>>
 
         /**
          * Returns a raw HTTP response for `get /v1/schemas/{namespace}/{slug}/version/{semver}`,
@@ -151,14 +157,14 @@ interface VersionServiceAsync {
             retrieve(params.toBuilder().semver(semver).build(), requestOptions)
 
         /** @see retrieve */
+        fun retrieve(params: VersionRetrieveParams): CompletableFuture<HttpResponseFor<String>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see retrieve */
         fun retrieve(
             params: VersionRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<String>>
-
-        /** @see retrieve */
-        fun retrieve(params: VersionRetrieveParams): CompletableFuture<HttpResponseFor<String>> =
-            retrieve(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/schemas/{namespace}/{slug}/version/{semver}`,
@@ -178,13 +184,13 @@ interface VersionServiceAsync {
             delete(params.toBuilder().semver(semver).build(), requestOptions)
 
         /** @see delete */
+        fun delete(params: VersionDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
         fun delete(
             params: VersionDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see delete */
-        fun delete(params: VersionDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(params, RequestOptions.none())
     }
 }

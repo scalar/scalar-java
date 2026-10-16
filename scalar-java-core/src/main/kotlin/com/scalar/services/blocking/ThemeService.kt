@@ -7,10 +7,10 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.themes.Theme
 import com.scalar.models.themes.ThemeCreateParams
 import com.scalar.models.themes.ThemeDeleteParams
 import com.scalar.models.themes.ThemeListParams
-import com.scalar.models.themes.ThemeListResponse
 import com.scalar.models.themes.ThemeReplaceDocumentParams
 import com.scalar.models.themes.ThemeRetrieveParams
 import com.scalar.models.themes.ThemeUpdateParams
@@ -51,7 +51,7 @@ interface ThemeService {
     ): String = retrieve(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(slug: String, params: ThemeRetrieveParams): String =
+    fun retrieve(slug: String, params: ThemeRetrieveParams = ThemeRetrieveParams.none()): String =
         retrieve(slug, params, RequestOptions.none())
 
     /** @see retrieve */
@@ -78,7 +78,7 @@ interface ThemeService {
     ): Any? = update(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see update */
-    fun update(slug: String, params: ThemeUpdateParams): Any? =
+    fun update(slug: String, params: ThemeUpdateParams = ThemeUpdateParams.none()): Any? =
         update(slug, params, RequestOptions.none())
 
     /** @see update */
@@ -95,19 +95,20 @@ interface ThemeService {
         update(slug, ThemeUpdateParams.none(), requestOptions)
 
     /** List all team themes. */
-    fun list(): List<ThemeListResponse> = list(ThemeListParams.none())
+    fun list(): List<Theme> = list(ThemeListParams.none())
 
     /** @see list */
     fun list(
         params: ThemeListParams = ThemeListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<ThemeListResponse>
+    ): List<Theme>
 
     /** @see list */
-    fun list(params: ThemeListParams): List<ThemeListResponse> = list(params, RequestOptions.none())
+    fun list(params: ThemeListParams = ThemeListParams.none()): List<Theme> =
+        list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): List<ThemeListResponse> =
+    fun list(requestOptions: RequestOptions): List<Theme> =
         list(ThemeListParams.none(), requestOptions)
 
     /** Delete a theme by slug. */
@@ -121,7 +122,7 @@ interface ThemeService {
     ): Any? = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
-    fun delete(slug: String, params: ThemeDeleteParams): Any? =
+    fun delete(slug: String, params: ThemeDeleteParams = ThemeDeleteParams.none()): Any? =
         delete(slug, params, RequestOptions.none())
 
     /** @see delete */
@@ -149,14 +150,14 @@ interface ThemeService {
     ): Any? = replaceDocument(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see replaceDocument */
+    fun replaceDocument(params: ThemeReplaceDocumentParams): Any? =
+        replaceDocument(params, RequestOptions.none())
+
+    /** @see replaceDocument */
     fun replaceDocument(
         params: ThemeReplaceDocumentParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see replaceDocument */
-    fun replaceDocument(params: ThemeReplaceDocumentParams): Any? =
-        replaceDocument(params, RequestOptions.none())
 
     /** A view of [ThemeService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -201,8 +202,10 @@ interface ThemeService {
 
         /** @see retrieve */
         @MustBeClosed
-        fun retrieve(slug: String, params: ThemeRetrieveParams): HttpResponseFor<String> =
-            retrieve(slug, params, RequestOptions.none())
+        fun retrieve(
+            slug: String,
+            params: ThemeRetrieveParams = ThemeRetrieveParams.none(),
+        ): HttpResponseFor<String> = retrieve(slug, params, RequestOptions.none())
 
         /** @see retrieve */
         @MustBeClosed
@@ -238,8 +241,10 @@ interface ThemeService {
 
         /** @see update */
         @MustBeClosed
-        fun update(slug: String, params: ThemeUpdateParams): HttpResponseFor<Any?> =
-            update(slug, params, RequestOptions.none())
+        fun update(
+            slug: String,
+            params: ThemeUpdateParams = ThemeUpdateParams.none(),
+        ): HttpResponseFor<Any?> = update(slug, params, RequestOptions.none())
 
         /** @see update */
         @MustBeClosed
@@ -262,24 +267,23 @@ interface ThemeService {
          * Returns a raw HTTP response for `get /v1/themes`, but is otherwise the same as
          * [ThemeService.list].
          */
-        @MustBeClosed
-        fun list(): HttpResponseFor<List<ThemeListResponse>> = list(ThemeListParams.none())
+        @MustBeClosed fun list(): HttpResponseFor<List<Theme>> = list(ThemeListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: ThemeListParams = ThemeListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<ThemeListResponse>>
+        ): HttpResponseFor<List<Theme>>
 
         /** @see list */
         @MustBeClosed
-        fun list(params: ThemeListParams): HttpResponseFor<List<ThemeListResponse>> =
+        fun list(params: ThemeListParams = ThemeListParams.none()): HttpResponseFor<List<Theme>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<List<ThemeListResponse>> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<List<Theme>> =
             list(ThemeListParams.none(), requestOptions)
 
         /**
@@ -299,8 +303,10 @@ interface ThemeService {
 
         /** @see delete */
         @MustBeClosed
-        fun delete(slug: String, params: ThemeDeleteParams): HttpResponseFor<Any?> =
-            delete(slug, params, RequestOptions.none())
+        fun delete(
+            slug: String,
+            params: ThemeDeleteParams = ThemeDeleteParams.none(),
+        ): HttpResponseFor<Any?> = delete(slug, params, RequestOptions.none())
 
         /** @see delete */
         @MustBeClosed
@@ -340,14 +346,14 @@ interface ThemeService {
 
         /** @see replaceDocument */
         @MustBeClosed
+        fun replaceDocument(params: ThemeReplaceDocumentParams): HttpResponseFor<Any?> =
+            replaceDocument(params, RequestOptions.none())
+
+        /** @see replaceDocument */
+        @MustBeClosed
         fun replaceDocument(
             params: ThemeReplaceDocumentParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see replaceDocument */
-        @MustBeClosed
-        fun replaceDocument(params: ThemeReplaceDocumentParams): HttpResponseFor<Any?> =
-            replaceDocument(params, RequestOptions.none())
     }
 }

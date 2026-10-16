@@ -18,7 +18,7 @@ import com.scalar.core.prepare
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams
 import com.scalar.models.authentication.AuthenticationExchangePersonalTokenResponse
 import com.scalar.models.authentication.AuthenticationListCurrentUserParams
-import com.scalar.models.authentication.AuthenticationListCurrentUserResponse
+import com.scalar.models.authentication.User
 import java.util.function.Consumer
 
 /** Authentication */
@@ -44,7 +44,7 @@ class AuthenticationServiceImpl internal constructor(private val clientOptions: 
     override fun listCurrentUser(
         params: AuthenticationListCurrentUserParams,
         requestOptions: RequestOptions,
-    ): AuthenticationListCurrentUserResponse =
+    ): User =
         // get /v1/auth/me
         withRawResponse().listCurrentUser(params, requestOptions).parse()
 
@@ -90,13 +90,13 @@ class AuthenticationServiceImpl internal constructor(private val clientOptions: 
             }
         }
 
-        private val listCurrentUserHandler: Handler<AuthenticationListCurrentUserResponse> =
-            jsonHandler<AuthenticationListCurrentUserResponse>(clientOptions.jsonMapper)
+        private val listCurrentUserHandler: Handler<User> =
+            jsonHandler<User>(clientOptions.jsonMapper)
 
         override fun listCurrentUser(
             params: AuthenticationListCurrentUserParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<AuthenticationListCurrentUserResponse> {
+        ): HttpResponseFor<User> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

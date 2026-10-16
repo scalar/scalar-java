@@ -7,13 +7,13 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
-import com.scalar.models.loginPortals.LoginPortalCreateParams
-import com.scalar.models.loginPortals.LoginPortalDeleteParams
-import com.scalar.models.loginPortals.LoginPortalListParams
-import com.scalar.models.loginPortals.LoginPortalListResponse
-import com.scalar.models.loginPortals.LoginPortalRetrieveParams
-import com.scalar.models.loginPortals.LoginPortalRetrieveResponse
-import com.scalar.models.loginPortals.LoginPortalUpdateParams
+import com.scalar.models.loginportals.LoginPortal
+import com.scalar.models.loginportals.LoginPortalCreateParams
+import com.scalar.models.loginportals.LoginPortalDeleteParams
+import com.scalar.models.loginportals.LoginPortalListParams
+import com.scalar.models.loginportals.LoginPortalRetrieveParams
+import com.scalar.models.loginportals.LoginPortalRetrieveResponse
+import com.scalar.models.loginportals.LoginPortalUpdateParams
 import java.util.function.Consumer
 
 /** Login Portals */
@@ -52,8 +52,10 @@ interface LoginPortalService {
     ): LoginPortalRetrieveResponse = retrieve(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see retrieve */
-    fun retrieve(slug: String, params: LoginPortalRetrieveParams): LoginPortalRetrieveResponse =
-        retrieve(slug, params, RequestOptions.none())
+    fun retrieve(
+        slug: String,
+        params: LoginPortalRetrieveParams = LoginPortalRetrieveParams.none(),
+    ): LoginPortalRetrieveResponse = retrieve(slug, params, RequestOptions.none())
 
     /** @see retrieve */
     fun retrieve(
@@ -80,8 +82,10 @@ interface LoginPortalService {
     ): Any? = update(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see update */
-    fun update(slug: String, params: LoginPortalUpdateParams): Any? =
-        update(slug, params, RequestOptions.none())
+    fun update(
+        slug: String,
+        params: LoginPortalUpdateParams = LoginPortalUpdateParams.none(),
+    ): Any? = update(slug, params, RequestOptions.none())
 
     /** @see update */
     fun update(
@@ -97,20 +101,20 @@ interface LoginPortalService {
         update(slug, LoginPortalUpdateParams.none(), requestOptions)
 
     /** List all login portals for the current team. */
-    fun list(): List<LoginPortalListResponse> = list(LoginPortalListParams.none())
+    fun list(): List<LoginPortal> = list(LoginPortalListParams.none())
 
     /** @see list */
     fun list(
         params: LoginPortalListParams = LoginPortalListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<LoginPortalListResponse>
+    ): List<LoginPortal>
 
     /** @see list */
-    fun list(params: LoginPortalListParams): List<LoginPortalListResponse> =
+    fun list(params: LoginPortalListParams = LoginPortalListParams.none()): List<LoginPortal> =
         list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): List<LoginPortalListResponse> =
+    fun list(requestOptions: RequestOptions): List<LoginPortal> =
         list(LoginPortalListParams.none(), requestOptions)
 
     /** Delete a login portal. */
@@ -124,8 +128,10 @@ interface LoginPortalService {
     ): Any? = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
-    fun delete(slug: String, params: LoginPortalDeleteParams): Any? =
-        delete(slug, params, RequestOptions.none())
+    fun delete(
+        slug: String,
+        params: LoginPortalDeleteParams = LoginPortalDeleteParams.none(),
+    ): Any? = delete(slug, params, RequestOptions.none())
 
     /** @see delete */
     fun delete(
@@ -190,7 +196,7 @@ interface LoginPortalService {
         @MustBeClosed
         fun retrieve(
             slug: String,
-            params: LoginPortalRetrieveParams,
+            params: LoginPortalRetrieveParams = LoginPortalRetrieveParams.none(),
         ): HttpResponseFor<LoginPortalRetrieveResponse> =
             retrieve(slug, params, RequestOptions.none())
 
@@ -233,8 +239,10 @@ interface LoginPortalService {
 
         /** @see update */
         @MustBeClosed
-        fun update(slug: String, params: LoginPortalUpdateParams): HttpResponseFor<Any?> =
-            update(slug, params, RequestOptions.none())
+        fun update(
+            slug: String,
+            params: LoginPortalUpdateParams = LoginPortalUpdateParams.none(),
+        ): HttpResponseFor<Any?> = update(slug, params, RequestOptions.none())
 
         /** @see update */
         @MustBeClosed
@@ -258,24 +266,24 @@ interface LoginPortalService {
          * [LoginPortalService.list].
          */
         @MustBeClosed
-        fun list(): HttpResponseFor<List<LoginPortalListResponse>> =
-            list(LoginPortalListParams.none())
+        fun list(): HttpResponseFor<List<LoginPortal>> = list(LoginPortalListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: LoginPortalListParams = LoginPortalListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<LoginPortalListResponse>>
+        ): HttpResponseFor<List<LoginPortal>>
 
         /** @see list */
         @MustBeClosed
-        fun list(params: LoginPortalListParams): HttpResponseFor<List<LoginPortalListResponse>> =
-            list(params, RequestOptions.none())
+        fun list(
+            params: LoginPortalListParams = LoginPortalListParams.none()
+        ): HttpResponseFor<List<LoginPortal>> = list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<List<LoginPortalListResponse>> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<List<LoginPortal>> =
             list(LoginPortalListParams.none(), requestOptions)
 
         /**
@@ -296,8 +304,10 @@ interface LoginPortalService {
 
         /** @see delete */
         @MustBeClosed
-        fun delete(slug: String, params: LoginPortalDeleteParams): HttpResponseFor<Any?> =
-            delete(slug, params, RequestOptions.none())
+        fun delete(
+            slug: String,
+            params: LoginPortalDeleteParams = LoginPortalDeleteParams.none(),
+        ): HttpResponseFor<Any?> = delete(slug, params, RequestOptions.none())
 
         /** @see delete */
         @MustBeClosed

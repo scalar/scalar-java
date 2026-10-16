@@ -17,10 +17,10 @@ import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepare
 import com.scalar.models.Uid
+import com.scalar.models.schemas.Schema
 import com.scalar.models.schemas.SchemaCreateParams
 import com.scalar.models.schemas.SchemaDeleteParams
 import com.scalar.models.schemas.SchemaListParams
-import com.scalar.models.schemas.SchemaListResponse
 import com.scalar.models.schemas.SchemaUpdateParams
 import com.scalar.services.blocking.schemas.AccessGroupService
 import com.scalar.services.blocking.schemas.AccessGroupServiceImpl
@@ -60,10 +60,7 @@ class SchemaServiceImpl internal constructor(private val clientOptions: ClientOp
         // patch /v1/schemas/{namespace}/{slug}
         withRawResponse().update(params, requestOptions).parse()
 
-    override fun list(
-        params: SchemaListParams,
-        requestOptions: RequestOptions,
-    ): List<SchemaListResponse> =
+    override fun list(params: SchemaListParams, requestOptions: RequestOptions): List<Schema> =
         // get /v1/schemas/{namespace}
         withRawResponse().list(params, requestOptions).parse()
 
@@ -152,13 +149,13 @@ class SchemaServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val listHandler: Handler<List<SchemaListResponse>> =
-            jsonHandler<List<SchemaListResponse>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<Schema>> =
+            jsonHandler<List<Schema>>(clientOptions.jsonMapper)
 
         override fun list(
             params: SchemaListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<SchemaListResponse>> {
+        ): HttpResponseFor<List<Schema>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("namespace", params.namespace().getOrNull())

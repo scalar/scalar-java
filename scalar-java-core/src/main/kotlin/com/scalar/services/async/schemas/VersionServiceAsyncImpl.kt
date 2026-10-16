@@ -17,8 +17,8 @@ import com.scalar.core.http.HttpResponseFor
 import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepareAsync
-import com.scalar.models.Uid
 import com.scalar.models.schemas.version.VersionCreateParams
+import com.scalar.models.schemas.version.VersionCreateResponse
 import com.scalar.models.schemas.version.VersionDeleteParams
 import com.scalar.models.schemas.version.VersionRetrieveParams
 import java.util.concurrent.CompletableFuture
@@ -41,7 +41,7 @@ class VersionServiceAsyncImpl internal constructor(private val clientOptions: Cl
     override fun create(
         params: VersionCreateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<Uid> =
+    ): CompletableFuture<VersionCreateResponse> =
         // post /v1/schemas/{namespace}/{slug}/version
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
@@ -72,12 +72,13 @@ class VersionServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val createHandler: Handler<Uid> = jsonHandler<Uid>(clientOptions.jsonMapper)
+        private val createHandler: Handler<VersionCreateResponse> =
+            jsonHandler<VersionCreateResponse>(clientOptions.jsonMapper)
 
         override fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Uid>> {
+        ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("slug", params.slug().getOrNull())

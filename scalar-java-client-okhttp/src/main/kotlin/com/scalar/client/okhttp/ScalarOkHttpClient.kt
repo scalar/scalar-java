@@ -294,7 +294,15 @@ class ScalarOkHttpClient private constructor() {
          */
         fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
-        fun bearerAuth(bearerAuth: String) = apply { clientOptions.bearerAuth(bearerAuth) }
+        fun bearerAuth(bearerAuth: String?) = apply { clientOptions.bearerAuth(bearerAuth) }
+
+        /** Alias for calling [Builder.bearerAuth] with `bearerAuth.orElse(null)`. */
+        fun bearerAuth(bearerAuth: Optional<String>) = bearerAuth(bearerAuth.getOrNull())
+
+        fun oAuth2(oAuth2: String?) = apply { clientOptions.oAuth2(oAuth2) }
+
+        /** Alias for calling [Builder.oAuth2] with `oAuth2.orElse(null)`. */
+        fun oAuth2(oAuth2: Optional<String>) = oAuth2(oAuth2.getOrNull())
 
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 

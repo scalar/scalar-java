@@ -34,12 +34,6 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun title(): Optional<String> = body.title()
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
     fun description(): Optional<String> = body.description()
 
     /**
@@ -54,16 +48,15 @@ private constructor(
      */
     fun ruleset(): Optional<String> = body.ruleset()
 
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun title(): Optional<String> = body.title()
+
     fun namespace(): String = namespace
 
     fun slug(): Optional<String> = Optional.ofNullable(slug)
-
-    /**
-     * Returns the raw JSON value of [title].
-     *
-     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _title(): JsonField<String> = body._title()
 
     /**
      * Returns the raw JSON value of [description].
@@ -86,6 +79,13 @@ private constructor(
      */
     fun _ruleset(): JsonField<String> = body._ruleset()
 
+    /**
+     * Returns the raw JSON value of [title].
+     *
+     * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _title(): JsonField<String> = body._title()
+
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     /** Additional headers to send with the request. */
@@ -103,7 +103,7 @@ private constructor(
          * [RegistryUpdateApiDocumentParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
          * ```
          */
@@ -142,22 +142,12 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [title]
          * - [description]
          * - [isPrivate]
          * - [ruleset]
+         * - [title]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
-
-        fun title(title: String) = apply { body.title(title) }
-
-        /**
-         * Sets [Builder.title] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.title] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun title(title: JsonField<String>) = apply { body.title(title) }
 
         fun description(description: String) = apply { body.description(description) }
 
@@ -190,6 +180,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun ruleset(ruleset: JsonField<String>) = apply { body.ruleset(ruleset) }
+
+        fun title(title: String) = apply { body.title(title) }
+
+        /**
+         * Sets [Builder.title] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.title] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun title(title: JsonField<String>) = apply { body.title(title) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -314,7 +314,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .namespace()
          * ```
          *
@@ -343,19 +343,24 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder(
+        "description",
+        "isPrivate",
+        "ruleset",
+        "title",
+    )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val title: JsonField<String>,
         private val description: JsonField<String>,
         private val isPrivate: JsonField<Boolean>,
         private val ruleset: JsonField<String>,
+        private val title: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
             @JsonProperty("description")
             @ExcludeMissing
             description: JsonField<String> = JsonMissing.of(),
@@ -363,13 +368,8 @@ private constructor(
             @ExcludeMissing
             isPrivate: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("ruleset") @ExcludeMissing ruleset: JsonField<String> = JsonMissing.of(),
-        ) : this(title, description, isPrivate, ruleset, mutableMapOf())
-
-        /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun title(): Optional<String> = title.getOptional("title")
+            @JsonProperty("title") @ExcludeMissing title: JsonField<String> = JsonMissing.of(),
+        ) : this(description, isPrivate, ruleset, title, mutableMapOf())
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -390,11 +390,10 @@ private constructor(
         fun ruleset(): Optional<String> = ruleset.getOptional("ruleset")
 
         /**
-         * Returns the raw JSON value of [title].
-         *
-         * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+        fun title(): Optional<String> = title.getOptional("title")
 
         /**
          * Returns the raw JSON value of [description].
@@ -419,6 +418,13 @@ private constructor(
          */
         @JsonProperty("ruleset") @ExcludeMissing fun _ruleset(): JsonField<String> = ruleset
 
+        /**
+         * Returns the raw JSON value of [title].
+         *
+         * Unlike [title], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("title") @ExcludeMissing fun _title(): JsonField<String> = title
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -440,31 +446,20 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var title: JsonField<String> = JsonMissing.of()
             private var description: JsonField<String> = JsonMissing.of()
             private var isPrivate: JsonField<Boolean> = JsonMissing.of()
             private var ruleset: JsonField<String> = JsonMissing.of()
+            private var title: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                title = body.title
                 description = body.description
                 isPrivate = body.isPrivate
                 ruleset = body.ruleset
+                title = body.title
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
-
-            fun title(title: String) = title(JsonField.of(title))
-
-            /**
-             * Sets [Builder.title] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.title] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun title(title: JsonField<String>) = apply { this.title = title }
 
             fun description(description: String) = description(JsonField.of(description))
 
@@ -501,6 +496,17 @@ private constructor(
              */
             fun ruleset(ruleset: JsonField<String>) = apply { this.ruleset = ruleset }
 
+            fun title(title: String) = title(JsonField.of(title))
+
+            /**
+             * Sets [Builder.title] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.title] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun title(title: JsonField<String>) = apply { this.title = title }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -526,7 +532,7 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Body =
-                Body(title, description, isPrivate, ruleset, additionalProperties.toMutableMap())
+                Body(description, isPrivate, ruleset, title, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -545,10 +551,10 @@ private constructor(
                 return@apply
             }
 
-            title()
             description()
             isPrivate()
             ruleset()
+            title()
             validated = true
         }
 
@@ -568,10 +574,10 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (title.asKnown().isPresent) 1 else 0) +
-                (if (description.asKnown().isPresent) 1 else 0) +
+            (if (description.asKnown().isPresent) 1 else 0) +
                 (if (isPrivate.asKnown().isPresent) 1 else 0) +
-                (if (ruleset.asKnown().isPresent) 1 else 0)
+                (if (ruleset.asKnown().isPresent) 1 else 0) +
+                (if (title.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -579,21 +585,21 @@ private constructor(
             }
 
             return other is Body &&
-                title == other.title &&
                 description == other.description &&
                 isPrivate == other.isPrivate &&
                 ruleset == other.ruleset &&
+                title == other.title &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(title, description, isPrivate, ruleset, additionalProperties)
+            Objects.hash(description, isPrivate, ruleset, title, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{title=$title, description=$description, isPrivate=$isPrivate, ruleset=$ruleset, additionalProperties=$additionalProperties}"
+            "Body{description=$description, isPrivate=$isPrivate, ruleset=$ruleset, title=$title, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

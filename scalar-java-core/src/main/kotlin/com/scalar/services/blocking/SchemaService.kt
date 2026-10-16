@@ -7,10 +7,10 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.Uid
+import com.scalar.models.schemas.Schema
 import com.scalar.models.schemas.SchemaCreateParams
 import com.scalar.models.schemas.SchemaDeleteParams
 import com.scalar.models.schemas.SchemaListParams
-import com.scalar.models.schemas.SchemaListResponse
 import com.scalar.models.schemas.SchemaUpdateParams
 import com.scalar.services.blocking.schemas.AccessGroupService
 import com.scalar.services.blocking.schemas.VersionService
@@ -49,13 +49,13 @@ interface SchemaService {
     ): Uid = create(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see create */
+    fun create(params: SchemaCreateParams): Uid = create(params, RequestOptions.none())
+
+    /** @see create */
     fun create(
         params: SchemaCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Uid
-
-    /** @see create */
-    fun create(params: SchemaCreateParams): Uid = create(params, RequestOptions.none())
 
     /** Update schema metadata. */
     fun update(slug: String, params: SchemaUpdateParams): Any? =
@@ -69,41 +69,39 @@ interface SchemaService {
     ): Any? = update(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see update */
+    fun update(params: SchemaUpdateParams): Any? = update(params, RequestOptions.none())
+
+    /** @see update */
     fun update(
         params: SchemaUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
 
-    /** @see update */
-    fun update(params: SchemaUpdateParams): Any? = update(params, RequestOptions.none())
-
     /** List schemas in a namespace. */
-    fun list(namespace: String): List<SchemaListResponse> = list(namespace, SchemaListParams.none())
+    fun list(namespace: String): List<Schema> = list(namespace, SchemaListParams.none())
 
     /** @see list */
     fun list(
         namespace: String,
         params: SchemaListParams = SchemaListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<SchemaListResponse> =
-        list(params.toBuilder().namespace(namespace).build(), requestOptions)
+    ): List<Schema> = list(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see list */
-    fun list(namespace: String, params: SchemaListParams): List<SchemaListResponse> =
+    fun list(namespace: String, params: SchemaListParams = SchemaListParams.none()): List<Schema> =
         list(namespace, params, RequestOptions.none())
 
     /** @see list */
     fun list(
         params: SchemaListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<SchemaListResponse>
+    ): List<Schema>
 
     /** @see list */
-    fun list(params: SchemaListParams): List<SchemaListResponse> =
-        list(params, RequestOptions.none())
+    fun list(params: SchemaListParams): List<Schema> = list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(namespace: String, requestOptions: RequestOptions): List<SchemaListResponse> =
+    fun list(namespace: String, requestOptions: RequestOptions): List<Schema> =
         list(namespace, SchemaListParams.none(), requestOptions)
 
     /** Delete a schema and all related versions. */
@@ -118,13 +116,13 @@ interface SchemaService {
     ): Any? = delete(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see delete */
+    fun delete(params: SchemaDeleteParams): Any? = delete(params, RequestOptions.none())
+
+    /** @see delete */
     fun delete(
         params: SchemaDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see delete */
-    fun delete(params: SchemaDeleteParams): Any? = delete(params, RequestOptions.none())
 
     /** A view of [SchemaService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -161,15 +159,15 @@ interface SchemaService {
 
         /** @see create */
         @MustBeClosed
+        fun create(params: SchemaCreateParams): HttpResponseFor<Uid> =
+            create(params, RequestOptions.none())
+
+        /** @see create */
+        @MustBeClosed
         fun create(
             params: SchemaCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Uid>
-
-        /** @see create */
-        @MustBeClosed
-        fun create(params: SchemaCreateParams): HttpResponseFor<Uid> =
-            create(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `patch /v1/schemas/{namespace}/{slug}`, but is otherwise
@@ -189,22 +187,22 @@ interface SchemaService {
 
         /** @see update */
         @MustBeClosed
+        fun update(params: SchemaUpdateParams): HttpResponseFor<Any?> =
+            update(params, RequestOptions.none())
+
+        /** @see update */
+        @MustBeClosed
         fun update(
             params: SchemaUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see update */
-        @MustBeClosed
-        fun update(params: SchemaUpdateParams): HttpResponseFor<Any?> =
-            update(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `get /v1/schemas/{namespace}`, but is otherwise the same
          * as [SchemaService.list].
          */
         @MustBeClosed
-        fun list(namespace: String): HttpResponseFor<List<SchemaListResponse>> =
+        fun list(namespace: String): HttpResponseFor<List<Schema>> =
             list(namespace, SchemaListParams.none())
 
         /** @see list */
@@ -213,35 +211,31 @@ interface SchemaService {
             namespace: String,
             params: SchemaListParams = SchemaListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<SchemaListResponse>> =
+        ): HttpResponseFor<List<Schema>> =
             list(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see list */
         @MustBeClosed
         fun list(
             namespace: String,
-            params: SchemaListParams,
-        ): HttpResponseFor<List<SchemaListResponse>> =
-            list(namespace, params, RequestOptions.none())
+            params: SchemaListParams = SchemaListParams.none(),
+        ): HttpResponseFor<List<Schema>> = list(namespace, params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: SchemaListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<SchemaListResponse>>
+        ): HttpResponseFor<List<Schema>>
 
         /** @see list */
         @MustBeClosed
-        fun list(params: SchemaListParams): HttpResponseFor<List<SchemaListResponse>> =
+        fun list(params: SchemaListParams): HttpResponseFor<List<Schema>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(
-            namespace: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<List<SchemaListResponse>> =
+        fun list(namespace: String, requestOptions: RequestOptions): HttpResponseFor<List<Schema>> =
             list(namespace, SchemaListParams.none(), requestOptions)
 
         /**
@@ -262,14 +256,14 @@ interface SchemaService {
 
         /** @see delete */
         @MustBeClosed
+        fun delete(params: SchemaDeleteParams): HttpResponseFor<Any?> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
+        @MustBeClosed
         fun delete(
             params: SchemaDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see delete */
-        @MustBeClosed
-        fun delete(params: SchemaDeleteParams): HttpResponseFor<Any?> =
-            delete(params, RequestOptions.none())
     }
 }

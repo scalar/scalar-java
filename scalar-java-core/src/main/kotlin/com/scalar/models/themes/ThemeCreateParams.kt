@@ -31,13 +31,13 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun name(): String = body.name()
+    fun document(): String = body.document()
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun description(): Optional<String> = body.description()
+    fun name(): String = body.name()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -46,10 +46,17 @@ private constructor(
     fun slug(): String = body.slug()
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun document(): String = body.document()
+    fun description(): Optional<String> = body.description()
+
+    /**
+     * Returns the raw JSON value of [document].
+     *
+     * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _document(): JsonField<String> = body._document()
 
     /**
      * Returns the raw JSON value of [name].
@@ -59,13 +66,6 @@ private constructor(
     fun _name(): JsonField<String> = body._name()
 
     /**
-     * Returns the raw JSON value of [description].
-     *
-     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _description(): JsonField<String> = body._description()
-
-    /**
      * Returns the raw JSON value of [slug].
      *
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
@@ -73,11 +73,11 @@ private constructor(
     fun _slug(): JsonField<String> = body._slug()
 
     /**
-     * Returns the raw JSON value of [document].
+     * Returns the raw JSON value of [description].
      *
-     * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _document(): JsonField<String> = body._document()
+    fun _description(): JsonField<String> = body._description()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -95,10 +95,10 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [ThemeCreateParams].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .document()
          * .name()
          * .slug()
-         * .document()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -123,12 +123,22 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [name]
-         * - [description]
-         * - [slug]
          * - [document]
+         * - [name]
+         * - [slug]
+         * - [description]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        fun document(document: String) = apply { body.document(document) }
+
+        /**
+         * Sets [Builder.document] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.document] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun document(document: JsonField<String>) = apply { body.document(document) }
 
         fun name(name: String) = apply { body.name(name) }
 
@@ -140,17 +150,6 @@ private constructor(
          */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
-        fun description(description: String) = apply { body.description(description) }
-
-        /**
-         * Sets [Builder.description] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.description] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun description(description: JsonField<String>) = apply { body.description(description) }
-
         fun slug(slug: String) = apply { body.slug(slug) }
 
         /**
@@ -161,15 +160,16 @@ private constructor(
          */
         fun slug(slug: JsonField<String>) = apply { body.slug(slug) }
 
-        fun document(document: String) = apply { body.document(document) }
+        fun description(description: String) = apply { body.description(description) }
 
         /**
-         * Sets [Builder.document] to an arbitrary JSON value.
+         * Sets [Builder.description] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.document] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
-        fun document(document: JsonField<String>) = apply { body.document(document) }
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -294,10 +294,10 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
+         * .document()
          * .name()
          * .slug()
-         * .document()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -316,27 +316,34 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("document", "name", "slug", "description")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val name: JsonField<String>,
-        private val description: JsonField<String>,
-        private val slug: JsonField<String>,
         private val document: JsonField<String>,
+        private val name: JsonField<String>,
+        private val slug: JsonField<String>,
+        private val description: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("description")
-            @ExcludeMissing
-            description: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
             @JsonProperty("document")
             @ExcludeMissing
             document: JsonField<String> = JsonMissing.of(),
-        ) : this(name, description, slug, document, mutableMapOf())
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+        ) : this(document, name, slug, description, mutableMapOf())
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun document(): String = document.getRequired("document")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -345,22 +352,23 @@ private constructor(
         fun name(): String = name.getRequired("name")
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun description(): Optional<String> = description.getOptional("description")
-
-        /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun slug(): String = slug.getRequired("slug")
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        fun document(): String = document.getRequired("document")
+        fun description(): Optional<String> = description.getOptional("description")
+
+        /**
+         * Returns the raw JSON value of [document].
+         *
+         * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("document") @ExcludeMissing fun _document(): JsonField<String> = document
 
         /**
          * Returns the raw JSON value of [name].
@@ -370,15 +378,6 @@ private constructor(
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /**
-         * Returns the raw JSON value of [description].
-         *
-         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("description")
-        @ExcludeMissing
-        fun _description(): JsonField<String> = description
-
-        /**
          * Returns the raw JSON value of [slug].
          *
          * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
@@ -386,11 +385,13 @@ private constructor(
         @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
         /**
-         * Returns the raw JSON value of [document].
+         * Returns the raw JSON value of [description].
          *
-         * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("document") @ExcludeMissing fun _document(): JsonField<String> = document
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -410,10 +411,10 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
+             * .document()
              * .name()
              * .slug()
-             * .document()
              * ```
              */
             @JvmStatic fun builder() = Builder()
@@ -422,20 +423,31 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var name: JsonField<String>? = null
-            private var description: JsonField<String> = JsonMissing.of()
-            private var slug: JsonField<String>? = null
             private var document: JsonField<String>? = null
+            private var name: JsonField<String>? = null
+            private var slug: JsonField<String>? = null
+            private var description: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                name = body.name
-                description = body.description
-                slug = body.slug
                 document = body.document
+                name = body.name
+                slug = body.slug
+                description = body.description
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
+
+            fun document(document: String) = document(JsonField.of(document))
+
+            /**
+             * Sets [Builder.document] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.document] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun document(document: JsonField<String>) = apply { this.document = document }
 
             fun name(name: String) = name(JsonField.of(name))
 
@@ -447,6 +459,17 @@ private constructor(
              * value.
              */
             fun name(name: JsonField<String>) = apply { this.name = name }
+
+            fun slug(slug: String) = slug(JsonField.of(slug))
+
+            /**
+             * Sets [Builder.slug] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
             fun description(description: String) = description(JsonField.of(description))
 
@@ -460,28 +483,6 @@ private constructor(
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
-
-            fun slug(slug: String) = slug(JsonField.of(slug))
-
-            /**
-             * Sets [Builder.slug] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-            fun document(document: String) = document(JsonField.of(document))
-
-            /**
-             * Sets [Builder.document] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.document] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun document(document: JsonField<String>) = apply { this.document = document }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -508,20 +509,20 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              *
              * The following fields are required:
-             * ```kotlin
+             * ```java
+             * .document()
              * .name()
              * .slug()
-             * .document()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Body =
                 Body(
-                    checkRequired("name", name),
-                    description,
-                    checkRequired("slug", slug),
                     checkRequired("document", document),
+                    checkRequired("name", name),
+                    checkRequired("slug", slug),
+                    description,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -542,10 +543,10 @@ private constructor(
                 return@apply
             }
 
-            name()
-            description()
-            slug()
             document()
+            name()
+            slug()
+            description()
             validated = true
         }
 
@@ -565,10 +566,10 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (name.asKnown().isPresent) 1 else 0) +
-                (if (description.asKnown().isPresent) 1 else 0) +
+            (if (document.asKnown().isPresent) 1 else 0) +
+                (if (name.asKnown().isPresent) 1 else 0) +
                 (if (slug.asKnown().isPresent) 1 else 0) +
-                (if (document.asKnown().isPresent) 1 else 0)
+                (if (description.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -576,21 +577,21 @@ private constructor(
             }
 
             return other is Body &&
-                name == other.name &&
-                description == other.description &&
-                slug == other.slug &&
                 document == other.document &&
+                name == other.name &&
+                slug == other.slug &&
+                description == other.description &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(name, description, slug, document, additionalProperties)
+            Objects.hash(document, name, slug, description, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, description=$description, slug=$slug, document=$document, additionalProperties=$additionalProperties}"
+            "Body{document=$document, name=$name, slug=$slug, description=$description, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

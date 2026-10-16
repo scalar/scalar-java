@@ -17,8 +17,8 @@ import com.scalar.core.http.HttpResponseFor
 import com.scalar.core.http.json
 import com.scalar.core.http.parseable
 import com.scalar.core.prepare
-import com.scalar.models.Uid
 import com.scalar.models.schemas.version.VersionCreateParams
+import com.scalar.models.schemas.version.VersionCreateResponse
 import com.scalar.models.schemas.version.VersionDeleteParams
 import com.scalar.models.schemas.version.VersionRetrieveParams
 import java.util.function.Consumer
@@ -37,7 +37,10 @@ class VersionServiceImpl internal constructor(private val clientOptions: ClientO
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): VersionService =
         VersionServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun create(params: VersionCreateParams, requestOptions: RequestOptions): Uid =
+    override fun create(
+        params: VersionCreateParams,
+        requestOptions: RequestOptions,
+    ): VersionCreateResponse =
         // post /v1/schemas/{namespace}/{slug}/version
         withRawResponse().create(params, requestOptions).parse()
 
@@ -62,12 +65,13 @@ class VersionServiceImpl internal constructor(private val clientOptions: ClientO
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val createHandler: Handler<Uid> = jsonHandler<Uid>(clientOptions.jsonMapper)
+        private val createHandler: Handler<VersionCreateResponse> =
+            jsonHandler<VersionCreateResponse>(clientOptions.jsonMapper)
 
         override fun create(
             params: VersionCreateParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<Uid> {
+        ): HttpResponseFor<VersionCreateResponse> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("slug", params.slug().getOrNull())

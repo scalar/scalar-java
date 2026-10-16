@@ -15,12 +15,12 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("jsonSha", "yamlSha")
 class RegistryUpdateApiDocumentVersionResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val jsonSha: JsonField<String>,
     private val yamlSha: JsonField<String>,
-    private val versionSha: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -28,10 +28,7 @@ private constructor(
     private constructor(
         @JsonProperty("jsonSha") @ExcludeMissing jsonSha: JsonField<String> = JsonMissing.of(),
         @JsonProperty("yamlSha") @ExcludeMissing yamlSha: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("versionSha")
-        @ExcludeMissing
-        versionSha: JsonField<String> = JsonMissing.of(),
-    ) : this(jsonSha, yamlSha, versionSha, mutableMapOf())
+    ) : this(jsonSha, yamlSha, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -46,12 +43,6 @@ private constructor(
     fun yamlSha(): String = yamlSha.getRequired("yamlSha")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun versionSha(): String = versionSha.getRequired("versionSha")
-
-    /**
      * Returns the raw JSON value of [jsonSha].
      *
      * Unlike [jsonSha], this method doesn't throw if the JSON field has an unexpected type.
@@ -64,13 +55,6 @@ private constructor(
      * Unlike [yamlSha], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("yamlSha") @ExcludeMissing fun _yamlSha(): JsonField<String> = yamlSha
-
-    /**
-     * Returns the raw JSON value of [versionSha].
-     *
-     * Unlike [versionSha], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("versionSha") @ExcludeMissing fun _versionSha(): JsonField<String> = versionSha
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -91,10 +75,9 @@ private constructor(
          * [RegistryUpdateApiDocumentVersionResponse].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .jsonSha()
          * .yamlSha()
-         * .versionSha()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -105,7 +88,6 @@ private constructor(
 
         private var jsonSha: JsonField<String>? = null
         private var yamlSha: JsonField<String>? = null
-        private var versionSha: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -114,7 +96,6 @@ private constructor(
         ) = apply {
             jsonSha = registryUpdateApiDocumentVersionResponse.jsonSha
             yamlSha = registryUpdateApiDocumentVersionResponse.yamlSha
-            versionSha = registryUpdateApiDocumentVersionResponse.versionSha
             additionalProperties =
                 registryUpdateApiDocumentVersionResponse.additionalProperties.toMutableMap()
         }
@@ -138,17 +119,6 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun yamlSha(yamlSha: JsonField<String>) = apply { this.yamlSha = yamlSha }
-
-        fun versionSha(versionSha: String) = versionSha(JsonField.of(versionSha))
-
-        /**
-         * Sets [Builder.versionSha] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.versionSha] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun versionSha(versionSha: JsonField<String>) = apply { this.versionSha = versionSha }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -175,10 +145,9 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .jsonSha()
          * .yamlSha()
-         * .versionSha()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -187,7 +156,6 @@ private constructor(
             RegistryUpdateApiDocumentVersionResponse(
                 checkRequired("jsonSha", jsonSha),
                 checkRequired("yamlSha", yamlSha),
-                checkRequired("versionSha", versionSha),
                 additionalProperties.toMutableMap(),
             )
     }
@@ -209,7 +177,6 @@ private constructor(
 
         jsonSha()
         yamlSha()
-        versionSha()
         validated = true
     }
 
@@ -228,9 +195,7 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (jsonSha.asKnown().isPresent) 1 else 0) +
-            (if (yamlSha.asKnown().isPresent) 1 else 0) +
-            (if (versionSha.asKnown().isPresent) 1 else 0)
+        (if (jsonSha.asKnown().isPresent) 1 else 0) + (if (yamlSha.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -240,16 +205,13 @@ private constructor(
         return other is RegistryUpdateApiDocumentVersionResponse &&
             jsonSha == other.jsonSha &&
             yamlSha == other.yamlSha &&
-            versionSha == other.versionSha &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy {
-        Objects.hash(jsonSha, yamlSha, versionSha, additionalProperties)
-    }
+    private val hashCode: Int by lazy { Objects.hash(jsonSha, yamlSha, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RegistryUpdateApiDocumentVersionResponse{jsonSha=$jsonSha, yamlSha=$yamlSha, versionSha=$versionSha, additionalProperties=$additionalProperties}"
+        "RegistryUpdateApiDocumentVersionResponse{jsonSha=$jsonSha, yamlSha=$yamlSha, additionalProperties=$additionalProperties}"
 }

@@ -15,6 +15,7 @@ import com.scalar.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("accessGroupSlug")
 class AccessGroup
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -62,7 +63,7 @@ private constructor(
          * Returns a mutable builder for constructing an instance of [AccessGroup].
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .accessGroupSlug()
          * ```
          */
@@ -120,7 +121,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          *
          * The following fields are required:
-         * ```kotlin
+         * ```java
          * .accessGroupSlug()
          * ```
          *

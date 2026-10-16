@@ -7,6 +7,7 @@ import com.scalar.core.ClientOptions
 import com.scalar.core.RequestOptions
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.models.ManagedDocVersion
+import com.scalar.models.registry.ApiDocument
 import com.scalar.models.registry.RegistryCreateApiDocumentAccessGroupParams
 import com.scalar.models.registry.RegistryCreateApiDocumentParams
 import com.scalar.models.registry.RegistryCreateApiDocumentResponse
@@ -15,10 +16,8 @@ import com.scalar.models.registry.RegistryDeleteApiDocumentAccessGroupParams
 import com.scalar.models.registry.RegistryDeleteApiDocumentParams
 import com.scalar.models.registry.RegistryDeleteApiDocumentVersionParams
 import com.scalar.models.registry.RegistryListAllApiDocumentsParams
-import com.scalar.models.registry.RegistryListAllApiDocumentsResponse
 import com.scalar.models.registry.RegistryListApiDocumentVersionMetadataParams
 import com.scalar.models.registry.RegistryListApiDocumentsParams
-import com.scalar.models.registry.RegistryListApiDocumentsResponse
 import com.scalar.models.registry.RegistryRetrieveApiDocumentVersionParams
 import com.scalar.models.registry.RegistryUpdateApiDocumentParams
 import com.scalar.models.registry.RegistryUpdateApiDocumentVersionParams
@@ -57,14 +56,14 @@ interface RegistryService {
 
     /** @see createApiDocument */
     fun createApiDocument(
-        params: RegistryCreateApiDocumentParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): RegistryCreateApiDocumentResponse
+        params: RegistryCreateApiDocumentParams
+    ): RegistryCreateApiDocumentResponse = createApiDocument(params, RequestOptions.none())
 
     /** @see createApiDocument */
     fun createApiDocument(
-        params: RegistryCreateApiDocumentParams
-    ): RegistryCreateApiDocumentResponse = createApiDocument(params, RequestOptions.none())
+        params: RegistryCreateApiDocumentParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RegistryCreateApiDocumentResponse
 
     /** Add an access group to an API document. */
     fun createApiDocumentAccessGroup(
@@ -80,14 +79,14 @@ interface RegistryService {
     ): Any? = createApiDocumentAccessGroup(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see createApiDocumentAccessGroup */
+    fun createApiDocumentAccessGroup(params: RegistryCreateApiDocumentAccessGroupParams): Any? =
+        createApiDocumentAccessGroup(params, RequestOptions.none())
+
+    /** @see createApiDocumentAccessGroup */
     fun createApiDocumentAccessGroup(
         params: RegistryCreateApiDocumentAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see createApiDocumentAccessGroup */
-    fun createApiDocumentAccessGroup(params: RegistryCreateApiDocumentAccessGroupParams): Any? =
-        createApiDocumentAccessGroup(params, RequestOptions.none())
 
     /** Create a new API document version. */
     fun createApiDocumentVersion(
@@ -105,14 +104,14 @@ interface RegistryService {
 
     /** @see createApiDocumentVersion */
     fun createApiDocumentVersion(
-        params: RegistryCreateApiDocumentVersionParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): ManagedDocVersion
+        params: RegistryCreateApiDocumentVersionParams
+    ): ManagedDocVersion = createApiDocumentVersion(params, RequestOptions.none())
 
     /** @see createApiDocumentVersion */
     fun createApiDocumentVersion(
-        params: RegistryCreateApiDocumentVersionParams
-    ): ManagedDocVersion = createApiDocumentVersion(params, RequestOptions.none())
+        params: RegistryCreateApiDocumentVersionParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): ManagedDocVersion
 
     /** Delete an API document and all versions. */
     fun deleteApiDocument(slug: String, params: RegistryDeleteApiDocumentParams): Any? =
@@ -126,14 +125,14 @@ interface RegistryService {
     ): Any? = deleteApiDocument(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see deleteApiDocument */
+    fun deleteApiDocument(params: RegistryDeleteApiDocumentParams): Any? =
+        deleteApiDocument(params, RequestOptions.none())
+
+    /** @see deleteApiDocument */
     fun deleteApiDocument(
         params: RegistryDeleteApiDocumentParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see deleteApiDocument */
-    fun deleteApiDocument(params: RegistryDeleteApiDocumentParams): Any? =
-        deleteApiDocument(params, RequestOptions.none())
 
     /** Remove an access group from an API document. */
     fun deleteApiDocumentAccessGroup(
@@ -149,14 +148,14 @@ interface RegistryService {
     ): Any? = deleteApiDocumentAccessGroup(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see deleteApiDocumentAccessGroup */
+    fun deleteApiDocumentAccessGroup(params: RegistryDeleteApiDocumentAccessGroupParams): Any? =
+        deleteApiDocumentAccessGroup(params, RequestOptions.none())
+
+    /** @see deleteApiDocumentAccessGroup */
     fun deleteApiDocumentAccessGroup(
         params: RegistryDeleteApiDocumentAccessGroupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see deleteApiDocumentAccessGroup */
-    fun deleteApiDocumentAccessGroup(params: RegistryDeleteApiDocumentAccessGroupParams): Any? =
-        deleteApiDocumentAccessGroup(params, RequestOptions.none())
 
     /** Delete a specific API document version. */
     fun deleteApiDocumentVersion(
@@ -172,35 +171,32 @@ interface RegistryService {
     ): Any? = deleteApiDocumentVersion(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see deleteApiDocumentVersion */
+    fun deleteApiDocumentVersion(params: RegistryDeleteApiDocumentVersionParams): Any? =
+        deleteApiDocumentVersion(params, RequestOptions.none())
+
+    /** @see deleteApiDocumentVersion */
     fun deleteApiDocumentVersion(
         params: RegistryDeleteApiDocumentVersionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
 
-    /** @see deleteApiDocumentVersion */
-    fun deleteApiDocumentVersion(params: RegistryDeleteApiDocumentVersionParams): Any? =
-        deleteApiDocumentVersion(params, RequestOptions.none())
-
     /** List all API documents across every namespace the caller can access. */
-    fun listAllApiDocuments(): List<RegistryListAllApiDocumentsResponse> =
+    fun listAllApiDocuments(): List<ApiDocument> =
         listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
 
     /** @see listAllApiDocuments */
     fun listAllApiDocuments(
         params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<RegistryListAllApiDocumentsResponse>
+    ): List<ApiDocument>
 
     /** @see listAllApiDocuments */
     fun listAllApiDocuments(
-        params: RegistryListAllApiDocumentsParams
-    ): List<RegistryListAllApiDocumentsResponse> =
-        listAllApiDocuments(params, RequestOptions.none())
+        params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none()
+    ): List<ApiDocument> = listAllApiDocuments(params, RequestOptions.none())
 
     /** @see listAllApiDocuments */
-    fun listAllApiDocuments(
-        requestOptions: RequestOptions
-    ): List<RegistryListAllApiDocumentsResponse> =
+    fun listAllApiDocuments(requestOptions: RequestOptions): List<ApiDocument> =
         listAllApiDocuments(RegistryListAllApiDocumentsParams.none(), requestOptions)
 
     /** Get metadata (uid, content shas, version sha, tags) for a specific API document version. */
@@ -219,17 +215,17 @@ interface RegistryService {
 
     /** @see listApiDocumentVersionMetadata */
     fun listApiDocumentVersionMetadata(
+        params: RegistryListApiDocumentVersionMetadataParams
+    ): ManagedDocVersion = listApiDocumentVersionMetadata(params, RequestOptions.none())
+
+    /** @see listApiDocumentVersionMetadata */
+    fun listApiDocumentVersionMetadata(
         params: RegistryListApiDocumentVersionMetadataParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ManagedDocVersion
 
-    /** @see listApiDocumentVersionMetadata */
-    fun listApiDocumentVersionMetadata(
-        params: RegistryListApiDocumentVersionMetadataParams
-    ): ManagedDocVersion = listApiDocumentVersionMetadata(params, RequestOptions.none())
-
     /** List API documents in a namespace. */
-    fun listApiDocuments(namespace: String): List<RegistryListApiDocumentsResponse> =
+    fun listApiDocuments(namespace: String): List<ApiDocument> =
         listApiDocuments(namespace, RegistryListApiDocumentsParams.none())
 
     /** @see listApiDocuments */
@@ -237,32 +233,27 @@ interface RegistryService {
         namespace: String,
         params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<RegistryListApiDocumentsResponse> =
+    ): List<ApiDocument> =
         listApiDocuments(params.toBuilder().namespace(namespace).build(), requestOptions)
 
     /** @see listApiDocuments */
     fun listApiDocuments(
         namespace: String,
-        params: RegistryListApiDocumentsParams,
-    ): List<RegistryListApiDocumentsResponse> =
-        listApiDocuments(namespace, params, RequestOptions.none())
+        params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
+    ): List<ApiDocument> = listApiDocuments(namespace, params, RequestOptions.none())
 
     /** @see listApiDocuments */
     fun listApiDocuments(
         params: RegistryListApiDocumentsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<RegistryListApiDocumentsResponse>
+    ): List<ApiDocument>
 
     /** @see listApiDocuments */
-    fun listApiDocuments(
-        params: RegistryListApiDocumentsParams
-    ): List<RegistryListApiDocumentsResponse> = listApiDocuments(params, RequestOptions.none())
+    fun listApiDocuments(params: RegistryListApiDocumentsParams): List<ApiDocument> =
+        listApiDocuments(params, RequestOptions.none())
 
     /** @see listApiDocuments */
-    fun listApiDocuments(
-        namespace: String,
-        requestOptions: RequestOptions,
-    ): List<RegistryListApiDocumentsResponse> =
+    fun listApiDocuments(namespace: String, requestOptions: RequestOptions): List<ApiDocument> =
         listApiDocuments(namespace, RegistryListApiDocumentsParams.none(), requestOptions)
 
     /** Get a specific API document version. */
@@ -280,14 +271,14 @@ interface RegistryService {
         retrieveApiDocumentVersion(params.toBuilder().semver(semver).build(), requestOptions)
 
     /** @see retrieveApiDocumentVersion */
+    fun retrieveApiDocumentVersion(params: RegistryRetrieveApiDocumentVersionParams): String =
+        retrieveApiDocumentVersion(params, RequestOptions.none())
+
+    /** @see retrieveApiDocumentVersion */
     fun retrieveApiDocumentVersion(
         params: RegistryRetrieveApiDocumentVersionParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): String
-
-    /** @see retrieveApiDocumentVersion */
-    fun retrieveApiDocumentVersion(params: RegistryRetrieveApiDocumentVersionParams): String =
-        retrieveApiDocumentVersion(params, RequestOptions.none())
 
     /** Update metadata for an API document. */
     fun updateApiDocument(slug: String, params: RegistryUpdateApiDocumentParams): Any? =
@@ -301,14 +292,14 @@ interface RegistryService {
     ): Any? = updateApiDocument(params.toBuilder().slug(slug).build(), requestOptions)
 
     /** @see updateApiDocument */
+    fun updateApiDocument(params: RegistryUpdateApiDocumentParams): Any? =
+        updateApiDocument(params, RequestOptions.none())
+
+    /** @see updateApiDocument */
     fun updateApiDocument(
         params: RegistryUpdateApiDocumentParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Any?
-
-    /** @see updateApiDocument */
-    fun updateApiDocument(params: RegistryUpdateApiDocumentParams): Any? =
-        updateApiDocument(params, RequestOptions.none())
 
     /** Update the registry file content for an API document version. */
     fun updateApiDocumentVersion(
@@ -327,15 +318,15 @@ interface RegistryService {
 
     /** @see updateApiDocumentVersion */
     fun updateApiDocumentVersion(
-        params: RegistryUpdateApiDocumentVersionParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): RegistryUpdateApiDocumentVersionResponse
-
-    /** @see updateApiDocumentVersion */
-    fun updateApiDocumentVersion(
         params: RegistryUpdateApiDocumentVersionParams
     ): RegistryUpdateApiDocumentVersionResponse =
         updateApiDocumentVersion(params, RequestOptions.none())
+
+    /** @see updateApiDocumentVersion */
+    fun updateApiDocumentVersion(
+        params: RegistryUpdateApiDocumentVersionParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RegistryUpdateApiDocumentVersionResponse
 
     /** A view of [RegistryService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -370,16 +361,16 @@ interface RegistryService {
         /** @see createApiDocument */
         @MustBeClosed
         fun createApiDocument(
-            params: RegistryCreateApiDocumentParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<RegistryCreateApiDocumentResponse>
+            params: RegistryCreateApiDocumentParams
+        ): HttpResponseFor<RegistryCreateApiDocumentResponse> =
+            createApiDocument(params, RequestOptions.none())
 
         /** @see createApiDocument */
         @MustBeClosed
         fun createApiDocument(
-            params: RegistryCreateApiDocumentParams
-        ): HttpResponseFor<RegistryCreateApiDocumentResponse> =
-            createApiDocument(params, RequestOptions.none())
+            params: RegistryCreateApiDocumentParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RegistryCreateApiDocumentResponse>
 
         /**
          * Returns a raw HTTP response for `post /v1/apis/{namespace}/{slug}/access-group`, but is
@@ -403,15 +394,15 @@ interface RegistryService {
         /** @see createApiDocumentAccessGroup */
         @MustBeClosed
         fun createApiDocumentAccessGroup(
-            params: RegistryCreateApiDocumentAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+            params: RegistryCreateApiDocumentAccessGroupParams
+        ): HttpResponseFor<Any?> = createApiDocumentAccessGroup(params, RequestOptions.none())
 
         /** @see createApiDocumentAccessGroup */
         @MustBeClosed
         fun createApiDocumentAccessGroup(
-            params: RegistryCreateApiDocumentAccessGroupParams
-        ): HttpResponseFor<Any?> = createApiDocumentAccessGroup(params, RequestOptions.none())
+            params: RegistryCreateApiDocumentAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
 
         /**
          * Returns a raw HTTP response for `post /v1/apis/{namespace}/{slug}/version`, but is
@@ -436,16 +427,16 @@ interface RegistryService {
         /** @see createApiDocumentVersion */
         @MustBeClosed
         fun createApiDocumentVersion(
-            params: RegistryCreateApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ManagedDocVersion>
+            params: RegistryCreateApiDocumentVersionParams
+        ): HttpResponseFor<ManagedDocVersion> =
+            createApiDocumentVersion(params, RequestOptions.none())
 
         /** @see createApiDocumentVersion */
         @MustBeClosed
         fun createApiDocumentVersion(
-            params: RegistryCreateApiDocumentVersionParams
-        ): HttpResponseFor<ManagedDocVersion> =
-            createApiDocumentVersion(params, RequestOptions.none())
+            params: RegistryCreateApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ManagedDocVersion>
 
         /**
          * Returns a raw HTTP response for `delete /v1/apis/{namespace}/{slug}`, but is otherwise
@@ -468,15 +459,15 @@ interface RegistryService {
 
         /** @see deleteApiDocument */
         @MustBeClosed
+        fun deleteApiDocument(params: RegistryDeleteApiDocumentParams): HttpResponseFor<Any?> =
+            deleteApiDocument(params, RequestOptions.none())
+
+        /** @see deleteApiDocument */
+        @MustBeClosed
         fun deleteApiDocument(
             params: RegistryDeleteApiDocumentParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see deleteApiDocument */
-        @MustBeClosed
-        fun deleteApiDocument(params: RegistryDeleteApiDocumentParams): HttpResponseFor<Any?> =
-            deleteApiDocument(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `delete /v1/apis/{namespace}/{slug}/access-group`, but is
@@ -500,15 +491,15 @@ interface RegistryService {
         /** @see deleteApiDocumentAccessGroup */
         @MustBeClosed
         fun deleteApiDocumentAccessGroup(
-            params: RegistryDeleteApiDocumentAccessGroupParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+            params: RegistryDeleteApiDocumentAccessGroupParams
+        ): HttpResponseFor<Any?> = deleteApiDocumentAccessGroup(params, RequestOptions.none())
 
         /** @see deleteApiDocumentAccessGroup */
         @MustBeClosed
         fun deleteApiDocumentAccessGroup(
-            params: RegistryDeleteApiDocumentAccessGroupParams
-        ): HttpResponseFor<Any?> = deleteApiDocumentAccessGroup(params, RequestOptions.none())
+            params: RegistryDeleteApiDocumentAccessGroupParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
 
         /**
          * Returns a raw HTTP response for `delete /v1/apis/{namespace}/{slug}/version/{semver}`,
@@ -532,22 +523,22 @@ interface RegistryService {
         /** @see deleteApiDocumentVersion */
         @MustBeClosed
         fun deleteApiDocumentVersion(
-            params: RegistryDeleteApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
+            params: RegistryDeleteApiDocumentVersionParams
+        ): HttpResponseFor<Any?> = deleteApiDocumentVersion(params, RequestOptions.none())
 
         /** @see deleteApiDocumentVersion */
         @MustBeClosed
         fun deleteApiDocumentVersion(
-            params: RegistryDeleteApiDocumentVersionParams
-        ): HttpResponseFor<Any?> = deleteApiDocumentVersion(params, RequestOptions.none())
+            params: RegistryDeleteApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<Any?>
 
         /**
          * Returns a raw HTTP response for `get /v1/apis`, but is otherwise the same as
          * [RegistryService.listAllApiDocuments].
          */
         @MustBeClosed
-        fun listAllApiDocuments(): HttpResponseFor<List<RegistryListAllApiDocumentsResponse>> =
+        fun listAllApiDocuments(): HttpResponseFor<List<ApiDocument>> =
             listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
 
         /** @see listAllApiDocuments */
@@ -555,20 +546,19 @@ interface RegistryService {
         fun listAllApiDocuments(
             params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<RegistryListAllApiDocumentsResponse>>
+        ): HttpResponseFor<List<ApiDocument>>
 
         /** @see listAllApiDocuments */
         @MustBeClosed
         fun listAllApiDocuments(
-            params: RegistryListAllApiDocumentsParams
-        ): HttpResponseFor<List<RegistryListAllApiDocumentsResponse>> =
-            listAllApiDocuments(params, RequestOptions.none())
+            params: RegistryListAllApiDocumentsParams = RegistryListAllApiDocumentsParams.none()
+        ): HttpResponseFor<List<ApiDocument>> = listAllApiDocuments(params, RequestOptions.none())
 
         /** @see listAllApiDocuments */
         @MustBeClosed
         fun listAllApiDocuments(
             requestOptions: RequestOptions
-        ): HttpResponseFor<List<RegistryListAllApiDocumentsResponse>> =
+        ): HttpResponseFor<List<ApiDocument>> =
             listAllApiDocuments(RegistryListAllApiDocumentsParams.none(), requestOptions)
 
         /**
@@ -598,25 +588,23 @@ interface RegistryService {
         /** @see listApiDocumentVersionMetadata */
         @MustBeClosed
         fun listApiDocumentVersionMetadata(
-            params: RegistryListApiDocumentVersionMetadataParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ManagedDocVersion>
+            params: RegistryListApiDocumentVersionMetadataParams
+        ): HttpResponseFor<ManagedDocVersion> =
+            listApiDocumentVersionMetadata(params, RequestOptions.none())
 
         /** @see listApiDocumentVersionMetadata */
         @MustBeClosed
         fun listApiDocumentVersionMetadata(
-            params: RegistryListApiDocumentVersionMetadataParams
-        ): HttpResponseFor<ManagedDocVersion> =
-            listApiDocumentVersionMetadata(params, RequestOptions.none())
+            params: RegistryListApiDocumentVersionMetadataParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<ManagedDocVersion>
 
         /**
          * Returns a raw HTTP response for `get /v1/apis/{namespace}`, but is otherwise the same as
          * [RegistryService.listApiDocuments].
          */
         @MustBeClosed
-        fun listApiDocuments(
-            namespace: String
-        ): HttpResponseFor<List<RegistryListApiDocumentsResponse>> =
+        fun listApiDocuments(namespace: String): HttpResponseFor<List<ApiDocument>> =
             listApiDocuments(namespace, RegistryListApiDocumentsParams.none())
 
         /** @see listApiDocuments */
@@ -625,15 +613,15 @@ interface RegistryService {
             namespace: String,
             params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<RegistryListApiDocumentsResponse>> =
+        ): HttpResponseFor<List<ApiDocument>> =
             listApiDocuments(params.toBuilder().namespace(namespace).build(), requestOptions)
 
         /** @see listApiDocuments */
         @MustBeClosed
         fun listApiDocuments(
             namespace: String,
-            params: RegistryListApiDocumentsParams,
-        ): HttpResponseFor<List<RegistryListApiDocumentsResponse>> =
+            params: RegistryListApiDocumentsParams = RegistryListApiDocumentsParams.none(),
+        ): HttpResponseFor<List<ApiDocument>> =
             listApiDocuments(namespace, params, RequestOptions.none())
 
         /** @see listApiDocuments */
@@ -641,21 +629,20 @@ interface RegistryService {
         fun listApiDocuments(
             params: RegistryListApiDocumentsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<RegistryListApiDocumentsResponse>>
+        ): HttpResponseFor<List<ApiDocument>>
 
         /** @see listApiDocuments */
         @MustBeClosed
         fun listApiDocuments(
             params: RegistryListApiDocumentsParams
-        ): HttpResponseFor<List<RegistryListApiDocumentsResponse>> =
-            listApiDocuments(params, RequestOptions.none())
+        ): HttpResponseFor<List<ApiDocument>> = listApiDocuments(params, RequestOptions.none())
 
         /** @see listApiDocuments */
         @MustBeClosed
         fun listApiDocuments(
             namespace: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<RegistryListApiDocumentsResponse>> =
+        ): HttpResponseFor<List<ApiDocument>> =
             listApiDocuments(namespace, RegistryListApiDocumentsParams.none(), requestOptions)
 
         /**
@@ -681,15 +668,15 @@ interface RegistryService {
         /** @see retrieveApiDocumentVersion */
         @MustBeClosed
         fun retrieveApiDocumentVersion(
-            params: RegistryRetrieveApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<String>
+            params: RegistryRetrieveApiDocumentVersionParams
+        ): HttpResponseFor<String> = retrieveApiDocumentVersion(params, RequestOptions.none())
 
         /** @see retrieveApiDocumentVersion */
         @MustBeClosed
         fun retrieveApiDocumentVersion(
-            params: RegistryRetrieveApiDocumentVersionParams
-        ): HttpResponseFor<String> = retrieveApiDocumentVersion(params, RequestOptions.none())
+            params: RegistryRetrieveApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<String>
 
         /**
          * Returns a raw HTTP response for `patch /v1/apis/{namespace}/{slug}`, but is otherwise the
@@ -712,15 +699,15 @@ interface RegistryService {
 
         /** @see updateApiDocument */
         @MustBeClosed
+        fun updateApiDocument(params: RegistryUpdateApiDocumentParams): HttpResponseFor<Any?> =
+            updateApiDocument(params, RequestOptions.none())
+
+        /** @see updateApiDocument */
+        @MustBeClosed
         fun updateApiDocument(
             params: RegistryUpdateApiDocumentParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<Any?>
-
-        /** @see updateApiDocument */
-        @MustBeClosed
-        fun updateApiDocument(params: RegistryUpdateApiDocumentParams): HttpResponseFor<Any?> =
-            updateApiDocument(params, RequestOptions.none())
 
         /**
          * Returns a raw HTTP response for `patch /v1/apis/{namespace}/{slug}/version/{semver}`, but
@@ -745,15 +732,15 @@ interface RegistryService {
         /** @see updateApiDocumentVersion */
         @MustBeClosed
         fun updateApiDocumentVersion(
-            params: RegistryUpdateApiDocumentVersionParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<RegistryUpdateApiDocumentVersionResponse>
+            params: RegistryUpdateApiDocumentVersionParams
+        ): HttpResponseFor<RegistryUpdateApiDocumentVersionResponse> =
+            updateApiDocumentVersion(params, RequestOptions.none())
 
         /** @see updateApiDocumentVersion */
         @MustBeClosed
         fun updateApiDocumentVersion(
-            params: RegistryUpdateApiDocumentVersionParams
-        ): HttpResponseFor<RegistryUpdateApiDocumentVersionResponse> =
-            updateApiDocumentVersion(params, RequestOptions.none())
+            params: RegistryUpdateApiDocumentVersionParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RegistryUpdateApiDocumentVersionResponse>
     }
 }

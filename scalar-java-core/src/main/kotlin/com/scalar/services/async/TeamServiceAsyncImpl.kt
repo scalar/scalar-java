@@ -14,8 +14,12 @@ import com.scalar.core.http.HttpResponse.Handler
 import com.scalar.core.http.HttpResponseFor
 import com.scalar.core.http.parseable
 import com.scalar.core.prepareAsync
+import com.scalar.models.teams.Team
 import com.scalar.models.teams.TeamListParams
-import com.scalar.models.teams.TeamListResponse
+import com.scalar.services.async.teams.InviteServiceAsync
+import com.scalar.services.async.teams.InviteServiceAsyncImpl
+import com.scalar.services.async.teams.MemberServiceAsync
+import com.scalar.services.async.teams.MemberServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -27,15 +31,25 @@ class TeamServiceAsyncImpl internal constructor(private val clientOptions: Clien
         WithRawResponseImpl(clientOptions)
     }
 
+    private val members: MemberServiceAsync by lazy { MemberServiceAsyncImpl(clientOptions) }
+
+    private val invites: InviteServiceAsync by lazy { InviteServiceAsyncImpl(clientOptions) }
+
     override fun withRawResponse(): TeamServiceAsync.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TeamServiceAsync =
         TeamServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    /** Teams */
+    override fun members(): MemberServiceAsync = members
+
+    /** Teams */
+    override fun invites(): InviteServiceAsync = invites
+
     override fun list(
         params: TeamListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<TeamListResponse>> =
+    ): CompletableFuture<List<Team>> =
         // get /v1/teams
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -45,6 +59,14 @@ class TeamServiceAsyncImpl internal constructor(private val clientOptions: Clien
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val members: MemberServiceAsync.WithRawResponse by lazy {
+            MemberServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val invites: InviteServiceAsync.WithRawResponse by lazy {
+            InviteServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): TeamServiceAsync.WithRawResponse =
@@ -52,13 +74,19 @@ class TeamServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listHandler: Handler<List<TeamListResponse>> =
-            jsonHandler<List<TeamListResponse>>(clientOptions.jsonMapper)
+        /** Teams */
+        override fun members(): MemberServiceAsync.WithRawResponse = members
+
+        /** Teams */
+        override fun invites(): InviteServiceAsync.WithRawResponse = invites
+
+        private val listHandler: Handler<List<Team>> =
+            jsonHandler<List<Team>>(clientOptions.jsonMapper)
 
         override fun list(
             params: TeamListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<TeamListResponse>>> {
+        ): CompletableFuture<HttpResponseFor<List<Team>>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

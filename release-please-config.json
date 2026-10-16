@@ -3,7 +3,10 @@
     ".": {
       "release-type": "simple",
       "extra-files": [
-        "build.gradle.kts"
+        "build.gradle.kts",
+        "README.md",
+        "SKILL.md",
+        ".claude/skills/scalar-java-sdk/SKILL.md"
       ]
     }
   },

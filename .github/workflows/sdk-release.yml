@@ -1,0 +1,50 @@
+name: JVM SDK Release
+
+on:
+  # Manual re-publish only: the automated publish for each release runs as the `publish` job
+  # inside release-please.yml, in the same run that cuts the tag (dispatching a workflow here
+  # instead would resolve it on the repository's default branch only, which breaks releasing
+  # from any other release line). Dispatch this workflow at an existing release tag to re-run
+  # a failed or skipped publish. A dispatched run is top-level, so OIDC trusted-publisher
+  # claims name this file; register it as an additional trusted publisher only when manual
+  # re-publishes are used. Never add a workflow_call trigger here — registries reject
+  # publishes from called (reusable) workflows.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      VERSIONING_POLICY: manual
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "21"
+      # `enhanced` (the default) is proprietary — free for public repos, a free preview for
+      # private. `basic` is MIT `actions/cache` but keeps no restore keys: a dependency change
+      # rebuilds the cache cold.
+      - uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+        with:
+          cache-provider: basic
+      - run: ./gradlew build
+      - name: Publish to Maven Central
+        run: |
+          GROUP_PATH="$(echo 'com.scalar' | tr '.' '/')"
+          VERSION="$(sed -n 's/^[[:space:]]*version = "\(.*\)"$/\1/p' build.gradle.kts | head -n1)"
+          if curl -sf -A "scalar-sdk-release" -o /dev/null "https://repo1.maven.org/maven2/${GROUP_PATH}/scalar-java/${VERSION}/scalar-java-${VERSION}.pom"; then
+            echo "com.scalar:scalar-java:${VERSION} already on Maven Central, skipping"
+          else
+            ./gradlew publishToMavenCentral --no-configuration-cache
+          fi
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME || secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD || secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_GPG_PRIVATE_KEY || secrets.GPG_SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_GPG_PASSPHRASE || secrets.GPG_SIGNING_PASSWORD }}

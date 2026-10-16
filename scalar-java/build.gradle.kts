@@ -1,5 +1,6 @@
 plugins {
     id("scalar.kotlin")
+    id("scalar.publish")
 }
 
 dependencies {

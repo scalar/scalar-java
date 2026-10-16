@@ -9,6 +9,24 @@ Generated Java client for Scalar API, published as `com.scalar`. Use the generat
 
 ## Install
 
+Add the dependency to your Gradle build:
+
+```kotlin
+implementation("com.scalar:scalar-java:0.1.0") // x-release-please-version
+```
+
+Or declare it in your Maven `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>com.scalar</groupId>
+  <artifactId>scalar-java</artifactId>
+  <version>0.1.0</version> <!-- x-release-please-version -->
+</dependency>
+```
+
+Or build the SDK from source, with JDK 21 installed:
+
 ```sh
 ./gradlew :scalar-java:build
 ```
@@ -62,7 +80,6 @@ try {
 ## Requirements
 
 - Java 8 or later
-- Gradle multi-module project rooted at `scalar-java-root`, built with JDK 21
 
 ## Reference files
 

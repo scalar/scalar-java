@@ -37,7 +37,7 @@ The full API of this library can be found in [api.md](./api.md).
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar:scalar-java:0.1.0") // x-release-please-version
+implementation("com.scalar:scalar-java:0.2.1") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
@@ -46,7 +46,7 @@ Or declare it in your Maven `pom.xml`:
 <dependency>
   <groupId>com.scalar</groupId>
   <artifactId>scalar-java</artifactId>
-  <version>0.1.0</version> <!-- x-release-please-version -->
+  <version>0.2.1</version> <!-- x-release-please-version -->
 </dependency>
 ```
 

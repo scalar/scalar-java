@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/scalar/scalar-java/compare/v0.2.0...v0.2.1) (2026-10-16)
+
+
+### Chores
+
+* **api:** regenerate SDK ([2fc2d3a](https://github.com/scalar/scalar-java/commit/2fc2d3ac316f804992bf6d4b51547413b3665b47))
+
 ## [0.2.0](https://github.com/scalar/scalar-java/compare/v0.1.0...v0.2.0) (2026-10-14)
 
 

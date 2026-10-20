@@ -1016,6 +1016,9 @@ final class SmokeTest {
             .authMethod(RepositoryUpdatePublishingParams.AuthMethod.of("oidc"))
             .access(RepositoryUpdatePublishingParams.Access.of("public"))
             .tag("latest")
+            .artifactId("scalar-galaxy")
+            .tapRepo("scalar/homebrew-tap")
+            .registry("npm")
             .build();
     var repository = client.sdks().repositories().updatePublishing(params);
   }

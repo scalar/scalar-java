@@ -47,13 +47,31 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    fun artifactId(): Optional<String> = body.artifactId()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun authMethod(): Optional<AuthMethod> = body.authMethod()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    fun registry(): Optional<String> = body.registry()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun tag(): Optional<String> = body.tag()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun tapRepo(): Optional<String> = body.tapRepo()
 
     fun uid(): String = uid
 
@@ -74,6 +92,13 @@ private constructor(
     fun _access(): JsonField<Access> = body._access()
 
     /**
+     * Returns the raw JSON value of [artifactId].
+     *
+     * Unlike [artifactId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _artifactId(): JsonField<String> = body._artifactId()
+
+    /**
      * Returns the raw JSON value of [authMethod].
      *
      * Unlike [authMethod], this method doesn't throw if the JSON field has an unexpected type.
@@ -81,11 +106,25 @@ private constructor(
     fun _authMethod(): JsonField<AuthMethod> = body._authMethod()
 
     /**
+     * Returns the raw JSON value of [registry].
+     *
+     * Unlike [registry], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _registry(): JsonField<String> = body._registry()
+
+    /**
      * Returns the raw JSON value of [tag].
      *
      * Unlike [tag], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _tag(): JsonField<String> = body._tag()
+
+    /**
+     * Returns the raw JSON value of [tapRepo].
+     *
+     * Unlike [tapRepo], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _tapRepo(): JsonField<String> = body._tapRepo()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -146,8 +185,10 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [publishOnMerge]
          * - [access]
+         * - [artifactId]
          * - [authMethod]
-         * - [tag]
+         * - [registry]
+         * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -174,6 +215,17 @@ private constructor(
          */
         fun access(access: JsonField<Access>) = apply { body.access(access) }
 
+        fun artifactId(artifactId: String) = apply { body.artifactId(artifactId) }
+
+        /**
+         * Sets [Builder.artifactId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.artifactId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun artifactId(artifactId: JsonField<String>) = apply { body.artifactId(artifactId) }
+
         fun authMethod(authMethod: AuthMethod) = apply { body.authMethod(authMethod) }
 
         /**
@@ -185,6 +237,16 @@ private constructor(
          */
         fun authMethod(authMethod: JsonField<AuthMethod>) = apply { body.authMethod(authMethod) }
 
+        fun registry(registry: String) = apply { body.registry(registry) }
+
+        /**
+         * Sets [Builder.registry] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.registry] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun registry(registry: JsonField<String>) = apply { body.registry(registry) }
+
         fun tag(tag: String) = apply { body.tag(tag) }
 
         /**
@@ -194,6 +256,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun tag(tag: JsonField<String>) = apply { body.tag(tag) }
+
+        fun tapRepo(tapRepo: String) = apply { body.tapRepo(tapRepo) }
+
+        /**
+         * Sets [Builder.tapRepo] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.tapRepo] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun tapRepo(tapRepo: JsonField<String>) = apply { body.tapRepo(tapRepo) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -351,16 +423,22 @@ private constructor(
     @com.fasterxml.jackson.annotation.JsonPropertyOrder(
         "publishOnMerge",
         "access",
+        "artifactId",
         "authMethod",
+        "registry",
         "tag",
+        "tapRepo",
     )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val publishOnMerge: JsonField<Boolean>,
         private val access: JsonField<Access>,
+        private val artifactId: JsonField<String>,
         private val authMethod: JsonField<AuthMethod>,
+        private val registry: JsonField<String>,
         private val tag: JsonField<String>,
+        private val tapRepo: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -370,11 +448,27 @@ private constructor(
             @ExcludeMissing
             publishOnMerge: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("access") @ExcludeMissing access: JsonField<Access> = JsonMissing.of(),
+            @JsonProperty("artifactId")
+            @ExcludeMissing
+            artifactId: JsonField<String> = JsonMissing.of(),
             @JsonProperty("authMethod")
             @ExcludeMissing
             authMethod: JsonField<AuthMethod> = JsonMissing.of(),
+            @JsonProperty("registry")
+            @ExcludeMissing
+            registry: JsonField<String> = JsonMissing.of(),
             @JsonProperty("tag") @ExcludeMissing tag: JsonField<String> = JsonMissing.of(),
-        ) : this(publishOnMerge, access, authMethod, tag, mutableMapOf())
+            @JsonProperty("tapRepo") @ExcludeMissing tapRepo: JsonField<String> = JsonMissing.of(),
+        ) : this(
+            publishOnMerge,
+            access,
+            artifactId,
+            authMethod,
+            registry,
+            tag,
+            tapRepo,
+            mutableMapOf(),
+        )
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -392,13 +486,31 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
+        fun artifactId(): Optional<String> = artifactId.getOptional("artifactId")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun authMethod(): Optional<AuthMethod> = authMethod.getOptional("authMethod")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
+        fun registry(): Optional<String> = registry.getOptional("registry")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun tag(): Optional<String> = tag.getOptional("tag")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun tapRepo(): Optional<String> = tapRepo.getOptional("tapRepo")
 
         /**
          * Returns the raw JSON value of [publishOnMerge].
@@ -418,6 +530,15 @@ private constructor(
         @JsonProperty("access") @ExcludeMissing fun _access(): JsonField<Access> = access
 
         /**
+         * Returns the raw JSON value of [artifactId].
+         *
+         * Unlike [artifactId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("artifactId")
+        @ExcludeMissing
+        fun _artifactId(): JsonField<String> = artifactId
+
+        /**
          * Returns the raw JSON value of [authMethod].
          *
          * Unlike [authMethod], this method doesn't throw if the JSON field has an unexpected type.
@@ -427,11 +548,25 @@ private constructor(
         fun _authMethod(): JsonField<AuthMethod> = authMethod
 
         /**
+         * Returns the raw JSON value of [registry].
+         *
+         * Unlike [registry], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("registry") @ExcludeMissing fun _registry(): JsonField<String> = registry
+
+        /**
          * Returns the raw JSON value of [tag].
          *
          * Unlike [tag], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("tag") @ExcludeMissing fun _tag(): JsonField<String> = tag
+
+        /**
+         * Returns the raw JSON value of [tapRepo].
+         *
+         * Unlike [tapRepo], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("tapRepo") @ExcludeMissing fun _tapRepo(): JsonField<String> = tapRepo
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -463,16 +598,22 @@ private constructor(
 
             private var publishOnMerge: JsonField<Boolean>? = null
             private var access: JsonField<Access> = JsonMissing.of()
+            private var artifactId: JsonField<String> = JsonMissing.of()
             private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
+            private var registry: JsonField<String> = JsonMissing.of()
             private var tag: JsonField<String> = JsonMissing.of()
+            private var tapRepo: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 publishOnMerge = body.publishOnMerge
                 access = body.access
+                artifactId = body.artifactId
                 authMethod = body.authMethod
+                registry = body.registry
                 tag = body.tag
+                tapRepo = body.tapRepo
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -501,6 +642,17 @@ private constructor(
              */
             fun access(access: JsonField<Access>) = apply { this.access = access }
 
+            fun artifactId(artifactId: String) = artifactId(JsonField.of(artifactId))
+
+            /**
+             * Sets [Builder.artifactId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.artifactId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun artifactId(artifactId: JsonField<String>) = apply { this.artifactId = artifactId }
+
             fun authMethod(authMethod: AuthMethod) = authMethod(JsonField.of(authMethod))
 
             /**
@@ -514,6 +666,17 @@ private constructor(
                 this.authMethod = authMethod
             }
 
+            fun registry(registry: String) = registry(JsonField.of(registry))
+
+            /**
+             * Sets [Builder.registry] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.registry] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun registry(registry: JsonField<String>) = apply { this.registry = registry }
+
             fun tag(tag: String) = tag(JsonField.of(tag))
 
             /**
@@ -524,6 +687,17 @@ private constructor(
              * value.
              */
             fun tag(tag: JsonField<String>) = apply { this.tag = tag }
+
+            fun tapRepo(tapRepo: String) = tapRepo(JsonField.of(tapRepo))
+
+            /**
+             * Sets [Builder.tapRepo] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.tapRepo] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun tapRepo(tapRepo: JsonField<String>) = apply { this.tapRepo = tapRepo }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -560,8 +734,11 @@ private constructor(
                 Body(
                     checkRequired("publishOnMerge", publishOnMerge),
                     access,
+                    artifactId,
                     authMethod,
+                    registry,
                     tag,
+                    tapRepo,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -584,8 +761,11 @@ private constructor(
 
             publishOnMerge()
             access().ifPresent { it.validate() }
+            artifactId()
             authMethod().ifPresent { it.validate() }
+            registry()
             tag()
+            tapRepo()
             validated = true
         }
 
@@ -607,8 +787,11 @@ private constructor(
         internal fun validity(): Int =
             (if (publishOnMerge.asKnown().isPresent) 1 else 0) +
                 (access.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (artifactId.asKnown().isPresent) 1 else 0) +
                 (authMethod.asKnown().getOrNull()?.validity() ?: 0) +
-                (if (tag.asKnown().isPresent) 1 else 0)
+                (if (registry.asKnown().isPresent) 1 else 0) +
+                (if (tag.asKnown().isPresent) 1 else 0) +
+                (if (tapRepo.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -618,19 +801,31 @@ private constructor(
             return other is Body &&
                 publishOnMerge == other.publishOnMerge &&
                 access == other.access &&
+                artifactId == other.artifactId &&
                 authMethod == other.authMethod &&
+                registry == other.registry &&
                 tag == other.tag &&
+                tapRepo == other.tapRepo &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(publishOnMerge, access, authMethod, tag, additionalProperties)
+            Objects.hash(
+                publishOnMerge,
+                access,
+                artifactId,
+                authMethod,
+                registry,
+                tag,
+                tapRepo,
+                additionalProperties,
+            )
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{publishOnMerge=$publishOnMerge, access=$access, authMethod=$authMethod, tag=$tag, additionalProperties=$additionalProperties}"
+            "Body{publishOnMerge=$publishOnMerge, access=$access, artifactId=$artifactId, authMethod=$authMethod, registry=$registry, tag=$tag, tapRepo=$tapRepo, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

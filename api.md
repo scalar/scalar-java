@@ -119,8 +119,8 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 ## Setup
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -136,12 +136,12 @@ List all API documents across every namespace the caller can access.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryListAllApiDocumentsParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryListAllApiDocumentsParams.kt) |
-| Response | [`List<ApiDocument>`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/ApiDocument.kt) |
+| Request | [`RegistryListAllApiDocumentsParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryListAllApiDocumentsParams.kt) |
+| Response | [`List<ApiDocument>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/ApiDocument.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -157,13 +157,13 @@ List API documents in a namespace.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryListApiDocumentsParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryListApiDocumentsParams.kt) |
-| Response | [`List<ApiDocument>`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/ApiDocument.kt) |
+| Request | [`RegistryListApiDocumentsParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryListApiDocumentsParams.kt) |
+| Response | [`List<ApiDocument>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/ApiDocument.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryListApiDocumentsParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryListApiDocumentsParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -181,13 +181,13 @@ Create an API document.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryCreateApiDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryCreateApiDocumentParams.kt) |
-| Response | [`RegistryCreateApiDocumentResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryCreateApiDocumentResponse.kt) |
+| Request | [`RegistryCreateApiDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryCreateApiDocumentParams.kt) |
+| Response | [`RegistryCreateApiDocumentResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryCreateApiDocumentResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryCreateApiDocumentParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryCreateApiDocumentParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -213,12 +213,12 @@ Update metadata for an API document.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryUpdateApiDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryUpdateApiDocumentParams.kt) |
+| Request | [`RegistryUpdateApiDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryUpdateApiDocumentParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryUpdateApiDocumentParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryUpdateApiDocumentParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -236,12 +236,12 @@ Delete an API document and all versions.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryDeleteApiDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryDeleteApiDocumentParams.kt) |
+| Request | [`RegistryDeleteApiDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryDeleteApiDocumentParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryDeleteApiDocumentParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryDeleteApiDocumentParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -259,12 +259,12 @@ Get a specific API document version.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryRetrieveApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryRetrieveApiDocumentVersionParams.kt) |
+| Request | [`RegistryRetrieveApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryRetrieveApiDocumentVersionParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryRetrieveApiDocumentVersionParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryRetrieveApiDocumentVersionParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -286,13 +286,13 @@ Update the registry file content for an API document version.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryUpdateApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryUpdateApiDocumentVersionParams.kt) |
-| Response | [`RegistryUpdateApiDocumentVersionResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryUpdateApiDocumentVersionResponse.kt) |
+| Request | [`RegistryUpdateApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryUpdateApiDocumentVersionParams.kt) |
+| Response | [`RegistryUpdateApiDocumentVersionResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryUpdateApiDocumentVersionResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryUpdateApiDocumentVersionParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryUpdateApiDocumentVersionParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -317,12 +317,12 @@ Delete a specific API document version.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryDeleteApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryDeleteApiDocumentVersionParams.kt) |
+| Request | [`RegistryDeleteApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryDeleteApiDocumentVersionParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryDeleteApiDocumentVersionParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryDeleteApiDocumentVersionParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -344,13 +344,13 @@ Get metadata (uid, content shas, version sha, tags) for a specific API document 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryListApiDocumentVersionMetadataParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryListApiDocumentVersionMetadataParams.kt) |
-| Response | [`ManagedDocVersion`](./scalar-java-core/src/main/kotlin/com/scalar/models/ManagedDocVersion.kt) |
+| Request | [`RegistryListApiDocumentVersionMetadataParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryListApiDocumentVersionMetadataParams.kt) |
+| Response | [`ManagedDocVersion`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/ManagedDocVersion.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryListApiDocumentVersionMetadataParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryListApiDocumentVersionMetadataParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -372,13 +372,13 @@ Create a new API document version.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryCreateApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryCreateApiDocumentVersionParams.kt) |
-| Response | [`ManagedDocVersion`](./scalar-java-core/src/main/kotlin/com/scalar/models/ManagedDocVersion.kt) |
+| Request | [`RegistryCreateApiDocumentVersionParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryCreateApiDocumentVersionParams.kt) |
+| Response | [`ManagedDocVersion`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/ManagedDocVersion.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.RegistryCreateApiDocumentVersionParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryCreateApiDocumentVersionParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -403,13 +403,13 @@ Add an access group to an API document.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryCreateApiDocumentAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryCreateApiDocumentAccessGroupParams.kt) |
+| Request | [`RegistryCreateApiDocumentAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryCreateApiDocumentAccessGroupParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.AccessGroup;
-import com.scalar.models.registry.RegistryCreateApiDocumentAccessGroupParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.AccessGroup;
+import com.scalar.api.models.registry.RegistryCreateApiDocumentAccessGroupParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -431,13 +431,13 @@ Remove an access group from an API document.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RegistryDeleteApiDocumentAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/registry/RegistryDeleteApiDocumentAccessGroupParams.kt) |
+| Request | [`RegistryDeleteApiDocumentAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/registry/RegistryDeleteApiDocumentAccessGroupParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.AccessGroup;
-import com.scalar.models.registry.RegistryDeleteApiDocumentAccessGroupParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.AccessGroup;
+import com.scalar.api.models.registry.RegistryDeleteApiDocumentAccessGroupParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -463,13 +463,13 @@ List schemas in a namespace.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SchemaListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/SchemaListParams.kt) |
-| Response | [`List<Schema>`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/Schema.kt) |
+| Request | [`SchemaListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/SchemaListParams.kt) |
+| Response | [`List<Schema>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/Schema.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.schemas.SchemaListParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.schemas.SchemaListParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -486,13 +486,13 @@ Create a schema in a namespace.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SchemaCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/SchemaCreateParams.kt) |
-| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/models/Uid.kt) |
+| Request | [`SchemaCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/SchemaCreateParams.kt) |
+| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/Uid.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.schemas.SchemaCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.schemas.SchemaCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -517,12 +517,12 @@ Update schema metadata.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SchemaUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/SchemaUpdateParams.kt) |
+| Request | [`SchemaUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/SchemaUpdateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.schemas.SchemaUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.schemas.SchemaUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -540,12 +540,12 @@ Delete a schema and all related versions.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SchemaDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/SchemaDeleteParams.kt) |
+| Request | [`SchemaDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/SchemaDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.schemas.SchemaDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.schemas.SchemaDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -567,12 +567,12 @@ Get a specific schema version document.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`VersionRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/version/VersionRetrieveParams.kt) |
+| Request | [`VersionRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/version/VersionRetrieveParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.schemas.version.VersionRetrieveParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.schemas.version.VersionRetrieveParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -590,12 +590,12 @@ Delete a schema version.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`VersionDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/version/VersionDeleteParams.kt) |
+| Request | [`VersionDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/version/VersionDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.schemas.version.VersionDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.schemas.version.VersionDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -613,13 +613,13 @@ Create a schema version.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`VersionCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/version/VersionCreateParams.kt) |
-| Response | [`VersionCreateResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/version/VersionCreateResponse.kt) |
+| Request | [`VersionCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/version/VersionCreateParams.kt) |
+| Response | [`VersionCreateResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/version/VersionCreateResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.schemas.version.VersionCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.schemas.version.VersionCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -647,13 +647,13 @@ Add an access group to a schema.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AccessGroupCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/accessgroup/AccessGroupCreateParams.kt) |
+| Request | [`AccessGroupCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/accessgroup/AccessGroupCreateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.AccessGroup;
-import com.scalar.models.schemas.accessgroup.AccessGroupCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.AccessGroup;
+import com.scalar.api.models.schemas.accessgroup.AccessGroupCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -675,13 +675,13 @@ Remove an access group from a schema.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AccessGroupDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/schemas/accessgroup/AccessGroupDeleteParams.kt) |
+| Request | [`AccessGroupDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/schemas/accessgroup/AccessGroupDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.AccessGroup;
-import com.scalar.models.schemas.accessgroup.AccessGroupDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.AccessGroup;
+import com.scalar.api.models.schemas.accessgroup.AccessGroupDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -707,13 +707,13 @@ Get a login portal by slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`LoginPortalRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/loginportals/LoginPortalRetrieveParams.kt) |
-| Response | [`LoginPortalRetrieveResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/loginportals/LoginPortalRetrieveResponse.kt) |
+| Request | [`LoginPortalRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/loginportals/LoginPortalRetrieveParams.kt) |
+| Response | [`LoginPortalRetrieveResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/loginportals/LoginPortalRetrieveResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.loginportals.LoginPortalRetrieveParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.loginportals.LoginPortalRetrieveParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -731,12 +731,12 @@ Update metadata for a login portal.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`LoginPortalUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/loginportals/LoginPortalUpdateParams.kt) |
+| Request | [`LoginPortalUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/loginportals/LoginPortalUpdateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.loginportals.LoginPortalUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.loginportals.LoginPortalUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -753,12 +753,12 @@ Delete a login portal.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`LoginPortalDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/loginportals/LoginPortalDeleteParams.kt) |
+| Request | [`LoginPortalDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/loginportals/LoginPortalDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.loginportals.LoginPortalDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.loginportals.LoginPortalDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -775,15 +775,15 @@ Create a login portal for the current team.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`LoginPortalCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/loginportals/LoginPortalCreateParams.kt) |
-| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/models/Uid.kt) |
+| Request | [`LoginPortalCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/loginportals/LoginPortalCreateParams.kt) |
+| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/Uid.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.loginportals.LoginPortalCreateParams;
-import com.scalar.models.loginportals.LoginPortalEmail;
-import com.scalar.models.loginportals.LoginPortalPage;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.loginportals.LoginPortalCreateParams;
+import com.scalar.api.models.loginportals.LoginPortalEmail;
+import com.scalar.api.models.loginportals.LoginPortalPage;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -835,12 +835,12 @@ List all login portals for the current team.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`LoginPortalListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/loginportals/LoginPortalListParams.kt) |
-| Response | [`List<LoginPortal>`](./scalar-java-core/src/main/kotlin/com/scalar/models/loginportals/LoginPortal.kt) |
+| Request | [`LoginPortalListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/loginportals/LoginPortalListParams.kt) |
+| Response | [`List<LoginPortal>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/loginportals/LoginPortal.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -860,12 +860,12 @@ Create a group for the current team. Requires docs edit permission and the acces
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AccessGroupCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/AccessGroupCreateParams.kt) |
-| Response | [`AccessGroupCreateResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/AccessGroupCreateResponse.kt) |
+| Request | [`AccessGroupCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/AccessGroupCreateParams.kt) |
+| Response | [`AccessGroupCreateResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/AccessGroupCreateResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -881,13 +881,13 @@ Get a group and its email and domain allowlists by slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AccessGroupRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/AccessGroupRetrieveParams.kt) |
-| Response | [`AccessGroupRetrieveResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/AccessGroupRetrieveResponse.kt) |
+| Request | [`AccessGroupRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/AccessGroupRetrieveParams.kt) |
+| Response | [`AccessGroupRetrieveResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/AccessGroupRetrieveResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.accessgroups.AccessGroupRetrieveParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.accessgroups.AccessGroupRetrieveParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -904,12 +904,12 @@ Update group metadata. Requires docs edit permission. After changing the slug, u
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AccessGroupUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/AccessGroupUpdateParams.kt) |
+| Request | [`AccessGroupUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/AccessGroupUpdateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.accessgroups.AccessGroupUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.accessgroups.AccessGroupUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -926,12 +926,12 @@ Delete a group and remove its project assignments. Requires docs edit permission
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AccessGroupDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/AccessGroupDeleteParams.kt) |
+| Request | [`AccessGroupDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/AccessGroupDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.accessgroups.AccessGroupDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.accessgroups.AccessGroupDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -952,12 +952,12 @@ Allow an exact email domain in a group. Requires docs edit permission. A group s
 
 | Direction | Type |
 | --- | --- |
-| Request | [`DomainCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/domains/DomainCreateParams.kt) |
+| Request | [`DomainCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/domains/DomainCreateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.accessgroups.domains.DomainCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.accessgroups.domains.DomainCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -975,12 +975,12 @@ Remove an exact email domain from a group. Requires docs edit permission. Other 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`DomainDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/accessgroups/domains/DomainDeleteParams.kt) |
+| Request | [`DomainDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/accessgroups/domains/DomainDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.accessgroups.domains.DomainDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.accessgroups.domains.DomainDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1002,13 +1002,13 @@ List all rulesets in a namespace.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RuleListRulesetsParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/RuleListRulesetsParams.kt) |
-| Response | [`List<Rule>`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/Rule.kt) |
+| Request | [`RuleListRulesetsParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/RuleListRulesetsParams.kt) |
+| Response | [`List<Rule>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/Rule.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.rules.RuleListRulesetsParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.rules.RuleListRulesetsParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1025,13 +1025,13 @@ Create a rule in a namespace.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RuleCreateRulesetParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/RuleCreateRulesetParams.kt) |
-| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/models/Uid.kt) |
+| Request | [`RuleCreateRulesetParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/RuleCreateRulesetParams.kt) |
+| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/Uid.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.rules.RuleCreateRulesetParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.rules.RuleCreateRulesetParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1054,12 +1054,12 @@ Update rule metadata by slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RuleUpdateRulesetParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/RuleUpdateRulesetParams.kt) |
+| Request | [`RuleUpdateRulesetParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/RuleUpdateRulesetParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.rules.RuleUpdateRulesetParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.rules.RuleUpdateRulesetParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1077,12 +1077,12 @@ Delete a rule by slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RuleDeleteRulesetParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/RuleDeleteRulesetParams.kt) |
+| Request | [`RuleDeleteRulesetParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/RuleDeleteRulesetParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.rules.RuleDeleteRulesetParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.rules.RuleDeleteRulesetParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1100,12 +1100,12 @@ Get a rule document by slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RuleRetrieveRulesetDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/RuleRetrieveRulesetDocumentParams.kt) |
+| Request | [`RuleRetrieveRulesetDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/RuleRetrieveRulesetDocumentParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.rules.RuleRetrieveRulesetDocumentParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1123,13 +1123,13 @@ Grant an access group to a rule.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RuleCreateRulesetAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/RuleCreateRulesetAccessGroupParams.kt) |
+| Request | [`RuleCreateRulesetAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/RuleCreateRulesetAccessGroupParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.AccessGroup;
-import com.scalar.models.rules.RuleCreateRulesetAccessGroupParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.AccessGroup;
+import com.scalar.api.models.rules.RuleCreateRulesetAccessGroupParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1151,13 +1151,13 @@ Remove an access group from a rule.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RuleDeleteRulesetAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/rules/RuleDeleteRulesetAccessGroupParams.kt) |
+| Request | [`RuleDeleteRulesetAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/rules/RuleDeleteRulesetAccessGroupParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.registry.AccessGroup;
-import com.scalar.models.rules.RuleDeleteRulesetAccessGroupParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.AccessGroup;
+import com.scalar.api.models.rules.RuleDeleteRulesetAccessGroupParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1183,12 +1183,12 @@ List all team themes.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ThemeListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/themes/ThemeListParams.kt) |
-| Response | [`List<Theme>`](./scalar-java-core/src/main/kotlin/com/scalar/models/themes/Theme.kt) |
+| Request | [`ThemeListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/themes/ThemeListParams.kt) |
+| Response | [`List<Theme>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/themes/Theme.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1204,13 +1204,13 @@ Create a team theme.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ThemeCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/themes/ThemeCreateParams.kt) |
-| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/models/Uid.kt) |
+| Request | [`ThemeCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/themes/ThemeCreateParams.kt) |
+| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/Uid.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.themes.ThemeCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.themes.ThemeCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1232,12 +1232,12 @@ Update theme metadata.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ThemeUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/themes/ThemeUpdateParams.kt) |
+| Request | [`ThemeUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/themes/ThemeUpdateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.themes.ThemeUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.themes.ThemeUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1254,12 +1254,12 @@ Replace the theme document.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ThemeReplaceDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/themes/ThemeReplaceDocumentParams.kt) |
+| Request | [`ThemeReplaceDocumentParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/themes/ThemeReplaceDocumentParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.themes.ThemeReplaceDocumentParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.themes.ThemeReplaceDocumentParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1280,12 +1280,12 @@ Delete a theme by slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ThemeDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/themes/ThemeDeleteParams.kt) |
+| Request | [`ThemeDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/themes/ThemeDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.themes.ThemeDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.themes.ThemeDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1302,12 +1302,12 @@ Get the theme document by slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ThemeRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/themes/ThemeRetrieveParams.kt) |
+| Request | [`ThemeRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/themes/ThemeRetrieveParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.themes.ThemeRetrieveParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.themes.ThemeRetrieveParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1328,12 +1328,12 @@ List all available teams
 
 | Direction | Type |
 | --- | --- |
-| Request | [`TeamListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/TeamListParams.kt) |
-| Response | [`List<Team>`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/Team.kt) |
+| Request | [`TeamListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/TeamListParams.kt) |
+| Response | [`List<Team>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/Team.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1353,12 +1353,12 @@ List the members of the current team, along with the invites still outstanding.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MemberListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/members/MemberListParams.kt) |
-| Response | [`MemberListResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/members/MemberListResponse.kt) |
+| Request | [`MemberListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/members/MemberListParams.kt) |
+| Response | [`MemberListResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/members/MemberListResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1374,13 +1374,13 @@ Change what a member of the current team is allowed to do.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MemberUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/members/MemberUpdateParams.kt) |
+| Request | [`MemberUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/members/MemberUpdateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.teams.invites.Role;
-import com.scalar.models.teams.members.MemberUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.teams.invites.Role;
+import com.scalar.api.models.teams.members.MemberUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1398,12 +1398,12 @@ Remove someone from the current team.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MemberDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/members/MemberDeleteParams.kt) |
+| Request | [`MemberDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/members/MemberDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.teams.members.MemberDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.teams.members.MemberDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1424,13 +1424,13 @@ Invite someone to the current team by email.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InviteMemberParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/invites/InviteMemberParams.kt) |
+| Request | [`InviteMemberParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/invites/InviteMemberParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.teams.invites.InviteMemberParams;
-import com.scalar.models.teams.invites.Role;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.teams.invites.InviteMemberParams;
+import com.scalar.api.models.teams.invites.Role;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1448,12 +1448,12 @@ Send the invite email again.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InviteResendParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/invites/InviteResendParams.kt) |
+| Request | [`InviteResendParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/invites/InviteResendParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.teams.invites.InviteResendParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.teams.invites.InviteResendParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1470,12 +1470,12 @@ Withdraw an invite that has not been accepted.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InviteCancelParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/teams/invites/InviteCancelParams.kt) |
+| Request | [`InviteCancelParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/teams/invites/InviteCancelParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.teams.invites.InviteCancelParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.teams.invites.InviteCancelParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1496,12 +1496,12 @@ List all guide projects.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocListGuidesParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListGuidesParams.kt) |
-| Response | [`List<GithubProject>`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/GithubProject.kt) |
+| Request | [`ScalarDocListGuidesParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListGuidesParams.kt) |
+| Response | [`List<GithubProject>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/GithubProject.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1517,13 +1517,13 @@ Create a guide project.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocCreateGuideParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocCreateGuideParams.kt) |
-| Response | [`ScalarDocCreateGuideResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocCreateGuideResponse.kt) |
+| Request | [`ScalarDocCreateGuideParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocCreateGuideParams.kt) |
+| Response | [`ScalarDocCreateGuideResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocCreateGuideResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocCreateGuideParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocCreateGuideParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1546,13 +1546,13 @@ Start a new publish process.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocPublishGuideParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocPublishGuideParams.kt) |
-| Response | [`ScalarDocPublishGuideResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocPublishGuideResponse.kt) |
+| Request | [`ScalarDocPublishGuideParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocPublishGuideParams.kt) |
+| Response | [`ScalarDocPublishGuideResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocPublishGuideResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocPublishGuideParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocPublishGuideParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1570,12 +1570,12 @@ List every docs project on the team.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocListProjectsParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectsParams.kt) |
-| Response | [`ScalarDocListProjectsResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectsResponse.kt) |
+| Request | [`ScalarDocListProjectsParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectsParams.kt) |
+| Response | [`ScalarDocListProjectsResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectsResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1591,13 +1591,13 @@ Create a docs project. Omit `provider` to have Scalar host the repository.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocCreateProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocCreateProjectParams.kt) |
-| Response | [`DocsProject`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/DocsProject.kt) |
+| Request | [`ScalarDocCreateProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocCreateProjectParams.kt) |
+| Response | [`DocsProject`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/DocsProject.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocCreateProjectParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocCreateProjectParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1618,13 +1618,13 @@ Get a single docs project by its slug.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocRetrieveProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocRetrieveProjectParams.kt) |
-| Response | [`DocsProject`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/DocsProject.kt) |
+| Request | [`ScalarDocRetrieveProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocRetrieveProjectParams.kt) |
+| Response | [`DocsProject`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/DocsProject.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocRetrieveProjectParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocRetrieveProjectParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1642,12 +1642,12 @@ Update project settings. Set `isPrivate` with `accessGroups` to put the site beh
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocUpdateProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocUpdateProjectParams.kt) |
+| Request | [`ScalarDocUpdateProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocUpdateProjectParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocUpdateProjectParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocUpdateProjectParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1665,12 +1665,12 @@ Delete a docs project, its deploys, its publish records and its cached builds.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocDeleteProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocDeleteProjectParams.kt) |
+| Request | [`ScalarDocDeleteProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocDeleteProjectParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocDeleteProjectParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocDeleteProjectParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1688,13 +1688,13 @@ Start a build and deploy. The returned `publishUid` identifies the publish recor
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocPublishProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocPublishProjectParams.kt) |
-| Response | [`ScalarDocPublishProjectResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocPublishProjectResponse.kt) |
+| Request | [`ScalarDocPublishProjectParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocPublishProjectParams.kt) |
+| Response | [`ScalarDocPublishProjectResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocPublishProjectResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocPublishProjectParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocPublishProjectParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1712,13 +1712,13 @@ Read `scalar.config.json` straight from the project repository, without cloning 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocListProjectConfigParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectConfigParams.kt) |
-| Response | [`ScalarDocListProjectConfigResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectConfigResponse.kt) |
+| Request | [`ScalarDocListProjectConfigParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectConfigParams.kt) |
+| Response | [`ScalarDocListProjectConfigResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectConfigResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocListProjectConfigParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocListProjectConfigParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1736,13 +1736,13 @@ Commit `scalar.config.json` straight to the project repository. Pass the `baseTo
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocUpdateProjectConfigParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocUpdateProjectConfigParams.kt) |
-| Response | [`ScalarDocUpdateProjectConfigResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocUpdateProjectConfigResponse.kt) |
+| Request | [`ScalarDocUpdateProjectConfigParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocUpdateProjectConfigParams.kt) |
+| Response | [`ScalarDocUpdateProjectConfigResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocUpdateProjectConfigResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocUpdateProjectConfigParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocUpdateProjectConfigParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1763,13 +1763,13 @@ The domains the project serves on — the Scalar-hosted one and the custom one, 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocListProjectDomainParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectDomainParams.kt) |
-| Response | [`ScalarDocListProjectDomainResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectDomainResponse.kt) |
+| Request | [`ScalarDocListProjectDomainParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectDomainParams.kt) |
+| Response | [`ScalarDocListProjectDomainResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectDomainResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocListProjectDomainParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocListProjectDomainParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1787,13 +1787,13 @@ Whether the project custom domain points at Scalar yet. `expected` is the CNAME 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ScalarDocListProjectDomainStatusParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectDomainStatusParams.kt) |
-| Response | [`ScalarDocListProjectDomainStatusResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/scalardocs/ScalarDocListProjectDomainStatusResponse.kt) |
+| Request | [`ScalarDocListProjectDomainStatusParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectDomainStatusParams.kt) |
+| Response | [`ScalarDocListProjectDomainStatusResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/scalardocs/ScalarDocListProjectDomainStatusResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.scalardocs.ScalarDocListProjectDomainStatusParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.scalardocs.ScalarDocListProjectDomainStatusParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1815,11 +1815,11 @@ Get all namespaces for the current team
 
 | Direction | Type |
 | --- | --- |
-| Request | [`NamespaceListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/namespaces/NamespaceListParams.kt) |
+| Request | [`NamespaceListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/namespaces/NamespaceListParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1839,13 +1839,13 @@ Exchange an API key for an access token.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AuthenticationExchangePersonalTokenParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/authentication/AuthenticationExchangePersonalTokenParams.kt) |
-| Response | [`AuthenticationExchangePersonalTokenResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/authentication/AuthenticationExchangePersonalTokenResponse.kt) |
+| Request | [`AuthenticationExchangePersonalTokenParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/authentication/AuthenticationExchangePersonalTokenParams.kt) |
+| Response | [`AuthenticationExchangePersonalTokenResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/authentication/AuthenticationExchangePersonalTokenResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.authentication.AuthenticationExchangePersonalTokenParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1865,12 +1865,12 @@ Get the authenticated user, including their available teams and theme.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`AuthenticationListCurrentUserParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/authentication/AuthenticationListCurrentUserParams.kt) |
-| Response | [`User`](./scalar-java-core/src/main/kotlin/com/scalar/models/authentication/User.kt) |
+| Request | [`AuthenticationListCurrentUserParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/authentication/AuthenticationListCurrentUserParams.kt) |
+| Response | [`User`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/authentication/User.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1890,12 +1890,12 @@ List every SDK on the team.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SdkListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkListParams.kt) |
-| Response | [`SdkListResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkListResponse.kt) |
+| Request | [`SdkListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkListParams.kt) |
+| Response | [`SdkListResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkListResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1911,13 +1911,13 @@ Create an SDK from an API document, targeting one or more languages.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SdkCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkCreateParams.kt) |
-| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/models/Uid.kt) |
+| Request | [`SdkCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkCreateParams.kt) |
+| Response | [`Uid`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/Uid.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.SdkCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.SdkCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1938,13 +1938,13 @@ Get a single SDK by its uid.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SdkRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkRetrieveParams.kt) |
-| Response | [`Sdk`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/Sdk.kt) |
+| Request | [`SdkRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkRetrieveParams.kt) |
+| Response | [`Sdk`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/Sdk.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.SdkRetrieveParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.SdkRetrieveParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1961,12 +1961,12 @@ Update SDK metadata, its linked API, or its config.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SdkUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkUpdateParams.kt) |
+| Request | [`SdkUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkUpdateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.SdkUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.SdkUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -1983,12 +1983,12 @@ Delete an SDK and every version it holds.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SdkDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkDeleteParams.kt) |
+| Request | [`SdkDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.SdkDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.SdkDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2005,13 +2005,13 @@ Start a build. Omit `version` to build the current work — the open draft, else
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SdkBuildParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkBuildParams.kt) |
-| Response | [`SdkBuildResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/SdkBuildResponse.kt) |
+| Request | [`SdkBuildParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkBuildParams.kt) |
+| Response | [`SdkBuildResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/SdkBuildResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.SdkBuildParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.SdkBuildParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2032,12 +2032,12 @@ Create a new SDK version against a specific API version.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`VersionCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/versions/VersionCreateParams.kt) |
+| Request | [`VersionCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/versions/VersionCreateParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.versions.VersionCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.versions.VersionCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2059,12 +2059,12 @@ Permanently delete one version of an SDK.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`VersionDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/versions/VersionDeleteParams.kt) |
+| Request | [`VersionDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/versions/VersionDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.versions.VersionDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.versions.VersionDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2086,13 +2086,13 @@ Link one language target to a GitHub repository, so builds sync there.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RepositoryLinkParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/repositories/RepositoryLinkParams.kt) |
-| Response | [`RepositoryLinkResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/repositories/RepositoryLinkResponse.kt) |
+| Request | [`RepositoryLinkParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/repositories/RepositoryLinkParams.kt) |
+| Response | [`RepositoryLinkResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/repositories/RepositoryLinkResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.repositories.RepositoryLinkParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.repositories.RepositoryLinkParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2115,12 +2115,12 @@ Unlink one language target from its repository.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RepositoryUnlinkParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/repositories/RepositoryUnlinkParams.kt) |
+| Request | [`RepositoryUnlinkParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/repositories/RepositoryUnlinkParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.repositories.RepositoryUnlinkParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.repositories.RepositoryUnlinkParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2141,12 +2141,12 @@ Toggle publish-on-merge and the release settings for a linked target.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`RepositoryUpdatePublishingParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/sdks/repositories/RepositoryUpdatePublishingParams.kt) |
+| Request | [`RepositoryUpdatePublishingParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/sdks/repositories/RepositoryUpdatePublishingParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.sdks.repositories.RepositoryUpdatePublishingParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.sdks.repositories.RepositoryUpdatePublishingParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2174,12 +2174,12 @@ List every MCP server on the team.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ServerListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/ServerListParams.kt) |
-| Response | [`List<McpServer>`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/McpServer.kt) |
+| Request | [`ServerListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerListParams.kt) |
+| Response | [`List<McpServer>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpServer.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2195,13 +2195,13 @@ Create an MCP server over one or more API document versions. The response carrie
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ServerCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/ServerCreateParams.kt) |
-| Response | [`ServerCreateResponse`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/ServerCreateResponse.kt) |
+| Request | [`ServerCreateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerCreateParams.kt) |
+| Response | [`ServerCreateResponse`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerCreateResponse.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.ServerCreateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.ServerCreateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2218,13 +2218,13 @@ Get a single MCP server by its id.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ServerRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/ServerRetrieveParams.kt) |
-| Response | [`McpServer`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/McpServer.kt) |
+| Request | [`ServerRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerRetrieveParams.kt) |
+| Response | [`McpServer`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpServer.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.ServerRetrieveParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.ServerRetrieveParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2241,13 +2241,13 @@ Update MCP server metadata and which tools it exposes.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ServerUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/ServerUpdateParams.kt) |
-| Response | [`McpServer`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/McpServer.kt) |
+| Request | [`ServerUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerUpdateParams.kt) |
+| Response | [`McpServer`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpServer.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.ServerUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.ServerUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2264,12 +2264,12 @@ Delete an MCP server and every installation it serves.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ServerDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/ServerDeleteParams.kt) |
+| Request | [`ServerDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.ServerDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.ServerDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2290,13 +2290,13 @@ List the installations of an MCP server. An installation is what an MCP client c
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InstallationListParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/InstallationListParams.kt) |
-| Response | [`List<McpInstallationListItem>`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/McpInstallationListItem.kt) |
+| Request | [`InstallationListParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationListParams.kt) |
+| Response | [`List<McpInstallationListItem>`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/McpInstallationListItem.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.installations.InstallationListParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.installations.InstallationListParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2313,13 +2313,13 @@ Get a single installation of an MCP server. Deprecated: address the environment 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InstallationRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/InstallationRetrieveParams.kt) |
-| Response | [`McpInstallation`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/McpInstallation.kt) |
+| Request | [`InstallationRetrieveParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationRetrieveParams.kt) |
+| Response | [`McpInstallation`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpInstallation.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.installations.InstallationRetrieveParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.installations.InstallationRetrieveParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2337,13 +2337,13 @@ Update an installation. Deprecated: address the environment by slug with the `/e
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InstallationUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/InstallationUpdateParams.kt) |
-| Response | [`McpInstallation`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/McpInstallation.kt) |
+| Request | [`InstallationUpdateParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationUpdateParams.kt) |
+| Response | [`McpInstallation`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpInstallation.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.installations.InstallationUpdateParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.installations.InstallationUpdateParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2361,12 +2361,12 @@ Delete an installation of an MCP server. Deprecated: address the environment by 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InstallationDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/InstallationDeleteParams.kt) |
+| Request | [`InstallationDeleteParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationDeleteParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.installations.InstallationDeleteParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.installations.InstallationDeleteParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2384,12 +2384,12 @@ Let an access group reach a private installation. Requires a team admin. Depreca
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InstallationCreateAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/InstallationCreateAccessGroupParams.kt) |
+| Request | [`InstallationCreateAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationCreateAccessGroupParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.installations.InstallationCreateAccessGroupParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.installations.InstallationCreateAccessGroupParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -2411,12 +2411,12 @@ Stop an access group reaching a private installation. Requires a team admin. Dep
 
 | Direction | Type |
 | --- | --- |
-| Request | [`InstallationDeleteAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/models/mcp/servers/installations/InstallationDeleteAccessGroupParams.kt) |
+| Request | [`InstallationDeleteAccessGroupParams`](./scalar-java-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationDeleteAccessGroupParams.kt) |
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
-import com.scalar.models.mcp.servers.installations.InstallationDeleteAccessGroupParams;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.mcp.servers.installations.InstallationDeleteAccessGroupParams;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();

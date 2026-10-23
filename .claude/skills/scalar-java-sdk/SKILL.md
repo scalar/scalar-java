@@ -1,27 +1,27 @@
 ---
 name: scalar-java-sdk
-description: "Java SDK for Scalar API. Use when writing Java code that calls Scalar API with the com.scalar package: installing it, constructing and authenticating the client, and calling API operations."
+description: "Java SDK for Scalar API. Use when writing Java code that calls Scalar API with the com.scalar.api package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
 # Scalar Java SDK
 
-Generated Java client for Scalar API, published as `com.scalar`. Use the generated client instead of hand-writing HTTP requests.
+Generated Java client for Scalar API, published as `com.scalar.api`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar:scalar-java:0.2.1") // x-release-please-version
+implementation("com.scalar.api:scalar-java:0.1.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
 
 ```xml
 <dependency>
-  <groupId>com.scalar</groupId>
+  <groupId>com.scalar.api</groupId>
   <artifactId>scalar-java</artifactId>
-  <version>0.2.1</version> <!-- x-release-please-version -->
+  <version>0.1.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
 
@@ -34,8 +34,8 @@ Or build the SDK from source, with JDK 21 installed:
 ## Client setup and authentication
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -49,8 +49,8 @@ Provide credentials using the options below. Environment variables are read auto
 ## Calling operations
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -67,7 +67,7 @@ Method names, parameter shapes, and response types are generated from the API de
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
-import com.scalar.errors.ScalarServiceException;
+import com.scalar.api.errors.ScalarServiceException;
 
 try {
   var registry = client.registry().listAllApiDocuments();

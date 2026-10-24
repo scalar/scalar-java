@@ -23,6 +23,7 @@ import kotlin.jvm.optionals.getOrNull
     "activeThemeId",
     "agentEnabled",
     "analyticsEnabled",
+    "chatInsightsEnabled",
     "createdAt",
     "isPrivate",
     "lastPublished",
@@ -47,6 +48,7 @@ private constructor(
     private val activeThemeId: JsonField<String>,
     private val agentEnabled: JsonField<Boolean>,
     private val analyticsEnabled: JsonField<Boolean>,
+    private val chatInsightsEnabled: JsonField<Boolean>,
     private val createdAt: JsonField<Long>,
     private val isPrivate: JsonField<Boolean>,
     private val lastPublished: JsonField<Long>,
@@ -80,6 +82,9 @@ private constructor(
         @JsonProperty("analyticsEnabled")
         @ExcludeMissing
         analyticsEnabled: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("chatInsightsEnabled")
+        @ExcludeMissing
+        chatInsightsEnabled: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("lastPublished")
@@ -119,6 +124,7 @@ private constructor(
         activeThemeId,
         agentEnabled,
         analyticsEnabled,
+        chatInsightsEnabled,
         createdAt,
         isPrivate,
         lastPublished,
@@ -169,6 +175,12 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun analyticsEnabled(): Boolean = analyticsEnabled.getRequired("analyticsEnabled")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun chatInsightsEnabled(): Boolean = chatInsightsEnabled.getRequired("chatInsightsEnabled")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -298,6 +310,16 @@ private constructor(
     @JsonProperty("analyticsEnabled")
     @ExcludeMissing
     fun _analyticsEnabled(): JsonField<Boolean> = analyticsEnabled
+
+    /**
+     * Returns the raw JSON value of [chatInsightsEnabled].
+     *
+     * Unlike [chatInsightsEnabled], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("chatInsightsEnabled")
+    @ExcludeMissing
+    fun _chatInsightsEnabled(): JsonField<Boolean> = chatInsightsEnabled
 
     /**
      * Returns the raw JSON value of [createdAt].
@@ -446,6 +468,7 @@ private constructor(
          * .activeThemeId()
          * .agentEnabled()
          * .analyticsEnabled()
+         * .chatInsightsEnabled()
          * .createdAt()
          * .isPrivate()
          * .lastPublished()
@@ -471,6 +494,7 @@ private constructor(
         private var activeThemeId: JsonField<String>? = null
         private var agentEnabled: JsonField<Boolean>? = null
         private var analyticsEnabled: JsonField<Boolean>? = null
+        private var chatInsightsEnabled: JsonField<Boolean>? = null
         private var createdAt: JsonField<Long>? = null
         private var isPrivate: JsonField<Boolean>? = null
         private var lastPublished: JsonField<Long>? = null
@@ -495,6 +519,7 @@ private constructor(
             activeThemeId = githubProject.activeThemeId
             agentEnabled = githubProject.agentEnabled
             analyticsEnabled = githubProject.analyticsEnabled
+            chatInsightsEnabled = githubProject.chatInsightsEnabled
             createdAt = githubProject.createdAt
             isPrivate = githubProject.isPrivate
             lastPublished = githubProject.lastPublished
@@ -571,6 +596,20 @@ private constructor(
          */
         fun analyticsEnabled(analyticsEnabled: JsonField<Boolean>) = apply {
             this.analyticsEnabled = analyticsEnabled
+        }
+
+        fun chatInsightsEnabled(chatInsightsEnabled: Boolean) =
+            chatInsightsEnabled(JsonField.of(chatInsightsEnabled))
+
+        /**
+         * Sets [Builder.chatInsightsEnabled] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.chatInsightsEnabled] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun chatInsightsEnabled(chatInsightsEnabled: JsonField<Boolean>) = apply {
+            this.chatInsightsEnabled = chatInsightsEnabled
         }
 
         fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
@@ -809,6 +848,7 @@ private constructor(
          * .activeThemeId()
          * .agentEnabled()
          * .analyticsEnabled()
+         * .chatInsightsEnabled()
          * .createdAt()
          * .isPrivate()
          * .lastPublished()
@@ -832,6 +872,7 @@ private constructor(
                 checkRequired("activeThemeId", activeThemeId),
                 checkRequired("agentEnabled", agentEnabled),
                 checkRequired("analyticsEnabled", analyticsEnabled),
+                checkRequired("chatInsightsEnabled", chatInsightsEnabled),
                 checkRequired("createdAt", createdAt),
                 checkRequired("isPrivate", isPrivate),
                 checkRequired("lastPublished", lastPublished),
@@ -870,6 +911,7 @@ private constructor(
         activeThemeId()
         agentEnabled()
         analyticsEnabled()
+        chatInsightsEnabled()
         createdAt()
         isPrivate()
         lastPublished()
@@ -907,6 +949,7 @@ private constructor(
             (if (activeThemeId.asKnown().isPresent) 1 else 0) +
             (if (agentEnabled.asKnown().isPresent) 1 else 0) +
             (if (analyticsEnabled.asKnown().isPresent) 1 else 0) +
+            (if (chatInsightsEnabled.asKnown().isPresent) 1 else 0) +
             (if (createdAt.asKnown().isPresent) 1 else 0) +
             (if (isPrivate.asKnown().isPresent) 1 else 0) +
             (if (lastPublished.asKnown().isPresent) 1 else 0) +
@@ -934,6 +977,7 @@ private constructor(
             activeThemeId == other.activeThemeId &&
             agentEnabled == other.agentEnabled &&
             analyticsEnabled == other.analyticsEnabled &&
+            chatInsightsEnabled == other.chatInsightsEnabled &&
             createdAt == other.createdAt &&
             isPrivate == other.isPrivate &&
             lastPublished == other.lastPublished &&
@@ -959,6 +1003,7 @@ private constructor(
             activeThemeId,
             agentEnabled,
             analyticsEnabled,
+            chatInsightsEnabled,
             createdAt,
             isPrivate,
             lastPublished,
@@ -981,5 +1026,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "GithubProject{accessGroups=$accessGroups, activeDeployment=$activeDeployment, activeThemeId=$activeThemeId, agentEnabled=$agentEnabled, analyticsEnabled=$analyticsEnabled, createdAt=$createdAt, isPrivate=$isPrivate, lastPublished=$lastPublished, lastPublishedUid=$lastPublishedUid, loginPortalUid=$loginPortalUid, name=$name, publishMessage=$publishMessage, publishStatus=$publishStatus, slug=$slug, uid=$uid, updatedAt=$updatedAt, userInfoHookUrl=$userInfoHookUrl, repository=$repository, typesenseId=$typesenseId, userInfoHookSecretUid=$userInfoHookSecretUid, additionalProperties=$additionalProperties}"
+        "GithubProject{accessGroups=$accessGroups, activeDeployment=$activeDeployment, activeThemeId=$activeThemeId, agentEnabled=$agentEnabled, analyticsEnabled=$analyticsEnabled, chatInsightsEnabled=$chatInsightsEnabled, createdAt=$createdAt, isPrivate=$isPrivate, lastPublished=$lastPublished, lastPublishedUid=$lastPublishedUid, loginPortalUid=$loginPortalUid, name=$name, publishMessage=$publishMessage, publishStatus=$publishStatus, slug=$slug, uid=$uid, updatedAt=$updatedAt, userInfoHookUrl=$userInfoHookUrl, repository=$repository, typesenseId=$typesenseId, userInfoHookSecretUid=$userInfoHookSecretUid, additionalProperties=$additionalProperties}"
 }

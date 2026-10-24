@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/scalar/scalar-java/compare/v0.2.1...v0.3.0) (2026-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Added required property `github_project.chatInsightsEnabled`.
+
+### Features
+
+* **api:** add property github_project.chatInsightsEnabled ([510cbc0](https://github.com/scalar/scalar-java/commit/510cbc06ca9eb81d7f79b872e1aa0531733ed4b0))
+* **api:** update SDK surface (4 changes) ([36b184e](https://github.com/scalar/scalar-java/commit/36b184ead9f825a0e8c42cc9b289a769f2463e5f))
+
+
+### Chores
+
+* **api:** regenerate SDK ([32ac377](https://github.com/scalar/scalar-java/commit/32ac377c48101d833437c12b0ab97be68832f87c))
+* **api:** update generated SDK content ([21b4e39](https://github.com/scalar/scalar-java/commit/21b4e3970b87090291a7aab5e5630ba1a2472f5a))
+
 ## [0.2.1](https://github.com/scalar/scalar-java/compare/v0.2.0...v0.2.1) (2026-10-16)
 
 

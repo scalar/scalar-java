@@ -12,7 +12,7 @@ Generated Java client for Scalar API, published as `com.scalar.api`. Use the gen
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar.api:scalar-java:0.1.0") // x-release-please-version
+implementation("com.scalar.api:scalar-java:0.3.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
@@ -21,7 +21,7 @@ Or declare it in your Maven `pom.xml`:
 <dependency>
   <groupId>com.scalar.api</groupId>
   <artifactId>scalar-java</artifactId>
-  <version>0.1.0</version> <!-- x-release-please-version -->
+  <version>0.3.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
 

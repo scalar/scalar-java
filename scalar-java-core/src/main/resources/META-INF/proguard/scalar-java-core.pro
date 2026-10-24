@@ -24,14 +24,14 @@
 -keep class * extends com.fasterxml.jackson.core.type.TypeReference { *; }
 
 # Keep the generated SDK classes; `@ExcludeMissing` and the value filter it names are reachable only through annotations.
--keep class com.scalar.** { *; }
+-keep class com.scalar.api.** { *; }
 
 # Jackson uses reflection to access our class serializers and deserializers.
--keep @com.fasterxml.jackson.databind.annotation.JsonSerialize class com.scalar.** { *; }
--keep @com.fasterxml.jackson.databind.annotation.JsonDeserialize class com.scalar.** { *; }
+-keep @com.fasterxml.jackson.databind.annotation.JsonSerialize class com.scalar.api.** { *; }
+-keep @com.fasterxml.jackson.databind.annotation.JsonDeserialize class com.scalar.api.** { *; }
 
 # Jackson uses reflection to serialize and deserialize our classes based on their constructors and annotated members.
--keepclassmembers class com.scalar.** {
+-keepclassmembers class com.scalar.api.** {
     <init>(...);
     @com.fasterxml.jackson.annotation.* *;
 }

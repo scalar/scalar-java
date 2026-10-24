@@ -37,16 +37,16 @@ The full API of this library can be found in [api.md](./api.md).
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar:scalar-java:0.2.1") // x-release-please-version
+implementation("com.scalar.api:scalar-java:0.3.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
 
 ```xml
 <dependency>
-  <groupId>com.scalar</groupId>
+  <groupId>com.scalar.api</groupId>
   <artifactId>scalar-java</artifactId>
-  <version>0.2.1</version> <!-- x-release-please-version -->
+  <version>0.3.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
 
@@ -61,8 +61,8 @@ Or build the SDK from source, with JDK 21 installed:
 ## Usage
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
 ScalarClient client =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -83,8 +83,8 @@ See the [API reference](./api.md) for every available operation.
 Use `ScalarOkHttpClientAsync.builder()` or call `client.async()` when you want `CompletableFuture` services. Call `sync()` on the async client to switch back; both clients share one connection and thread pool.
 
 ```java
-import com.scalar.client.ScalarClientAsync;
-import com.scalar.client.okhttp.ScalarOkHttpClientAsync;
+import com.scalar.api.client.ScalarClientAsync;
+import com.scalar.api.client.okhttp.ScalarOkHttpClientAsync;
 
 ScalarClientAsync client =
     ScalarOkHttpClientAsync.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
@@ -232,7 +232,7 @@ Declared schemes:
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
-import com.scalar.errors.ScalarServiceException;
+import com.scalar.api.errors.ScalarServiceException;
 
 try {
   var registry = client.registry().listAllApiDocuments();
@@ -251,8 +251,8 @@ Documented error statuses: `400`, `401`, `403`, `404`, `422`, `500`.
 Configure the generated client by setting any of these options when you create it.
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 import java.time.Duration;
 
 ScalarClient client =

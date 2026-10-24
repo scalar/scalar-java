@@ -24,7 +24,7 @@ dependencies {
     r8Tool("com.android.tools:r8:9.4.14")
 }
 
-val mainClassName = "com.scalar.proguard.ProGuardCompatibilityTest"
+val mainClassName = "com.scalar.api.proguard.ProGuardCompatibilityTest"
 // The consumer keep rules exactly as they are published inside the `-core` jar, plus the entry
 // points this test needs. Shrinking under anything else would prove nothing about a real consumer.
 val keepRules =

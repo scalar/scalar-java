@@ -28,7 +28,9 @@ private constructor(
             return@buildString
         }
 
-        append("?")
+        // A followed redirect's request carries the `Location`'s own query in its base URL, so any
+        // parameter added to it joins that query rather than starting a second one.
+        append(if (contains('?')) "&" else "?")
         var isFirst = true
         queryParams.keys().forEach { key ->
             queryParams.values(key).forEach { value ->

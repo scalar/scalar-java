@@ -115,6 +115,35 @@ private val JSON_MAPPER: JsonMapper =
         .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
         .disable(MapperFeature.AUTO_DETECT_SETTERS)
         .build()
+        .also(::pinStreamReadConstraints)
+
+/**
+ * Pins Jackson's parser limits on [mapper], where the Jackson on the classpath has them (2.15 on).
+ *
+ * They bound what one response can make the parser do — how deep it nests, how many digits one
+ * number has, how long one string is — and set on the SDK's own mapper they hold whatever an
+ * application set as the process-wide default with `overrideDefaultStreamReadConstraints`. The SDK
+ * accepts a Jackson from before the limits existed, so they are reached reflectively and a missing
+ * one leaves the mapper as it was; the 64 MiB response body cap still bounds what it reads.
+ */
+private fun pinStreamReadConstraints(mapper: JsonMapper) {
+    try {
+        val constraints = Class.forName("com.fasterxml.jackson.core.StreamReadConstraints")
+        val builder = constraints.getMethod("builder").invoke(null)
+        val int = Int::class.javaPrimitiveType
+        builder.javaClass.getMethod("maxNestingDepth", int).invoke(builder, 1000)
+        builder.javaClass.getMethod("maxNumberLength", int).invoke(builder, 1000)
+        builder.javaClass.getMethod("maxStringLength", int).invoke(builder, 20_000_000)
+        val pinned = builder.javaClass.getMethod("build").invoke(builder)
+        mapper.factory.javaClass
+            .getMethod("setStreamReadConstraints", constraints)
+            .invoke(mapper.factory, pinned)
+    } catch (e: ReflectiveOperationException) {
+        // A Jackson from before 2.15 has no such limits to pin.
+    } catch (e: LinkageError) {
+        // Likewise, when a shrinker removed the classes the reflection names.
+    }
+}
 
 /** A serializer that serializes [InputStream] to bytes. */
 private object InputStreamSerializer : BaseSerializer<InputStream>(InputStream::class) {

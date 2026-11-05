@@ -2,12 +2,32 @@
 
 package com.scalar.api.core
 
+import com.scalar.api.core.http.Headers
 import com.scalar.api.errors.ScalarInvalidDataException
+import java.net.URLEncoder
 import java.util.Collections
 import java.util.SortedMap
 import java.util.SortedSet
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.locks.Lock
+
+/**
+ * Percent-encodes a cookie parameter's value as `encodeURIComponent` does.
+ *
+ * Cookie pairs share one `Cookie` header, so a raw `;` in a value (end-user input, as often as not)
+ * would end the pair and add a cookie of its own — the client's session cookie among them. Every
+ * character outside the unreserved set is encoded, which covers `;`, `,`, whitespace, quotes,
+ * backslashes and control characters.
+ */
+@JvmSynthetic
+internal fun encodeCookieValue(value: String): String =
+    URLEncoder.encode(value, "UTF-8")
+        .replace("+", "%20")
+        .replace("%21", "!")
+        .replace("%27", "'")
+        .replace("%28", "(")
+        .replace("%29", ")")
+        .replace("%7E", "~")
 
 @JvmSynthetic
 internal fun <T : Any> T?.getOrThrow(name: String): T =
@@ -96,6 +116,11 @@ internal fun Any?.contentToString(): String {
     }
     return string
 }
+
+/** The first value of the header [name], throwing when the headers do not carry it. */
+@JvmSynthetic
+internal fun Headers.getRequiredHeader(name: String): String =
+    values(name).firstOrNull() ?: throw ScalarInvalidDataException("Could not find $name header")
 
 internal interface Enum
 

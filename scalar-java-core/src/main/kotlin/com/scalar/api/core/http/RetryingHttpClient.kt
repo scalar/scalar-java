@@ -10,10 +10,10 @@ import com.scalar.api.errors.ScalarIoException
 import com.scalar.api.errors.ScalarRetryableException
 import java.io.IOException
 import java.time.Clock
+import java.time.DateTimeException
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import java.util.concurrent.CompletableFuture
@@ -186,35 +186,10 @@ private constructor(
             throwable is ScalarRetryableException
 
     private fun getRetryBackoffDuration(retries: Int, response: HttpResponse?): Duration {
-        // About the Retry-After header:
-        // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
-        response
-            ?.headers()
-            ?.let { headers ->
-                headers
-                    .values("Retry-After-Ms")
-                    .getOrNull(0)
-                    ?.toFloatOrNull()
-                    ?.times(TimeUnit.MILLISECONDS.toNanos(1))
-                    ?: headers.values("Retry-After").getOrNull(0)?.let { retryAfter ->
-                        retryAfter.toFloatOrNull()?.times(TimeUnit.SECONDS.toNanos(1))
-                            ?: try {
-                                ChronoUnit.NANOS.between(
-                                    OffsetDateTime.now(clock),
-                                    OffsetDateTime.parse(
-                                        retryAfter,
-                                        DateTimeFormatter.RFC_1123_DATE_TIME,
-                                    ),
-                                )
-                            } catch (e: DateTimeParseException) {
-                                null
-                            }
-                    }
-            }
-            ?.let { retryAfterNanos ->
-                // If the API asks us to wait a certain amount of time, do what it says.
-                return Duration.ofNanos(retryAfterNanos.toLong())
-            }
+        // If the API asks us to wait a sane amount of time, do what it says.
+        response?.headers()?.let(::retryAfterNanos)?.let { retryAfterNanos ->
+            return Duration.ofNanos(retryAfterNanos)
+        }
 
         // Apply exponential backoff, but not more than the max.
         val backoffSeconds = min(0.5 * 2.0.pow(retries - 1), 8.0)
@@ -225,7 +200,53 @@ private constructor(
         return Duration.ofNanos((TimeUnit.SECONDS.toNanos(1) * backoffSeconds * jitter).toLong())
     }
 
+    /**
+     * The wait a `Retry-After-Ms` or `Retry-After` header asks for, in nanoseconds, or `null` to
+     * fall back to the backoff.
+     *
+     * Both come from the server, so only a finite wait above zero and at most a minute is honoured:
+     * `Infinity` or a far-future date would otherwise park the calling thread for good, outside the
+     * request timeout, and a negative or past one would make the sleeper throw. A malformed value
+     * is ignored rather than failing the request.
+     *
+     * About the header: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
+     */
+    private fun retryAfterNanos(headers: Headers): Long? {
+        val nanos: Double =
+            headers
+                .values("Retry-After-Ms")
+                .getOrNull(0)
+                ?.toDoubleOrNull()
+                ?.times(TimeUnit.MILLISECONDS.toNanos(1))
+                ?: headers.values("Retry-After").getOrNull(0)?.let { retryAfter ->
+                    retryAfter.toDoubleOrNull()?.times(TimeUnit.SECONDS.toNanos(1))
+                        ?: try {
+                            ChronoUnit.NANOS.between(
+                                    OffsetDateTime.now(clock),
+                                    OffsetDateTime.parse(
+                                        retryAfter,
+                                        DateTimeFormatter.RFC_1123_DATE_TIME,
+                                    ),
+                                )
+                                .toDouble()
+                        } catch (e: DateTimeException) {
+                            null
+                        } catch (e: ArithmeticException) {
+                            // A date further out than a `long` of nanoseconds reaches.
+                            null
+                        }
+                }
+                ?: return null
+        return if (nanos.isFinite() && nanos > 0 && nanos <= MAX_RETRY_AFTER_NANOS) nanos.toLong()
+        else null
+    }
+
     companion object {
+
+        /**
+         * The longest server-requested wait the client honours; anything longer backs off instead.
+         */
+        private val MAX_RETRY_AFTER_NANOS = TimeUnit.MINUTES.toNanos(1).toDouble()
 
         @JvmStatic fun builder() = Builder()
     }

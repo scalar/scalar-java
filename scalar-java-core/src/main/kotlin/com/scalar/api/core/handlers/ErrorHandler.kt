@@ -9,6 +9,7 @@ import com.scalar.api.core.JsonMissing
 import com.scalar.api.core.JsonValue
 import com.scalar.api.core.http.HttpResponse
 import com.scalar.api.core.http.HttpResponse.Handler
+import com.scalar.api.core.http.errorBodyPrefix
 import com.scalar.api.errors.BadRequestException
 import com.scalar.api.errors.InternalServerException
 import com.scalar.api.errors.NotFoundException
@@ -19,18 +20,22 @@ import com.scalar.api.errors.UnexpectedStatusCodeException
 import com.scalar.api.errors.UnprocessableEntityException
 
 @JvmSynthetic
-internal fun errorBodyHandler(jsonMapper: JsonMapper): Handler<JsonValue> {
-    val handler = jsonHandler<JsonValue>(jsonMapper)
-
-    return object : Handler<JsonValue> {
+internal fun errorBodyHandler(jsonMapper: JsonMapper): Handler<JsonValue> =
+    object : Handler<JsonValue> {
         override fun handle(response: HttpResponse): JsonValue =
             try {
-                handler.handle(response)
+                // Only the first 64 KiB is read: an error body only becomes the exception, and a
+                // server could otherwise make the SDK hold one of any size. Cut short, it reads
+                // as no body, as a body that is not JSON does. The body is closed here: the error
+                // path never closes the response, and a body left half read holds its connection.
+                jsonMapper.readValue(
+                    response.body().use { it.errorBodyPrefix() },
+                    JsonValue::class.java,
+                )
             } catch (e: Exception) {
                 JsonMissing.of()
             }
     }
-}
 
 @JvmSynthetic
 internal fun errorHandler(errorBodyHandler: Handler<JsonValue>): Handler<HttpResponse> =

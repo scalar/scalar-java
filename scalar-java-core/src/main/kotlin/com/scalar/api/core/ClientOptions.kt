@@ -9,6 +9,7 @@ import com.scalar.api.core.http.HttpClient
 import com.scalar.api.core.http.LoggingHttpClient
 import com.scalar.api.core.http.PhantomReachableClosingHttpClient
 import com.scalar.api.core.http.QueryParams
+import com.scalar.api.core.http.RedirectingHttpClient
 import com.scalar.api.core.http.RetryingHttpClient
 import java.time.Clock
 import java.time.Duration
@@ -27,7 +28,9 @@ private constructor(
     /**
      * The HTTP client to use in the SDK.
      *
-     * Use the one published in `scalar-java-client-okhttp` or implement your own.
+     * Use the one published in `scalar-java-client-okhttp` or implement your own. The SDK follows
+     * redirects itself, dropping credentials when one leaves the API's origin, so a client of your
+     * own must not follow redirects: one that does hands a redirect target every header.
      *
      * This class takes ownership of the client and closes it when closed.
      */
@@ -205,7 +208,10 @@ private constructor(
         /**
          * The HTTP client to use in the SDK.
          *
-         * Use the one published in `scalar-java-client-okhttp` or implement your own.
+         * Use the one published in `scalar-java-client-okhttp` or implement your own. The SDK
+         * follows redirects itself, dropping credentials when one leaves the API's origin, so a
+         * client of your own must not follow redirects: one that does hands a redirect target every
+         * header.
          *
          * This class takes ownership of the client and closes it when closed.
          */
@@ -507,28 +513,40 @@ private constructor(
             queryParams.replaceAll(this.queryParams.build())
             bearerAuth?.let {
                 if (!it.isEmpty()) {
-                    headers.replace("Authorization", "Bearer $it")
+                    headers.replace(
+                        "Authorization",
+                        "Bearer ${checkCredential("bearerAuth", it, true)}",
+                    )
                 }
             }
             oAuth2?.let {
                 if (!it.isEmpty()) {
-                    headers.replace("Authorization", "Bearer $it")
+                    headers.replace(
+                        "Authorization",
+                        "Bearer ${checkCredential("oAuth2", it, true)}",
+                    )
                 }
             }
 
             return ClientOptions(
                 httpClient,
-                RetryingHttpClient.builder()
+                // Redirects are followed outside the retry loop, so every hop gets the retries a
+                // request does, and a redirect the SDK refuses to follow is not retried.
+                RedirectingHttpClient.builder()
                     .httpClient(
-                        LoggingHttpClient.builder()
-                            .httpClient(httpClient)
+                        RetryingHttpClient.builder()
+                            .httpClient(
+                                LoggingHttpClient.builder()
+                                    .httpClient(httpClient)
+                                    .clock(clock)
+                                    .level(logLevel)
+                                    .build()
+                            )
+                            .sleeper(sleeper)
                             .clock(clock)
-                            .level(logLevel)
+                            .maxRetries(maxRetries)
                             .build()
                     )
-                    .sleeper(sleeper)
-                    .clock(clock)
-                    .maxRetries(maxRetries)
                     .build(),
                 checkJacksonVersionCompatibility,
                 jsonMapper,

@@ -151,7 +151,9 @@ Beyond the timeout and retry settings documented under Retries and Timeouts,
   shuts it down when closed.
 
 To replace the transport entirely, implement `HttpClient` and pass it to `ClientOptions.builder().httpClient(…)`;
-the generated OkHttp builders are one implementation of that interface, not a requirement.
+the generated OkHttp builders are one implementation of that interface, not a requirement. **Your client must
+not follow redirects itself:** the SDK follows them, and drops every credential header when one leaves the
+API's origin, which it cannot do for a hop your client has already taken.
 
 <br />
 

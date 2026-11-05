@@ -170,6 +170,11 @@ class OkHttpClient internal constructor(private val okHttpClient: okhttp3.OkHttp
                 okhttp3.OkHttpClient.Builder()
                     // `RetryingHttpClient` handles retries if the user enabled them.
                     .retryOnConnectionFailure(false)
+                    // `RedirectingHttpClient` follows redirects itself: OkHttp strips only
+                    // `Authorization` on a cross-host hop, so an API key header, a cookie and a 307
+                    // body would follow a redirect anywhere, and it would follow https to http.
+                    .followRedirects(false)
+                    .followSslRedirects(false)
                     .connectTimeout(timeout.connect())
                     .readTimeout(timeout.read())
                     .writeTimeout(timeout.write())

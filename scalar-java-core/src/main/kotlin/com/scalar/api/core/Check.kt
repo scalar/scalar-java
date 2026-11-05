@@ -43,6 +43,24 @@ internal fun checkMaxLength(name: String, value: String, maxLength: Int): String
     }
 }
 
+/**
+ * Returns a credential option's value with surrounding whitespace trimmed, refusing one that still
+ * holds a character the request cannot carry.
+ *
+ * A key read from a file or an environment variable often ends in a newline. Left alone, the HTTP
+ * library rejects the header with an exception that quotes the whole value, which then reaches the
+ * caller's logs. The refusal here names the option, never the value. [inHeader] also refuses
+ * characters outside ASCII, which a header cannot carry either; a query value is percent-encoded.
+ */
+@JvmSynthetic
+internal fun checkCredential(name: String, value: String, inHeader: Boolean): String {
+    val trimmed = value.trim()
+    check(trimmed.none { it < ' ' || it == '\u007f' || (inHeader && it > '\u007e') }) {
+        "`$name` contains a character that cannot be sent in an HTTP request"
+    }
+    return trimmed
+}
+
 @JvmSynthetic
 internal fun checkJacksonVersionCompatibility() {
     val incompatibleJacksonVersions = RUNTIME_JACKSON_VERSIONS.mapNotNull {

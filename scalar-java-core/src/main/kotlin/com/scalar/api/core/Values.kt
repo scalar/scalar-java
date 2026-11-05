@@ -687,10 +687,16 @@ private constructor(
          * If [contentType] is unset, then it will be set to `application/octet-stream` if [value]
          * is binary data, or `text/plain; charset=utf-8` otherwise.
          *
-         * @throws IllegalStateException if any required field is unset.
+         * @throws IllegalStateException if any required field is unset, or if [contentType] holds a
+         *   control character.
          */
         fun build(): MultipartField<T> {
             val value = checkRequired("value", value)
+            // The content type is written into the part's headers as is, so a line break in one
+            // would add headers, or whole parts, of its own.
+            check(contentType?.none { (it < ' ' && it != '\t') || it == '\u007f' } ?: true) {
+                "`contentType` contains a control character"
+            }
             return MultipartField(
                 value,
                 contentType

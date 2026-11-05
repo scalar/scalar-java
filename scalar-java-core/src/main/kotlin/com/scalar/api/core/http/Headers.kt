@@ -30,6 +30,23 @@ private constructor(
     companion object {
 
         @JvmStatic fun builder() = Builder()
+
+        /**
+         * Headers whose values [toString] masks: the ones the SDK's auth schemes place a credential
+         * in, the fixed set the request log masks, and `Proxy-Authorization`. A request or a
+         * response ends up in an exception message or a log line by way of its `toString`, which is
+         * the wrong place for an API key to surface.
+         */
+        private val REDACTED_HEADERS: Set<String> =
+            sortedSetOf(
+                String.CASE_INSENSITIVE_ORDER,
+                "authorization",
+                "api-key",
+                "x-api-key",
+                "cookie",
+                "set-cookie",
+                "proxy-authorization",
+            )
     }
 
     class Builder internal constructor() {
@@ -111,5 +128,6 @@ private constructor(
         return other is Headers && map == other.map
     }
 
-    override fun toString(): String = "Headers{map=$map}"
+    override fun toString(): String =
+        "Headers{map=${map.mapValues { (name, values) -> if (name in REDACTED_HEADERS) values.map { "██" } else values }}}"
 }

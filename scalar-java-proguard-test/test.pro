@@ -5,7 +5,7 @@
 # point of the exercise, so nothing that belongs there may be added here.
 
 # Where the shrinker starts working out what is reachable.
--keep class com.scalar.proguard.** { *; }
+-keep class com.scalar.api.proguard.** { *; }
 
 # Warnings about classes a test classpath never reaches say nothing about a consumer's build.
 -dontnote

@@ -9,7 +9,11 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** List every SDK on the team. */
+/**
+ * List every SDK on the team with the languages its config declares, each with its version labels
+ * highest first, the current version label per language (`current`), and the `currentVersion` and
+ * `latestVersion` tags.
+ */
 class SdkListParams
 private constructor(
     private val limit: Long?,

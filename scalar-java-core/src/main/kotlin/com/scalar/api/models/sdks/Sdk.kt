@@ -21,37 +21,40 @@ import kotlin.jvm.optionals.getOrNull
 
 @com.fasterxml.jackson.annotation.JsonPropertyOrder(
     "apiUid",
+    "current",
     "currentVersion",
     "description",
     "isPrivate",
+    "latestVersion",
     "namespace",
     "slug",
     "targets",
     "title",
     "uid",
     "versions",
-    "apiVersion",
 )
 class Sdk
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val apiUid: JsonField<String>,
+    private val current: JsonField<Current>,
     private val currentVersion: JsonField<String>,
     private val description: JsonField<String>,
     private val isPrivate: JsonField<Boolean>,
+    private val latestVersion: JsonField<String>,
     private val namespace: JsonField<String>,
     private val slug: JsonField<String>,
     private val targets: JsonField<List<SdkTargetSummary>>,
     private val title: JsonField<String>,
     private val uid: JsonField<String>,
     private val versions: JsonField<List<SdkVersion>>,
-    private val apiVersion: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
         @JsonProperty("apiUid") @ExcludeMissing apiUid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("current") @ExcludeMissing current: JsonField<Current> = JsonMissing.of(),
         @JsonProperty("currentVersion")
         @ExcludeMissing
         currentVersion: JsonField<String> = JsonMissing.of(),
@@ -59,6 +62,9 @@ private constructor(
         @ExcludeMissing
         description: JsonField<String> = JsonMissing.of(),
         @JsonProperty("isPrivate") @ExcludeMissing isPrivate: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("latestVersion")
+        @ExcludeMissing
+        latestVersion: JsonField<String> = JsonMissing.of(),
         @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
         @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
         @JsonProperty("targets")
@@ -69,21 +75,19 @@ private constructor(
         @JsonProperty("versions")
         @ExcludeMissing
         versions: JsonField<List<SdkVersion>> = JsonMissing.of(),
-        @JsonProperty("apiVersion")
-        @ExcludeMissing
-        apiVersion: JsonField<String> = JsonMissing.of(),
     ) : this(
         apiUid,
+        current,
         currentVersion,
         description,
         isPrivate,
+        latestVersion,
         namespace,
         slug,
         targets,
         title,
         uid,
         versions,
-        apiVersion,
         mutableMapOf(),
     )
 
@@ -92,6 +96,12 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun apiUid(): Optional<String> = apiUid.getOptional("apiUid")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun current(): Current = current.getRequired("current")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -110,6 +120,12 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun isPrivate(): Boolean = isPrivate.getRequired("isPrivate")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun latestVersion(): Optional<String> = latestVersion.getOptional("latestVersion")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -148,17 +164,18 @@ private constructor(
     fun versions(): List<SdkVersion> = versions.getRequired("versions")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun apiVersion(): Optional<String> = apiVersion.getOptional("apiVersion")
-
-    /**
      * Returns the raw JSON value of [apiUid].
      *
      * Unlike [apiUid], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("apiUid") @ExcludeMissing fun _apiUid(): JsonField<String> = apiUid
+
+    /**
+     * Returns the raw JSON value of [current].
+     *
+     * Unlike [current], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("current") @ExcludeMissing fun _current(): JsonField<Current> = current
 
     /**
      * Returns the raw JSON value of [currentVersion].
@@ -182,6 +199,15 @@ private constructor(
      * Unlike [isPrivate], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("isPrivate") @ExcludeMissing fun _isPrivate(): JsonField<Boolean> = isPrivate
+
+    /**
+     * Returns the raw JSON value of [latestVersion].
+     *
+     * Unlike [latestVersion], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("latestVersion")
+    @ExcludeMissing
+    fun _latestVersion(): JsonField<String> = latestVersion
 
     /**
      * Returns the raw JSON value of [namespace].
@@ -229,13 +255,6 @@ private constructor(
     @ExcludeMissing
     fun _versions(): JsonField<List<SdkVersion>> = versions
 
-    /**
-     * Returns the raw JSON value of [apiVersion].
-     *
-     * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("apiVersion") @ExcludeMissing fun _apiVersion(): JsonField<String> = apiVersion
-
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
         additionalProperties.put(key, value)
@@ -256,9 +275,11 @@ private constructor(
          * The following fields are required:
          * ```java
          * .apiUid()
+         * .current()
          * .currentVersion()
          * .description()
          * .isPrivate()
+         * .latestVersion()
          * .namespace()
          * .slug()
          * .targets()
@@ -274,31 +295,33 @@ private constructor(
     class Builder internal constructor() {
 
         private var apiUid: JsonField<String>? = null
+        private var current: JsonField<Current>? = null
         private var currentVersion: JsonField<String>? = null
         private var description: JsonField<String>? = null
         private var isPrivate: JsonField<Boolean>? = null
+        private var latestVersion: JsonField<String>? = null
         private var namespace: JsonField<String>? = null
         private var slug: JsonField<String>? = null
         private var targets: JsonField<MutableList<SdkTargetSummary>>? = null
         private var title: JsonField<String>? = null
         private var uid: JsonField<String>? = null
         private var versions: JsonField<MutableList<SdkVersion>>? = null
-        private var apiVersion: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(sdk: Sdk) = apply {
             apiUid = sdk.apiUid
+            current = sdk.current
             currentVersion = sdk.currentVersion
             description = sdk.description
             isPrivate = sdk.isPrivate
+            latestVersion = sdk.latestVersion
             namespace = sdk.namespace
             slug = sdk.slug
             targets = sdk.targets.map { it.toMutableList() }
             title = sdk.title
             uid = sdk.uid
             versions = sdk.versions.map { it.toMutableList() }
-            apiVersion = sdk.apiVersion
             additionalProperties = sdk.additionalProperties.toMutableMap()
         }
 
@@ -314,6 +337,16 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun apiUid(apiUid: JsonField<String>) = apply { this.apiUid = apiUid }
+
+        fun current(current: Current) = current(JsonField.of(current))
+
+        /**
+         * Sets [Builder.current] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.current] with a well-typed [Current] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun current(current: JsonField<Current>) = apply { this.current = current }
 
         fun currentVersion(currentVersion: String) = currentVersion(JsonField.of(currentVersion))
 
@@ -349,6 +382,24 @@ private constructor(
          * value.
          */
         fun isPrivate(isPrivate: JsonField<Boolean>) = apply { this.isPrivate = isPrivate }
+
+        fun latestVersion(latestVersion: String?) =
+            latestVersion(JsonField.ofNullable(latestVersion))
+
+        /** Alias for calling [Builder.latestVersion] with `latestVersion.orElse(null)`. */
+        fun latestVersion(latestVersion: Optional<String>) =
+            latestVersion(latestVersion.getOrNull())
+
+        /**
+         * Sets [Builder.latestVersion] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.latestVersion] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun latestVersion(latestVersion: JsonField<String>) = apply {
+            this.latestVersion = latestVersion
+        }
 
         fun namespace(namespace: String) = namespace(JsonField.of(namespace))
 
@@ -441,20 +492,6 @@ private constructor(
                 }
         }
 
-        fun apiVersion(apiVersion: String?) = apiVersion(JsonField.ofNullable(apiVersion))
-
-        /** Alias for calling [Builder.apiVersion] with `apiVersion.orElse(null)`. */
-        fun apiVersion(apiVersion: Optional<String>) = apiVersion(apiVersion.getOrNull())
-
-        /**
-         * Sets [Builder.apiVersion] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.apiVersion] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun apiVersion(apiVersion: JsonField<String>) = apply { this.apiVersion = apiVersion }
-
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -482,9 +519,11 @@ private constructor(
          * The following fields are required:
          * ```java
          * .apiUid()
+         * .current()
          * .currentVersion()
          * .description()
          * .isPrivate()
+         * .latestVersion()
          * .namespace()
          * .slug()
          * .targets()
@@ -498,16 +537,17 @@ private constructor(
         fun build(): Sdk =
             Sdk(
                 checkRequired("apiUid", apiUid),
+                checkRequired("current", current),
                 checkRequired("currentVersion", currentVersion),
                 checkRequired("description", description),
                 checkRequired("isPrivate", isPrivate),
+                checkRequired("latestVersion", latestVersion),
                 checkRequired("namespace", namespace),
                 checkRequired("slug", slug),
                 checkRequired("targets", targets).map { it.toImmutable() },
                 checkRequired("title", title),
                 checkRequired("uid", uid),
                 checkRequired("versions", versions).map { it.toImmutable() },
-                apiVersion,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -528,16 +568,17 @@ private constructor(
         }
 
         apiUid()
+        current().validate()
         currentVersion()
         description()
         isPrivate()
+        latestVersion()
         namespace()
         slug()
         targets().forEach { it.validate() }
         title()
         uid()
         versions().forEach { it.validate() }
-        apiVersion()
         validated = true
     }
 
@@ -557,16 +598,126 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (apiUid.asKnown().isPresent) 1 else 0) +
+            (current.asKnown().getOrNull()?.validity() ?: 0) +
             (if (currentVersion.asKnown().isPresent) 1 else 0) +
             (if (description.asKnown().isPresent) 1 else 0) +
             (if (isPrivate.asKnown().isPresent) 1 else 0) +
+            (if (latestVersion.asKnown().isPresent) 1 else 0) +
             (if (namespace.asKnown().isPresent) 1 else 0) +
             (if (slug.asKnown().isPresent) 1 else 0) +
             (targets.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (title.asKnown().isPresent) 1 else 0) +
             (if (uid.asKnown().isPresent) 1 else 0) +
-            (versions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-            (if (apiVersion.asKnown().isPresent) 1 else 0)
+            (versions.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+
+    class Current
+    @JsonCreator
+    private constructor(
+        @com.fasterxml.jackson.annotation.JsonValue
+        private val additionalProperties: Map<String, JsonValue>
+    ) {
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Current]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Current]. */
+        class Builder internal constructor() {
+
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(current: Current) = apply {
+                additionalProperties = current.additionalProperties.toMutableMap()
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Current].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Current = Current(additionalProperties.toImmutable())
+        }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws ScalarInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): Current = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: ScalarInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int = additionalProperties.count { (_, value) ->
+            !value.isNull() && !value.isMissing()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Current && additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() = "Current{additionalProperties=$additionalProperties}"
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -575,32 +726,34 @@ private constructor(
 
         return other is Sdk &&
             apiUid == other.apiUid &&
+            current == other.current &&
             currentVersion == other.currentVersion &&
             description == other.description &&
             isPrivate == other.isPrivate &&
+            latestVersion == other.latestVersion &&
             namespace == other.namespace &&
             slug == other.slug &&
             targets == other.targets &&
             title == other.title &&
             uid == other.uid &&
             versions == other.versions &&
-            apiVersion == other.apiVersion &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
         Objects.hash(
             apiUid,
+            current,
             currentVersion,
             description,
             isPrivate,
+            latestVersion,
             namespace,
             slug,
             targets,
             title,
             uid,
             versions,
-            apiVersion,
             additionalProperties,
         )
     }
@@ -608,5 +761,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Sdk{apiUid=$apiUid, currentVersion=$currentVersion, description=$description, isPrivate=$isPrivate, namespace=$namespace, slug=$slug, targets=$targets, title=$title, uid=$uid, versions=$versions, apiVersion=$apiVersion, additionalProperties=$additionalProperties}"
+        "Sdk{apiUid=$apiUid, current=$current, currentVersion=$currentVersion, description=$description, isPrivate=$isPrivate, latestVersion=$latestVersion, namespace=$namespace, slug=$slug, targets=$targets, title=$title, uid=$uid, versions=$versions, additionalProperties=$additionalProperties}"
 }

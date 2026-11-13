@@ -35,10 +35,14 @@ private constructor(
     fun apiUid(): Optional<String> = body.apiUid()
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
+     * Removed. A request that carries it is refused with a 400.
+     *
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```java
+     * MyClass myObject = sdkUpdateParams.apiVersion().convert(MyClass.class);
+     * ```
      */
-    fun apiVersion(): Optional<String> = body.apiVersion()
+    @Deprecated("deprecated") fun _apiVersion(): JsonValue = body._apiVersion()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -72,13 +76,6 @@ private constructor(
      * Unlike [apiUid], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _apiUid(): JsonField<String> = body._apiUid()
-
-    /**
-     * Returns the raw JSON value of [apiVersion].
-     *
-     * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _apiVersion(): JsonField<String> = body._apiVersion()
 
     /**
      * Returns the raw JSON value of [config].
@@ -174,21 +171,9 @@ private constructor(
          */
         fun apiUid(apiUid: JsonField<String>) = apply { body.apiUid(apiUid) }
 
-        fun apiVersion(apiVersion: String?) = apply { body.apiVersion(apiVersion) }
-
-        /** Alias for calling [Builder.apiVersion] with `apiVersion.orElse(null)`. */
-        fun apiVersion(apiVersion: Optional<String>) = apply {
-            body.apiVersion(apiVersion.getOrNull())
-        }
-
-        /**
-         * Sets [Builder.apiVersion] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.apiVersion] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun apiVersion(apiVersion: JsonField<String>) = apply { body.apiVersion(apiVersion) }
+        /** Removed. A request that carries it is refused with a 400. */
+        @Deprecated("deprecated")
+        fun apiVersion(apiVersion: JsonValue) = apply { body.apiVersion(apiVersion) }
 
         fun config(config: String) = apply { body.config(config) }
 
@@ -386,7 +371,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val apiUid: JsonField<String>,
-        private val apiVersion: JsonField<String>,
+        private val apiVersion: JsonValue,
         private val config: JsonField<String>,
         private val isPrivate: JsonField<Boolean>,
         private val slug: JsonField<String>,
@@ -397,9 +382,7 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("apiUid") @ExcludeMissing apiUid: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("apiVersion")
-            @ExcludeMissing
-            apiVersion: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("apiVersion") @ExcludeMissing apiVersion: JsonValue = JsonMissing.of(),
             @JsonProperty("config") @ExcludeMissing config: JsonField<String> = JsonMissing.of(),
             @JsonProperty("isPrivate")
             @ExcludeMissing
@@ -415,10 +398,17 @@ private constructor(
         fun apiUid(): Optional<String> = apiUid.getOptional("apiUid")
 
         /**
-         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
+         * Removed. A request that carries it is refused with a 400.
+         *
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```java
+         * MyClass myObject = body.apiVersion().convert(MyClass.class);
+         * ```
          */
-        fun apiVersion(): Optional<String> = apiVersion.getOptional("apiVersion")
+        @Deprecated("deprecated")
+        @JsonProperty("apiVersion")
+        @ExcludeMissing
+        fun _apiVersion(): JsonValue = apiVersion
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -450,15 +440,6 @@ private constructor(
          * Unlike [apiUid], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("apiUid") @ExcludeMissing fun _apiUid(): JsonField<String> = apiUid
-
-        /**
-         * Returns the raw JSON value of [apiVersion].
-         *
-         * Unlike [apiVersion], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("apiVersion")
-        @ExcludeMissing
-        fun _apiVersion(): JsonField<String> = apiVersion
 
         /**
          * Returns the raw JSON value of [config].
@@ -510,7 +491,7 @@ private constructor(
         class Builder internal constructor() {
 
             private var apiUid: JsonField<String> = JsonMissing.of()
-            private var apiVersion: JsonField<String> = JsonMissing.of()
+            private var apiVersion: JsonValue = JsonMissing.of()
             private var config: JsonField<String> = JsonMissing.of()
             private var isPrivate: JsonField<Boolean> = JsonMissing.of()
             private var slug: JsonField<String> = JsonMissing.of()
@@ -542,19 +523,9 @@ private constructor(
              */
             fun apiUid(apiUid: JsonField<String>) = apply { this.apiUid = apiUid }
 
-            fun apiVersion(apiVersion: String?) = apiVersion(JsonField.ofNullable(apiVersion))
-
-            /** Alias for calling [Builder.apiVersion] with `apiVersion.orElse(null)`. */
-            fun apiVersion(apiVersion: Optional<String>) = apiVersion(apiVersion.getOrNull())
-
-            /**
-             * Sets [Builder.apiVersion] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.apiVersion] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun apiVersion(apiVersion: JsonField<String>) = apply { this.apiVersion = apiVersion }
+            /** Removed. A request that carries it is refused with a 400. */
+            @Deprecated("deprecated")
+            fun apiVersion(apiVersion: JsonValue) = apply { this.apiVersion = apiVersion }
 
             fun config(config: String) = config(JsonField.of(config))
 
@@ -653,7 +624,6 @@ private constructor(
             }
 
             apiUid()
-            apiVersion()
             config()
             isPrivate()
             slug()
@@ -678,7 +648,6 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (apiUid.asKnown().isPresent) 1 else 0) +
-                (if (apiVersion.asKnown().isPresent) 1 else 0) +
                 (if (config.asKnown().isPresent) 1 else 0) +
                 (if (isPrivate.asKnown().isPresent) 1 else 0) +
                 (if (slug.asKnown().isPresent) 1 else 0) +

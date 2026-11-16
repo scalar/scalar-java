@@ -10,9 +10,11 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Get a single SDK by its uid with the languages its config declares, its version labels highest
- * first, the current version label per language (`current`), and the `currentVersion` and
- * `latestVersion` tags.
+ * Get a single SDK by its uid. `targets` are the languages its config declares, which the next
+ * build builds. `current` (the version label per language a request without a version serves) and
+ * each version label’s `languages`, highest label first, are what is served, and can include a
+ * language a later config dropped: a version keeps the languages its builds produced. Also returns
+ * the `currentVersion` and `latestVersion` tags.
  */
 class SdkRetrieveParams
 private constructor(

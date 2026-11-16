@@ -48,9 +48,11 @@ interface SdkService {
     fun create(params: SdkCreateParams, requestOptions: RequestOptions = RequestOptions.none()): Uid
 
     /**
-     * Get a single SDK by its uid with the languages its config declares, its version labels
-     * highest first, the current version label per language (`current`), and the `currentVersion`
-     * and `latestVersion` tags.
+     * Get a single SDK by its uid. `targets` are the languages its config declares, which the next
+     * build builds. `current` (the version label per language a request without a version serves)
+     * and each version label’s `languages`, highest label first, are what is served, and can
+     * include a language a later config dropped: a version keeps the languages its builds produced.
+     * Also returns the `currentVersion` and `latestVersion` tags.
      */
     fun retrieve(uid: String): Sdk = retrieve(uid, SdkRetrieveParams.none())
 
@@ -106,9 +108,11 @@ interface SdkService {
         update(uid, SdkUpdateParams.none(), requestOptions)
 
     /**
-     * List every SDK on the team with the languages its config declares, each with its version
-     * labels highest first, the current version label per language (`current`), and the
-     * `currentVersion` and `latestVersion` tags.
+     * List every SDK on the team. `targets` are the languages its config declares, which the next
+     * build builds. `current` (the version label per language a request without a version serves)
+     * and each version label’s `languages`, highest label first, are what is served, and can
+     * include a language a later config dropped: a version keeps the languages its builds produced.
+     * Also returns the `currentVersion` and `latestVersion` tags.
      */
     fun list(): SdkListResponse = list(SdkListParams.none())
 

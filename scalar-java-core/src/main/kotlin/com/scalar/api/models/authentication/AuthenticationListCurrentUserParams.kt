@@ -41,7 +41,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            authenticationListCurrentUserParams: AuthenticationListCurrentUserParams
+            authenticationListCurrentUserParams: AuthenticationListCurrentUserParams,
         ) = apply {
             additionalHeaders = authenticationListCurrentUserParams.additionalHeaders.toBuilder()
             additionalQueryParams =

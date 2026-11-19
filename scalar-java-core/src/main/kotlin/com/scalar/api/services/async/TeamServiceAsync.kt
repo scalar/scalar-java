@@ -80,7 +80,7 @@ interface TeamServiceAsync {
 
         /** @see list */
         fun list(
-            params: TeamListParams = TeamListParams.none()
+            params: TeamListParams = TeamListParams.none(),
         ): CompletableFuture<HttpResponseFor<List<Team>>> = list(params, RequestOptions.none())
 
         /** @see list */

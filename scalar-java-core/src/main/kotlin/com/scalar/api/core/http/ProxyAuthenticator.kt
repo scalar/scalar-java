@@ -51,7 +51,7 @@ fun interface ProxyAuthenticator {
             val headerValue = "Basic $token"
             return ProxyAuthenticator { _, request, _ ->
                 Optional.of(
-                    request.toBuilder().putHeader("Proxy-Authorization", headerValue).build()
+                    request.toBuilder().putHeader("Proxy-Authorization", headerValue).build(),
                 )
             }
         }

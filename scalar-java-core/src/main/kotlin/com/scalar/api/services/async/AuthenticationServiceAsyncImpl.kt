@@ -33,7 +33,7 @@ internal constructor(private val clientOptions: ClientOptions) : AuthenticationS
     override fun withRawResponse(): AuthenticationServiceAsync.WithRawResponse = withRawResponse
 
     override fun withOptions(
-        modifier: Consumer<ClientOptions.Builder>
+        modifier: Consumer<ClientOptions.Builder>,
     ): AuthenticationServiceAsync =
         AuthenticationServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
@@ -58,10 +58,10 @@ internal constructor(private val clientOptions: ClientOptions) : AuthenticationS
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AuthenticationServiceAsync.WithRawResponse =
             AuthenticationServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val exchangePersonalTokenHandler:

@@ -149,7 +149,7 @@ internal fun <T> CompletableFuture<StreamResponse<T>>.toAsync(streamHandlerExecu
                 // will be a no-op.
                 onCompleteFuture.complete(null)
             }
-        }
+        },
     )
 
 private enum class State {

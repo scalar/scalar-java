@@ -63,7 +63,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            registryDeleteApiDocumentAccessGroupParams: RegistryDeleteApiDocumentAccessGroupParams
+            registryDeleteApiDocumentAccessGroupParams: RegistryDeleteApiDocumentAccessGroupParams,
         ) = apply {
             namespace = registryDeleteApiDocumentAccessGroupParams.namespace
             slug = registryDeleteApiDocumentAccessGroupParams.slug

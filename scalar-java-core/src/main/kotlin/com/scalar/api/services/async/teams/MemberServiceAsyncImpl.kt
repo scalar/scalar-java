@@ -65,10 +65,10 @@ class MemberServiceAsyncImpl internal constructor(private val clientOptions: Cli
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): MemberServiceAsync.WithRawResponse =
             MemberServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val updateHandler: Handler<Any?> = jsonHandler<Any?>(clientOptions.jsonMapper)

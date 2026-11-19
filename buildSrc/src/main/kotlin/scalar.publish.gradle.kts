@@ -10,7 +10,7 @@ dokka {
     dokkaGeneratorIsolation.set(
         ProcessIsolation {
             maxHeapSize.set("8g")
-        }
+        },
     )
 }
 
@@ -19,7 +19,7 @@ mavenPublishing {
         KotlinJvm(
             javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationJavadoc"),
             sourcesJar = true,
-        )
+        ),
     )
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()

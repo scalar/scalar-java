@@ -94,10 +94,10 @@ class SdkServiceImpl internal constructor(private val clientOptions: ClientOptio
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): SdkService.WithRawResponse =
             SdkServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** SDKs */

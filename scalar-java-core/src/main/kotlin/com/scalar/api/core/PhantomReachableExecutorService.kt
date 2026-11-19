@@ -38,7 +38,7 @@ internal class PhantomReachableExecutorService(private val executorService: Exec
     override fun submit(task: Runnable): Future<*> = executorService.submit(task)
 
     override fun <T : Any?> invokeAll(
-        tasks: MutableCollection<out Callable<T>>
+        tasks: MutableCollection<out Callable<T>>,
     ): MutableList<Future<T>> = executorService.invokeAll(tasks)
 
     override fun <T : Any?> invokeAll(

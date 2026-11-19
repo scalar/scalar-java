@@ -56,10 +56,10 @@ class AccessGroupServiceAsyncImpl internal constructor(private val clientOptions
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AccessGroupServiceAsync.WithRawResponse =
             AccessGroupServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val createHandler: Handler<Any?> = jsonHandler<Any?>(clientOptions.jsonMapper)

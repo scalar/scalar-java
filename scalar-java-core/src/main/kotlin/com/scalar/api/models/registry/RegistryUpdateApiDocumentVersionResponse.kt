@@ -92,7 +92,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            registryUpdateApiDocumentVersionResponse: RegistryUpdateApiDocumentVersionResponse
+            registryUpdateApiDocumentVersionResponse: RegistryUpdateApiDocumentVersionResponse,
         ) = apply {
             jsonSha = registryUpdateApiDocumentVersionResponse.jsonSha
             yamlSha = registryUpdateApiDocumentVersionResponse.yamlSha

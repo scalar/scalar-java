@@ -63,9 +63,11 @@ Or build the SDK from source, with JDK 21 installed:
 ```java
 import com.scalar.api.client.ScalarClient;
 import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams;
 
-ScalarClient client =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+ScalarClient client = ScalarOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
 var registry = client.registry().listAllApiDocuments();
 
@@ -85,9 +87,11 @@ Use `ScalarOkHttpClientAsync.builder()` or call `client.async()` when you want `
 ```java
 import com.scalar.api.client.ScalarClientAsync;
 import com.scalar.api.client.okhttp.ScalarOkHttpClientAsync;
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams;
 
-ScalarClientAsync client =
-    ScalarOkHttpClientAsync.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+ScalarClientAsync client = ScalarOkHttpClientAsync.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
 client.registry().listAllApiDocuments().thenAccept(registry -> System.out.println(registry));
 ```
@@ -237,10 +241,10 @@ Non-success responses throw generated API errors. Error objects expose status, h
 import com.scalar.api.errors.ScalarServiceException;
 
 try {
-  var registry = client.registry().listAllApiDocuments();
+    var registry = client.registry().listAllApiDocuments();
 } catch (ScalarServiceException err) {
-  System.out.println(err.statusCode() + " " + err.body());
-  throw err;
+    System.out.println(err.statusCode() + " " + err.body());
+    throw err;
 }
 ```
 
@@ -257,12 +261,11 @@ import com.scalar.api.client.ScalarClient;
 import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 import java.time.Duration;
 
-ScalarClient client =
-    ScalarOkHttpClient.builder()
-        .baseUrl("https://access.scalar.com")
-        .timeout(Duration.ofSeconds(60))
-        .maxRetries(2)
-        .build();
+ScalarClient client = ScalarOkHttpClient.builder()
+    .baseUrl("https://access.scalar.com")
+    .timeout(Duration.ofSeconds(60))
+    .maxRetries(2)
+    .build();
 ```
 
 | Option | Type | Default | Description |

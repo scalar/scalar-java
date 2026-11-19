@@ -91,10 +91,10 @@ class ThemeServiceAsyncImpl internal constructor(private val clientOptions: Clie
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): ThemeServiceAsync.WithRawResponse =
             ThemeServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val createHandler: Handler<Uid> = jsonHandler<Uid>(clientOptions.jsonMapper)

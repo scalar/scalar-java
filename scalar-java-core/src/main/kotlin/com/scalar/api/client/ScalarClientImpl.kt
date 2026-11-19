@@ -179,10 +179,10 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): ScalarClient.WithRawResponse =
             ScalarClientImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** Registry */

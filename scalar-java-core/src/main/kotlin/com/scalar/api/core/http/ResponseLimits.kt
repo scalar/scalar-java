@@ -75,7 +75,7 @@ internal fun addStreamEventBytes(heldBytes: Long, line: String): Long {
     }
     if (total > MAX_STREAM_LINE_BYTES) {
         throw ScalarInvalidDataException(
-            "An event of the response stream is larger than the SDK's 64 MiB limit"
+            "An event of the response stream is larger than the SDK's 64 MiB limit",
         )
     }
     return total
@@ -114,7 +114,7 @@ internal fun InputStream.boundedLines(): Sequence<String> = sequence {
             if (length == line.size) {
                 if (length >= MAX_STREAM_LINE_BYTES) {
                     throw ScalarInvalidDataException(
-                        "A line of the response stream is larger than the SDK's 64 MiB limit"
+                        "A line of the response stream is larger than the SDK's 64 MiB limit",
                     )
                 }
                 line = line.copyOf(minOf(line.size * 2, MAX_STREAM_LINE_BYTES))
@@ -149,7 +149,7 @@ private class BoundedInputStream(input: InputStream) : FilterInputStream(input) 
         count += read
         if (count > MAX_BUFFERED_BODY_BYTES) {
             throw ScalarInvalidDataException(
-                "The response body is larger than the SDK's 64 MiB limit"
+                "The response body is larger than the SDK's 64 MiB limit",
             )
         }
     }

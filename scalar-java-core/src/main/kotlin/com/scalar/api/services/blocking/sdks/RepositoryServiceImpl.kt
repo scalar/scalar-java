@@ -61,10 +61,10 @@ class RepositoryServiceImpl internal constructor(private val clientOptions: Clie
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): RepositoryService.WithRawResponse =
             RepositoryServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val linkHandler: Handler<RepositoryLinkResponse> =

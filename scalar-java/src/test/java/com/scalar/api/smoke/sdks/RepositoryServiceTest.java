@@ -107,6 +107,8 @@ final class RepositoryServiceTest {
                   .tag("latest")
                   .artifactId("scalar-galaxy")
                   .tapRepo("scalar/homebrew-tap")
+                  .cask(true)
+                  .replaceFormula(false)
                   .registry("npm")
                   .build();
           var repository = client.sdks().repositories().updatePublishing(params);

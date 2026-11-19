@@ -109,7 +109,7 @@ interface RepositoryServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): RepositoryServiceAsync.WithRawResponse
 
         /**
@@ -132,7 +132,7 @@ interface RepositoryServiceAsync {
 
         /** @see link */
         fun link(
-            params: RepositoryLinkParams
+            params: RepositoryLinkParams,
         ): CompletableFuture<HttpResponseFor<RepositoryLinkResponse>> =
             link(params, RequestOptions.none())
 
@@ -190,7 +190,7 @@ interface RepositoryServiceAsync {
 
         /** @see updatePublishing */
         fun updatePublishing(
-            params: RepositoryUpdatePublishingParams
+            params: RepositoryUpdatePublishingParams,
         ): CompletableFuture<HttpResponseFor<Any?>> =
             updatePublishing(params, RequestOptions.none())
 

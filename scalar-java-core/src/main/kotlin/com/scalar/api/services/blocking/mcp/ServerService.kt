@@ -270,7 +270,7 @@ interface ServerService {
         /** @see list */
         @MustBeClosed
         fun list(
-            params: ServerListParams = ServerListParams.none()
+            params: ServerListParams = ServerListParams.none(),
         ): HttpResponseFor<List<McpServer>> = list(params, RequestOptions.none())
 
         /** @see list */

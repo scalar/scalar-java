@@ -944,7 +944,7 @@ private constructor(
                     override fun visitNanoid(nanoid: String) {}
 
                     override fun visitString(string: String) {}
-                }
+                },
             )
             validated = true
         }
@@ -972,7 +972,7 @@ private constructor(
                     override fun visitString(string: String) = 1
 
                     override fun unknown(json: JsonValue?) = 0
-                }
+                },
             )
 
         override fun equals(other: Any?): Boolean {

@@ -65,10 +65,10 @@ class RepositoryServiceAsyncImpl internal constructor(private val clientOptions:
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): RepositoryServiceAsync.WithRawResponse =
             RepositoryServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val linkHandler: Handler<RepositoryLinkResponse> =

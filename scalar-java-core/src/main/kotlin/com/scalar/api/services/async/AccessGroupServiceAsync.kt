@@ -49,7 +49,7 @@ interface AccessGroupServiceAsync {
 
     /** @see create */
     fun create(
-        params: AccessGroupCreateParams = AccessGroupCreateParams.none()
+        params: AccessGroupCreateParams = AccessGroupCreateParams.none(),
     ): CompletableFuture<AccessGroupCreateResponse> = create(params, RequestOptions.none())
 
     /** @see create */
@@ -83,7 +83,7 @@ interface AccessGroupServiceAsync {
 
     /** @see retrieve */
     fun retrieve(
-        params: AccessGroupRetrieveParams
+        params: AccessGroupRetrieveParams,
     ): CompletableFuture<AccessGroupRetrieveResponse> = retrieve(params, RequestOptions.none())
 
     /** @see retrieve */
@@ -170,7 +170,7 @@ interface AccessGroupServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AccessGroupServiceAsync.WithRawResponse
 
         /** Access Groups */
@@ -191,13 +191,13 @@ interface AccessGroupServiceAsync {
 
         /** @see create */
         fun create(
-            params: AccessGroupCreateParams = AccessGroupCreateParams.none()
+            params: AccessGroupCreateParams = AccessGroupCreateParams.none(),
         ): CompletableFuture<HttpResponseFor<AccessGroupCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see create */
         fun create(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<AccessGroupCreateResponse>> =
             create(AccessGroupCreateParams.none(), requestOptions)
 
@@ -206,7 +206,7 @@ interface AccessGroupServiceAsync {
          * as [AccessGroupServiceAsync.retrieve].
          */
         fun retrieve(
-            slug: String
+            slug: String,
         ): CompletableFuture<HttpResponseFor<AccessGroupRetrieveResponse>> =
             retrieve(slug, AccessGroupRetrieveParams.none())
 
@@ -233,7 +233,7 @@ interface AccessGroupServiceAsync {
 
         /** @see retrieve */
         fun retrieve(
-            params: AccessGroupRetrieveParams
+            params: AccessGroupRetrieveParams,
         ): CompletableFuture<HttpResponseFor<AccessGroupRetrieveResponse>> =
             retrieve(params, RequestOptions.none())
 

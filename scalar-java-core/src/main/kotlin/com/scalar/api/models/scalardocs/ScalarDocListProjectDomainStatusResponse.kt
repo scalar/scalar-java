@@ -131,7 +131,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            scalarDocListProjectDomainStatusResponse: ScalarDocListProjectDomainStatusResponse
+            scalarDocListProjectDomainStatusResponse: ScalarDocListProjectDomainStatusResponse,
         ) = apply {
             domain = scalarDocListProjectDomainStatusResponse.domain
             expected = scalarDocListProjectDomainStatusResponse.expected

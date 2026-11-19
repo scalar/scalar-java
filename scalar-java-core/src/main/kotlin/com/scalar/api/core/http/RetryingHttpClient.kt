@@ -119,7 +119,7 @@ private constructor(
                         return sleeper.sleepAsync(backoffDuration).thenCompose {
                             executeWithRetries(requestWithRetryCount, requestOptions)
                         }
-                    }
+                    },
                 ) {
                     // Run in the same thread.
                     it.run()

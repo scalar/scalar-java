@@ -9,7 +9,7 @@ import java.util.stream.Stream
  * This class ensures the `StreamResponse` is closed even if the user forgets to close it.
  */
 internal class PhantomReachableClosingStreamResponse<T>(
-    private val streamResponse: StreamResponse<T>
+    private val streamResponse: StreamResponse<T>,
 ) : StreamResponse<T> {
     init {
         closeWhenPhantomReachable(this, streamResponse)

@@ -70,7 +70,7 @@ interface RuleServiceAsync {
 
     /** @see createRulesetAccessGroup */
     fun createRulesetAccessGroup(
-        params: RuleCreateRulesetAccessGroupParams
+        params: RuleCreateRulesetAccessGroupParams,
     ): CompletableFuture<Any?> = createRulesetAccessGroup(params, RequestOptions.none())
 
     /** @see createRulesetAccessGroup */
@@ -117,7 +117,7 @@ interface RuleServiceAsync {
 
     /** @see deleteRulesetAccessGroup */
     fun deleteRulesetAccessGroup(
-        params: RuleDeleteRulesetAccessGroupParams
+        params: RuleDeleteRulesetAccessGroupParams,
     ): CompletableFuture<Any?> = deleteRulesetAccessGroup(params, RequestOptions.none())
 
     /** @see deleteRulesetAccessGroup */
@@ -177,7 +177,7 @@ interface RuleServiceAsync {
 
     /** @see retrieveRulesetDocument */
     fun retrieveRulesetDocument(
-        params: RuleRetrieveRulesetDocumentParams
+        params: RuleRetrieveRulesetDocumentParams,
     ): CompletableFuture<String> = retrieveRulesetDocument(params, RequestOptions.none())
 
     /** @see retrieveRulesetDocument */
@@ -238,7 +238,7 @@ interface RuleServiceAsync {
 
         /** @see createRuleset */
         fun createRuleset(
-            params: RuleCreateRulesetParams
+            params: RuleCreateRulesetParams,
         ): CompletableFuture<HttpResponseFor<Uid>> = createRuleset(params, RequestOptions.none())
 
         /** @see createRuleset */
@@ -267,7 +267,7 @@ interface RuleServiceAsync {
 
         /** @see createRulesetAccessGroup */
         fun createRulesetAccessGroup(
-            params: RuleCreateRulesetAccessGroupParams
+            params: RuleCreateRulesetAccessGroupParams,
         ): CompletableFuture<HttpResponseFor<Any?>> =
             createRulesetAccessGroup(params, RequestOptions.none())
 
@@ -297,7 +297,7 @@ interface RuleServiceAsync {
 
         /** @see deleteRuleset */
         fun deleteRuleset(
-            params: RuleDeleteRulesetParams
+            params: RuleDeleteRulesetParams,
         ): CompletableFuture<HttpResponseFor<Any?>> = deleteRuleset(params, RequestOptions.none())
 
         /** @see deleteRuleset */
@@ -326,7 +326,7 @@ interface RuleServiceAsync {
 
         /** @see deleteRulesetAccessGroup */
         fun deleteRulesetAccessGroup(
-            params: RuleDeleteRulesetAccessGroupParams
+            params: RuleDeleteRulesetAccessGroupParams,
         ): CompletableFuture<HttpResponseFor<Any?>> =
             deleteRulesetAccessGroup(params, RequestOptions.none())
 
@@ -366,7 +366,7 @@ interface RuleServiceAsync {
 
         /** @see listRulesets */
         fun listRulesets(
-            params: RuleListRulesetsParams
+            params: RuleListRulesetsParams,
         ): CompletableFuture<HttpResponseFor<List<Rule>>> =
             listRulesets(params, RequestOptions.none())
 
@@ -397,7 +397,7 @@ interface RuleServiceAsync {
 
         /** @see retrieveRulesetDocument */
         fun retrieveRulesetDocument(
-            params: RuleRetrieveRulesetDocumentParams
+            params: RuleRetrieveRulesetDocumentParams,
         ): CompletableFuture<HttpResponseFor<String>> =
             retrieveRulesetDocument(params, RequestOptions.none())
 
@@ -427,7 +427,7 @@ interface RuleServiceAsync {
 
         /** @see updateRuleset */
         fun updateRuleset(
-            params: RuleUpdateRulesetParams
+            params: RuleUpdateRulesetParams,
         ): CompletableFuture<HttpResponseFor<Any?>> = updateRuleset(params, RequestOptions.none())
 
         /** @see updateRuleset */

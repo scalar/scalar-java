@@ -93,7 +93,7 @@ internal fun multipartFormData(
                             field.filename().getOrNull(),
                             field.contentType,
                             partBody,
-                        )
+                        ),
                     )
                 }
             }
@@ -146,12 +146,12 @@ private fun serializePart(name: String, node: JsonNode): Sequence<Pair<String, I
                                     JsonNodeType.OBJECT,
                                     JsonNodeType.POJO ->
                                         throw ScalarInvalidDataException(
-                                            "Unexpected JsonNode type in array: ${element.nodeType}"
+                                            "Unexpected JsonNode type in array: ${element.nodeType}",
                                         )
                                 }
                             }
                             .joinToString(",")
-                            .byteInputStream()
+                            .byteInputStream(),
                 )
         JsonNodeType.OBJECT ->
             node.fields().asSequence().flatMap { (key, value) ->

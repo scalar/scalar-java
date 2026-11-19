@@ -233,7 +233,7 @@ interface InstallationServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): InstallationServiceAsync.WithRawResponse
 
         /**
@@ -260,7 +260,7 @@ interface InstallationServiceAsync {
         /** @see retrieve */
         @Deprecated("deprecated")
         fun retrieve(
-            params: InstallationRetrieveParams
+            params: InstallationRetrieveParams,
         ): CompletableFuture<HttpResponseFor<McpInstallation>> =
             retrieve(params, RequestOptions.none())
 
@@ -295,7 +295,7 @@ interface InstallationServiceAsync {
         /** @see update */
         @Deprecated("deprecated")
         fun update(
-            params: InstallationUpdateParams
+            params: InstallationUpdateParams,
         ): CompletableFuture<HttpResponseFor<McpInstallation>> =
             update(params, RequestOptions.none())
 
@@ -336,7 +336,7 @@ interface InstallationServiceAsync {
 
         /** @see list */
         fun list(
-            params: InstallationListParams
+            params: InstallationListParams,
         ): CompletableFuture<HttpResponseFor<List<McpInstallationListItem>>> =
             list(params, RequestOptions.none())
 
@@ -407,7 +407,7 @@ interface InstallationServiceAsync {
         /** @see createAccessGroup */
         @Deprecated("deprecated")
         fun createAccessGroup(
-            params: InstallationCreateAccessGroupParams
+            params: InstallationCreateAccessGroupParams,
         ): CompletableFuture<HttpResponseFor<Any?>> =
             createAccessGroup(params, RequestOptions.none())
 
@@ -445,7 +445,7 @@ interface InstallationServiceAsync {
         /** @see deleteAccessGroup */
         @Deprecated("deprecated")
         fun deleteAccessGroup(
-            params: InstallationDeleteAccessGroupParams
+            params: InstallationDeleteAccessGroupParams,
         ): CompletableFuture<HttpResponseFor<Any?>> =
             deleteAccessGroup(params, RequestOptions.none())
 

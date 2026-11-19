@@ -110,7 +110,9 @@ class RedirectingHttpClient private constructor(private val httpClient: HttpClie
                 ((status == 301 || status == 302) && method == HttpMethod.POST)
         val body = if (dropsBody) null else request.body
         if (body != null && !body.repeatable()) {
-            throw ScalarIoException("Redirect would resend a request body that cannot be replayed")
+            throw ScalarIoException(
+                "Redirect would resend a request body that cannot be replayed",
+            )
         }
 
         val sameOrigin = origin(from) == origin(to)
@@ -200,7 +202,7 @@ class RedirectingHttpClient private constructor(private val httpClient: HttpClie
             val uri = URI(base + path.replace("+", "%20") + rest.substring(path.length))
             if (!uri.rawPath.isNullOrEmpty()) return uri
             return URI(
-                "${uri.scheme}://${uri.rawAuthority}/" + (uri.rawQuery?.let { "?$it" } ?: "")
+                "${uri.scheme}://${uri.rawAuthority}/" + (uri.rawQuery?.let { "?$it" } ?: ""),
             )
         }
 

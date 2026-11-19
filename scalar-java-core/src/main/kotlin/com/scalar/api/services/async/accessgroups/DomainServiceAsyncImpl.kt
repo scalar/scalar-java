@@ -56,10 +56,10 @@ class DomainServiceAsyncImpl internal constructor(private val clientOptions: Cli
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): DomainServiceAsync.WithRawResponse =
             DomainServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val createHandler: Handler<Any?> = jsonHandler<Any?>(clientOptions.jsonMapper)

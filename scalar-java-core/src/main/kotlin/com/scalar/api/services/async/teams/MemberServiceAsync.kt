@@ -59,7 +59,7 @@ interface MemberServiceAsync {
 
     /** @see list */
     fun list(
-        params: MemberListParams = MemberListParams.none()
+        params: MemberListParams = MemberListParams.none(),
     ): CompletableFuture<MemberListResponse> = list(params, RequestOptions.none())
 
     /** @see list */
@@ -107,7 +107,7 @@ interface MemberServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): MemberServiceAsync.WithRawResponse
 
         /**
@@ -152,13 +152,13 @@ interface MemberServiceAsync {
 
         /** @see list */
         fun list(
-            params: MemberListParams = MemberListParams.none()
+            params: MemberListParams = MemberListParams.none(),
         ): CompletableFuture<HttpResponseFor<MemberListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<MemberListResponse>> =
             list(MemberListParams.none(), requestOptions)
 

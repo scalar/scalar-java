@@ -157,7 +157,7 @@ interface LoginPortalService {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): LoginPortalService.WithRawResponse
 
         /**
@@ -210,7 +210,7 @@ interface LoginPortalService {
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            params: LoginPortalRetrieveParams
+            params: LoginPortalRetrieveParams,
         ): HttpResponseFor<LoginPortalRetrieveResponse> = retrieve(params, RequestOptions.none())
 
         /** @see retrieve */
@@ -278,7 +278,7 @@ interface LoginPortalService {
         /** @see list */
         @MustBeClosed
         fun list(
-            params: LoginPortalListParams = LoginPortalListParams.none()
+            params: LoginPortalListParams = LoginPortalListParams.none(),
         ): HttpResponseFor<List<LoginPortal>> = list(params, RequestOptions.none())
 
         /** @see list */

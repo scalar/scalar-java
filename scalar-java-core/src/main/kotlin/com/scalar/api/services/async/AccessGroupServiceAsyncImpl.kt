@@ -85,10 +85,10 @@ class AccessGroupServiceAsyncImpl internal constructor(private val clientOptions
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AccessGroupServiceAsync.WithRawResponse =
             AccessGroupServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** Access Groups */

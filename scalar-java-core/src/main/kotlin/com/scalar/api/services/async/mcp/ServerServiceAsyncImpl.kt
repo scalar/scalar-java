@@ -95,10 +95,10 @@ class ServerServiceAsyncImpl internal constructor(private val clientOptions: Cli
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): ServerServiceAsync.WithRawResponse =
             ServerServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** MCP */

@@ -109,7 +109,7 @@ private constructor(
                     val length = it.contentLength()
                     append(if (length >= 0) " ($length-byte body)" else " (unknown-length body)")
                 }
-            }
+            },
         )
 
         if (!level.shouldLog(LogLevel.DEBUG)) {
@@ -142,7 +142,7 @@ private constructor(
                     append(took.format())
                     contentLength?.let { append(", $contentLength-byte body") }
                 }
-            })"
+            })",
         )
 
         if (!level.shouldLog(LogLevel.DEBUG)) {
@@ -163,7 +163,7 @@ private constructor(
                 append("<-- !! ${error.javaClass.simpleName}")
                 error.message?.let { append(": $it") }
                 append(" (${took.format()})")
-            }
+            },
         )
     }
 

@@ -48,7 +48,7 @@ interface AccessGroupService {
 
     /** @see create */
     fun create(
-        params: AccessGroupCreateParams = AccessGroupCreateParams.none()
+        params: AccessGroupCreateParams = AccessGroupCreateParams.none(),
     ): AccessGroupCreateResponse = create(params, RequestOptions.none())
 
     /** @see create */
@@ -158,7 +158,7 @@ interface AccessGroupService {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AccessGroupService.WithRawResponse
 
         /** Access Groups */
@@ -182,7 +182,7 @@ interface AccessGroupService {
         /** @see create */
         @MustBeClosed
         fun create(
-            params: AccessGroupCreateParams = AccessGroupCreateParams.none()
+            params: AccessGroupCreateParams = AccessGroupCreateParams.none(),
         ): HttpResponseFor<AccessGroupCreateResponse> = create(params, RequestOptions.none())
 
         /** @see create */
@@ -225,7 +225,7 @@ interface AccessGroupService {
         /** @see retrieve */
         @MustBeClosed
         fun retrieve(
-            params: AccessGroupRetrieveParams
+            params: AccessGroupRetrieveParams,
         ): HttpResponseFor<AccessGroupRetrieveResponse> = retrieve(params, RequestOptions.none())
 
         /** @see retrieve */

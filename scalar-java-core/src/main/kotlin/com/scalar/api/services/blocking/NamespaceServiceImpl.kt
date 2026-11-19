@@ -41,10 +41,10 @@ class NamespaceServiceImpl internal constructor(private val clientOptions: Clien
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): NamespaceService.WithRawResponse =
             NamespaceServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val listHandler: Handler<List<String>> =

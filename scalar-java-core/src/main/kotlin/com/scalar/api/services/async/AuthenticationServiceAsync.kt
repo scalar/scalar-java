@@ -29,7 +29,7 @@ interface AuthenticationServiceAsync {
 
     /** Exchange an API key for an access token. */
     fun exchangePersonalToken(
-        params: AuthenticationExchangePersonalTokenParams
+        params: AuthenticationExchangePersonalTokenParams,
     ): CompletableFuture<AuthenticationExchangePersonalTokenResponse> =
         exchangePersonalToken(params, RequestOptions.none())
 
@@ -51,7 +51,7 @@ interface AuthenticationServiceAsync {
 
     /** @see listCurrentUser */
     fun listCurrentUser(
-        params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
+        params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none(),
     ): CompletableFuture<User> = listCurrentUser(params, RequestOptions.none())
 
     /** @see listCurrentUser */
@@ -70,7 +70,7 @@ interface AuthenticationServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AuthenticationServiceAsync.WithRawResponse
 
         /**
@@ -78,7 +78,7 @@ interface AuthenticationServiceAsync {
          * [AuthenticationServiceAsync.exchangePersonalToken].
          */
         fun exchangePersonalToken(
-            params: AuthenticationExchangePersonalTokenParams
+            params: AuthenticationExchangePersonalTokenParams,
         ): CompletableFuture<HttpResponseFor<AuthenticationExchangePersonalTokenResponse>> =
             exchangePersonalToken(params, RequestOptions.none())
 
@@ -104,12 +104,13 @@ interface AuthenticationServiceAsync {
 
         /** @see listCurrentUser */
         fun listCurrentUser(
-            params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
+            params: AuthenticationListCurrentUserParams =
+                AuthenticationListCurrentUserParams.none(),
         ): CompletableFuture<HttpResponseFor<User>> = listCurrentUser(params, RequestOptions.none())
 
         /** @see listCurrentUser */
         fun listCurrentUser(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<User>> =
             listCurrentUser(AuthenticationListCurrentUserParams.none(), requestOptions)
     }

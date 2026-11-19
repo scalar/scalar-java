@@ -149,10 +149,10 @@ class RegistryServiceAsyncImpl internal constructor(private val clientOptions: C
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): RegistryServiceAsync.WithRawResponse =
             RegistryServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val createApiDocumentHandler: Handler<RegistryCreateApiDocumentResponse> =

@@ -144,7 +144,7 @@ interface SchemaServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): SchemaServiceAsync.WithRawResponse
 
         /** Schemas */

@@ -410,9 +410,9 @@ class ScalarOkHttpClientAsync private constructor() {
                             .sslSocketFactory(sslSocketFactory)
                             .trustManager(trustManager)
                             .hostnameVerifier(hostnameVerifier)
-                            .build()
+                            .build(),
                     )
-                    .build()
+                    .build(),
             )
     }
 }

@@ -180,7 +180,7 @@ interface ThemeServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): ThemeServiceAsync.WithRawResponse
 
         /**
@@ -287,7 +287,7 @@ interface ThemeServiceAsync {
 
         /** @see list */
         fun list(
-            params: ThemeListParams = ThemeListParams.none()
+            params: ThemeListParams = ThemeListParams.none(),
         ): CompletableFuture<HttpResponseFor<List<Theme>>> = list(params, RequestOptions.none())
 
         /** @see list */
@@ -352,7 +352,7 @@ interface ThemeServiceAsync {
 
         /** @see replaceDocument */
         fun replaceDocument(
-            params: ThemeReplaceDocumentParams
+            params: ThemeReplaceDocumentParams,
         ): CompletableFuture<HttpResponseFor<Any?>> = replaceDocument(params, RequestOptions.none())
 
         /** @see replaceDocument */

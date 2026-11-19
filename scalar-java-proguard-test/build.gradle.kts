@@ -79,7 +79,7 @@ val shrinkInputJar by
                 configurations.testRuntimeClasspath.get().map {
                     if (it.isDirectory) it else zipTree(it)
                 }
-            }
+            },
         )
     }
 

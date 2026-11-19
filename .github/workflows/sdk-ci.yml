@@ -11,10 +11,12 @@ permissions:
   contents: read
 
 jobs:
-  # Verification only, never auto-fix: the SDK is generated formatter-clean, so a reported file
-  # means either hand-edited custom code or a regenerate that was not committed. Both tools are
+  # Verification only, never auto-fix: the SDK's Kotlin is generated ktfmt-clean, so a reported
+  # file means either hand-edited custom code or a regenerate that was not committed. ktfmt is
   # pinned to the release that produced these bytes, since a formatter minor can change them, and
-  # both run from their published jars so this job needs no Gradle plugin in the generated build.
+  # runs from its published jar so this job needs no Gradle plugin in the generated build. No
+  # `.java` file is checked: the generated smoke tests are written already formatted, and custom
+  # Java code added to the SDK goes unchecked here.
   format:
     runs-on: ubuntu-latest
     steps:
@@ -23,21 +25,17 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
+      # The generator formats with ktrs, which is held byte-identical to this ktfmt release; the real
+      # jar verifies that. From the ktfmt GitHub release rather than Maven Central, which stopped
+      # receiving ktfmt releases after 0.64. A release asset can be replaced after publication, so
+      # the download is checked against the jar's pinned SHA-256 before it runs.
       - name: ktfmt
         run: |
           curl -fsSL -o /tmp/ktfmt.jar \
-            "https://repo1.maven.org/maven2/com/facebook/ktfmt/0.64/ktfmt-0.64-with-dependencies.jar"
+            "https://github.com/Kotlin/ktfmt/releases/download/v0.65/ktfmt-0.65-with-dependencies.jar"
+          echo "aba9753b6ab387926179ab7318ba8e0c33dad483ebc72f633e79522265b15214  /tmp/ktfmt.jar" | sha256sum -c -
           find . -type f \( -name '*.kt' -o -name '*.kts' \) -print0 \
             | xargs -0 -r java -jar /tmp/ktfmt.jar --kotlinlang-style --dry-run --set-exit-if-changed
-      # No style flag: the generator formats with google-java-format's own Google style, which is
-      # what the tool does when none is passed. `-r` because a Kotlin-target SDK has no `.java`
-      # files at all, and the formatter exits non-zero when handed no arguments.
-      - name: google-java-format
-        run: |
-          curl -fsSL -o /tmp/google-java-format.jar \
-            "https://repo1.maven.org/maven2/com/google/googlejavaformat/google-java-format/1.36.1/google-java-format-1.36.1-all-deps.jar"
-          find . -type f -name '*.java' -print0 \
-            | xargs -0 -r java -jar /tmp/google-java-format.jar --dry-run --set-exit-if-changed
 
   verify:
     runs-on: ubuntu-latest

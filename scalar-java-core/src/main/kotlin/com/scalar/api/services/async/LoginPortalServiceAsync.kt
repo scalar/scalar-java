@@ -68,7 +68,7 @@ interface LoginPortalServiceAsync {
 
     /** @see retrieve */
     fun retrieve(
-        params: LoginPortalRetrieveParams
+        params: LoginPortalRetrieveParams,
     ): CompletableFuture<LoginPortalRetrieveResponse> = retrieve(params, RequestOptions.none())
 
     /** @see retrieve */
@@ -119,7 +119,7 @@ interface LoginPortalServiceAsync {
 
     /** @see list */
     fun list(
-        params: LoginPortalListParams = LoginPortalListParams.none()
+        params: LoginPortalListParams = LoginPortalListParams.none(),
     ): CompletableFuture<List<LoginPortal>> = list(params, RequestOptions.none())
 
     /** @see list */
@@ -168,7 +168,7 @@ interface LoginPortalServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): LoginPortalServiceAsync.WithRawResponse
 
         /**
@@ -189,7 +189,7 @@ interface LoginPortalServiceAsync {
          * as [LoginPortalServiceAsync.retrieve].
          */
         fun retrieve(
-            slug: String
+            slug: String,
         ): CompletableFuture<HttpResponseFor<LoginPortalRetrieveResponse>> =
             retrieve(slug, LoginPortalRetrieveParams.none())
 
@@ -216,7 +216,7 @@ interface LoginPortalServiceAsync {
 
         /** @see retrieve */
         fun retrieve(
-            params: LoginPortalRetrieveParams
+            params: LoginPortalRetrieveParams,
         ): CompletableFuture<HttpResponseFor<LoginPortalRetrieveResponse>> =
             retrieve(params, RequestOptions.none())
 
@@ -280,13 +280,13 @@ interface LoginPortalServiceAsync {
 
         /** @see list */
         fun list(
-            params: LoginPortalListParams = LoginPortalListParams.none()
+            params: LoginPortalListParams = LoginPortalListParams.none(),
         ): CompletableFuture<HttpResponseFor<List<LoginPortal>>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<List<LoginPortal>>> =
             list(LoginPortalListParams.none(), requestOptions)
 

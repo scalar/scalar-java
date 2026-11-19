@@ -40,7 +40,7 @@ private val JSON_MAPPER: JsonMapper =
         .addModule(
             SimpleModule()
                 .addSerializer(InputStreamSerializer)
-                .addDeserializer(OffsetDateTime::class.java, LenientOffsetDateTimeDeserializer())
+                .addDeserializer(OffsetDateTime::class.java, LenientOffsetDateTimeDeserializer()),
         )
         .withCoercionConfig(LogicalType.Boolean) {
             it.setCoercion(CoercionInputShape.Integer, CoercionAction.Fail)

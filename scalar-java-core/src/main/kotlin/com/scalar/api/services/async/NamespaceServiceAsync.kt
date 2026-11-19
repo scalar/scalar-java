@@ -35,7 +35,7 @@ interface NamespaceServiceAsync {
 
     /** @see list */
     fun list(
-        params: NamespaceListParams = NamespaceListParams.none()
+        params: NamespaceListParams = NamespaceListParams.none(),
     ): CompletableFuture<List<String>> = list(params, RequestOptions.none())
 
     /** @see list */
@@ -53,7 +53,7 @@ interface NamespaceServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): NamespaceServiceAsync.WithRawResponse
 
         /**
@@ -71,7 +71,7 @@ interface NamespaceServiceAsync {
 
         /** @see list */
         fun list(
-            params: NamespaceListParams = NamespaceListParams.none()
+            params: NamespaceListParams = NamespaceListParams.none(),
         ): CompletableFuture<HttpResponseFor<List<String>>> = list(params, RequestOptions.none())
 
         /** @see list */

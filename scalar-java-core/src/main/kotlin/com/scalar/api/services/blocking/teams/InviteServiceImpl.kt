@@ -54,10 +54,10 @@ class InviteServiceImpl internal constructor(private val clientOptions: ClientOp
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): InviteService.WithRawResponse =
             InviteServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val cancelHandler: Handler<Any?> = jsonHandler<Any?>(clientOptions.jsonMapper)

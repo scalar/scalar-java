@@ -48,7 +48,7 @@ interface ScalarDocServiceAsync {
 
     /** Create a guide project. */
     fun createGuide(
-        params: ScalarDocCreateGuideParams
+        params: ScalarDocCreateGuideParams,
     ): CompletableFuture<ScalarDocCreateGuideResponse> = createGuide(params, RequestOptions.none())
 
     /** @see createGuide */
@@ -111,7 +111,7 @@ interface ScalarDocServiceAsync {
 
     /** @see listGuides */
     fun listGuides(
-        params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none()
+        params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
     ): CompletableFuture<List<GithubProject>> = listGuides(params, RequestOptions.none())
 
     /** @see listGuides */
@@ -148,7 +148,7 @@ interface ScalarDocServiceAsync {
 
     /** @see listProjectConfig */
     fun listProjectConfig(
-        params: ScalarDocListProjectConfigParams
+        params: ScalarDocListProjectConfigParams,
     ): CompletableFuture<ScalarDocListProjectConfigResponse> =
         listProjectConfig(params, RequestOptions.none())
 
@@ -186,7 +186,7 @@ interface ScalarDocServiceAsync {
 
     /** @see listProjectDomain */
     fun listProjectDomain(
-        params: ScalarDocListProjectDomainParams
+        params: ScalarDocListProjectDomainParams,
     ): CompletableFuture<ScalarDocListProjectDomainResponse> =
         listProjectDomain(params, RequestOptions.none())
 
@@ -203,7 +203,7 @@ interface ScalarDocServiceAsync {
      * with no expected record, because Scalar serves its own subdomain directly.
      */
     fun listProjectDomainStatus(
-        slug: String
+        slug: String,
     ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
         listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none())
 
@@ -232,7 +232,7 @@ interface ScalarDocServiceAsync {
 
     /** @see listProjectDomainStatus */
     fun listProjectDomainStatus(
-        params: ScalarDocListProjectDomainStatusParams
+        params: ScalarDocListProjectDomainStatusParams,
     ): CompletableFuture<ScalarDocListProjectDomainStatusResponse> =
         listProjectDomainStatus(params, RequestOptions.none())
 
@@ -255,13 +255,13 @@ interface ScalarDocServiceAsync {
 
     /** @see listProjects */
     fun listProjects(
-        params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none()
+        params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
     ): CompletableFuture<ScalarDocListProjectsResponse> =
         listProjects(params, RequestOptions.none())
 
     /** @see listProjects */
     fun listProjects(
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ScalarDocListProjectsResponse> =
         listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 
@@ -292,7 +292,7 @@ interface ScalarDocServiceAsync {
 
     /** @see publishGuide */
     fun publishGuide(
-        params: ScalarDocPublishGuideParams
+        params: ScalarDocPublishGuideParams,
     ): CompletableFuture<ScalarDocPublishGuideResponse> =
         publishGuide(params, RequestOptions.none())
 
@@ -330,7 +330,7 @@ interface ScalarDocServiceAsync {
 
     /** @see publishProject */
     fun publishProject(
-        params: ScalarDocPublishProjectParams
+        params: ScalarDocPublishProjectParams,
     ): CompletableFuture<ScalarDocPublishProjectResponse> =
         publishProject(params, RequestOptions.none())
 
@@ -430,7 +430,7 @@ interface ScalarDocServiceAsync {
 
     /** @see updateProjectConfig */
     fun updateProjectConfig(
-        params: ScalarDocUpdateProjectConfigParams
+        params: ScalarDocUpdateProjectConfigParams,
     ): CompletableFuture<ScalarDocUpdateProjectConfigResponse> =
         updateProjectConfig(params, RequestOptions.none())
 
@@ -451,7 +451,7 @@ interface ScalarDocServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): ScalarDocServiceAsync.WithRawResponse
 
         /**
@@ -459,7 +459,7 @@ interface ScalarDocServiceAsync {
          * [ScalarDocServiceAsync.createGuide].
          */
         fun createGuide(
-            params: ScalarDocCreateGuideParams
+            params: ScalarDocCreateGuideParams,
         ): CompletableFuture<HttpResponseFor<ScalarDocCreateGuideResponse>> =
             createGuide(params, RequestOptions.none())
 
@@ -474,7 +474,7 @@ interface ScalarDocServiceAsync {
          * [ScalarDocServiceAsync.createProject].
          */
         fun createProject(
-            params: ScalarDocCreateProjectParams
+            params: ScalarDocCreateProjectParams,
         ): CompletableFuture<HttpResponseFor<DocsProject>> =
             createProject(params, RequestOptions.none())
 
@@ -514,7 +514,7 @@ interface ScalarDocServiceAsync {
 
         /** @see deleteProject */
         fun deleteProject(
-            params: ScalarDocDeleteProjectParams
+            params: ScalarDocDeleteProjectParams,
         ): CompletableFuture<HttpResponseFor<Any?>> = deleteProject(params, RequestOptions.none())
 
         /** @see deleteProject */
@@ -539,13 +539,13 @@ interface ScalarDocServiceAsync {
 
         /** @see listGuides */
         fun listGuides(
-            params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none()
+            params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
         ): CompletableFuture<HttpResponseFor<List<GithubProject>>> =
             listGuides(params, RequestOptions.none())
 
         /** @see listGuides */
         fun listGuides(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<List<GithubProject>>> =
             listGuides(ScalarDocListGuidesParams.none(), requestOptions)
 
@@ -554,7 +554,7 @@ interface ScalarDocServiceAsync {
          * as [ScalarDocServiceAsync.listProjectConfig].
          */
         fun listProjectConfig(
-            slug: String
+            slug: String,
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> =
             listProjectConfig(slug, ScalarDocListProjectConfigParams.none())
 
@@ -581,7 +581,7 @@ interface ScalarDocServiceAsync {
 
         /** @see listProjectConfig */
         fun listProjectConfig(
-            params: ScalarDocListProjectConfigParams
+            params: ScalarDocListProjectConfigParams,
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectConfigResponse>> =
             listProjectConfig(params, RequestOptions.none())
 
@@ -597,7 +597,7 @@ interface ScalarDocServiceAsync {
          * as [ScalarDocServiceAsync.listProjectDomain].
          */
         fun listProjectDomain(
-            slug: String
+            slug: String,
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> =
             listProjectDomain(slug, ScalarDocListProjectDomainParams.none())
 
@@ -624,7 +624,7 @@ interface ScalarDocServiceAsync {
 
         /** @see listProjectDomain */
         fun listProjectDomain(
-            params: ScalarDocListProjectDomainParams
+            params: ScalarDocListProjectDomainParams,
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainResponse>> =
             listProjectDomain(params, RequestOptions.none())
 
@@ -640,7 +640,7 @@ interface ScalarDocServiceAsync {
          * same as [ScalarDocServiceAsync.listProjectDomainStatus].
          */
         fun listProjectDomainStatus(
-            slug: String
+            slug: String,
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> =
             listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none())
 
@@ -669,7 +669,7 @@ interface ScalarDocServiceAsync {
 
         /** @see listProjectDomainStatus */
         fun listProjectDomainStatus(
-            params: ScalarDocListProjectDomainStatusParams
+            params: ScalarDocListProjectDomainStatusParams,
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectDomainStatusResponse>> =
             listProjectDomainStatus(params, RequestOptions.none())
 
@@ -699,13 +699,13 @@ interface ScalarDocServiceAsync {
 
         /** @see listProjects */
         fun listProjects(
-            params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none()
+            params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectsResponse>> =
             listProjects(params, RequestOptions.none())
 
         /** @see listProjects */
         fun listProjects(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<ScalarDocListProjectsResponse>> =
             listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 
@@ -714,7 +714,7 @@ interface ScalarDocServiceAsync {
          * same as [ScalarDocServiceAsync.publishGuide].
          */
         fun publishGuide(
-            slug: String
+            slug: String,
         ): CompletableFuture<HttpResponseFor<ScalarDocPublishGuideResponse>> =
             publishGuide(slug, ScalarDocPublishGuideParams.none())
 
@@ -741,7 +741,7 @@ interface ScalarDocServiceAsync {
 
         /** @see publishGuide */
         fun publishGuide(
-            params: ScalarDocPublishGuideParams
+            params: ScalarDocPublishGuideParams,
         ): CompletableFuture<HttpResponseFor<ScalarDocPublishGuideResponse>> =
             publishGuide(params, RequestOptions.none())
 
@@ -757,7 +757,7 @@ interface ScalarDocServiceAsync {
          * as [ScalarDocServiceAsync.publishProject].
          */
         fun publishProject(
-            slug: String
+            slug: String,
         ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> =
             publishProject(slug, ScalarDocPublishProjectParams.none())
 
@@ -784,7 +784,7 @@ interface ScalarDocServiceAsync {
 
         /** @see publishProject */
         fun publishProject(
-            params: ScalarDocPublishProjectParams
+            params: ScalarDocPublishProjectParams,
         ): CompletableFuture<HttpResponseFor<ScalarDocPublishProjectResponse>> =
             publishProject(params, RequestOptions.none())
 
@@ -825,7 +825,7 @@ interface ScalarDocServiceAsync {
 
         /** @see retrieveProject */
         fun retrieveProject(
-            params: ScalarDocRetrieveProjectParams
+            params: ScalarDocRetrieveProjectParams,
         ): CompletableFuture<HttpResponseFor<DocsProject>> =
             retrieveProject(params, RequestOptions.none())
 
@@ -866,7 +866,7 @@ interface ScalarDocServiceAsync {
 
         /** @see updateProject */
         fun updateProject(
-            params: ScalarDocUpdateProjectParams
+            params: ScalarDocUpdateProjectParams,
         ): CompletableFuture<HttpResponseFor<Any?>> = updateProject(params, RequestOptions.none())
 
         /** @see updateProject */
@@ -896,7 +896,7 @@ interface ScalarDocServiceAsync {
 
         /** @see updateProjectConfig */
         fun updateProjectConfig(
-            params: ScalarDocUpdateProjectConfigParams
+            params: ScalarDocUpdateProjectConfigParams,
         ): CompletableFuture<HttpResponseFor<ScalarDocUpdateProjectConfigResponse>> =
             updateProjectConfig(params, RequestOptions.none())
 

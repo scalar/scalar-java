@@ -119,7 +119,7 @@ interface ServerServiceAsync {
 
     /** @see list */
     fun list(
-        params: ServerListParams = ServerListParams.none()
+        params: ServerListParams = ServerListParams.none(),
     ): CompletableFuture<List<McpServer>> = list(params, RequestOptions.none())
 
     /** @see list */
@@ -167,7 +167,7 @@ interface ServerServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): ServerServiceAsync.WithRawResponse
 
         /** MCP */
@@ -178,7 +178,7 @@ interface ServerServiceAsync {
          * [ServerServiceAsync.create].
          */
         fun create(
-            params: ServerCreateParams
+            params: ServerCreateParams,
         ): CompletableFuture<HttpResponseFor<ServerCreateResponse>> =
             create(params, RequestOptions.none())
 
@@ -280,12 +280,12 @@ interface ServerServiceAsync {
 
         /** @see list */
         fun list(
-            params: ServerListParams = ServerListParams.none()
+            params: ServerListParams = ServerListParams.none(),
         ): CompletableFuture<HttpResponseFor<List<McpServer>>> = list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<List<McpServer>>> =
             list(ServerListParams.none(), requestOptions)
 

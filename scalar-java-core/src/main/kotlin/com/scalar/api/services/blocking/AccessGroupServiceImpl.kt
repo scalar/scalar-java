@@ -78,10 +78,10 @@ class AccessGroupServiceImpl internal constructor(private val clientOptions: Cli
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AccessGroupService.WithRawResponse =
             AccessGroupServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** Access Groups */

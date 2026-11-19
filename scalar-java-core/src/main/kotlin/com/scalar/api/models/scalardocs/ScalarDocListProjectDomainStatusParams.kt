@@ -51,7 +51,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            scalarDocListProjectDomainStatusParams: ScalarDocListProjectDomainStatusParams
+            scalarDocListProjectDomainStatusParams: ScalarDocListProjectDomainStatusParams,
         ) = apply {
             slug = scalarDocListProjectDomainStatusParams.slug
             additionalHeaders = scalarDocListProjectDomainStatusParams.additionalHeaders.toBuilder()

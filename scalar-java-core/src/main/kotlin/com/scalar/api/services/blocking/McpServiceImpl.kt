@@ -31,10 +31,10 @@ class McpServiceImpl internal constructor(private val clientOptions: ClientOptio
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): McpService.WithRawResponse =
             McpServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** MCP */

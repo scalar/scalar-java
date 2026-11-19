@@ -83,10 +83,10 @@ class LoginPortalServiceAsyncImpl internal constructor(private val clientOptions
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): LoginPortalServiceAsync.WithRawResponse =
             LoginPortalServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         private val createHandler: Handler<Uid> = jsonHandler<Uid>(clientOptions.jsonMapper)

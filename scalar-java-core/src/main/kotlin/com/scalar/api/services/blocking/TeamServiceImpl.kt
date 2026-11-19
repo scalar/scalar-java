@@ -63,10 +63,10 @@ class TeamServiceImpl internal constructor(private val clientOptions: ClientOpti
         }
 
         override fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): TeamService.WithRawResponse =
             TeamServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier::accept).build()
+                clientOptions.toBuilder().apply(modifier::accept).build(),
             )
 
         /** Teams */

@@ -146,7 +146,7 @@ interface MemberService {
         /** @see list */
         @MustBeClosed
         fun list(
-            params: MemberListParams = MemberListParams.none()
+            params: MemberListParams = MemberListParams.none(),
         ): HttpResponseFor<MemberListResponse> = list(params, RequestOptions.none())
 
         /** @see list */

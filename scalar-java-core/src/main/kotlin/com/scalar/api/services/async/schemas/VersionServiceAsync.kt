@@ -105,7 +105,7 @@ interface VersionServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): VersionServiceAsync.WithRawResponse
 
         /**
@@ -128,7 +128,7 @@ interface VersionServiceAsync {
 
         /** @see create */
         fun create(
-            params: VersionCreateParams
+            params: VersionCreateParams,
         ): CompletableFuture<HttpResponseFor<VersionCreateResponse>> =
             create(params, RequestOptions.none())
 

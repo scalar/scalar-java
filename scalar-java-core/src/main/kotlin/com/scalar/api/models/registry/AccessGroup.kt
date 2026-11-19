@@ -27,7 +27,7 @@ private constructor(
     private constructor(
         @JsonProperty("accessGroupSlug")
         @ExcludeMissing
-        accessGroupSlug: JsonField<String> = JsonMissing.of()
+        accessGroupSlug: JsonField<String> = JsonMissing.of(),
     ) : this(accessGroupSlug, mutableMapOf())
 
     /**

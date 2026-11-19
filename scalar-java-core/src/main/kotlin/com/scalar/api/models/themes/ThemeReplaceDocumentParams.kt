@@ -267,7 +267,9 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("document") @ExcludeMissing document: JsonField<String> = JsonMissing.of()
+            @JsonProperty("document")
+            @ExcludeMissing
+            document: JsonField<String> = JsonMissing.of(),
         ) : this(document, mutableMapOf())
 
         /**

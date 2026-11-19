@@ -61,7 +61,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(
             registryListApiDocumentVersionMetadataParams:
-                RegistryListApiDocumentVersionMetadataParams
+                RegistryListApiDocumentVersionMetadataParams,
         ) = apply {
             namespace = registryListApiDocumentVersionMetadataParams.namespace
             slug = registryListApiDocumentVersionMetadataParams.slug

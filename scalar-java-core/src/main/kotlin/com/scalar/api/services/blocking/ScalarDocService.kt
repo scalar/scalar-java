@@ -107,7 +107,7 @@ interface ScalarDocService {
 
     /** @see listGuides */
     fun listGuides(
-        params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none()
+        params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
     ): List<GithubProject> = listGuides(params, RequestOptions.none())
 
     /** @see listGuides */
@@ -143,7 +143,7 @@ interface ScalarDocService {
 
     /** @see listProjectConfig */
     fun listProjectConfig(
-        params: ScalarDocListProjectConfigParams
+        params: ScalarDocListProjectConfigParams,
     ): ScalarDocListProjectConfigResponse = listProjectConfig(params, RequestOptions.none())
 
     /** @see listProjectConfig */
@@ -179,7 +179,7 @@ interface ScalarDocService {
 
     /** @see listProjectDomain */
     fun listProjectDomain(
-        params: ScalarDocListProjectDomainParams
+        params: ScalarDocListProjectDomainParams,
     ): ScalarDocListProjectDomainResponse = listProjectDomain(params, RequestOptions.none())
 
     /** @see listProjectDomain */
@@ -222,7 +222,7 @@ interface ScalarDocService {
 
     /** @see listProjectDomainStatus */
     fun listProjectDomainStatus(
-        params: ScalarDocListProjectDomainStatusParams
+        params: ScalarDocListProjectDomainStatusParams,
     ): ScalarDocListProjectDomainStatusResponse =
         listProjectDomainStatus(params, RequestOptions.none())
 
@@ -245,7 +245,7 @@ interface ScalarDocService {
 
     /** @see listProjects */
     fun listProjects(
-        params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none()
+        params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
     ): ScalarDocListProjectsResponse = listProjects(params, RequestOptions.none())
 
     /** @see listProjects */
@@ -402,7 +402,7 @@ interface ScalarDocService {
 
     /** @see updateProjectConfig */
     fun updateProjectConfig(
-        params: ScalarDocUpdateProjectConfigParams
+        params: ScalarDocUpdateProjectConfigParams,
     ): ScalarDocUpdateProjectConfigResponse = updateProjectConfig(params, RequestOptions.none())
 
     /** @see updateProjectConfig */
@@ -427,7 +427,7 @@ interface ScalarDocService {
          */
         @MustBeClosed
         fun createGuide(
-            params: ScalarDocCreateGuideParams
+            params: ScalarDocCreateGuideParams,
         ): HttpResponseFor<ScalarDocCreateGuideResponse> =
             createGuide(params, RequestOptions.none())
 
@@ -512,7 +512,7 @@ interface ScalarDocService {
         /** @see listGuides */
         @MustBeClosed
         fun listGuides(
-            params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none()
+            params: ScalarDocListGuidesParams = ScalarDocListGuidesParams.none(),
         ): HttpResponseFor<List<GithubProject>> = listGuides(params, RequestOptions.none())
 
         /** @see listGuides */
@@ -555,7 +555,7 @@ interface ScalarDocService {
         /** @see listProjectConfig */
         @MustBeClosed
         fun listProjectConfig(
-            params: ScalarDocListProjectConfigParams
+            params: ScalarDocListProjectConfigParams,
         ): HttpResponseFor<ScalarDocListProjectConfigResponse> =
             listProjectConfig(params, RequestOptions.none())
 
@@ -602,7 +602,7 @@ interface ScalarDocService {
         /** @see listProjectDomain */
         @MustBeClosed
         fun listProjectDomain(
-            params: ScalarDocListProjectDomainParams
+            params: ScalarDocListProjectDomainParams,
         ): HttpResponseFor<ScalarDocListProjectDomainResponse> =
             listProjectDomain(params, RequestOptions.none())
 
@@ -620,7 +620,7 @@ interface ScalarDocService {
          */
         @MustBeClosed
         fun listProjectDomainStatus(
-            slug: String
+            slug: String,
         ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
             listProjectDomainStatus(slug, ScalarDocListProjectDomainStatusParams.none())
 
@@ -653,7 +653,7 @@ interface ScalarDocService {
         /** @see listProjectDomainStatus */
         @MustBeClosed
         fun listProjectDomainStatus(
-            params: ScalarDocListProjectDomainStatusParams
+            params: ScalarDocListProjectDomainStatusParams,
         ): HttpResponseFor<ScalarDocListProjectDomainStatusResponse> =
             listProjectDomainStatus(params, RequestOptions.none())
 
@@ -687,14 +687,14 @@ interface ScalarDocService {
         /** @see listProjects */
         @MustBeClosed
         fun listProjects(
-            params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none()
+            params: ScalarDocListProjectsParams = ScalarDocListProjectsParams.none(),
         ): HttpResponseFor<ScalarDocListProjectsResponse> =
             listProjects(params, RequestOptions.none())
 
         /** @see listProjects */
         @MustBeClosed
         fun listProjects(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): HttpResponseFor<ScalarDocListProjectsResponse> =
             listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 
@@ -733,7 +733,7 @@ interface ScalarDocService {
         /** @see publishGuide */
         @MustBeClosed
         fun publishGuide(
-            params: ScalarDocPublishGuideParams
+            params: ScalarDocPublishGuideParams,
         ): HttpResponseFor<ScalarDocPublishGuideResponse> =
             publishGuide(params, RequestOptions.none())
 
@@ -780,7 +780,7 @@ interface ScalarDocService {
         /** @see publishProject */
         @MustBeClosed
         fun publishProject(
-            params: ScalarDocPublishProjectParams
+            params: ScalarDocPublishProjectParams,
         ): HttpResponseFor<ScalarDocPublishProjectResponse> =
             publishProject(params, RequestOptions.none())
 
@@ -900,7 +900,7 @@ interface ScalarDocService {
         /** @see updateProjectConfig */
         @MustBeClosed
         fun updateProjectConfig(
-            params: ScalarDocUpdateProjectConfigParams
+            params: ScalarDocUpdateProjectConfigParams,
         ): HttpResponseFor<ScalarDocUpdateProjectConfigResponse> =
             updateProjectConfig(params, RequestOptions.none())
 

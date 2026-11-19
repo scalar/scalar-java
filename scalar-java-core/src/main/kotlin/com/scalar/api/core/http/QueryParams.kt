@@ -64,7 +64,7 @@ private constructor(
                                     is JsonArray,
                                     is JsonObject ->
                                         throw IllegalArgumentException(
-                                            "Cannot comma separate non-primitives in query params"
+                                            "Cannot comma separate non-primitives in query params",
                                         )
                                 }
                             }

@@ -252,7 +252,7 @@ interface RuleService {
         /** @see createRulesetAccessGroup */
         @MustBeClosed
         fun createRulesetAccessGroup(
-            params: RuleCreateRulesetAccessGroupParams
+            params: RuleCreateRulesetAccessGroupParams,
         ): HttpResponseFor<Any?> = createRulesetAccessGroup(params, RequestOptions.none())
 
         /** @see createRulesetAccessGroup */
@@ -313,7 +313,7 @@ interface RuleService {
         /** @see deleteRulesetAccessGroup */
         @MustBeClosed
         fun deleteRulesetAccessGroup(
-            params: RuleDeleteRulesetAccessGroupParams
+            params: RuleDeleteRulesetAccessGroupParams,
         ): HttpResponseFor<Any?> = deleteRulesetAccessGroup(params, RequestOptions.none())
 
         /** @see deleteRulesetAccessGroup */
@@ -389,7 +389,7 @@ interface RuleService {
         /** @see retrieveRulesetDocument */
         @MustBeClosed
         fun retrieveRulesetDocument(
-            params: RuleRetrieveRulesetDocumentParams
+            params: RuleRetrieveRulesetDocumentParams,
         ): HttpResponseFor<String> = retrieveRulesetDocument(params, RequestOptions.none())
 
         /** @see retrieveRulesetDocument */

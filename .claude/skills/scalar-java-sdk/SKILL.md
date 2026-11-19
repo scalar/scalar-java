@@ -37,8 +37,9 @@ Or build the SDK from source, with JDK 21 installed:
 import com.scalar.api.client.ScalarClient;
 import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 
-ScalarClient client =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+ScalarClient client = ScalarOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 ```
 
 Provide credentials using the options below. Environment variables are read automatically when the target runtime supports them:
@@ -51,9 +52,11 @@ Provide credentials using the options below. Environment variables are read auto
 ```java
 import com.scalar.api.client.ScalarClient;
 import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams;
 
-ScalarClient client =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+ScalarClient client = ScalarOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
 var registry = client.registry().listAllApiDocuments();
 
@@ -70,10 +73,10 @@ Non-success responses throw generated API errors. Error objects expose status, h
 import com.scalar.api.errors.ScalarServiceException;
 
 try {
-  var registry = client.registry().listAllApiDocuments();
+    var registry = client.registry().listAllApiDocuments();
 } catch (ScalarServiceException err) {
-  System.out.println(err.statusCode() + " " + err.body());
-  throw err;
+    System.out.println(err.statusCode() + " " + err.body());
+    throw err;
 }
 ```
 

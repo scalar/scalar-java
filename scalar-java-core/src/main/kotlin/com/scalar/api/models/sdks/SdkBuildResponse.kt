@@ -25,7 +25,7 @@ private constructor(
 
     @JsonCreator
     private constructor(
-        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of()
+        @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
     ) : this(version, mutableMapOf())
 
     /**

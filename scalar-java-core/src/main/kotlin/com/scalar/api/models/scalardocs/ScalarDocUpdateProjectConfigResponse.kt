@@ -111,7 +111,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            scalarDocUpdateProjectConfigResponse: ScalarDocUpdateProjectConfigResponse
+            scalarDocUpdateProjectConfigResponse: ScalarDocUpdateProjectConfigResponse,
         ) = apply {
             baseToken = scalarDocUpdateProjectConfigResponse.baseToken
             commitSha = scalarDocUpdateProjectConfigResponse.commitSha

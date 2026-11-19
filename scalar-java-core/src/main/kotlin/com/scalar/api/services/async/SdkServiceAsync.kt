@@ -327,12 +327,12 @@ interface SdkServiceAsync {
 
         /** @see list */
         fun list(
-            params: SdkListParams = SdkListParams.none()
+            params: SdkListParams = SdkListParams.none(),
         ): CompletableFuture<HttpResponseFor<SdkListResponse>> = list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<SdkListResponse>> =
             list(SdkListParams.none(), requestOptions)
 

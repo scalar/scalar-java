@@ -41,7 +41,7 @@ internal class ProGuardCompatibilityTest {
     @Test
     fun keepRulesAreOnTheClasspath() {
         assertNotNull(
-            javaClass.classLoader.getResourceAsStream("META-INF/proguard/scalar-java-core.pro")
+            javaClass.classLoader.getResourceAsStream("META-INF/proguard/scalar-java-core.pro"),
         )
     }
 
@@ -74,7 +74,7 @@ internal class ProGuardCompatibilityTest {
             value400Json,
             jsonMapper()
                 .writeValueAsString(
-                    jsonMapper().readValue(value400Json, object : TypeReference<Value400>() {})
+                    jsonMapper().readValue(value400Json, object : TypeReference<Value400>() {}),
                 ),
         )
     }
@@ -88,7 +88,7 @@ internal class ProGuardCompatibilityTest {
             roleJson,
             jsonMapper()
                 .writeValueAsString(
-                    jsonMapper().readValue(roleJson, object : TypeReference<Role>() {})
+                    jsonMapper().readValue(roleJson, object : TypeReference<Role>() {}),
                 ),
         )
     }

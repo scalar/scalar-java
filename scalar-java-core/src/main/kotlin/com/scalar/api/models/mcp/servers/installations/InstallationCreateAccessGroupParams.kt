@@ -87,7 +87,7 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            installationCreateAccessGroupParams: InstallationCreateAccessGroupParams
+            installationCreateAccessGroupParams: InstallationCreateAccessGroupParams,
         ) = apply {
             id = installationCreateAccessGroupParams.id
             installationId = installationCreateAccessGroupParams.installationId
@@ -292,7 +292,7 @@ private constructor(
         private constructor(
             @JsonProperty("accessGroupUid")
             @ExcludeMissing
-            accessGroupUid: JsonField<String> = JsonMissing.of()
+            accessGroupUid: JsonField<String> = JsonMissing.of(),
         ) : this(accessGroupUid, mutableMapOf())
 
         /**

@@ -13,7 +13,7 @@ import java.util.concurrent.Executor
  * This class ensures the `AsyncStreamResponse` is closed even if the user forgets to close it.
  */
 internal class PhantomReachableClosingAsyncStreamResponse<T>(
-    private val asyncStreamResponse: AsyncStreamResponse<T>
+    private val asyncStreamResponse: AsyncStreamResponse<T>,
 ) : AsyncStreamResponse<T> {
 
     /**

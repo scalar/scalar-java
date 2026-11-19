@@ -67,7 +67,7 @@ interface NamespaceService {
         /** @see list */
         @MustBeClosed
         fun list(
-            params: NamespaceListParams = NamespaceListParams.none()
+            params: NamespaceListParams = NamespaceListParams.none(),
         ): HttpResponseFor<List<String>> = list(params, RequestOptions.none())
 
         /** @see list */

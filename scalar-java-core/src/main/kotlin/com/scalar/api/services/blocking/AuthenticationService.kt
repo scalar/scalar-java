@@ -29,7 +29,7 @@ interface AuthenticationService {
 
     /** Exchange an API key for an access token. */
     fun exchangePersonalToken(
-        params: AuthenticationExchangePersonalTokenParams
+        params: AuthenticationExchangePersonalTokenParams,
     ): AuthenticationExchangePersonalTokenResponse =
         exchangePersonalToken(params, RequestOptions.none())
 
@@ -50,7 +50,7 @@ interface AuthenticationService {
 
     /** @see listCurrentUser */
     fun listCurrentUser(
-        params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
+        params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none(),
     ): User = listCurrentUser(params, RequestOptions.none())
 
     /** @see listCurrentUser */
@@ -68,7 +68,7 @@ interface AuthenticationService {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: Consumer<ClientOptions.Builder>
+            modifier: Consumer<ClientOptions.Builder>,
         ): AuthenticationService.WithRawResponse
 
         /**
@@ -77,7 +77,7 @@ interface AuthenticationService {
          */
         @MustBeClosed
         fun exchangePersonalToken(
-            params: AuthenticationExchangePersonalTokenParams
+            params: AuthenticationExchangePersonalTokenParams,
         ): HttpResponseFor<AuthenticationExchangePersonalTokenResponse> =
             exchangePersonalToken(params, RequestOptions.none())
 
@@ -107,7 +107,8 @@ interface AuthenticationService {
         /** @see listCurrentUser */
         @MustBeClosed
         fun listCurrentUser(
-            params: AuthenticationListCurrentUserParams = AuthenticationListCurrentUserParams.none()
+            params: AuthenticationListCurrentUserParams =
+                AuthenticationListCurrentUserParams.none(),
         ): HttpResponseFor<User> = listCurrentUser(params, RequestOptions.none())
 
         /** @see listCurrentUser */

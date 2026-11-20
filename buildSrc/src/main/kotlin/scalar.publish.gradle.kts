@@ -10,7 +10,7 @@ dokka {
     dokkaGeneratorIsolation.set(
         ProcessIsolation {
             maxHeapSize.set("8g")
-        }
+        },
     )
 }
 
@@ -19,7 +19,7 @@ mavenPublishing {
         KotlinJvm(
             javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationJavadoc"),
             sourcesJar = true,
-        )
+        ),
     )
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()
@@ -45,6 +45,10 @@ mavenPublishing {
             url.set("https://github.com/scalar/scalar-java")
             connection.set("scm:git:https://github.com/scalar/scalar-java.git")
             developerConnection.set("scm:git:ssh://git@github.com/scalar/scalar-java.git")
+        }
+        issueManagement {
+            system.set("GitHub")
+            url.set("https://github.com/scalar/scalar-java/issues")
         }
     }
 }

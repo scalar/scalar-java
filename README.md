@@ -37,16 +37,16 @@ The full API of this library can be found in [api.md](./api.md).
 Add the dependency to your Gradle build:
 
 ```kotlin
-implementation("com.scalar:scalar-java:0.2.1") // x-release-please-version
+implementation("com.scalar.api:scalar-java:0.3.0") // x-release-please-version
 ```
 
 Or declare it in your Maven `pom.xml`:
 
 ```xml
 <dependency>
-  <groupId>com.scalar</groupId>
+  <groupId>com.scalar.api</groupId>
   <artifactId>scalar-java</artifactId>
-  <version>0.2.1</version> <!-- x-release-please-version -->
+  <version>0.3.0</version> <!-- x-release-please-version -->
 </dependency>
 ```
 
@@ -61,11 +61,13 @@ Or build the SDK from source, with JDK 21 installed:
 ## Usage
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams;
 
-ScalarClient client =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+ScalarClient client = ScalarOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
 var registry = client.registry().listAllApiDocuments();
 
@@ -83,11 +85,13 @@ See the [API reference](./api.md) for every available operation.
 Use `ScalarOkHttpClientAsync.builder()` or call `client.async()` when you want `CompletableFuture` services. Call `sync()` on the async client to switch back; both clients share one connection and thread pool.
 
 ```java
-import com.scalar.client.ScalarClientAsync;
-import com.scalar.client.okhttp.ScalarOkHttpClientAsync;
+import com.scalar.api.client.ScalarClientAsync;
+import com.scalar.api.client.okhttp.ScalarOkHttpClientAsync;
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams;
 
-ScalarClientAsync client =
-    ScalarOkHttpClientAsync.builder().bearerAuth(System.getenv("BEARER_AUTH")).build();
+ScalarClientAsync client = ScalarOkHttpClientAsync.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
+    .build();
 
 client.registry().listAllApiDocuments().thenAccept(registry -> System.out.println(registry));
 ```
@@ -151,7 +155,9 @@ Beyond the timeout and retry settings documented under Retries and Timeouts,
   shuts it down when closed.
 
 To replace the transport entirely, implement `HttpClient` and pass it to `ClientOptions.builder().httpClient(…)`;
-the generated OkHttp builders are one implementation of that interface, not a requirement.
+the generated OkHttp builders are one implementation of that interface, not a requirement. **Your client must
+not follow redirects itself:** the SDK follows them, and drops every credential header when one leaves the
+API's origin, which it cannot do for a hop your client has already taken.
 
 <br />
 
@@ -163,9 +169,13 @@ The SDK deserializes with reflection, so shrinkers need to be told which members
 from the artifact automatically. Copy them into your own configuration only if your build does not read
 rules published by dependencies.
 
-Note that those rules keep the whole generated SDK package, so a minified build does not shrink or obfuscate
-the generated classes. That is deliberate: a narrower rule set drops the annotations the SDK uses to omit unset
-properties, and a shrunk build then fails at runtime on the first optional property a caller leaves out.
+The rules keep what Jackson reaches through reflection: the constructors and annotated members it binds, the
+annotation the SDK uses to omit unset properties, and the Kotlin metadata that tells it which constructor
+parameters have defaults. Every class with a custom serializer or deserializer — each union type and the core
+`JsonField` and `JsonValue` types — is kept whole and under its own name, which also keeps every model its
+members refer to. The SDK's enums keep the lookups `Enum.valueOf` makes by reflection, and the two client
+implementations keep their names, which each client sends in its `User-Agent` header. Other generated classes
+can still be shrunk and obfuscated, so a minified build drops the ones it never reaches and renames the rest.
 
 The `scalar-java-proguard-test` module checks those rules hold: `./gradlew testProGuard testR8` shrinks the SDK
 with each shrinker under exactly the published rules and runs the compatibility test out of the shrunk jar.
@@ -232,13 +242,13 @@ Declared schemes:
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
-import com.scalar.errors.ScalarServiceException;
+import com.scalar.api.errors.ScalarServiceException;
 
 try {
-  var registry = client.registry().listAllApiDocuments();
+    var registry = client.registry().listAllApiDocuments();
 } catch (ScalarServiceException err) {
-  System.out.println(err.statusCode() + " " + err.body());
-  throw err;
+    System.out.println(err.statusCode() + " " + err.body());
+    throw err;
 }
 ```
 
@@ -251,16 +261,15 @@ Documented error statuses: `400`, `401`, `403`, `404`, `422`, `500`.
 Configure the generated client by setting any of these options when you create it.
 
 ```java
-import com.scalar.client.ScalarClient;
-import com.scalar.client.okhttp.ScalarOkHttpClient;
+import com.scalar.api.client.ScalarClient;
+import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 import java.time.Duration;
 
-ScalarClient client =
-    ScalarOkHttpClient.builder()
-        .baseUrl("https://access.scalar.com")
-        .timeout(Duration.ofSeconds(60))
-        .maxRetries(2)
-        .build();
+ScalarClient client = ScalarOkHttpClient.builder()
+    .baseUrl("https://access.scalar.com")
+    .timeout(Duration.ofSeconds(60))
+    .maxRetries(2)
+    .build();
 ```
 
 | Option | Type | Default | Description |

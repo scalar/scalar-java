@@ -169,9 +169,13 @@ The SDK deserializes with reflection, so shrinkers need to be told which members
 from the artifact automatically. Copy them into your own configuration only if your build does not read
 rules published by dependencies.
 
-Note that those rules keep the whole generated SDK package, so a minified build does not shrink or obfuscate
-the generated classes. That is deliberate: a narrower rule set drops the annotations the SDK uses to omit unset
-properties, and a shrunk build then fails at runtime on the first optional property a caller leaves out.
+The rules keep what Jackson reaches through reflection: the constructors and annotated members it binds, the
+annotation the SDK uses to omit unset properties, and the Kotlin metadata that tells it which constructor
+parameters have defaults. Every class with a custom serializer or deserializer — each union type and the core
+`JsonField` and `JsonValue` types — is kept whole and under its own name, which also keeps every model its
+members refer to. The SDK's enums keep the lookups `Enum.valueOf` makes by reflection, and the two client
+implementations keep their names, which each client sends in its `User-Agent` header. Other generated classes
+can still be shrunk and obfuscated, so a minified build drops the ones it never reaches and renames the rest.
 
 The `scalar-java-proguard-test` module checks those rules hold: `./gradlew testProGuard testR8` shrinks the SDK
 with each shrinker under exactly the published rules and runs the compatibility test out of the shrunk jar.

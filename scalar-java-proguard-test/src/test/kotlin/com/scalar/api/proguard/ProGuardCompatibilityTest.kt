@@ -32,8 +32,10 @@ internal class ProGuardCompatibilityTest {
         fun main(args: Array<String>) {
             val test = ProGuardCompatibilityTest()
             test.keepRulesAreOnTheClasspath()
+            test.httpMethodResolvesByName()
             test.clientResolvesEveryService()
             test.value400Roundtrips()
+            test.value400KeepsUnknownAndMissingFields()
             test.roleRoundtrips()
         }
     }
@@ -46,10 +48,20 @@ internal class ProGuardCompatibilityTest {
     }
 
     @Test
+    fun httpMethodResolvesByName() {
+        assertEquals(
+            com.scalar.api.core.http.HttpMethod.GET,
+            com.scalar.api.core.http.HttpMethod.valueOf("GET"),
+        )
+    }
+
+    @Test
     fun clientResolvesEveryService() {
         val client =
             ScalarOkHttpClient.builder().bearerAuth("My Bearer Auth").oAuth2("My O Auth2").build()
 
+        assertEquals("ScalarClientImpl", client.javaClass.simpleName)
+        assertEquals("ScalarClientAsyncImpl", client.async().javaClass.simpleName)
         assertNotNull(client.registry())
         assertNotNull(client.schemas())
         assertNotNull(client.loginPortals())
@@ -75,6 +87,37 @@ internal class ProGuardCompatibilityTest {
             jsonMapper()
                 .writeValueAsString(
                     jsonMapper().readValue(value400Json, object : TypeReference<Value400>() {}),
+                ),
+        )
+    }
+
+    @Test
+    fun value400KeepsUnknownAndMissingFields() {
+        val value400 =
+            Value400.builder().message("Invalid request parameters.").code("bad-request").build()
+        val value400Wire =
+            jsonMapper().readTree(jsonMapper().writeValueAsString(value400))
+                as com.fasterxml.jackson.databind.node.ObjectNode
+        val value400Dropped = value400Wire.fieldNames().asSequence().firstOrNull()
+        if (value400Dropped != null) value400Wire.remove(value400Dropped)
+        value400Wire.replace(
+            "proguard_compatibility_unknown",
+            jsonMapper()
+                .readTree(
+                    "{\"boolean\":true,\"number\":1.5,\"string\":\"kept\",\"array\":[1,\"two\",null],\"object\":{\"nested\":false},\"null\":null}",
+                ),
+        )
+        val value400Json = jsonMapper().writeValueAsString(value400Wire)
+
+        assertEquals(
+            jsonMapper().readTree(value400Json),
+            jsonMapper()
+                .readTree(
+                    jsonMapper()
+                        .writeValueAsString(
+                            jsonMapper()
+                                .readValue(value400Json, object : TypeReference<Value400>() {}),
+                        ),
                 ),
         )
     }

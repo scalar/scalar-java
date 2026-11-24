@@ -14,39 +14,53 @@ import com.scalar.api.core.checkRequired
 import com.scalar.api.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-@com.fasterxml.jackson.annotation.JsonPropertyOrder("createdAt", "id", "name", "slug", "updatedAt")
+@com.fasterxml.jackson.annotation.JsonPropertyOrder(
+    "createdAt",
+    "domain",
+    "name",
+    "namespace",
+    "slug",
+    "uid",
+    "updatedAt",
+)
 class McpServer
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val createdAt: JsonField<String>,
-    private val id: JsonField<String>,
+    private val createdAt: JsonField<Long>,
+    private val domain: JsonField<String>,
     private val name: JsonField<String>,
+    private val namespace: JsonField<String>,
     private val slug: JsonField<String>,
-    private val updatedAt: JsonField<String>,
+    private val uid: JsonField<String>,
+    private val updatedAt: JsonField<Long>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("createdAt") @ExcludeMissing createdAt: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("domain") @ExcludeMissing domain: JsonField<String> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("namespace") @ExcludeMissing namespace: JsonField<String> = JsonMissing.of(),
         @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("updatedAt") @ExcludeMissing updatedAt: JsonField<String> = JsonMissing.of(),
-    ) : this(createdAt, id, name, slug, updatedAt, mutableMapOf())
+        @JsonProperty("uid") @ExcludeMissing uid: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("updatedAt") @ExcludeMissing updatedAt: JsonField<Long> = JsonMissing.of(),
+    ) : this(createdAt, domain, name, namespace, slug, uid, updatedAt, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun createdAt(): String = createdAt.getRequired("createdAt")
+    fun createdAt(): Long = createdAt.getRequired("createdAt")
 
     /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
-    fun id(): String = id.getRequired("id")
+    fun domain(): Optional<String> = domain.getOptional("domain")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
@@ -58,27 +72,39 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
+    fun namespace(): String = namespace.getRequired("namespace")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun slug(): String = slug.getRequired("slug")
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun updatedAt(): String = updatedAt.getRequired("updatedAt")
+    fun uid(): String = uid.getRequired("uid")
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun updatedAt(): Long = updatedAt.getRequired("updatedAt")
 
     /**
      * Returns the raw JSON value of [createdAt].
      *
      * Unlike [createdAt], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<String> = createdAt
+    @JsonProperty("createdAt") @ExcludeMissing fun _createdAt(): JsonField<Long> = createdAt
 
     /**
-     * Returns the raw JSON value of [id].
+     * Returns the raw JSON value of [domain].
      *
-     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [domain], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+    @JsonProperty("domain") @ExcludeMissing fun _domain(): JsonField<String> = domain
 
     /**
      * Returns the raw JSON value of [name].
@@ -88,6 +114,13 @@ private constructor(
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /**
+     * Returns the raw JSON value of [namespace].
+     *
+     * Unlike [namespace], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("namespace") @ExcludeMissing fun _namespace(): JsonField<String> = namespace
+
+    /**
      * Returns the raw JSON value of [slug].
      *
      * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
@@ -95,11 +128,18 @@ private constructor(
     @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
     /**
+     * Returns the raw JSON value of [uid].
+     *
+     * Unlike [uid], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("uid") @ExcludeMissing fun _uid(): JsonField<String> = uid
+
+    /**
      * Returns the raw JSON value of [updatedAt].
      *
      * Unlike [updatedAt], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("updatedAt") @ExcludeMissing fun _updatedAt(): JsonField<String> = updatedAt
+    @JsonProperty("updatedAt") @ExcludeMissing fun _updatedAt(): JsonField<Long> = updatedAt
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -121,9 +161,11 @@ private constructor(
          * The following fields are required:
          * ```java
          * .createdAt()
-         * .id()
+         * .domain()
          * .name()
+         * .namespace()
          * .slug()
+         * .uid()
          * .updatedAt()
          * ```
          */
@@ -133,43 +175,49 @@ private constructor(
     /** A builder for [McpServer]. */
     class Builder internal constructor() {
 
-        private var createdAt: JsonField<String>? = null
-        private var id: JsonField<String>? = null
+        private var createdAt: JsonField<Long>? = null
+        private var domain: JsonField<String>? = null
         private var name: JsonField<String>? = null
+        private var namespace: JsonField<String>? = null
         private var slug: JsonField<String>? = null
-        private var updatedAt: JsonField<String>? = null
+        private var uid: JsonField<String>? = null
+        private var updatedAt: JsonField<Long>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(mcpServer: McpServer) = apply {
             createdAt = mcpServer.createdAt
-            id = mcpServer.id
+            domain = mcpServer.domain
             name = mcpServer.name
+            namespace = mcpServer.namespace
             slug = mcpServer.slug
+            uid = mcpServer.uid
             updatedAt = mcpServer.updatedAt
             additionalProperties = mcpServer.additionalProperties.toMutableMap()
         }
 
-        fun createdAt(createdAt: String) = createdAt(JsonField.of(createdAt))
+        fun createdAt(createdAt: Long) = createdAt(JsonField.of(createdAt))
 
         /**
          * Sets [Builder.createdAt] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.createdAt] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
-         */
-        fun createdAt(createdAt: JsonField<String>) = apply { this.createdAt = createdAt }
-
-        fun id(id: String) = id(JsonField.of(id))
-
-        /**
-         * Sets [Builder.id] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * You should usually call [Builder.createdAt] with a well-typed [Long] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun id(id: JsonField<String>) = apply { this.id = id }
+        fun createdAt(createdAt: JsonField<Long>) = apply { this.createdAt = createdAt }
+
+        fun domain(domain: String?) = domain(JsonField.ofNullable(domain))
+
+        /** Alias for calling [Builder.domain] with `domain.orElse(null)`. */
+        fun domain(domain: Optional<String>) = domain(domain.getOrNull())
+
+        /**
+         * Sets [Builder.domain] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.domain] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun domain(domain: JsonField<String>) = apply { this.domain = domain }
 
         fun name(name: String) = name(JsonField.of(name))
 
@@ -181,6 +229,17 @@ private constructor(
          */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
+        fun namespace(namespace: String) = namespace(JsonField.of(namespace))
+
+        /**
+         * Sets [Builder.namespace] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.namespace] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun namespace(namespace: JsonField<String>) = apply { this.namespace = namespace }
+
         fun slug(slug: String) = slug(JsonField.of(slug))
 
         /**
@@ -191,16 +250,25 @@ private constructor(
          */
         fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
-        fun updatedAt(updatedAt: String) = updatedAt(JsonField.of(updatedAt))
+        fun uid(uid: String) = uid(JsonField.of(uid))
+
+        /**
+         * Sets [Builder.uid] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.uid] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun uid(uid: JsonField<String>) = apply { this.uid = uid }
+
+        fun updatedAt(updatedAt: Long) = updatedAt(JsonField.of(updatedAt))
 
         /**
          * Sets [Builder.updatedAt] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.updatedAt] with a well-typed [String] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.updatedAt] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun updatedAt(updatedAt: JsonField<String>) = apply { this.updatedAt = updatedAt }
+        fun updatedAt(updatedAt: JsonField<Long>) = apply { this.updatedAt = updatedAt }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -229,9 +297,11 @@ private constructor(
          * The following fields are required:
          * ```java
          * .createdAt()
-         * .id()
+         * .domain()
          * .name()
+         * .namespace()
          * .slug()
+         * .uid()
          * .updatedAt()
          * ```
          *
@@ -240,9 +310,11 @@ private constructor(
         fun build(): McpServer =
             McpServer(
                 checkRequired("createdAt", createdAt),
-                checkRequired("id", id),
+                checkRequired("domain", domain),
                 checkRequired("name", name),
+                checkRequired("namespace", namespace),
                 checkRequired("slug", slug),
+                checkRequired("uid", uid),
                 checkRequired("updatedAt", updatedAt),
                 additionalProperties.toMutableMap(),
             )
@@ -264,9 +336,11 @@ private constructor(
         }
 
         createdAt()
-        id()
+        domain()
         name()
+        namespace()
         slug()
+        uid()
         updatedAt()
         validated = true
     }
@@ -287,9 +361,11 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (createdAt.asKnown().isPresent) 1 else 0) +
-            (if (id.asKnown().isPresent) 1 else 0) +
+            (if (domain.asKnown().isPresent) 1 else 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
+            (if (namespace.asKnown().isPresent) 1 else 0) +
             (if (slug.asKnown().isPresent) 1 else 0) +
+            (if (uid.asKnown().isPresent) 1 else 0) +
             (if (updatedAt.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -299,19 +375,30 @@ private constructor(
 
         return other is McpServer &&
             createdAt == other.createdAt &&
-            id == other.id &&
+            domain == other.domain &&
             name == other.name &&
+            namespace == other.namespace &&
             slug == other.slug &&
+            uid == other.uid &&
             updatedAt == other.updatedAt &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(createdAt, id, name, slug, updatedAt, additionalProperties)
+        Objects.hash(
+            createdAt,
+            domain,
+            name,
+            namespace,
+            slug,
+            uid,
+            updatedAt,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "McpServer{createdAt=$createdAt, id=$id, name=$name, slug=$slug, updatedAt=$updatedAt, additionalProperties=$additionalProperties}"
+        "McpServer{createdAt=$createdAt, domain=$domain, name=$name, namespace=$namespace, slug=$slug, uid=$uid, updatedAt=$updatedAt, additionalProperties=$additionalProperties}"
 }

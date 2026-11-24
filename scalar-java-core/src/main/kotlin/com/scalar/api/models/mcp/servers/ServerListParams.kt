@@ -7,7 +7,10 @@ import com.scalar.api.core.http.Headers
 import com.scalar.api.core.http.QueryParams
 import java.util.Objects
 
-/** List every MCP server on the team. */
+/**
+ * List every MCP server on the team, each with its environments and the version tag a request that
+ * names no version gets there.
+ */
 class ServerListParams
 private constructor(
     private val additionalHeaders: Headers,

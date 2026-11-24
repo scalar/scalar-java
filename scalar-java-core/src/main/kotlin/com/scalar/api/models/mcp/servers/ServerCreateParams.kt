@@ -23,8 +23,8 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Create an MCP server over one or more API document versions. The response carries the server and
- * its first installation.
+ * Create an MCP server linking the API documents of the named versions and the named docs projects.
+ * The server builds from each linked document’s versions, not only the version named.
  */
 class ServerCreateParams
 private constructor(

@@ -3,9 +3,6 @@
 package com.scalar.api.smoke.mcp;
 
 import com.scalar.api.models.mcp.servers.ServerCreateParams;
-import com.scalar.api.models.mcp.servers.ServerDeleteParams;
-import com.scalar.api.models.mcp.servers.ServerRetrieveParams;
-import com.scalar.api.models.mcp.servers.ServerUpdateParams;
 import com.scalar.api.smoke.ScalarSmokeSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,65 +54,6 @@ final class ServerServiceTest {
                   .projectUids(java.util.List.of(""))
                   .build();
           var server = client.mcp().servers().create(params);
-        });
-  }
-
-  @Test
-  @DisplayName("retrieve")
-  void retrieve() throws Throwable {
-    ScalarSmokeSupport.smokeCase(
-        "mcp.servers.retrieve:single",
-        "retrieve",
-        "/v1/mcp/servers/{id}",
-        client -> {
-          ServerRetrieveParams params = ServerRetrieveParams.builder().id("42").build();
-          var server = client.mcp().servers().retrieve(params);
-        });
-  }
-
-  @Test
-  @DisplayName("update: only required params")
-  void update() throws Throwable {
-    ScalarSmokeSupport.smokeCase(
-        "mcp.servers.update:required",
-        "update",
-        "/v1/mcp/servers/{id}",
-        client -> {
-          ServerUpdateParams params = ServerUpdateParams.builder().id("42").build();
-          var server = client.mcp().servers().update(params);
-        });
-  }
-
-  @Test
-  @DisplayName("update: required and optional params")
-  void updateWithOptionalParams() throws Throwable {
-    ScalarSmokeSupport.smokeCase(
-        "mcp.servers.update:all",
-        "update",
-        "/v1/mcp/servers/{id}",
-        client -> {
-          ServerUpdateParams params =
-              ServerUpdateParams.builder()
-                  .id("42")
-                  .name("Acme MCP")
-                  .slug("acme-api")
-                  .operations(java.util.List.of(""))
-                  .docsPages(java.util.List.of(""))
-                  .build();
-          var server = client.mcp().servers().update(params);
-        });
-  }
-
-  @Test
-  @DisplayName("delete")
-  void delete() throws Throwable {
-    ScalarSmokeSupport.smokeCase(
-        "mcp.servers.delete:single",
-        "delete",
-        "/v1/mcp/servers/{id}",
-        client -> {
-          ServerDeleteParams params = ServerDeleteParams.builder().id("42").build();
-          var server = client.mcp().servers().delete(params);
         });
   }
 }

@@ -5,14 +5,10 @@ package com.scalar.api.services.async.mcp
 import com.scalar.api.core.ClientOptions
 import com.scalar.api.core.RequestOptions
 import com.scalar.api.core.http.HttpResponseFor
-import com.scalar.api.models.mcp.servers.McpServer
 import com.scalar.api.models.mcp.servers.ServerCreateParams
 import com.scalar.api.models.mcp.servers.ServerCreateResponse
-import com.scalar.api.models.mcp.servers.ServerDeleteParams
 import com.scalar.api.models.mcp.servers.ServerListParams
-import com.scalar.api.models.mcp.servers.ServerRetrieveParams
-import com.scalar.api.models.mcp.servers.ServerUpdateParams
-import com.scalar.api.services.async.mcp.servers.InstallationServiceAsync
+import com.scalar.api.models.mcp.servers.ServerListResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -31,12 +27,9 @@ interface ServerServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ServerServiceAsync
 
-    /** MCP */
-    fun installations(): InstallationServiceAsync
-
     /**
-     * Create an MCP server over one or more API document versions. The response carries the server
-     * and its first installation.
+     * Create an MCP server linking the API documents of the named versions and the named docs
+     * projects. The server builds from each linked document’s versions, not only the version named.
      */
     fun create(params: ServerCreateParams): CompletableFuture<ServerCreateResponse> =
         create(params, RequestOptions.none())
@@ -47,114 +40,26 @@ interface ServerServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ServerCreateResponse>
 
-    /** Get a single MCP server by its id. */
-    fun retrieve(id: String): CompletableFuture<McpServer> =
-        retrieve(id, ServerRetrieveParams.none())
-
-    /** @see retrieve */
-    fun retrieve(
-        id: String,
-        params: ServerRetrieveParams = ServerRetrieveParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<McpServer> = retrieve(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see retrieve */
-    fun retrieve(
-        id: String,
-        params: ServerRetrieveParams = ServerRetrieveParams.none(),
-    ): CompletableFuture<McpServer> = retrieve(id, params, RequestOptions.none())
-
-    /** @see retrieve */
-    fun retrieve(
-        params: ServerRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<McpServer>
-
-    /** @see retrieve */
-    fun retrieve(params: ServerRetrieveParams): CompletableFuture<McpServer> =
-        retrieve(params, RequestOptions.none())
-
-    /** @see retrieve */
-    fun retrieve(id: String, requestOptions: RequestOptions): CompletableFuture<McpServer> =
-        retrieve(id, ServerRetrieveParams.none(), requestOptions)
-
-    /** Update MCP server metadata and which tools it exposes. */
-    fun update(id: String): CompletableFuture<McpServer> = update(id, ServerUpdateParams.none())
-
-    /** @see update */
-    fun update(
-        id: String,
-        params: ServerUpdateParams = ServerUpdateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<McpServer> = update(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see update */
-    fun update(
-        id: String,
-        params: ServerUpdateParams = ServerUpdateParams.none(),
-    ): CompletableFuture<McpServer> = update(id, params, RequestOptions.none())
-
-    /** @see update */
-    fun update(
-        params: ServerUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<McpServer>
-
-    /** @see update */
-    fun update(params: ServerUpdateParams): CompletableFuture<McpServer> =
-        update(params, RequestOptions.none())
-
-    /** @see update */
-    fun update(id: String, requestOptions: RequestOptions): CompletableFuture<McpServer> =
-        update(id, ServerUpdateParams.none(), requestOptions)
-
-    /** List every MCP server on the team. */
-    fun list(): CompletableFuture<List<McpServer>> = list(ServerListParams.none())
+    /**
+     * List every MCP server on the team, each with its environments and the version tag a request
+     * that names no version gets there.
+     */
+    fun list(): CompletableFuture<List<ServerListResponse>> = list(ServerListParams.none())
 
     /** @see list */
     fun list(
         params: ServerListParams = ServerListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<McpServer>>
+    ): CompletableFuture<List<ServerListResponse>>
 
     /** @see list */
     fun list(
         params: ServerListParams = ServerListParams.none(),
-    ): CompletableFuture<List<McpServer>> = list(params, RequestOptions.none())
+    ): CompletableFuture<List<ServerListResponse>> = list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): CompletableFuture<List<McpServer>> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<List<ServerListResponse>> =
         list(ServerListParams.none(), requestOptions)
-
-    /** Delete an MCP server and every installation it serves. */
-    fun delete(id: String): CompletableFuture<Any?> = delete(id, ServerDeleteParams.none())
-
-    /** @see delete */
-    fun delete(
-        id: String,
-        params: ServerDeleteParams = ServerDeleteParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Any?> = delete(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see delete */
-    fun delete(
-        id: String,
-        params: ServerDeleteParams = ServerDeleteParams.none(),
-    ): CompletableFuture<Any?> = delete(id, params, RequestOptions.none())
-
-    /** @see delete */
-    fun delete(
-        params: ServerDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<Any?>
-
-    /** @see delete */
-    fun delete(params: ServerDeleteParams): CompletableFuture<Any?> =
-        delete(params, RequestOptions.none())
-
-    /** @see delete */
-    fun delete(id: String, requestOptions: RequestOptions): CompletableFuture<Any?> =
-        delete(id, ServerDeleteParams.none(), requestOptions)
 
     /**
      * A view of [ServerServiceAsync] that provides access to raw HTTP responses for each method.
@@ -169,9 +74,6 @@ interface ServerServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>,
         ): ServerServiceAsync.WithRawResponse
-
-        /** MCP */
-        fun installations(): InstallationServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/mcp/servers`, but is otherwise the same as
@@ -189,142 +91,28 @@ interface ServerServiceAsync {
         ): CompletableFuture<HttpResponseFor<ServerCreateResponse>>
 
         /**
-         * Returns a raw HTTP response for `get /v1/mcp/servers/{id}`, but is otherwise the same as
-         * [ServerServiceAsync.retrieve].
-         */
-        fun retrieve(id: String): CompletableFuture<HttpResponseFor<McpServer>> =
-            retrieve(id, ServerRetrieveParams.none())
-
-        /** @see retrieve */
-        fun retrieve(
-            id: String,
-            params: ServerRetrieveParams = ServerRetrieveParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<McpServer>> =
-            retrieve(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see retrieve */
-        fun retrieve(
-            id: String,
-            params: ServerRetrieveParams = ServerRetrieveParams.none(),
-        ): CompletableFuture<HttpResponseFor<McpServer>> =
-            retrieve(id, params, RequestOptions.none())
-
-        /** @see retrieve */
-        fun retrieve(
-            params: ServerRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<McpServer>>
-
-        /** @see retrieve */
-        fun retrieve(params: ServerRetrieveParams): CompletableFuture<HttpResponseFor<McpServer>> =
-            retrieve(params, RequestOptions.none())
-
-        /** @see retrieve */
-        fun retrieve(
-            id: String,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<McpServer>> =
-            retrieve(id, ServerRetrieveParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `patch /v1/mcp/servers/{id}`, but is otherwise the same
-         * as [ServerServiceAsync.update].
-         */
-        fun update(id: String): CompletableFuture<HttpResponseFor<McpServer>> =
-            update(id, ServerUpdateParams.none())
-
-        /** @see update */
-        fun update(
-            id: String,
-            params: ServerUpdateParams = ServerUpdateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<McpServer>> =
-            update(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see update */
-        fun update(
-            id: String,
-            params: ServerUpdateParams = ServerUpdateParams.none(),
-        ): CompletableFuture<HttpResponseFor<McpServer>> = update(id, params, RequestOptions.none())
-
-        /** @see update */
-        fun update(
-            params: ServerUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<McpServer>>
-
-        /** @see update */
-        fun update(params: ServerUpdateParams): CompletableFuture<HttpResponseFor<McpServer>> =
-            update(params, RequestOptions.none())
-
-        /** @see update */
-        fun update(
-            id: String,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<McpServer>> =
-            update(id, ServerUpdateParams.none(), requestOptions)
-
-        /**
          * Returns a raw HTTP response for `get /v1/mcp/servers`, but is otherwise the same as
          * [ServerServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<List<McpServer>>> =
+        fun list(): CompletableFuture<HttpResponseFor<List<ServerListResponse>>> =
             list(ServerListParams.none())
 
         /** @see list */
         fun list(
             params: ServerListParams = ServerListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<McpServer>>>
+        ): CompletableFuture<HttpResponseFor<List<ServerListResponse>>>
 
         /** @see list */
         fun list(
             params: ServerListParams = ServerListParams.none(),
-        ): CompletableFuture<HttpResponseFor<List<McpServer>>> = list(params, RequestOptions.none())
+        ): CompletableFuture<HttpResponseFor<List<ServerListResponse>>> =
+            list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<McpServer>>> =
+        ): CompletableFuture<HttpResponseFor<List<ServerListResponse>>> =
             list(ServerListParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `delete /v1/mcp/servers/{id}`, but is otherwise the same
-         * as [ServerServiceAsync.delete].
-         */
-        fun delete(id: String): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(id, ServerDeleteParams.none())
-
-        /** @see delete */
-        fun delete(
-            id: String,
-            params: ServerDeleteParams = ServerDeleteParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see delete */
-        fun delete(
-            id: String,
-            params: ServerDeleteParams = ServerDeleteParams.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>> = delete(id, params, RequestOptions.none())
-
-        /** @see delete */
-        fun delete(
-            params: ServerDeleteParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<Any?>>
-
-        /** @see delete */
-        fun delete(params: ServerDeleteParams): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(params, RequestOptions.none())
-
-        /** @see delete */
-        fun delete(
-            id: String,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<Any?>> =
-            delete(id, ServerDeleteParams.none(), requestOptions)
     }
 }

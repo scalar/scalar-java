@@ -40,7 +40,7 @@ public final class ScalarSmokeSupport {
    * only for generator tooling). The runner refuses a list whose digest differs, so a list left by
    * an earlier generation is never trusted.
    */
-  public static final String SMOKE_CASE_LIST_DIGEST = "b15a73bdd95ccea2";
+  public static final String SMOKE_CASE_LIST_DIGEST = "89f6dc0b7b7e6157";
 
   private static final String BASE_URL = nonBlank(System.getenv("TEST_API_BASE_URL"));
 

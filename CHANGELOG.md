@@ -1,5 +1,69 @@
 # Changelog
 
+## [0.3.0](https://github.com/scalar/scalar-java/compare/v0.2.1...v0.3.0) (2026-11-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** request-shape post /v1/sdks body.languages — required in before only (review: direction-dependent; read the hunk)
+* **api:** 27 breaking changes to the SDK surface.
+    - operation-coverage delete /v1/mcp/servers/{} — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage delete /v1/mcp/servers/{}/installations/{} — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage delete /v1/mcp/servers/{}/installations/{}/access-group — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage get /v1/mcp/servers/{} — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage get /v1/mcp/servers/{}/installations — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage get /v1/mcp/servers/{}/installations/{} — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage patch /v1/mcp/servers/{} — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage patch /v1/mcp/servers/{}/installations/{} — operation only in before (breaking: the new snapshot no longer has it)
+    - operation-coverage post /v1/mcp/servers/{}/installations/{}/access-group — operation only in before (breaking: the new snapshot no longer has it)
+    - response-shape get /v1/mcp/servers→[].createdAt — typed int in after, string in before (breaking: retyped; values of the old type no longer fit)
+    - response-shape get /v1/mcp/servers→[].updatedAt — typed int in after, string in before (breaking: retyped; values of the old type no longer fit)
+    - response-shape get /v1/mcp/servers→[].id — field only in before (breaking: removed; uid, domain, namespace (and 1 more) appeared in its place, likely a rename)
+    - response-shape post /v1/mcp/servers→.server.createdAt — typed int in after, string in before (breaking: retyped; values of the old type no longer fit)
+    - response-shape post /v1/mcp/servers→.server.updatedAt — typed int in after, string in before (breaking: retyped; values of the old type no longer fit)
+    - response-shape post /v1/mcp/servers→.server.id — field only in before (breaking: removed; uid, domain, namespace appeared in its place, likely a rename)
+    - response-shape post /v1/mcp/servers→.installation — field only in before (breaking: the new snapshot no longer has it)
+    - types-files models/mcp/servers/McpInstallation.kt — type file only in before (1 member: 0 matched by name and kind elsewhere in after, 1 not found) (breaking: removed; ServerListResponse.kt appeared in its place, likely a rename)
+    - types-files models/mcp/servers/ServerDeleteParams.kt — type file only in before (1 member: 0 matched by name and kind elsewhere in after, 1 not found) (breaking: removed; ServerListResponse.kt appeared in its place, likely a rename)
+    - types-files models/mcp/servers/ServerRetrieveParams.kt — type file only in before (1 member: 0 matched by name and kind elsewhere in after, 1 not found) (breaking: removed; ServerListResponse.kt appeared in its place, likely a rename)
+    - types-files models/mcp/servers/ServerUpdateParams.kt — type file only in before (2 members: 0 matched by name and kind elsewhere in after, 2 not found) (breaking: removed; ServerListResponse.kt appeared in its place, likely a rename)
+    - types-files models/mcp/servers/installations/InstallationCreateAccessGroupParams.kt — type file only in before (2 members: 0 matched by name and kind elsewhere in after, 2 not found) (breaking: the new snapshot no longer has it)
+    - types-files models/mcp/servers/installations/InstallationDeleteAccessGroupParams.kt — type file only in before (2 members: 0 matched by name and kind elsewhere in after, 2 not found) (breaking: the new snapshot no longer has it)
+    - types-files models/mcp/servers/installations/InstallationDeleteParams.kt — type file only in before (1 member: 0 matched by name and kind elsewhere in after, 1 not found) (breaking: the new snapshot no longer has it)
+    - types-files models/mcp/servers/installations/InstallationListParams.kt — type file only in before (1 member: 0 matched by name and kind elsewhere in after, 1 not found) (breaking: the new snapshot no longer has it)
+    - types-files models/mcp/servers/installations/InstallationRetrieveParams.kt — type file only in before (1 member: 0 matched by name and kind elsewhere in after, 1 not found) (breaking: the new snapshot no longer has it)
+    - types-files models/mcp/servers/installations/InstallationUpdateParams.kt — type file only in before (2 members: 0 matched by name and kind elsewhere in after, 2 not found) (breaking: the new snapshot no longer has it)
+    - types-files models/mcp/servers/installations/McpInstallationListItem.kt — type file only in before (1 member: 0 matched by name and kind elsewhere in after, 1 not found) (breaking: the new snapshot no longer has it)
+* **api:** 9 breaking changes to the SDK surface.
+    - Added required property `sdk.current`.
+    - Property `sdk.currentVersion` type changed from `version` to `string`.
+    - Added required property `sdk.latestVersion`.
+    - Removed optional property `sdk.apiVersion`.
+    - Property `sdk_version.version` type changed from `version` to `string`.
+    - Property `sdk_version.createdAt` is now required.
+    - Removed required property `sdk_version.apiVersion`.
+    - Removed required property `sdk_version.status`.
+    - Removed optional property `sdk_version.publishedAt`.
+* **api:** Added required property `github_project.chatInsightsEnabled`.
+
+### Features
+
+* **api:** add property github_project.chatInsightsEnabled ([510cbc0](https://github.com/scalar/scalar-java/commit/510cbc06ca9eb81d7f79b872e1aa0531733ed4b0))
+* **api:** add property sdk.current (+9 more changes) ([2e8c5d3](https://github.com/scalar/scalar-java/commit/2e8c5d36b0515a8ef9b03fc86c7151485e43a356))
+* **api:** update SDK surface (2 changes) ([e188565](https://github.com/scalar/scalar-java/commit/e188565299aa808add296849db4d9c5e59af5608))
+* **api:** update SDK surface (3 changes) ([3df9c0f](https://github.com/scalar/scalar-java/commit/3df9c0fde741f0fd83e27acced8b5ecd3b7ba4fe))
+* **api:** update SDK surface (35 changes) ([b723f78](https://github.com/scalar/scalar-java/commit/b723f783f5b5d871691512e30790d7f0fbd2eba9))
+* **api:** update SDK surface (4 changes) ([36b184e](https://github.com/scalar/scalar-java/commit/36b184ead9f825a0e8c42cc9b289a769f2463e5f))
+
+
+### Chores
+
+* **api:** regenerate SDK ([ea24e00](https://github.com/scalar/scalar-java/commit/ea24e005f3b6a58daa26401e39c1c62bba4e570f))
+* **api:** regenerate SDK ([5a2e674](https://github.com/scalar/scalar-java/commit/5a2e674cfcfe7fa1e3b802f066eedd9d5018044b))
+* **api:** regenerate SDK ([32ac377](https://github.com/scalar/scalar-java/commit/32ac377c48101d833437c12b0ab97be68832f87c))
+* **api:** update generated SDK content ([89ce5e5](https://github.com/scalar/scalar-java/commit/89ce5e5585f91ad7c5ccc390b118385fe7733256))
+* **api:** update generated SDK content ([21b4e39](https://github.com/scalar/scalar-java/commit/21b4e3970b87090291a7aab5e5630ba1a2472f5a))
+
 ## [0.2.1](https://github.com/scalar/scalar-java/compare/v0.2.0...v0.2.1) (2026-10-16)
 
 

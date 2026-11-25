@@ -32,7 +32,7 @@ tasks.named<Jar>("jar") {
             mapOf(
                 "Implementation-Title" to project.name,
                 "Implementation-Version" to project.version,
-            )
+            ),
         )
     }
 }

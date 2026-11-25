@@ -23,15 +23,40 @@
 -keep class com.fasterxml.jackson.core.type.TypeReference { *; }
 -keep class * extends com.fasterxml.jackson.core.type.TypeReference { *; }
 
-# Keep the generated SDK classes; `@ExcludeMissing` and the value filter it names are reachable only through annotations.
--keep class com.scalar.** { *; }
+# `@ExcludeMissing` and the value filter it names are reachable only from annotation values, so nothing
+# else keeps them. Without both, every property a caller left unset is serialized and throws.
+-keep,allowobfuscation @interface com.scalar.api.core.ExcludeMissing
+-keep,allowobfuscation class com.scalar.api.core.JsonField$IsMissing {
+    <init>();
+    public boolean equals(java.lang.Object);
+}
 
 # Jackson uses reflection to access our class serializers and deserializers.
--keep @com.fasterxml.jackson.databind.annotation.JsonSerialize class com.scalar.** { *; }
--keep @com.fasterxml.jackson.databind.annotation.JsonDeserialize class com.scalar.** { *; }
+-keep @com.fasterxml.jackson.databind.annotation.JsonSerialize class com.scalar.api.** { *; }
+-keep @com.fasterxml.jackson.databind.annotation.JsonDeserialize class com.scalar.api.** { *; }
 
 # Jackson uses reflection to serialize and deserialize our classes based on their constructors and annotated members.
--keepclassmembers class com.scalar.** {
+-keepclassmembers class com.scalar.api.** {
     <init>(...);
     @com.fasterxml.jackson.annotation.* *;
+}
+
+# Jackson's Kotlin module reads constructor defaults from `kotlin.Metadata`, and R8 keeps that metadata
+# only on classes a `-keep` rule matches. Without this, a property absent from the JSON is read back as
+# null instead of missing. This rule does not stop a class from being removed or renamed. It relies on
+# every creator parameter being a `JsonField`, `JsonValue` or `Map`, which keep their names.
+-keepclasseswithmembers,allowobfuscation,allowshrinking class com.scalar.api.** {
+    @com.fasterxml.jackson.annotation.JsonCreator <init>(...);
+}
+
+# Each client stamps its own class name into the `User-Agent` header, so the two client
+# implementations keep their names. They can still be shrunk.
+-keepnames class com.scalar.api.client.ScalarClientImpl
+-keepnames class com.scalar.api.client.ScalarClientAsyncImpl
+
+# `Enum.valueOf` reaches `values()` through reflection, and the OkHttp transport resolves
+# `HttpMethod` by name. Without this ProGuard turns the class into one that is no longer an enum.
+-keepclassmembers enum com.scalar.api.** {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
 }

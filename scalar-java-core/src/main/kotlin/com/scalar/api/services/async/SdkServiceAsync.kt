@@ -41,7 +41,11 @@ interface SdkServiceAsync {
     /** SDKs */
     fun repositories(): RepositoryServiceAsync
 
-    /** Create an SDK from an API document, targeting one or more languages. */
+    /**
+     * Create an SDK from an existing API document on the team. Its current version must have
+     * content. Send languages or a config declaring targets; omit languages to derive them from
+     * config. SDK and target counts must fit the team plan. Config is a JSON string.
+     */
     fun create(params: SdkCreateParams): CompletableFuture<Uid> =
         create(params, RequestOptions.none())
 
@@ -87,7 +91,12 @@ interface SdkServiceAsync {
     fun retrieve(uid: String, requestOptions: RequestOptions): CompletableFuture<Sdk> =
         retrieve(uid, SdkRetrieveParams.none(), requestOptions)
 
-    /** Update SDK metadata, its linked API, or its config. */
+    /**
+     * Update SDK metadata, its linked API, or its JSON-string config. Targets using native GitHub
+     * delivery need separate repositories; delivery writes each package at the repository root.
+     * Sharing a repository across language targets in this SDK and using reserved promote branches
+     * are rejected before config saves.
+     */
     fun update(uid: String): CompletableFuture<Any?> = update(uid, SdkUpdateParams.none())
 
     /** @see update */

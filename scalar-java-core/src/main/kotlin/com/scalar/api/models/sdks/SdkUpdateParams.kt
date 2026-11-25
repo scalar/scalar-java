@@ -19,7 +19,12 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Update SDK metadata, its linked API, or its config. */
+/**
+ * Update SDK metadata, its linked API, or its JSON-string config. Targets using native GitHub
+ * delivery need separate repositories; delivery writes each package at the repository root. Sharing
+ * a repository across language targets in this SDK and using reserved promote branches are rejected
+ * before config saves.
+ */
 class SdkUpdateParams
 private constructor(
     private val uid: String?,

@@ -21,7 +21,14 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Link one language target to a GitHub repository, so builds sync there. */
+/**
+ * Link an existing language target to a GitHub repository accessible through the Scalar GitHub App.
+ * Requires team edit permission and a paid SDK automation plan. Native delivery writes at the
+ * repository root; use a separate repository for each target. Directory fields are unsupported.
+ * Linking can immediately sync the current build under automatic promotion; pass promotion: manual
+ * to hold it back. If GitHub access is missing, connect GitHub and grant the App access in Scalar
+ * Dashboard before retrying.
+ */
 class RepositoryLinkParams
 private constructor(
     private val uid: String?,
@@ -31,6 +38,9 @@ private constructor(
 ) : Params {
 
     /**
+     * Release promote branch. Platform-managed branches such as scalar-next and scalar-generated
+     * are reserved.
+     *
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
@@ -53,6 +63,14 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun prereleaseType(): Optional<String> = body.prereleaseType()
+
+    /**
+     * Controls when a build becomes current and syncs to GitHub. Omit to preserve the saved policy.
+     *
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun promotion(): Optional<Promotion> = body.promotion()
 
     fun uid(): Optional<String> = Optional.ofNullable(uid)
 
@@ -83,6 +101,13 @@ private constructor(
      * Unlike [prereleaseType], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _prereleaseType(): JsonField<String> = body._prereleaseType()
+
+    /**
+     * Returns the raw JSON value of [promotion].
+     *
+     * Unlike [promotion], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _promotion(): JsonField<Promotion> = body._promotion()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -139,9 +164,14 @@ private constructor(
          * - [language]
          * - [repositoryId]
          * - [prereleaseType]
+         * - [promotion]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
+        /**
+         * Release promote branch. Platform-managed branches such as scalar-next and
+         * scalar-generated are reserved.
+         */
         fun baseBranch(baseBranch: String) = apply { body.baseBranch(baseBranch) }
 
         /**
@@ -187,6 +217,21 @@ private constructor(
         fun prereleaseType(prereleaseType: JsonField<String>) = apply {
             body.prereleaseType(prereleaseType)
         }
+
+        /**
+         * Controls when a build becomes current and syncs to GitHub. Omit to preserve the saved
+         * policy.
+         */
+        fun promotion(promotion: Promotion) = apply { body.promotion(promotion) }
+
+        /**
+         * Sets [Builder.promotion] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.promotion] with a well-typed [Promotion] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun promotion(promotion: JsonField<Promotion>) = apply { body.promotion(promotion) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -345,6 +390,7 @@ private constructor(
         "language",
         "repositoryId",
         "prereleaseType",
+        "promotion",
     )
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -353,6 +399,7 @@ private constructor(
         private val language: JsonField<Language>,
         private val repositoryId: JsonField<Long>,
         private val prereleaseType: JsonField<String>,
+        private val promotion: JsonField<Promotion>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -370,9 +417,15 @@ private constructor(
             @JsonProperty("prereleaseType")
             @ExcludeMissing
             prereleaseType: JsonField<String> = JsonMissing.of(),
-        ) : this(baseBranch, language, repositoryId, prereleaseType, mutableMapOf())
+            @JsonProperty("promotion")
+            @ExcludeMissing
+            promotion: JsonField<Promotion> = JsonMissing.of(),
+        ) : this(baseBranch, language, repositoryId, prereleaseType, promotion, mutableMapOf())
 
         /**
+         * Release promote branch. Platform-managed branches such as scalar-next and
+         * scalar-generated are reserved.
+         *
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
@@ -395,6 +448,15 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun prereleaseType(): Optional<String> = prereleaseType.getOptional("prereleaseType")
+
+        /**
+         * Controls when a build becomes current and syncs to GitHub. Omit to preserve the saved
+         * policy.
+         *
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun promotion(): Optional<Promotion> = promotion.getOptional("promotion")
 
         /**
          * Returns the raw JSON value of [baseBranch].
@@ -432,6 +494,15 @@ private constructor(
         @ExcludeMissing
         fun _prereleaseType(): JsonField<String> = prereleaseType
 
+        /**
+         * Returns the raw JSON value of [promotion].
+         *
+         * Unlike [promotion], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("promotion")
+        @ExcludeMissing
+        fun _promotion(): JsonField<Promotion> = promotion
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -466,6 +537,7 @@ private constructor(
             private var language: JsonField<Language>? = null
             private var repositoryId: JsonField<Long>? = null
             private var prereleaseType: JsonField<String> = JsonMissing.of()
+            private var promotion: JsonField<Promotion> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -474,9 +546,14 @@ private constructor(
                 language = body.language
                 repositoryId = body.repositoryId
                 prereleaseType = body.prereleaseType
+                promotion = body.promotion
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
+            /**
+             * Release promote branch. Platform-managed branches such as scalar-next and
+             * scalar-generated are reserved.
+             */
             fun baseBranch(baseBranch: String) = baseBranch(JsonField.of(baseBranch))
 
             /**
@@ -526,6 +603,21 @@ private constructor(
                 this.prereleaseType = prereleaseType
             }
 
+            /**
+             * Controls when a build becomes current and syncs to GitHub. Omit to preserve the saved
+             * policy.
+             */
+            fun promotion(promotion: Promotion) = promotion(JsonField.of(promotion))
+
+            /**
+             * Sets [Builder.promotion] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.promotion] with a well-typed [Promotion] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun promotion(promotion: JsonField<Promotion>) = apply { this.promotion = promotion }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -565,6 +657,7 @@ private constructor(
                     checkRequired("language", language),
                     checkRequired("repositoryId", repositoryId),
                     prereleaseType,
+                    promotion,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -589,6 +682,7 @@ private constructor(
             language().validate()
             repositoryId()
             prereleaseType()
+            promotion().ifPresent { it.validate() }
             validated = true
         }
 
@@ -611,7 +705,8 @@ private constructor(
             (if (baseBranch.asKnown().isPresent) 1 else 0) +
                 (language.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (repositoryId.asKnown().isPresent) 1 else 0) +
-                (if (prereleaseType.asKnown().isPresent) 1 else 0)
+                (if (prereleaseType.asKnown().isPresent) 1 else 0) +
+                (promotion.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -623,6 +718,7 @@ private constructor(
                 language == other.language &&
                 repositoryId == other.repositoryId &&
                 prereleaseType == other.prereleaseType &&
+                promotion == other.promotion &&
                 additionalProperties == other.additionalProperties
         }
 
@@ -632,6 +728,7 @@ private constructor(
                 language,
                 repositoryId,
                 prereleaseType,
+                promotion,
                 additionalProperties,
             )
         }
@@ -639,7 +736,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{baseBranch=$baseBranch, language=$language, repositoryId=$repositoryId, prereleaseType=$prereleaseType, additionalProperties=$additionalProperties}"
+            "Body{baseBranch=$baseBranch, language=$language, repositoryId=$repositoryId, prereleaseType=$prereleaseType, promotion=$promotion, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -835,6 +932,145 @@ private constructor(
             }
 
             return other is Language && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    /**
+     * Controls when a build becomes current and syncs to GitHub. Omit to preserve the saved policy.
+     */
+    class Promotion @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val AUTOMATIC = of("automatic")
+
+            @JvmField val MANUAL = of("manual")
+
+            @JvmStatic fun of(value: String) = Promotion(JsonField.of(value))
+        }
+
+        /** An enum containing [Promotion]'s known values. */
+        enum class Known {
+            AUTOMATIC,
+            MANUAL,
+        }
+
+        /**
+         * An enum containing [Promotion]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Promotion] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            AUTOMATIC,
+            MANUAL,
+            /**
+             * An enum member indicating that [Promotion] was instantiated with an unknown value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                AUTOMATIC -> Value.AUTOMATIC
+                MANUAL -> Value.MANUAL
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws ScalarInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                AUTOMATIC -> Known.AUTOMATIC
+                MANUAL -> Known.MANUAL
+                else -> throw ScalarInvalidDataException("Unknown Promotion: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws ScalarInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { ScalarInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws ScalarInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): Promotion = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: ScalarInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Promotion && value == other.value
         }
 
         override fun hashCode() = value.hashCode()

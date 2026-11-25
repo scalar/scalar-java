@@ -64,12 +64,14 @@ Or build the SDK from source, with JDK 21 installed:
 import com.scalar.api.client.ScalarClient;
 import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams;
+import java.util.List;
+import com.scalar.api.models.registry.ApiDocument;
 
 ScalarClient client = ScalarOkHttpClient.builder()
     .bearerAuth(System.getenv("BEARER_AUTH"))
     .build();
 
-var registry = client.registry().listAllApiDocuments();
+List<ApiDocument> registry = client.registry().listAllApiDocuments();
 
 System.out.println(registry);
 ```
@@ -242,10 +244,12 @@ Declared schemes:
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```java
+import java.util.List;
+import com.scalar.api.models.registry.ApiDocument;
 import com.scalar.api.errors.ScalarServiceException;
 
 try {
-    var registry = client.registry().listAllApiDocuments();
+    List<ApiDocument> registry = client.registry().listAllApiDocuments();
 } catch (ScalarServiceException err) {
     System.out.println(err.statusCode() + " " + err.body());
     throw err;
@@ -266,6 +270,7 @@ import com.scalar.api.client.okhttp.ScalarOkHttpClient;
 import java.time.Duration;
 
 ScalarClient client = ScalarOkHttpClient.builder()
+    .bearerAuth(System.getenv("BEARER_AUTH"))
     .baseUrl("https://access.scalar.com")
     .timeout(Duration.ofSeconds(60))
     .maxRetries(2)

@@ -52,10 +52,7 @@ final class SdkServiceTest {
         "/v1/sdks",
         client -> {
           SdkCreateParams params =
-              SdkCreateParams.builder()
-                  .apiUid("UakgbKJ5m9gl0JDMbcJqL")
-                  .languages(java.util.List.of(SdkCreateParams.Language.of("typescript")))
-                  .build();
+              SdkCreateParams.builder().apiUid("UakgbKJ5m9gl0JDMbcJqL").build();
           var sdk = client.sdks().create(params);
         });
   }
@@ -71,7 +68,7 @@ final class SdkServiceTest {
           SdkCreateParams params =
               SdkCreateParams.builder()
                   .apiUid("UakgbKJ5m9gl0JDMbcJqL")
-                  .languages(java.util.List.of(SdkCreateParams.Language.of("typescript")))
+                  .languages(java.util.Arrays.asList(SdkCreateParams.Language.TYPESCRIPT))
                   .title("Acme SDK")
                   .slug("acme-api")
                   .className("Acme")
@@ -169,7 +166,7 @@ final class SdkServiceTest {
                   .uid("UakgbKJ5m9gl0JDMbcJqL")
                   .version("1.2.0")
                   .customCodeRef("scalar-next")
-                  .languages(java.util.List.of(SdkBuildParams.Language.of("typescript")))
+                  .languages(java.util.Arrays.asList(SdkBuildParams.Language.TYPESCRIPT))
                   .build();
           var sdk = client.sdks().build(params);
         });

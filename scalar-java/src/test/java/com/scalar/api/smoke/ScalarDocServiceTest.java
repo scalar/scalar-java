@@ -47,8 +47,8 @@ final class ScalarDocServiceTest {
               ScalarDocCreateGuideParams.builder()
                   .name("Acme Documentation")
                   .isPrivate(false)
-                  .allowedUsers(java.util.List.of())
-                  .allowedDomains(java.util.List.of())
+                  .allowedUsers(java.util.Collections.emptyList())
+                  .allowedDomains(java.util.Collections.emptyList())
                   .build();
           var scalarDoc = client.scalarDocs().createGuide(params);
         });
@@ -67,8 +67,8 @@ final class ScalarDocServiceTest {
                   .name("Acme Documentation")
                   .slug("acme-api")
                   .isPrivate(false)
-                  .allowedUsers(java.util.List.of())
-                  .allowedDomains(java.util.List.of())
+                  .allowedUsers(java.util.Collections.emptyList())
+                  .allowedDomains(java.util.Collections.emptyList())
                   .build();
           var scalarDoc = client.scalarDocs().createGuide(params);
         });
@@ -125,7 +125,7 @@ final class ScalarDocServiceTest {
           ScalarDocCreateProjectParams params =
               ScalarDocCreateProjectParams.builder()
                   .name("Acme Documentation")
-                  .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
+                  .provider(ScalarDocCreateProjectParams.Provider.FORGEJO)
                   .build();
           var scalarDoc = client.scalarDocs().createProject(params);
         });
@@ -145,7 +145,7 @@ final class ScalarDocServiceTest {
                   .slug("acme-api")
                   .isPrivate(false)
                   .blank(true)
-                  .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
+                  .provider(ScalarDocCreateProjectParams.Provider.FORGEJO)
                   .githubRepository(
                       ScalarDocCreateProjectParams.GithubRepository.builder()
                           .installationId(84L)
@@ -202,7 +202,7 @@ final class ScalarDocServiceTest {
                   .slug("acme-docs")
                   .name("Acme Documentation")
                   .isPrivate(false)
-                  .accessGroups(java.util.List.of("UakgbKJ5m9gl0JDMbcJqL"))
+                  .accessGroups(java.util.Arrays.asList("UakgbKJ5m9gl0JDMbcJqL"))
                   .loginPortalUid(
                       ScalarDocUpdateProjectParams.LoginPortalUid.ofNanoid("UakgbKJ5m9gl0JDMbcJqL"))
                   .activeThemeId("UakgbKJ5m9gl0JDMbcJqL")

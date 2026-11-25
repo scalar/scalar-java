@@ -50,8 +50,8 @@ final class ServerServiceTest {
               ServerCreateParams.builder()
                   .name("Acme MCP")
                   .slug("acme-api")
-                  .versionUids(java.util.List.of(""))
-                  .projectUids(java.util.List.of(""))
+                  .versionUids(java.util.Arrays.asList(""))
+                  .projectUids(java.util.Arrays.asList(""))
                   .build();
           var server = client.mcp().servers().create(params);
         });

@@ -27,7 +27,14 @@ interface RepositoryService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RepositoryService
 
-    /** Link one language target to a GitHub repository, so builds sync there. */
+    /**
+     * Link an existing language target to a GitHub repository accessible through the Scalar GitHub
+     * App. Requires team edit permission and a paid SDK automation plan. Native delivery writes at
+     * the repository root; use a separate repository for each target. Directory fields are
+     * unsupported. Linking can immediately sync the current build under automatic promotion; pass
+     * promotion: manual to hold it back. If GitHub access is missing, connect GitHub and grant the
+     * App access in Scalar Dashboard before retrying.
+     */
     fun link(uid: String, params: RepositoryLinkParams): RepositoryLinkResponse =
         link(uid, params, RequestOptions.none())
 

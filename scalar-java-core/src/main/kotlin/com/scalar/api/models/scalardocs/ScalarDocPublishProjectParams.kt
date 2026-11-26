@@ -6,11 +6,22 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.scalar.api.core.BaseDeserializer
+import com.scalar.api.core.BaseSerializer
 import com.scalar.api.core.ExcludeMissing
 import com.scalar.api.core.JsonField
 import com.scalar.api.core.JsonMissing
 import com.scalar.api.core.JsonValue
 import com.scalar.api.core.Params
+import com.scalar.api.core.allMaxBy
+import com.scalar.api.core.getOrThrow
 import com.scalar.api.core.http.Headers
 import com.scalar.api.core.http.QueryParams
 import com.scalar.api.errors.ScalarInvalidDataException
@@ -32,7 +43,7 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun commitSha(): Optional<String> = body.commitSha()
+    fun commitSha(): Optional<CommitSha> = body.commitSha()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -53,7 +64,7 @@ private constructor(
      *
      * Unlike [commitSha], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _commitSha(): JsonField<String> = body._commitSha()
+    fun _commitSha(): JsonField<CommitSha> = body._commitSha()
 
     /**
      * Returns the raw JSON value of [configPath].
@@ -122,16 +133,19 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        fun commitSha(commitSha: String) = apply { body.commitSha(commitSha) }
+        fun commitSha(commitSha: CommitSha) = apply { body.commitSha(commitSha) }
 
         /**
          * Sets [Builder.commitSha] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.commitSha] with a well-typed [String] value instead.
+         * You should usually call [Builder.commitSha] with a well-typed [CommitSha] value instead.
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun commitSha(commitSha: JsonField<String>) = apply { body.commitSha(commitSha) }
+        fun commitSha(commitSha: JsonField<CommitSha>) = apply { body.commitSha(commitSha) }
+
+        /** Alias for calling [commitSha] with `CommitSha.ofString(string)`. */
+        fun commitSha(string: String) = apply { body.commitSha(string) }
 
         fun configPath(configPath: String) = apply { body.configPath(configPath) }
 
@@ -301,7 +315,7 @@ private constructor(
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val commitSha: JsonField<String>,
+        private val commitSha: JsonField<CommitSha>,
         private val configPath: JsonField<String>,
         private val preview: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -311,7 +325,7 @@ private constructor(
         private constructor(
             @JsonProperty("commitSha")
             @ExcludeMissing
-            commitSha: JsonField<String> = JsonMissing.of(),
+            commitSha: JsonField<CommitSha> = JsonMissing.of(),
             @JsonProperty("configPath")
             @ExcludeMissing
             configPath: JsonField<String> = JsonMissing.of(),
@@ -322,7 +336,7 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun commitSha(): Optional<String> = commitSha.getOptional("commitSha")
+        fun commitSha(): Optional<CommitSha> = commitSha.getOptional("commitSha")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -341,7 +355,9 @@ private constructor(
          *
          * Unlike [commitSha], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("commitSha") @ExcludeMissing fun _commitSha(): JsonField<String> = commitSha
+        @JsonProperty("commitSha")
+        @ExcludeMissing
+        fun _commitSha(): JsonField<CommitSha> = commitSha
 
         /**
          * Returns the raw JSON value of [configPath].
@@ -380,7 +396,7 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var commitSha: JsonField<String> = JsonMissing.of()
+            private var commitSha: JsonField<CommitSha> = JsonMissing.of()
             private var configPath: JsonField<String> = JsonMissing.of()
             private var preview: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -393,16 +409,19 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            fun commitSha(commitSha: String) = commitSha(JsonField.of(commitSha))
+            fun commitSha(commitSha: CommitSha) = commitSha(JsonField.of(commitSha))
 
             /**
              * Sets [Builder.commitSha] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.commitSha] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.commitSha] with a well-typed [CommitSha] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun commitSha(commitSha: JsonField<String>) = apply { this.commitSha = commitSha }
+            fun commitSha(commitSha: JsonField<CommitSha>) = apply { this.commitSha = commitSha }
+
+            /** Alias for calling [commitSha] with `CommitSha.ofString(string)`. */
+            fun commitSha(string: String) = commitSha(CommitSha.ofString(string))
 
             fun configPath(configPath: String) = configPath(JsonField.of(configPath))
 
@@ -470,7 +489,7 @@ private constructor(
                 return@apply
             }
 
-            commitSha()
+            commitSha().ifPresent { it.validate() }
             configPath()
             preview()
             validated = true
@@ -492,7 +511,7 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (commitSha.asKnown().isPresent) 1 else 0) +
+            (commitSha.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (configPath.asKnown().isPresent) 1 else 0) +
                 (if (preview.asKnown().isPresent) 1 else 0)
 
@@ -516,6 +535,215 @@ private constructor(
 
         override fun toString() =
             "Body{commitSha=$commitSha, configPath=$configPath, preview=$preview, additionalProperties=$additionalProperties}"
+    }
+
+    @JsonDeserialize(using = CommitSha.Deserializer::class)
+    @JsonSerialize(using = CommitSha.Serializer::class)
+    class CommitSha
+    private constructor(
+        private val string: String? = null,
+        private val string2: String? = null,
+        private val _json: JsonValue? = null,
+    ) {
+
+        fun string(): Optional<String> = Optional.ofNullable(string)
+
+        fun string2(): Optional<String> = Optional.ofNullable(string2)
+
+        fun isString(): Boolean = string != null
+
+        fun isString2(): Boolean = string2 != null
+
+        fun asString(): String = string.getOrThrow("string")
+
+        fun asString2(): String = string2.getOrThrow("string2")
+
+        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+        /**
+         * Maps this instance's current variant to a value of type [T] using the given [visitor].
+         *
+         * Note that this method is _not_ forwards compatible with new variants from the API, unless
+         * [visitor] overrides [Visitor.unknown]. To handle variants not known to this version of
+         * the SDK gracefully, consider overriding [Visitor.unknown]:
+         * ```java
+         * import com.scalar.api.core.JsonValue;
+         * import java.util.Optional;
+         *
+         * Optional<String> result =
+         *     commitSha.accept(
+         *         new CommitSha.Visitor<Optional<String>>() {
+         *           @Override
+         *           public Optional<String> visitString(String string) {
+         *             return Optional.of(string.toString());
+         *           }
+         *
+         *           // ...
+         *
+         *           @Override
+         *           public Optional<String> unknown(JsonValue json) {
+         *             // Or inspect the `json`.
+         *             return Optional.empty();
+         *           }
+         *         });
+         * ```
+         *
+         * @throws ScalarInvalidDataException if [Visitor.unknown] is not overridden in [visitor]
+         *   and the current variant is unknown.
+         */
+        fun <T> accept(visitor: Visitor<T>): T =
+            when {
+                string != null -> visitor.visitString(string)
+                string2 != null -> visitor.visitString2(string2)
+                else -> visitor.unknown(_json)
+            }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws ScalarInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): CommitSha = apply {
+            if (validated) {
+                return@apply
+            }
+
+            accept(
+                object : Visitor<Unit> {
+                    override fun visitString(string: String) {}
+
+                    override fun visitString2(string2: String) {}
+                },
+            )
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: ScalarInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            accept(
+                object : Visitor<Int> {
+                    override fun visitString(string: String) = 1
+
+                    override fun visitString2(string2: String) = 1
+
+                    override fun unknown(json: JsonValue?) = 0
+                },
+            )
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is CommitSha && string == other.string && string2 == other.string2
+        }
+
+        override fun hashCode(): Int = Objects.hash(string, string2)
+
+        override fun toString(): String =
+            when {
+                string != null -> "CommitSha{string=$string}"
+                string2 != null -> "CommitSha{string2=$string2}"
+                _json != null -> "CommitSha{_unknown=$_json}"
+                else -> throw IllegalStateException("Invalid CommitSha")
+            }
+
+        companion object {
+
+            @JvmStatic fun ofString(string: String) = CommitSha(string = string)
+
+            @JvmStatic fun ofString2(string2: String) = CommitSha(string2 = string2)
+        }
+
+        /**
+         * An interface that defines how to map each variant of [CommitSha] to a value of type [T].
+         */
+        interface Visitor<out T> {
+
+            fun visitString(string: String): T
+
+            fun visitString2(string2: String): T
+
+            /**
+             * Maps an unknown variant of [CommitSha] to a value of type [T].
+             *
+             * An instance of [CommitSha] can contain an unknown variant if it was deserialized from
+             * data that doesn't match any known variant. For example, if the SDK is on an older
+             * version than the API, then the API may respond with new variants that the SDK is
+             * unaware of.
+             *
+             * @throws ScalarInvalidDataException in the default implementation.
+             */
+            fun unknown(json: JsonValue?): T {
+                throw ScalarInvalidDataException("Unknown CommitSha: $json")
+            }
+        }
+
+        internal class Deserializer : BaseDeserializer<CommitSha>(CommitSha::class) {
+
+            override fun ObjectCodec.deserialize(node: JsonNode): CommitSha {
+                val json = JsonValue.fromJsonNode(node)
+
+                val bestMatches =
+                    sequenceOf(
+                            tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                CommitSha(string = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                CommitSha(string2 = it, _json = json)
+                            },
+                        )
+                        .filterNotNull()
+                        .allMaxBy { it.validity() }
+                        .toList()
+                return when (bestMatches.size) {
+                    // This can happen if what we're deserializing is completely incompatible with
+                    // all the possible variants (e.g. deserializing from boolean).
+                    0 -> CommitSha(_json = json)
+                    1 -> bestMatches.single()
+                    // If there's more than one match with the highest validity, then use the first
+                    // completely valid match, or simply the first match if none are completely
+                    // valid.
+                    else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                }
+            }
+        }
+
+        internal class Serializer : BaseSerializer<CommitSha>(CommitSha::class) {
+
+            override fun serialize(
+                value: CommitSha,
+                generator: JsonGenerator,
+                provider: SerializerProvider,
+            ) {
+                when {
+                    value.string != null -> generator.writeObject(value.string)
+                    value.string2 != null -> generator.writeObject(value.string2)
+                    value._json != null -> generator.writeObject(value._json)
+                    else -> throw IllegalStateException("Invalid CommitSha")
+                }
+            }
+        }
     }
 
     override fun equals(other: Any?): Boolean {

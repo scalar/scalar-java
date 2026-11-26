@@ -145,8 +145,17 @@ private constructor(
 
     private fun idempotencyKey(): String = "scalar-java-retry-${UUID.randomUUID()}"
 
+    /**
+     * Adds a generated idempotency key to every request except a `GET`, once per call, so each
+     * retry of that call resends the same key. A `GET` is already safe to repeat and gets none. A
+     * key the caller set is kept as is, on any method, `GET` included.
+     */
     private fun maybeAddIdempotencyHeader(request: HttpRequest): HttpRequest {
-        if (idempotencyHeader == null || request.headers.names().contains(idempotencyHeader)) {
+        if (
+            idempotencyHeader == null ||
+                request.method == HttpMethod.GET ||
+                request.headers.names().contains(idempotencyHeader)
+        ) {
             return request
         }
 

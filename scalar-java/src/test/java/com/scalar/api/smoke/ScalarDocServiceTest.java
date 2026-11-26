@@ -252,7 +252,7 @@ final class ScalarDocServiceTest {
           ScalarDocPublishProjectParams params =
               ScalarDocPublishProjectParams.builder()
                   .slug("acme-docs")
-                  .commitSha("0123456789abcdef0123456789abcdef01234567")
+                  .commitSha(ScalarDocPublishProjectParams.CommitSha.ofString(""))
                   .preview(false)
                   .configPath("scalar.config.json")
                   .build();

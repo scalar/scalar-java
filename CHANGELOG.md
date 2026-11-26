@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/scalar/scalar-java/compare/v0.4.0...v0.5.0) (2026-11-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** request-shape post /v1/docs/{}/publish body.commitSha — union in after only (review: direction-dependent; read the hunk)
+
+### Features
+
+* **api:** update SDK surface (3 changes) ([0adfde6](https://github.com/scalar/scalar-java/commit/0adfde6de1a145943f75265633ecfaa4ddc33ac2))
+
 ## [0.4.0](https://github.com/scalar/scalar-java/compare/v0.3.0...v0.4.0) (2026-11-25)
 
 
